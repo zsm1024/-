@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
-import { LoginUsers, Users } from './data/user';
+import { LoginUsers, Users,ceshi } from './data/user';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = Users;
 
@@ -22,7 +22,9 @@ export default {
       msg: 'failure'
     });
 
-
+    mock.onGet('/ceshi').reply(200, {
+        msg: ceshi
+      });
 
     //获取用户列表
     mock.onGet('/user/list').reply(config => {
