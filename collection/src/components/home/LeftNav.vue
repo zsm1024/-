@@ -2,42 +2,44 @@
   <div class="left-nav">
     <div class="logo">
       <i class="el-icon-menu"></i>
-      <a>催收管理系统</a>
+      <a>后台管理系统</a>
     </div>
-    <el-menu theme="dark" @select="addTab" v-for="item in items" :key="item.name">
-    	<el-submenu index="index">
-    		<template slot="title">{{item.name}}</template>
-    		<el-menu-item v-for="a in item.list" :index="a.name" :key="a.name">{{a.name}}</el-menu-item>
-    	</el-submenu>
+    <el-menu theme="dark" @select="addTab">
+      <el-submenu index="manager">
+        <template slot="title">导航一</template>
+        <el-menu-item index="home/User">用户管理</el-menu-item>
+        
+      </el-submenu>
+       <el-submenu index="manager1">
+        <template slot="title">导航一111</template>
+        <el-menu-item index="home/User1">用户管理</el-menu-item>
+        
+      </el-submenu>
+
+    <el-menu theme="dark" @select="addTab">
+      <el-submenu index="manager">
+        <template slot="title">导航一</template>
+        <el-menu-item index="home/User">用户管理</el-menu-item>
+        
+      </el-submenu>
+       <el-submenu index="manager1">
+        <template slot="title">导航一111</template>
+        <el-menu-item index="home/User1">用户管理</el-menu-item>
+        
+      </el-submenu>
     </el-menu>
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex' 
+import { mapMutations } from 'vuex'
 
 export default {
-	name: 'LeftNav',
-	data(){
-		return{
-			items:[],
-		}
-	},
-created:function(){
-			this.getTopic();
-		},
-methods: {
+  name: 'LeftNav',
+  methods: {
     ...mapMutations('navTabs', [
       'addTab'
-    ]),
-    	getTopic:function(){
-				var that =this;
-					this.$http.get('http://localhost:3000/list')
-							.then(function(ret) {
-								var data=ret.data;
-								this.items=data;
-							})
-			}
-}
+    ])
+  }
 }
 </script>
 <style scoped>
