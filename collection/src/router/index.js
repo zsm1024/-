@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueResource from 'vue-resource'
+
 // import HelloWorld from '@/components/HelloWorld'
 import Login from '@/pages/login'
 import Home from '@/pages/home/home'
@@ -11,6 +12,7 @@ import 'element-ui/lib/theme-default/index.css'
 Vue.use(Router)
 Vue.use(ElementUI)
 Vue.use(VueResource)
+
 export default new Router({
   routes: [
     {
