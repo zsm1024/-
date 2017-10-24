@@ -4,6 +4,7 @@
       <i class="el-icon-menu"></i>
       <a>后台管理系统</a>
     </div>
+
     <el-menu theme="dark" @select="addTab">
       <el-submenu index="manager">
         <template slot="title">导航一</template>

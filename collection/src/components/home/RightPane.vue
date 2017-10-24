@@ -1,5 +1,6 @@
 <template>
     <div class="right-pane">
+
         <el-tabs class="tabs" v-model="activeTabName" @tab-remove="closeTab" type="border-card">
             <el-tab-pane v-for="item in tabList" :key="item.name" :name="item.name" :label="item.label" :closable="item.closable">
                 <component :is="item.component"></component>
