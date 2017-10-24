@@ -1,10 +1,10 @@
 <template>
     <div>
-        主页</div>
+        <input type="text"> 用户
+    </div>
 </template>
 <script>
 export default {
-    name: 'Index'
+    name: 'user'
 }
 </script>
-

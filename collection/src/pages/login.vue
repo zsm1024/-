@@ -63,7 +63,7 @@
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$router.push({ path: '/home' })
+          this.$router.push({ path: '/index' })
 //        this.$store.dispatch('Home', this.loginForm).then(() => {
 //          this.loading = false
 //          
