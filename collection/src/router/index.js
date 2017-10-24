@@ -5,8 +5,8 @@ import VueResource from 'vue-resource'
 import Login from '@/pages/login'
 import Home from '@/pages/home/home'
 import ElementUI from 'element-ui'
-import Index1 from '@/pages/home/index1'
-import Index2 from '@/pages/home/index2'
+import Index1 from '@/pages/management/index1'
+import Index2 from '@/pages/management/index2'
 import 'element-ui/lib/theme-default/index.css'
 Vue.use(Router)
 Vue.use(ElementUI)
