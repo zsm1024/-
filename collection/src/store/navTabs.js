@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { ceshi } from '../api/api';
+import { nav_view } from '../api/api';
 
 const Home = resolve => require(['../pages/home/Home'], resolve)
 
@@ -22,13 +22,11 @@ const mutations = {
     },
     addTab(state, index) {
         
-        ceshi().then((res)=>{
-            let data=res.data.msg;
-                
-            
+        nav_view().then((res)=>{
+            let data=res.data.msg;                     
             for(var i=0;i<data.length;i++){
                if( data[i].index == index){
-                    name =  data[i].name;
+                    name =  data[i].title;
                }
             }
             
