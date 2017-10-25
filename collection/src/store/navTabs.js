@@ -33,10 +33,7 @@ const mutations = {
                             name =  list[l].title;     
                         }
                     }
-                }
-               
-                
-
+                }          
             }
             
             if (state.tabList.filter(f => f.name == index) == 0) {
