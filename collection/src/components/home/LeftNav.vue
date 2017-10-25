@@ -14,30 +14,28 @@
   
 </template>
 <script>
-import { mapMutations } from 'vuex'
-import { nav_view } from '../../api/api';
+import { mapMutations } from "vuex";
+import { nav_view } from "../../api/api";
 export default {
-  data(){
-    return{
-      items:[],
+  data() {
+    return {
+      items: []
+    };
+  },
+  name: "LeftNav",
+  methods: {
+    ...mapMutations("navTabs", ["addTab"]),
+    getlist() {
+      nav_view().then(res => {
+        let data = res.data.msg;
+        this.items = data;
+      });
     }
   },
-  name: 'LeftNav',
-  methods: {
-    ...mapMutations('navTabs', [
-      'addTab'
-    ]),
-      getlist(){
-               nav_view().then((res)=>{
-                   let data=res.data.msg;
-                   this.items=data;                 
-               }) 
-        }
-  },
-  mounted(){
-    this.getlist()
+  mounted() {
+    this.getlist();
   }
-}
+};
 </script>
 <style scoped>
 .logo {
