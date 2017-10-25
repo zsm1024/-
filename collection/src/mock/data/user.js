@@ -10,7 +10,11 @@ const NavView = [
   },
   {
     id: 2,
-    title: '作业监控'
+    title: '作业监控',
+    list:[
+      {id:1-1,path:"home/User2",title:"1111"},
+      {id:1-2,path:"home/User3",title:"123123123(6-30天)"}
+    ]
   }
 ];
 const Users = [];

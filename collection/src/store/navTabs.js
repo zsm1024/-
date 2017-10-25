@@ -25,9 +25,19 @@ const mutations = {
         nav_view().then((res)=>{
             let data=res.data.msg;                     
             for(var i=0;i<data.length;i++){
-               if( data[i].index == index){
-                    name =  data[i].title;
-               }
+                let list = data[i].list;
+                if(typeof(list) != 'undefined'){
+                    
+                    for(var l=0;l<list.length;l++){
+                       
+                        if( list[l].path == index){
+                            name =  list[l].title;     
+                        }
+                    }
+                }
+               
+                
+
             }
             
             if (state.tabList.filter(f => f.name == index) == 0) {
