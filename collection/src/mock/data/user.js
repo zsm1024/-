@@ -20,7 +20,7 @@ const NavView = [
   }
 ];
 const Users = [];
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 43; i++) {
   Users.push(Mock.mock({
     id: Mock.Random.guid(),
     name: Mock.Random.cname(),

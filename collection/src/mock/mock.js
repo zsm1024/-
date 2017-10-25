@@ -28,7 +28,6 @@ export default {
 
     //获取用户列表
     mock.onGet('/user/list').reply(config => {
-       console.log(config);
        //config.params放的是用户输入的name,params是user.vue中传递的
       let {name} = config.params;
       let mockUsers = _Users.filter(user => {
@@ -53,7 +52,8 @@ export default {
         return true;
       });
       let total = mockUsers.length;
-      mockUsers = mockUsers.filter((u, index) => index < 10 * page && index >= 10 * (page - 1));
+      console.log(total)
+      mockUsers = mockUsers.filter((u, index) => index < total/10 * page && index >= 15 * (page - 1));
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {

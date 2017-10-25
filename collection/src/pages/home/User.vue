@@ -59,7 +59,7 @@
         
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="sizes,prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="10" :total="total" style="float:right;">
+			<el-pagination layout="sizes,prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size=" 10" :current-page="1"  :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
     </section>
@@ -88,11 +88,11 @@
 		},
 		methods: {
 			handleCurrentChange(val) {
-				this.page = val;
+                this.page = val;
 				this.getUsers();
             },
             handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        // console.log(`每页 ${val} 条`);
       },
 			//获取用户列表
 			getUsers() {
@@ -103,7 +103,6 @@
 				this.listLoading = true;
 				//NProgress.start();
 				getUserListPage(para).then((res) => {
-                    console.log(res);
 					this.total = res.data.total;
 					this.users = res.data.users;
 					this.listLoading = false;
