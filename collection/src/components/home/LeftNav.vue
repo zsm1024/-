@@ -6,7 +6,6 @@
     </div>
     <el-menu theme="dark"  :uniqueOpened='true' @select="addTab"  >
       <el-submenu :index="item.title" v-for="item in items" :key="item.id">
-
         <template slot="title">{{item.title}}</template>
         <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path">{{a.title}}</el-menu-item>
       </el-submenu>
@@ -15,30 +14,28 @@
   
 </template>
 <script>
-import { mapMutations } from 'vuex'
-import { nav_view } from '../../api/api';
+import { mapMutations } from "vuex";
+import { nav_view } from "../../api/api";
 export default {
-  data(){
-    return{
-      items:[],
+  data() {
+    return {
+      items: []
+    };
+  },
+  name: "LeftNav",
+  methods: {
+    ...mapMutations("navTabs", ["addTab"]),
+    getlist() {
+      nav_view().then(res => {
+        let data = res.data.msg;
+        this.items = data;
+      });
     }
   },
-  name: 'LeftNav',
-  methods: {
-    ...mapMutations('navTabs', [
-      'addTab'
-    ]),
-      getlist(){
-               nav_view().then((res)=>{
-                   let data=res.data.msg;
-                   this.items=data;                 
-               }) 
-        }
-  },
-  mounted(){
-    this.getlist()
+  mounted() {
+    this.getlist();
   }
-}
+};
 </script>
 <style scoped>
 .logo {
