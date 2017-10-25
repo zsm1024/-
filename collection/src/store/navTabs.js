@@ -52,14 +52,14 @@ const mutations = {
     },
     closeTab(state, name) {
 
-        let tab = state.tabList.filter(f => f.label == name)[0];
+        let tab = state.tabList.filter(f => f.name == name)[0];
         let index = state.tabList.indexOf(tab);
         if (index != state.tabList.length - 1) {
-            state.activeTabName = state.tabList[index + 1].label;
+            state.activeTabName = state.tabList[index + 1].name;
         } else {
-            state.activeTabName = state.tabList[index - 1].label;
+            state.activeTabName = state.tabList[index - 1].name;
         }
-        state.tabList = state.tabList.filter(f => f.label != name);
+        state.tabList = state.tabList.filter(f => f.name != name);
     }
 }
 
