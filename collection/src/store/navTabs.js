@@ -40,7 +40,7 @@ const mutations = {
                 let component = resolve => require([`../pages/${index}`], resolve)
                 state.tabList.push({
                     label: name,
-                    name: name,
+                    name: index,
                     disabled: false,
                     closable: true,
                     component: component  
