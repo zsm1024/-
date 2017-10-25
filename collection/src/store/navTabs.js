@@ -15,6 +15,7 @@ const state = {
         }
     ]
 }
+
 const mutations = {
     setActiveTabName(state, name) {
         state.activeTabName = name;
@@ -43,7 +44,7 @@ const mutations = {
                     name: index,
                     disabled: false,
                     closable: true,
-                    component: component  
+                    component: component
                 })
             }
             state.activeTabName = index;
