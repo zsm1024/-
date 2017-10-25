@@ -16,17 +16,7 @@
         
       </el-submenu>
 
-    <el-menu theme="dark" @select="addTab">
-      <el-submenu index="manager">
-        <template slot="title">导航一</template>
-        <el-menu-item index="home/User">用户管理</el-menu-item>
-        
-      </el-submenu>
-       <el-submenu index="manager1">
-        <template slot="title">导航一111</template>
-        <el-menu-item index="home/User1">用户管理</el-menu-item>
-        
-      </el-submenu>
+   
     </el-menu>
   </div>
 </template>

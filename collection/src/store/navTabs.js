@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import { ceshi } from '../api/api';
 
 const Home = resolve => require(['../pages/home/Home'], resolve)
 
@@ -20,17 +21,29 @@ const mutations = {
         state.activeTabName = name;
     },
     addTab(state, index) {
-        if (state.tabList.filter(f => f.name == index) == 0) {
-            let component = resolve => require([`../pages/${index}`], resolve)
-            state.tabList.push({
-                label: index,
-                name: index,
-                disabled: false,
-                closable: true,
-                component: component
-            })
-        }
-        state.activeTabName = index;
+        
+        ceshi().then((res)=>{
+            let data=res.data.msg;
+                
+            
+            for(var i=0;i<data.length;i++){
+               if( data[i].index == index){
+                    name =  data[i].name;
+               }
+            }
+            
+            if (state.tabList.filter(f => f.name == index) == 0) {
+                let component = resolve => require([`../pages/${index}`], resolve)
+                state.tabList.push({
+                    label: name,
+                    name: index,
+                    disabled: false,
+                    closable: true,
+                    component: component
+                })
+            }
+            state.activeTabName = index;
+        }) 
     },
     closeTab(state, name) {
         let tab = state.tabList.filter(f => f.name == name)[0];
