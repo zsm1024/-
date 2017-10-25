@@ -3,6 +3,7 @@ const NavView = [
   {
     id: 1,
     title: '催收管理',
+    path:'manager3',
     list:[
       {id:1-1,path:"home/User",title:"前期电催队列(2-5天)"},
       {id:1-2,path:"home/User1",title:"前期电催队列(6-30天)"}
@@ -11,6 +12,7 @@ const NavView = [
   {
     id: 2,
     title: '作业监控',
+    path:'manager4',
     list:[
       {id:1-3,path:"home/User2",title:"1111"},
       {id:1-4,path:"home/User3",title:"123123123(6-30天)"}
