@@ -1,6 +1,6 @@
 <template>
     <div>
-       123sdfsdf
+       123
     </div>
 </template>
 <script>
