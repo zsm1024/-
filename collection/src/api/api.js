@@ -16,4 +16,4 @@ export const editUser = params => { return axios.get(`${base}/user/edit`, { para
 
 export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };
 
-export const ceshi = params => { return axios.get(`${base}/ceshi`, { params: params }); };
+export const nav_view = params => { return axios.get(`${base}/nav_view`, { params: params }); };

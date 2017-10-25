@@ -8,13 +8,18 @@ const LoginUsers = [
     name: '张某某'
   }
 ];
-const ceshi = [
+const NavView = [
   {
     id: 1,
-    username: 'admin',
-    password: '123456',
-    avatar: 'https://raw.githubusercontent.com/taylorchen709/markdown-images/master/vueadmin/user.png',
-    name: '张某某'
+    title: '催收管理',
+    list:[
+      {id:1-1,path:"home/User",title:"前期电催队列(2-5天)"},
+      {id:1-2,path:"home/User1",title:"前期电催队列(6-30天)"}
+    ]
+  },
+  {
+    id: 2,
+    title: '作业监控'
   }
 ];
 const Users = [];
@@ -30,5 +35,5 @@ for (let i = 0; i < 86; i++) {
   }));
 }
 
-export { LoginUsers, Users, ceshi };
+export { LoginUsers, Users, NavView };
 ////通过向大括号中添加LoginUsers, Users ，变量并且export输出，就可以将对应变量值以LoginUsers, Users 变量标识符形式暴露给其他文件而被读取到

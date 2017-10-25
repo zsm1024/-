@@ -19,16 +19,17 @@ const mutations = {
     setActiveTabName(state, name) {
         state.activeTabName = name;
     },
-    addTab(state, index) {
+    addTab(state, index,name) {
         if (state.tabList.filter(f => f.name == index) == 0) {
             let component = resolve => require([`../pages/${index}`], resolve)
             state.tabList.push({
                 label: index,
-                name: index,
+                name:index,
                 disabled: false,
                 closable: true,
                 component: component
-            })
+            });
+            console.log(state.tabList)
         }
         state.activeTabName = index;
     },
