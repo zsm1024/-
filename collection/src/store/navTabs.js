@@ -15,7 +15,6 @@ const state = {
         }
     ]
 }
-
 const mutations = {
     setActiveTabName(state, name) {
         state.activeTabName = name;
@@ -44,10 +43,10 @@ const mutations = {
                 let component = resolve => require([`../pages/${index}`], resolve)
                 state.tabList.push({
                     label: name,
-                    name: index,
+                    name: name,
                     disabled: false,
                     closable: true,
-                    component: component
+                    component: component  
                 })
             }
             state.activeTabName = index;

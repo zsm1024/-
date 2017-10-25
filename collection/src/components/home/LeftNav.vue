@@ -4,9 +4,8 @@
       <i class="el-icon-menu"></i>
       <a>后台管理系统</a>
     </div>
-
-    <el-menu theme="dark" v-for="item in items" :key="item.id" @select="addTab">
-      <el-submenu index="manager">
+    <el-menu theme="dark" @select="addTab">
+      <el-submenu index="manager" v-for="item in items" :key="item.id">
         <template slot="title">{{item.title}}</template>
         <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path">{{a.title}}</el-menu-item>
       </el-submenu>
