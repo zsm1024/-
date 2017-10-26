@@ -11,15 +11,8 @@ export default {
 </script>
 
 <style>
-@import url('assets/common.css');
-@import url("assets/Font-Awesome-master/css/font-awesome.min.css");
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  height: 100%;
-  width: 100%;
-}
+@import url('assets/style/reset.css');
+@import url('assets/style/common.css');
+
+
 </style>

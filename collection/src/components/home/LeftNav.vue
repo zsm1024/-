@@ -46,7 +46,9 @@ export default {
   height: 3.5rem;
   border-bottom: solid 0.01rem #48576a;
 }
-
+.logo a{
+  color:#fff
+}
 i {
   margin-right: 0.5rem;
 }
