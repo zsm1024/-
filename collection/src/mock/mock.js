@@ -46,19 +46,20 @@ export default {
     //获取用户列表（分页）
     mock.onGet('/user/listpage').reply(config => {
 
-      let {page, name} = config.params;
+      let {page, name,val} = config.params;
       let mockUsers = _Users.filter(user => {
         if (name && user.name.indexOf(name) == -1) return false;
         return true;
       });
       let total = mockUsers.length;
       console.log(total)
-      mockUsers = mockUsers.filter((u, index) => index < total/10 * page && index >= 15 * (page - 1));
+      mockUsers = mockUsers.filter((item, index) => index < val * page && index >= val * (page - 1));
+      console.log(mockUsers)
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
             total: total,
-            users: mockUsers
+            users: mockUsers,
           }]);
         }, 1000);
       });
