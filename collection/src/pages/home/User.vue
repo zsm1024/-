@@ -2,11 +2,14 @@
     <section>
         <el-col  :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
-				<!-- <el-form-item>
+				<el-form-item>
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
-				</el-form-item> -->
+				</el-form-item>
+				<el-form-item>
+					<el-input v-model="filters.Cnum" placeholder="合同号"></el-input>
+				</el-form-item>
                 <el-form-item>
-					<el-select v-model="formInline.region" placeholder="请选择">
+					<el-select v-model="formInline.region" placeholder="请选择" @change="handleOptionChange">
                     <el-option label="合同号" value="合同号"></el-option>
                     <el-option label="派单时间" value="派单时间"></el-option>
                     <el-option label="当事人"  value="当事人间"></el-option>
@@ -76,7 +79,6 @@
 
 	//import NProgress from 'nprogress'
 	import { getUserListPage} from '../../api/api';
-
 	export default {
 		data() {
 			return {
@@ -84,14 +86,33 @@
                     user:"",
                     region:""
                 },
-				filters: {
-					name: ''
+				filters: {					
+					name: '',
+					Cnum:"",
+					Occupation:"",
+					days:"",
+					past_due:"",
+					Loan_Product:"",
+					Loan_Car:"",
+					Special_Date:"",
+					Region:"",
+					Provice:"",
+					City:"",
+					M_Code:"",
+					M_Time:"",
+					Loan_Amount:"",
+					No_Principal:"",
+					Post_Time:"",
+					Wrte_State:"",
+					Receive_Statl:""
+
 				},
 				users: [],
 				total: 0,
 				page: 1,
 				pagesize:10,
 				currentPage:1,
+				SelectOption:"",
 				listLoading: true,
 				sels: [],//列表选中列
 				tpageSize:20
@@ -111,15 +132,21 @@
             handleSizeChange(val) {
 			this.pagesize = val  
 			this.getUsers();     
+			},
+			handleOptionChange(val) {
+				 this.SelectOption=val;
+				 this.getUsers();
             },
 			//获取用户列表
 			getUsers() {
 				let para = {
 					page: this.page,
 					name: this.filters.name,
-					val:this.pagesize
-                };
-                console.log(para)
+					val:this.pagesize,
+					SelectOption:this.SelectOption
+
+				};
+				console.log(para)
 				 this.listLoading = true;
 				//NProgress.start();
 				getUserListPage(para).then((res) => {
