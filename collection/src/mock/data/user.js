@@ -12,10 +12,11 @@ const NavView = [
   {
     id: 2,
     title: '作业监控',
-    path:'manager4',
+    path:'monitor',
     list:[
-      {id:1-3,path:"home/User2",title:"1111"},
-      {id:1-4,path:"home/User3",title:"123123123(6-30天)"}
+      {id:2-1,path:"monitor/supervisor",title:"主管任务监控"},
+      {id:2-2,path:"monitor/timedistribution",title:"任务实时分布监控"},
+      {id:2-3,path:"monitor/collecthistory",title:"催收历史监控"}
     ]
   }
 ];
