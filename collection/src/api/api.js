@@ -6,7 +6,9 @@ export const requestLogin = params => { return axios.post(`${base}/login`, param
 
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
 
-export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
+export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); }; 
+
+export const getUserListPage1 = params => { return axios.get(`${base}/user1/listpage`, { params: params }); };
 
 export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };
 

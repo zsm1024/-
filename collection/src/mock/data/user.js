@@ -19,6 +19,7 @@ const NavView = [
     ]
   }
 ];
+//2-5天电催队列
 const Users = [
   {      	
     "id": 1,
@@ -391,6 +392,9 @@ const Users = [
             "Receive_State":"未收车" 
             }    	
 ];
+
+
+
 // for (let i = 0; i < 43; i++) {
 //   Users.push(Mock.mock({
 //     id: Mock.Random.guid(),

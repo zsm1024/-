@@ -2,9 +2,10 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
 import { LoginUsers, Users,NavView } from './data/user';
+import { Users1 } from './data/user1';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = Users;
-
+let _Users1 = _Users1;
 export default {
   /**
    * mock bootstrap
@@ -65,7 +66,27 @@ export default {
       });
     });
 
-    
+     //获取用户列表（分页）
+     mock.onGet('/user1/listpage').reply(config => {
+      
+            let {page, name,val} = config.params;
+            let mockUsers = _Users1.filter(user => {
+              if (name && user.name.indexOf(name) == -1) return false;
+              return true;
+            });
+            let total = mockUsers.length;
+            console.log(total)
+            mockUsers = mockUsers.filter((item, index) => index < val * page && index >= val * (page - 1));
+            console.log(mockUsers)
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                resolve([200, {
+                  total: total,
+                  users: mockUsers,
+                }]);
+              }, 1000);
+            });
+          });
 
   }
 };
