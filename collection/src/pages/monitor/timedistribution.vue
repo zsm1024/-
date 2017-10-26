@@ -16,10 +16,14 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="station" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="station" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			
+			<el-table-column label="操作" width="150" >
+				<template >
+					
+				</template>
+			</el-table-column>
 			<el-table-column prop="queuename" label="队列名称" width="180" >
 			</el-table-column>
 			<el-table-column prop="stationname" label="岗位名称" width="180" >
@@ -34,11 +38,7 @@
 			</el-table-column>
             <el-table-column prop="isnodispose" label="未处理" width="100" sortable>
 			</el-table-column>
-			<el-table-column label="操作" width="150">
-				<template >
-					
-				</template>
-			</el-table-column>
+			
 		</el-table>
 
 		<!--工具条-->
