@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
 import { Users1 } from './data/user1';
 import { LoginUsers, Users } from './data/user';
-import { station, userstation } from './data/monitor';
+import { station, userstation, supervisor,history } from './data/monitor';
 import { NavView } from './data/navview';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = Users;
@@ -49,7 +49,46 @@ export default {
         }, 1000);
       });
     });
-
+    mock.onGet('/gethistory').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      let mockusupervisor = history.filter(user => {
+        
+        if (name && user.username.indexOf(name) == -1) return false;
+        return true;
+      });
+      
+      let total = history.length;
+      mockusupervisor = mockusupervisor.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            history: mockusupervisor
+          }]);
+        }, 1000);
+      });
+    });
+    mock.onGet('/getsupervisor').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      let mockusupervisor = supervisor.filter(user => {
+        
+        if (name && user.username.indexOf(name) == -1) return false;
+        return true;
+      });
+      
+      let total = supervisor.length;
+      mockusupervisor = mockusupervisor.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            supervisor: mockusupervisor
+          }]);
+        }, 1000);
+      });
+    });
     mock.onGet('/userstation').reply(config => {
       
       let {page, name, pagesize} = config.params;
