@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { nav_view } from '../api/api';
+import { nav_view } from '@/api/api';
 
 const Home = resolve => require(['../pages/home/Home'], resolve)
 
@@ -37,7 +37,7 @@ const mutations = {
             }
             
             if (state.tabList.filter(f => f.name == index) == 0) {
-                let component = resolve => require([`../pages/${index}`], resolve)
+                let component = resolve => require([`@/pages/${index}`], resolve)
                 state.tabList.push({
                     label: name,
                     name: index,
