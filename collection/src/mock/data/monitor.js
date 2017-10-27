@@ -35,5 +35,20 @@ for (let i = 0; i < 43; i++) {
   }));
 }
 
+const supervisor = [];
+
+
+for (let i = 0; i < 43; i++) {
+    userstation.push(Mock.mock({
+        id: Mock.Random.guid(),
+        username: Mock.Random.cname(),
+        num: Mock.Random.integer(0,100),
+        'overduerec|10000-90000.1-2': 1,
+        'surplustotalmoney|10000-90000.1-2': 1,
+        isdispose: Mock.Random.integer(0,10 ),
+        isnodispose: Mock.Random.integer(0,100 )
+  }));
+}
+
 
 export { station,userstation };
