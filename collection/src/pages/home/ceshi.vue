@@ -1,28 +1,22 @@
 <template>
     <div>
-       123sdfsdf345345
+       {{id}}
     </div>
 </template>
 <script>
 // import { ceshi } from '../../api/api';
-// export default {
-//     data(){
-//         return{
-//            items:[] 
-//         }
+export default {
+    data(){
+        return{
+           id:this.$store.state.navTabs.tabId 
+        }
         
-//     },   
-//     methods:{
-//         getCeshi(){
-//                ceshi().then((res)=>{
-//                    let data=res.data.msg;
-//                    this.items=data;
-//                    console.log(this.items)
-//                }) 
-//         }
-//     },
-//     mounted() {
-// 			this.getCeshi();
-// 		}
-// }
+    },
+    toggle(){
+        console.log(1);
+    },
+ 
+
+   
+}
 </script>
