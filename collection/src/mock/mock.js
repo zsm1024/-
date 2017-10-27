@@ -7,7 +7,7 @@ import { station, userstation } from './data/monitor';
 import { NavView } from './data/navview';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = Users;
-let _Users1 = _Users1;
+let _Users1 = Users1;
 export default {
   /**
    * mock bootstrap
@@ -68,22 +68,22 @@ export default {
         msg:  NavView
       });
 
-    //获取用户列表
-    mock.onGet('/user/list').reply(config => {
-       //config.params放的是用户输入的name,params是user.vue中传递的
-      let {name} = config.params;
-      let mockUsers = _Users.filter(user => {
-        if (name && user.name.indexOf(name) == -1) return false;
-        return true;
-      });
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve([200, {
-            users: mockUsers
-          }]);
-        }, 1000);
-      });
-    });
+    // //获取用户列表
+    // mock.onGet('/user/list').reply(config => {
+    //    //config.params放的是用户输入的name,params是user.vue中传递的
+    //   let {name} = config.params;
+    //   let mockUsers = _Users.filter(user => {
+    //     if (name && user.name.indexOf(name) == -1) return false;
+    //     return true;
+    //   });
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       resolve([200, {
+    //         users: mockUsers
+    //       }]);
+    //     }, 1000);
+    //   });
+    // });
 
     //获取用户列表（分页）
     mock.onGet('/user/listpage').reply(config => {
@@ -111,6 +111,7 @@ export default {
      mock.onGet('/user1/listpage').reply(config => {
       
             let {page, name,val} = config.params;
+            console.log(_Users1)
             let mockUsers = _Users1.filter(user => {
               if (name && user.name.indexOf(name) == -1) return false;
               return true;
