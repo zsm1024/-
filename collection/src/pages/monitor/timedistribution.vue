@@ -21,7 +21,7 @@
 			</el-table-column>
 			<el-table-column label="操作" width="150" >
 				<template  scope="scope">
-					<el-button type="text" size="small" @click="addTab()"  >处理</el-button>
+					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >处理</el-button>
 				</template>
 			</el-table-column>
 			<el-table-column prop="queuename" label="队列名称" width="180" >
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-	import { state } from "vuex";
+	
 	//import NProgress from 'nprogress'
 	import { station } from '../../api/api';
 
@@ -76,21 +76,23 @@
 			}
 		},
 		methods: {
-			addTab(){
-				var index = "ceshi";
-				if (this.$store.state.navTabs.tabList.filter(f => f.name == index) == 0) {
-				 this.$store.state.navTabs.activeTabName = "ceshi";
-				 let component = resolve => require([`@/pages/home/${index}`], resolve)
+			addTab(index,row){
 				
-				
-				this.$store.state.navTabs.tabList.push({
-                    label: '主页',
-					name: index,
-					disabled: false,
-					closable: true,
-					component: component
-                })
+				var indexlink = "ceshi";
+				this.$store.state.navTabs.tabId=row.id;
+				this.$store.state.navTabs.activeTabName = "ceshi";
+				let component = resolve => require([`@/pages/home/${indexlink}`], resolve)
+				if (this.$store.state.navTabs.tabList.filter(f => f.name == indexlink) != 0) {
+					this.$store.state.navTabs.tabList = this.$store.state.navTabs.tabList.filter(f => f.name != indexlink);
 				}
+				this.$store.state.navTabs.tabList.push({
+						label: '主页',
+						name: indexlink,
+						disabled: false,
+						closable: true,
+						component: component
+					})
+
 			},
 			handleCurrentChange(val) {
 				this.page = val;

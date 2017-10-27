@@ -12,7 +12,7 @@ const station = [
         isnodispose:65
     },
     {
-        id: 1,
+        id: 2,
         queuename: '后期电催队列（2-10）天',
         stationname: '后期电催岗（2-5）天',
         num: 75,
