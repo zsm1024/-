@@ -16,7 +16,7 @@
                     </el-select>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="getUsers" >查询</el-button>
 				</el-form-item>				
 			</el-form>  
         </el-col>  
@@ -24,7 +24,7 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading"  style="width: 100%;">
 			<el-table-column label="操作" width="80" fixed="left">
 				<template scope="scope">
-					<el-button type="text" size="small">处理</el-button>
+					<el-button type="text" size="small" @click="DealFile">处理</el-button>
 				</template>
 			</el-table-column>
 			<el-table-column type="index" width="60" sortable >
@@ -155,6 +155,22 @@
 					this.listLoading = false;
 					//NProgress.done();
 				});
+			},
+			DealFile(){
+				var index = "tabView";
+				if (this.$store.state.navTabs.tabList.filter(f => f.name == index) == 0) {
+				 this.$store.state.navTabs.activeTabName = "tabView";
+				 let component = resolve => require([`@/pages/home/${index}`], resolve)
+				
+				
+				this.$store.state.navTabs.tabList.push({
+                    label: '处理详情页',
+					name: index,
+					disabled: false,
+					closable: true,
+					component: component
+                })
+				}
 			}		
 		},
 		mounted() {
