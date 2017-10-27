@@ -15,6 +15,22 @@ export default {
   bootstrap() {
     let mock = new MockAdapter(axios);
 
+
+    mock.onGet('/getstation').reply(config => {
+      let {id} = config.params;
+     
+      return new Promise((resolve, reject) => {
+        
+          resolve([200, {
+            ceshi1:station,
+            ceshi2: "789",
+            station: '123'
+          }]);
+      
+      });
+ 
+    })
+
     mock.onGet('/station').reply(config => {
       
       let {page, name} = config.params;

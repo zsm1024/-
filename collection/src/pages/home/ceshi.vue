@@ -1,22 +1,40 @@
 <template>
     <div>
-       {{id}}
+       {{id}}{{datatitle}}
     </div>
 </template>
 <script>
-// import { ceshi } from '../../api/api';
+import { getstation} from '../../api/api';
 export default {
     data(){
         return{
-           id:this.$store.state.navTabs.tabId 
+           id:this.$store.state.navTabs.tabId ,
+
+           datatitle:''
         }
         
     },
-    toggle(){
-        console.log(1);
-    },
- 
-
    
+ 
+		methods: {
+
+			//获取用户列表
+			getUsers() {
+				let para = {
+					id:this.$store.state.navTabs.tabId 
+			
+				};
+				
+				//NProgress.start();
+				getstation(para).then((res) => {
+					this.datatitle = res.data.station;
+					
+				});
+			}		
+		},
+		mounted() {
+			this.getUsers();
+	
+		}
 }
 </script>
