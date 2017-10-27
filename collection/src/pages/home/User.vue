@@ -24,7 +24,7 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading"  style="width: 100%;">
 			<el-table-column label="操作" width="80" fixed="left">
 				<template scope="scope">
-					<el-button type="text" size="small" @click="DealFile">处理</el-button>
+					<el-button type="text" size="small" @click="DealFile(scope.$index, scope.row)">处理</el-button>
 				</template>
 			</el-table-column>
 			<el-table-column type="index" width="60" sortable >
@@ -146,7 +146,6 @@
 					SelectOption:this.SelectOption
 
 				};
-				console.log(para)
 				 this.listLoading = true;
 				//NProgress.start();
 				getUserListPage(para).then((res) => {
@@ -156,21 +155,22 @@
 					//NProgress.done();
 				});
 			},
-			DealFile(){
-				var index = "tabView";
-				if (this.$store.state.navTabs.tabList.filter(f => f.name == index) == 0) {
-				 this.$store.state.navTabs.activeTabName = "tabView";
-				 let component = resolve => require([`@/pages/home/${index}`], resolve)
-				
-				
+			DealFile(index,row){
+				var indexlink = "tabView";
+				this.$store.state.navTabs.tabId=row.id;
+				this.$store.state.navTabs.activeTabName = "tabView";
+				let component = resolve => require([`@/pages/home/${indexlink}`], resolve)
+				if (this.$store.state.navTabs.tabList.filter(f => f.name == indexlink) != 0) {
+					this.$store.state.navTabs.tabList = this.$store.state.navTabs.tabList.filter(f => f.name != indexlink);
+				}
 				this.$store.state.navTabs.tabList.push({
                     label: '处理详情页',
-					name: index,
+					name: indexlink,
 					disabled: false,
 					closable: true,
 					component: component
                 })
-				}
+
 			}		
 		},
 		mounted() {

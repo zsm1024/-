@@ -1,8 +1,13 @@
 <template>
-  <div>123123</div>
+  <div>{{id}}</div>
 </template>
 <script>
 export default {
+  data(){
+     return{
+           id:this.$store.state.navTabs.tabId 
+        }
+  }
   
 }
 </script>
