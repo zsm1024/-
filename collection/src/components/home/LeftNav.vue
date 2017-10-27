@@ -6,8 +6,8 @@
     </div>
     <el-menu theme="dark"  :uniqueOpened='true' @select="addTab"  >
       <el-submenu :index="item.title" v-for="item in items" :key="item.id">
-        <template slot="title">{{item.title}}</template>
-        <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path">{{a.title}}</el-menu-item>
+        <template slot="title"> <i class=""></i>{{item.title}}</template>
+        <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>

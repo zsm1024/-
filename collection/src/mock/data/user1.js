@@ -1,9 +1,9 @@
 import Mock from 'mockjs';
-const Users1 = [
+const Users = [
   {      	
     "id": 1,
     "statue":"处理",
-    "name": "asd4546",       
+    "name": "asd",       
     "": "15223810923",
     "path":"index2",
     "Cnum":"GW0015",
@@ -27,7 +27,7 @@ const Users1 = [
   {
 "id": 2,
 "statue":"处理",
-"name": "fghjhhj",       
+"name": "fgh",       
 "": "15223810923",
 "path":"index2",
 "Cnum":"GW0015",
@@ -385,5 +385,5 @@ const Users1 = [
 //   }));
 // }
 // console.log(Users)
-export {  Users1 };
+export { LoginUsers, Users };
 ////通过向大括号中添加LoginUsers, Users ，变量并且export输出，就可以将对应变量值以LoginUsers, Users 变量标识符形式暴露给其他文件而被读取到

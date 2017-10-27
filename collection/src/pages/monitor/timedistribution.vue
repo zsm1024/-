@@ -16,10 +16,14 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="station" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="station" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			
+			<el-table-column label="操作" width="150" >
+				<template  scope="scope">
+					<el-button type="text" size="small" @click="addTab()"  >处理</el-button>
+				</template>
+			</el-table-column>
 			<el-table-column prop="queuename" label="队列名称" width="180" >
 			</el-table-column>
 			<el-table-column prop="stationname" label="岗位名称" width="180" >
@@ -34,11 +38,7 @@
 			</el-table-column>
             <el-table-column prop="isnodispose" label="未处理" width="100" sortable>
 			</el-table-column>
-			<el-table-column label="操作" width="150">
-				<template >
-					
-				</template>
-			</el-table-column>
+			
 		</el-table>
 
 		<!--工具条-->
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-
+	import { state } from "vuex";
 	//import NProgress from 'nprogress'
 	import { station } from '../../api/api';
 
@@ -76,7 +76,22 @@
 			}
 		},
 		methods: {
-			
+			addTab(){
+				var index = "ceshi";
+				if (this.$store.state.navTabs.tabList.filter(f => f.name == index) == 0) {
+				 this.$store.state.navTabs.activeTabName = "ceshi";
+				 let component = resolve => require([`@/pages/home/${index}`], resolve)
+				
+				
+				this.$store.state.navTabs.tabList.push({
+                    label: '主页',
+					name: index,
+					disabled: false,
+					closable: true,
+					component: component
+                })
+				}
+			},
 			handleCurrentChange(val) {
 				this.page = val;
 				this.getStations();

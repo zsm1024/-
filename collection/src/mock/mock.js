@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
 import { Users1 } from './data/user1';
 import { LoginUsers, Users } from './data/user';
-import { station } from './data/monitor';
+import { station, userstation } from './data/monitor';
 import { NavView } from './data/navview';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = Users;
@@ -18,8 +18,8 @@ export default {
     mock.onGet('/station').reply(config => {
       
       let {page, name} = config.params;
-      let mockstation = station.filter(user => {
-        if (name && station.queuename.indexOf(name) == -1) return false;
+      let mockstation = station.filter(stationsearch => {
+        if (name && stationsearch.queuename.indexOf(name) == -1) return false;
         return true;
       });
       let total = station.length;
@@ -29,6 +29,27 @@ export default {
           resolve([200, {
             total: total,
             station: mockstation
+          }]);
+        }, 1000);
+      });
+    });
+
+    mock.onGet('/userstation').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      let mockuserstation = userstation.filter(user => {
+        
+        if (name && user.username.indexOf(name) == -1) return false;
+        return true;
+      });
+      
+      let total = userstation.length;
+      mockuserstation = mockuserstation.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            userstation: mockuserstation
           }]);
         }, 1000);
       });

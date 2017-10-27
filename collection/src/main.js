@@ -8,6 +8,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import store from './store'
 import Mock from './mock'
+import 'font-awesome/css/font-awesome.min.css'
+
 Mock.bootstrap();
 
 
