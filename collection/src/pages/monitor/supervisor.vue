@@ -3,15 +3,43 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item>
-					<el-input v-model="filters.name" placeholder="用户名称"></el-input>
+      
+        <el-form-item>
+					<el-input v-model="filters.job" placeholder="岗位"></el-input>
 				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.queue" placeholder="任务队列"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.name" placeholder="用户"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.day" placeholder="逾期天数"></el-input>
+				</el-form-item>
+        <el-form-item>
+					<el-input v-model="filters.money" placeholder="剩余金额"></el-input>
+				</el-form-item>
+        <el-form-item>
+        <el-select v-model="filters.province" placeholder="请选择省份">
+          <el-option value="河北省" label="河北省">
+            
+          </el-option>
+        </el-select>
+        <el-select v-model="filters.city" placeholder="请选择城市">
+          <el-option value="保定市" label="保定市">
+            
+          </el-option>
+        </el-select>
+        <el-select v-model="filters.area" placeholder="请选择区域">
+          <el-option value="南市区" label="南市区">
+            
+          </el-option>
+        </el-select>
+        </el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="getlists" >查询</el-button> 
 				</el-form-item>
-				<el-form-item>
-				
-				</el-form-item>
+			
 			</el-form>
 		</el-col>
 
@@ -49,7 +77,14 @@ export default {
   data() {
     return {
       filters: {
-        name: ""
+        job:"",
+        queue: "",
+        name: "",
+        day: "",
+        money:"",
+        province:"",
+        city:"",
+        area:""
 			},
 			id:this.$store.state.navTabs.tabId ,
 			lists: [],
@@ -80,6 +115,7 @@ export default {
 				id:this.id
       };
       this.listLoading = true;
+      console.log(this.province);
       //NProgress.start();
       getsupervisor(para).then(res => {
         this.total = res.data.total;

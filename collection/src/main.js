@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-default/index.css';
 import store from './store';
 import Mock from './mock';
 
+
 Mock.bootstrap();
 
 
