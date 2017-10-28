@@ -25,16 +25,10 @@ export const station = params => { return axios.get(`${base}/station`, { params:
 export const userstation = params => { return axios.get(`${base}/userstation`, { params: params }); };
 
 export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
-export const getsupervisor = params => { return axios.get(`${base}/getsupervisor`, { params: params }); };<<<<<<< .mine
-export const getstation = params => { return axios.get(`${base}/getstation`, { params: params }); };
 
-export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
-
-
-=======
 export const getstation = params => { return axios.get(`${base}/getstation`, { params: params }); };
 
 export const getsupervisor = params => { return axios.get(`${base}/getsupervisor`, { params: params }); };
 
 export const gethistory = params => { return axios.get(`${base}/gethistory`, { params: params }); };
->>>>>>> .theirs
+
