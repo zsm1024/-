@@ -16,37 +16,12 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="list" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="操作" width="150" >
-				<template >
-					
-				</template>
-			</el-table-column>
 			
-			<el-table-column prop="coldata" label="催收日期" width="180" >
-			</el-table-column>
-			<el-table-column prop="contact" label="联系方式" width="100" >
-			</el-table-column>
-			<el-table-column prop="username" label="联系人" width="200" sortable>
-			</el-table-column>
-            <el-table-column prop="code" label="催收代码" width="200" sortable>
-			</el-table-column>
-
-			<el-table-column prop="colresult" label="催收结果" min-width="200" >
-			</el-table-column>
-            <el-table-column prop="colmark" label="催收备注" width="100" >
-			</el-table-column>
-            <el-table-column prop="menttime" label="约会时间" width="100" >
-			</el-table-column>
-			<el-table-column prop="promisemoney" label="承诺金额" width="100" sortable>
-			</el-table-column>
-            <el-table-column prop="promisedata" label="承诺日期" width="180" >
-			</el-table-column>
-            <el-table-column prop="contract" label="合同号" width="180" >
-			</el-table-column>
-			<el-table-column prop="userid" label="用户ID" width="100" >
+			
+			<el-table-column :prop="col.field" :label="col.title" width="180" v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
      
 		</el-table>
@@ -65,7 +40,7 @@
 
 <script>
 //import NProgress from 'nprogress'
-import { gethistory } from "../../api/api";
+import { gethistory } from "@/api/api";
 
 export default {
   data() {
@@ -73,7 +48,8 @@ export default {
       filters: {
         name: ""
       },
-      list: [],
+      lists: [],
+      cols: [],
       total: 0,
       page: 1,
       pagesize: 20,
@@ -102,8 +78,8 @@ export default {
       //NProgress.start();
       gethistory(para).then(res => {
         this.total = res.data.total;
-
-        this.list = res.data.history;
+        this.lists = res.data.data;
+        this.cols = res.data.cols;
         this.listLoading = false;
         //NProgress.done();
       });

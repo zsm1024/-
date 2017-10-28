@@ -4,7 +4,7 @@ import { nav_view } from '@/api/api';
 const Home = resolve => require(['../pages/home/Home'], resolve)
 
 const state = {
-    tabId: "1",
+    tabId: "",
     activeTabName: "home",
     tabList: [
         {

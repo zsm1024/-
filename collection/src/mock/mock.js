@@ -34,17 +34,20 @@ export default {
     mock.onGet('/station').reply(config => {
       
       let {page, name} = config.params;
-      let mockstation = station.filter(stationsearch => {
+   
+      let mockstation = station[0].data.filter(stationsearch => {
         if (name && stationsearch.queuename.indexOf(name) == -1) return false;
         return true;
       });
-      let total = station.length;
+
+      let total = station[0].data.length;
       mockstation = mockstation.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
             total: total,
-            station: mockstation
+            data: mockstation,
+            cols: station[0].cols
           }]);
         }, 1000);
       });
@@ -52,19 +55,21 @@ export default {
     mock.onGet('/gethistory').reply(config => {
       
       let {page, name, pagesize} = config.params;
-      let mockusupervisor = history.filter(user => {
+      let mockusupervisor = history[0].data.filter(user => {
         
         if (name && user.username.indexOf(name) == -1) return false;
         return true;
       });
       
-      let total = history.length;
+      let total = history[0].data.length;
       mockusupervisor = mockusupervisor.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
             total: total,
-            history: mockusupervisor
+            data: mockusupervisor,
+            cols: history[0].cols
+            
           }]);
         }, 1000);
       });
@@ -72,19 +77,21 @@ export default {
     mock.onGet('/getsupervisor').reply(config => {
       
       let {page, name, pagesize} = config.params;
-      let mockusupervisor = supervisor.filter(user => {
+      let mockusupervisor = supervisor[0].data.filter(user => {
         
         if (name && user.username.indexOf(name) == -1) return false;
         return true;
       });
       
-      let total = supervisor.length;
+      let total = supervisor[0].data.length;
       mockusupervisor = mockusupervisor.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
             total: total,
-            supervisor: mockusupervisor
+            data: mockusupervisor,
+            cols: supervisor[0].cols
+            
           }]);
         }, 1000);
       });
@@ -92,19 +99,20 @@ export default {
     mock.onGet('/userstation').reply(config => {
       
       let {page, name, pagesize} = config.params;
-      let mockuserstation = userstation.filter(user => {
+      let mockuserstation = userstation[0].data.filter(user => {
         
         if (name && user.username.indexOf(name) == -1) return false;
         return true;
       });
       
-      let total = userstation.length;
+      let total = userstation[0].data.length;
       mockuserstation = mockuserstation.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
             total: total,
-            userstation: mockuserstation
+            data: mockuserstation,
+            cols: userstation[0].cols
           }]);
         }, 1000);
       });
