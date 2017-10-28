@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="用户名称"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="getUsestations" >查询</el-button>
+					<el-button type="primary" @click="getlists" >查询</el-button>
 				</el-form-item>
 				<el-form-item>
 				
@@ -16,26 +16,16 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="userstation" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
 			<el-table-column label="操作" width="150" >
-				<template >
-					
+				<template  scope="scope">
+					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
 				</template>
 			</el-table-column>
 			
-			<el-table-column prop="username" label="用户名称" width="180" >
-			</el-table-column>
-			<el-table-column prop="num" label="数量" width="100" sortable>
-			</el-table-column>
-			<el-table-column prop="overduerec" label="逾期应收款总计" width="200" sortable>
-			</el-table-column>
-			<el-table-column prop="surplustotalmoney" label="剩余总金额" min-width="200" sortable>
-			</el-table-column>
-            <el-table-column prop="isdispose" label="已处理" width="100" sortable>
-			</el-table-column>
-            <el-table-column prop="isnodispose" label="未处理" width="100" sortable>
+			<el-table-column :prop="col.field" :label="col.title" width="180" v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 			
 		</el-table>
@@ -55,7 +45,7 @@
 <script>
 
 	//import NProgress from 'nprogress'
-	import { userstation } from '../../api/api';
+	import { userstation } from '@/api/api';
 
 	export default {
 		data() {
@@ -63,7 +53,8 @@
 				filters: {
 					name: ''
 				},
-				userstation: [],
+				lists: [],
+				cols: [],
 				total: 0,
                 page: 1,
                 pagesize:20,
@@ -77,18 +68,36 @@
         },
        
 		methods: {
-            
+            addTab(index,row){
+				
+				var indexlink = "supervisor";
+				var label = "用户任务详情";
+				this.$store.state.navTabs.tabId=row.id;
+				this.$store.state.navTabs.activeTabName = "supervisor";
+				let component = resolve => require([`@/pages/monitor/${indexlink}`], resolve)
+				if (this.$store.state.navTabs.tabList.filter(f => f.name == indexlink) != 0) {
+					this.$store.state.navTabs.tabList = this.$store.state.navTabs.tabList.filter(f => f.name != indexlink);
+				}
+				this.$store.state.navTabs.tabList.push({
+						label:label,
+						name: indexlink,
+						disabled: false,
+						closable: true,
+						component: component
+					})
+
+			},
 			handleSizeChange(val) {
                 
                 this.pagesize = val  
-                this.getUsestations();     
+                this.getlists();     
             },
 			handleCurrentChange(val) {
 				this.page = val;
-				this.getUsestations();
+				this.getlists();
 			},
 			//获取列表
-			getUsestations() {
+			getlists() {
 				let para = {
 					page: this.page,
                     name: this.filters.name,
@@ -99,8 +108,8 @@
 				userstation(para).then((res) => {
                     
                     this.total = res.data.total;
-                   
-					this.userstation = res.data.userstation;
+					this.lists = res.data.data;
+					this.cols = res.data.cols;
 					this.listLoading = false;
 					//NProgress.done();
 				});
@@ -113,7 +122,7 @@
 			
 		},
 		mounted() {
-			this.getUsestations();
+			this.getlists();
 		}
 	}
 
