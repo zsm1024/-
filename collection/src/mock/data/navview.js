@@ -5,8 +5,8 @@ const NavView = [
     title: '催收管理',
     path:'manager3',
     list:[
-      {id:1-1,path:"home/User",title:"前期电催队列(2-5天)"},
-      {id:1-2,path:"home/User1",title:"前期电催队列(6-30天)"}
+      {id:1-1,path:"collmanage/User",title:"前期电催队列(2-5天)"},
+      {id:1-2,path:"collmanage/User1",title:"前期电催队列(6-30天)"}
     ]
   },
   {
