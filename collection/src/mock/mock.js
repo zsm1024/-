@@ -2,12 +2,12 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
 import { Users1 } from './data/user1';
-import { LoginUsers, Users } from './data/user';
+import { LoginUsers, userList } from './data/user';
 import { station, userstation, supervisor,history } from './data/monitor';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
 //同样以LoginUsers, Users 的方式来接收，from的url
-let _Users = Users;
+let _Users = userList[0].data;
 let _Users1 = Users1;
 export default {
   /**
@@ -15,8 +15,6 @@ export default {
    */
   bootstrap() {
     let mock = new MockAdapter(axios);
-
-
 
     mock.onGet('/station').reply(config => {
       
@@ -153,6 +151,7 @@ export default {
           resolve([200, {
             total: total,
             users: mockUsers,
+            cols:userList[0].cols
           }]);
         }, 1000);
       });

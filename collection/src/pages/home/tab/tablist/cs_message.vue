@@ -22,8 +22,7 @@
 					<td>客户姓名</td>
 					<td>{{items.username}}</td>
 					<td>1</td>
-					<td>1</td>
-					
+					<td>1</td>					
 				</tr>
 			</table>
 		</div>

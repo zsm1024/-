@@ -1,6 +1,30 @@
 import Mock from 'mockjs';
-const Users = [
-  {      	
+const userList=[
+	 {
+        cols:[
+            {title:'姓名',field:'name',width:"120"},
+            {title:'合同号',field:'Cnum',width:"120"},
+            {title:'职业',field:'Occupation',width:"120"},
+            {title:'逾期天数',field:'days',width:"120"},
+            {title:'逾期金额',field:'past_due',width:"120"},
+            {title:'贷款产品',field:'Loan_Product',width:"180"},
+            {title:'贷款车型',field:'Loan_Car',width:"180"},
+            {title:'约会日期',field:'Special_Date',width:"120"},
+            {title:'区域',field:'Region',width:"120"},
+            {title:'省份',field:'Provice',width:"120"},
+            {title:'城市',field:'City',width:"120"},
+            {title:'最近行动代码',field:'M_Code',width:"100"},
+            {title:'最近行动时间',field:'M_Time',width:"150"},
+            {title:'贷款金额',field:'Loan_Amount',width:"120"},
+            {title:'未偿本金',field:'No_Principal',width:"120"},
+            {title:'派单时间',field:'Post_Time',width:"150"},
+            {title:'核销状态',field:'check_statues',width:"120"},
+            {title:'收车状态',field:'car_statues',width:"120"},
+
+            
+        ],
+        data:[
+        	{      	
     "id": 1,
     "statue":"处理",
     "name": "asd",       
@@ -370,8 +394,11 @@ const Users = [
             "Wrte_State":"未核销",
             "Receive_State":"未收车" 
             }    	
-];
-
+        
+        ]
+	
+	}
+]
 
 
 // for (let i = 0; i < 43; i++) {
@@ -385,5 +412,5 @@ const Users = [
 //   }));
 // }
 // console.log(Users)
-export { LoginUsers, Users };
+export { LoginUsers, userList };
 ////通过向大括号中添加LoginUsers, Users ，变量并且export输出，就可以将对应变量值以LoginUsers, Users 变量标识符形式暴露给其他文件而被读取到

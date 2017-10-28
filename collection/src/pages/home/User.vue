@@ -29,7 +29,9 @@
 			</el-table-column>
 			<el-table-column type="index" width="60" sortable >
 			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120" sortable>
+			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" >
+			</el-table-column>
+			<!--<el-table-column prop="name" label="姓名" width="120" sortable>
 			</el-table-column>
 			<el-table-column prop="Cnum" label="合同号" width="100"  sortable>
 			</el-table-column>
@@ -64,7 +66,7 @@
             <el-table-column prop="Wrte_State" label="未偿本金" min-width="180" sortable>
 			</el-table-column>
 			<el-table-column prop="Receive_Statl" label="未偿本金" min-width="180" sortable>
-			</el-table-column>
+			</el-table-column>-->
 			
 		</el-table>
         
@@ -108,6 +110,7 @@
 
 				},
 				users: [],
+				cols: [],
 				total: 0,
 				page: 1,
 				pagesize:10,
@@ -151,6 +154,8 @@
 				getUserListPage(para).then((res) => {
 					this.total = res.data.total;
 					this.users = res.data.users;
+					this.cols = res.data.cols;
+					console.log(this.cols)
 					this.listLoading = false;
 					//NProgress.done();
 				});
