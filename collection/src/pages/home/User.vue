@@ -159,7 +159,7 @@
 				var indexlink = "tabView";
 				this.$store.state.navTabs.tabId=row.id;
 				this.$store.state.navTabs.activeTabName = "tabView";
-				let component = resolve => require([`@/pages/home/${indexlink}`], resolve)
+				let component = resolve => require([`@/pages/home/tab/${indexlink}`], resolve)
 				if (this.$store.state.navTabs.tabList.filter(f => f.name == indexlink) != 0) {
 					this.$store.state.navTabs.tabList = this.$store.state.navTabs.tabList.filter(f => f.name != indexlink);
 				}

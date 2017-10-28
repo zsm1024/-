@@ -25,3 +25,5 @@ export const station = params => { return axios.get(`${base}/station`, { params:
 export const userstation = params => { return axios.get(`${base}/userstation`, { params: params }); };
 
 export const getstation = params => { return axios.get(`${base}/getstation`, { params: params }); };
+
+export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };

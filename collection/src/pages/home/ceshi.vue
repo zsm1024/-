@@ -21,8 +21,7 @@ export default {
 			//获取用户列表
 			getUsers() {
 				let para = {
-					id:this.$store.state.navTabs.tabId 
-			
+					id:this.$store.state.navTabs.tabId 			
 				};
 				
 				//NProgress.start();
