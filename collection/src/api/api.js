@@ -22,3 +22,4 @@ export const getstation = params => { return axios.get(`${base}/getstation`, { p
 
 export const gethistory = params => { return axios.get(`${base}/gethistory`, { params: params }); };
 
+export const getdeal = params => { return axios.get(`${base}/deal`, { params: params }); };
