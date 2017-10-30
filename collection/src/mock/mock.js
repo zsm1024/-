@@ -5,7 +5,7 @@ import { Users1 } from './data/user1';
 import { LoginUsers, userList } from './data/user';
 import { station, userstation, supervisor,history } from './data/monitor';
 import { deal } from './data/deal';
-import { plan } from './data/plan';
+import { plan,liushui } from './data/plan';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
 import {TabMessage} from './data/tabMessage'
@@ -70,6 +70,24 @@ export default {
             total: total,
             data: mockplan,
             cols: plan[0].cols
+            
+          }]);
+        }, 1000);
+      });
+    });
+    mock.onGet('/liushui').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      
+      
+      let total = liushui[0].data.length;
+      let mockplan = liushui[0].data.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            data: mockplan,
+            cols: liushui[0].cols
             
           }]);
         }, 1000);

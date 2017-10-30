@@ -1,20 +1,23 @@
 <template>
 	<section>
-		<!--列表-->
-		<el-table :data="lists" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe>
-			
-			
-			<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" >
-			</el-table-column>
-		</el-table>
+	<el-collapse v-model="activeNames" >
+		<el-collapse-item title="还款计划" name="1">
+			<!--列表-->
+			<el-table :data="lists" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe>
+				
+				
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" >
+				</el-table-column>
+			</el-table>
 
-		<!--工具条-->
-		<el-col :span="24" class="toolbar">
-			
-			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"   style="float:right;">
-			</el-pagination>
-		</el-col>
-
+			<!--工具条-->
+			<el-col :span="24" class="toolbar">
+				
+				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"   style="float:right;">
+				</el-pagination>
+			</el-col>
+		</el-collapse-item>
+	</el-collapse>
 	</section>
 </template>
 
@@ -23,6 +26,7 @@ import { getplan } from "@/api/api";
 export default {
 		data() {
 			return {
+				activeNames: ['1'],
 				lists: [],
 				cols: [],
 				total: 0,

@@ -33,3 +33,5 @@ export const tab_message = params => { return axios.get(`${base}/tab_message`, {
 
 //还款计划
 export const getplan = params => { return axios.get(`${base}/plan`, { params: params }); };
+//扣款流水
+export const getliushui = params => { return axios.get(`${base}/liushui`, { params: params }); };
