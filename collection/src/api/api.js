@@ -31,3 +31,5 @@ export const tab_message = params => { return axios.get(`${base}/tab_message`, {
 
 export const getdeal = params => { return axios.get(`${base}/deal`, { params: params }); };
 
+//客户信息
+export const userInfo = params => { return axios.get(`${base}/userinfo`, { params: params }); };

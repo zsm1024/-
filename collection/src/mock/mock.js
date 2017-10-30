@@ -7,7 +7,8 @@ import { station, userstation, supervisor,history } from './data/monitor';
 import { deal } from './data/deal';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
-import {TabMessage} from './data/tabMessage'
+import {TabMessage} from './data/tabMessage';
+import {userInfo} from './data/userInfo';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = userList[0].data;
 let _Users1 = Users1;
@@ -143,8 +144,10 @@ export default {
    	mock.onGet('/tab_message').reply(200, {
         msg:TabMessage
    });
-   
-   
+   //客户信息
+    	mock.onGet('/userinfo').reply(200, {
+        msg:userInfo
+   });
    
     // //获取用户列表
     // mock.onGet('/user/list').reply(config => {
