@@ -3,84 +3,56 @@
 		<el-collapse v-model="activeNames" >
 			<el-collapse-item title="合同详细信息" name="1">
 				<div>
-
-					<el-row :gutter="20">
-							<el-col :span="3"  style="padding:0"><div class="grid-content bg-purple">合同号</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.hth}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">合同状态</div></el-col>
-							<el-col :span="5"><div class="grid-content bg-white" >{{details.htzt}}</div></el-col>
-							<el-col :span="4"><div class="grid-content bg-purple" >贷款产品</div></el-col>
-							<el-col :span="5"><div class="grid-content bg-white" style="height:20px;line-height:20px;font-size:10px">{{details.dkcp}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3"  style="padding:0"><div class="grid-content bg-purple">合同起始日期</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.htqsrq}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">合同终止日期</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.htzzrq}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">合同创建日期</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.htcjrq}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">合同签署日期</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.htqsrq}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">贷款金额</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.dkje}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">贷款期数</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.dkqs}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">首付比例</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.sfbl}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">利率</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.ll}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">贷款余额</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.dkye}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">已偿还本金</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.ychbj}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">剩余本金总额</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.sybjze}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">未到期本金</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.wdqbj}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">到期利息总计</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.dqlxzj}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">罚息</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.fx}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">诉讼费</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.ssf}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">收车费</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.scf}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">未尝催收工本费</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.wccsgbf}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">付款日</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.fkr}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">最近一次还款金额</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.zjychkje}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">最近一次还款日期</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.zjychkrq}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">核销状态</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.hxzt}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">本次逾期天数</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.bcyqts}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">本期逾期天数</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.bqyqts}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">逾期应收款总计</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.yqyskzj}}</div></el-col>
-					</el-row>
-					<el-row :gutter="20" style="border-top:0">
+					<table>	
+						<tr>
+							<td>申请号</td><td>{{details.hth}}</td>
+							<td>合同状态</td><td>{{details.htzt}}</td>
+							<td>贷款产品</td><td colspan="3">{{details.dkcp}}</td>
 							
-							<el-col :span="3"><div class="grid-content bg-purple">省份</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.sf}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-purple">城市</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.cs}}</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white"></div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white"></div></el-col>
-					</el-row>
+							
+						</tr>
+						<tr>
+							<td>合同起始日期</td><td>{{details.htqsrq}}</td>
+							<td>合同终止日期</td><td>{{details.htzzrq}}</td>
+							<td>合同创建日期</td><td>{{details.htcjrq}}</td>
+							<td>合同签署日期</td><td>{{details.htqsrq}}</td>
+						</tr>
+						<tr>
+							<td>贷款金额</td><td>{{details.dkje}}</td>
+							<td>贷款期数</td><td>{{details.dkqs}}</td>
+							<td>首付比例</td><td>{{details.sfbl}}</td>
+							<td>利率</td><td>{{details.ll}}</td>
+						</tr>
+						<tr>
+							<td>贷款余额</td><td>{{details.dkye}}</td>
+							<td>已偿还本金</td><td>{{details.ychbj}}</td>
+							<td>剩余本金总额</td><td>{{details.sybjze}}</td>
+							<td>未到期本金</td><td>{{details.wdqbj}}</td>
+						</tr>
+						<tr>
+							<td>到期利息总计</td><td>{{details.dqlxzj}}</td>
+							<td>罚息</td><td>{{details.fx}}</td>
+							<td>诉讼费</td><td>{{details.ssf}}</td>
+							<td>收车费</td><td>{{details.scf}}</td>
+						</tr>
+						<tr>
+							<td>未尝催收工本费</td><td>{{details.wccsgbf}}</td>
+							<td>付款日</td><td>{{details.fkr}}</td>
+							<td>最近一次还款金额</td><td>{{details.zjychkje}}</td>
+							<td>最近一次还款日期</td><td>{{details.zjychkje}}</td>
+						</tr>
+						<tr>
+							<td>核销状态</td><td>{{details.hxzt}}</td>
+							<td>本次逾期天数</td><td>{{details.bcyqts}}</td>
+							<td>本期逾期天数</td><td>{{details.bqyqts}}</td>
+							<td>逾期应收款总计</td><td>{{details.yqyskzj}}</td>
+						</tr>
+						<tr>
+							<td>省份</td><td>{{details.sf}}</td>
+							<td>城市</td><td colspan="5">{{details.cs}}</td>
+							
+						</tr>
+					</table>
 				</div>
 			
 			</el-collapse-item>
