@@ -44,10 +44,10 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+		<el-table :data="lists"  highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="操作" width="150" >
+			<el-table-column fixed label="操作" width="120" >
 				<template scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >处理</el-button>
 				</template>
@@ -101,7 +101,7 @@ export default {
     addTab(index,row){
 				
 				var indexlink = "tabView";
-				var label = '岗位任务详情';
+				var label = '任务处理详情页';
 				this.$store.state.navTabs.tabId=row.id;
 				this.$store.state.navTabs.activeTabName = "tabView";
 				let component = resolve => require([`@/pages/tab/${indexlink}`], resolve)
