@@ -101,7 +101,7 @@ export default {
     addTab(index,row){
 				
 				var indexlink = "tabView";
-				var label = '任务处理详情页';
+				var label = '处理详情页';
 				this.$store.state.navTabs.tabId=row.id;
 				this.$store.state.navTabs.activeTabName = "tabView";
 				let component = resolve => require([`@/pages/tab/${indexlink}`], resolve)
