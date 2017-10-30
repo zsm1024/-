@@ -65,12 +65,16 @@ export default {
     return {
     	activeNames:["1","2","3","4","5","6"],
      	items: [],
-     	cols:[]
+     	cols:[],
+     	id:this.$store.state.navTabs.tabId,
     };
   },
   methods: {
     getlist() {
-      tab_view().then(res => {
+    	let para = {
+			id: this.id
+		};
+      tab_view(para).then(res => {
         let data = res.data.msg[0]
         this.items = data.data[0];
         this.cols=data.cols;

@@ -1,13 +1,22 @@
 <template>
-	<section>
+	<section class="cslist">
 		<el-collapse v-model="activeNames">
 			<el-collapse-item name="1">
 				<template slot="title" ><span class="titles">催收信息</span></template>					
-				<el-table :data="items" border >
+				<el-table :data="items" border :default-expand-all="true">
+					<el-table-column type="expand">
+						<template slot-scope="items">
+							<el-form  inline class="demo-table-expand BZ">
+         						<el-form-item label="备注：">
+           							 {{ items.row.content_msg }}
+          						</el-form-item>							
+							</el-form>
+						</template>
+					</el-table-column>
 					<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
-					</el-table-column>			
+					</el-table-column>									
 				</el-table>
-				<p class="p_marks"><span>备注:</span><span class="marks">{{marks}}</span></p>					
+								
 			</el-collapse-item>	
 			<el-collapse-item name="2">
 				<template slot="title" ><span class="titles">案件备注</span></template>	
@@ -30,12 +39,16 @@
 			 cols:[],
 			 title:[],
 			 item:[],
-			 marks:""
+			 marks:"",
+			 id:this.$store.state.navTabs.tabId
 			}
 		},
 		methods:{
 			getmessage() {
-     		 	tab_message().then(res => {
+				let para = {
+					id: this.id
+				};
+     		 	tab_message(para).then(res => {
         		let data = res.data.msg[0] 
         		this.marks=res.data.msg[0].content_msg; 
       			this.items = data.data;
@@ -59,4 +72,11 @@
 	.p_marks .marks{
 		margin-left: 10px;
 	}
+	.cslist .el-table__expanded-cell{
+		padding: 0;
+	}
+	.BZ{min-height: 30px;}
+	.cslist .el-form-item{width: 100%;text-align: left;margin: 0;}
+	.cslist .el-form-item label{margin-left: 10px;}
+	.cslist .el-form--inline .el-form-item__content{vertical-align: baseline;}
 </style>

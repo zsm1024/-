@@ -2,7 +2,7 @@
   <div class="left-nav">
     <div class="logo">
       <i class="el-icon-menu"></i>
-      <a>后台管理系统</a>
+      <a>催收管理系统</a>
     </div>
     <el-menu theme="dark"  :uniqueOpened='true' @select="addTab"  >
       <el-submenu :index="item.title" v-for="item in items" :key="item.id">

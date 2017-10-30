@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
-import { Users1 } from './data/user1';
+import { List2 } from './data/user1';
 import { LoginUsers, userList } from './data/user';
 import { station, userstation, supervisor,history } from './data/monitor';
 import { deal } from './data/deal';
@@ -12,7 +12,7 @@ import {TabMessage} from './data/tabMessage';
 import {userInfo} from './data/userInfo';
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = userList[0].data;
-let _Users1 = Users1;
+let _Users1 = List2[0].data;
 export default {
   /**
    * mock bootstrap
@@ -274,11 +274,13 @@ export default {
             });
             let total = mockUsers.length;
             mockUsers = mockUsers.filter((item, index) => index < val * page && index >= val * (page - 1));
+            console.log(mockUsers);
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 resolve([200, {
                   total: total,
                   users: mockUsers,
+                  cols:List2[0].cols
                 }]);
               }, 1000);
             });

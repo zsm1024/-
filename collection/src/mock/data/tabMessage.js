@@ -2,10 +2,10 @@ import Mock from 'mockjs';
 const TabMessage = [
   {
   	  cols:[
-            {title:'序号',field:'Serial_num',width:"90"},
+            {title:'序号',field:'Serial_num',width:"70"},
             {title:'催收日期',field:'Collection_date',width:"190"},
             {title:'联系方式',field:'Contact_info',width:"130"},
-            {title:'联系人',field:'users',width:"160"},
+            {title:'联系人',field:'users',width:"90"},
             {title:'催收代码',field:'collection_code',width:"100"},
             {title:'催收结果',field:'collection_result',width:"100"},
             {title:'催收备注',field:'collection_marks',width:"130"},
@@ -13,7 +13,7 @@ const TabMessage = [
             {title:'承诺金额',field:'amount_commitment',width:"100"},
             {title:'承诺日期',field:'commitment_date',width:"190"},
             {title:'合同号',field:'contract_num',width:"100"},
-            {title:'用户ID',field:'user_id',width:"100"},
+            {title:'用户ID',field:'user_id',width:"100"},          
    
         ],
         data:[
@@ -30,17 +30,34 @@ const TabMessage = [
 	        	'commitment_date':"2014-03-12",
 	        	'contract_num':"CR01240",
 	        	'user_id':"Nick",
+	        	"content_msg":"顾客要求推迟10天还款",
+	        	
+        	}	,
+        	{
+	        	"Serial_num":1,
+	        	"Collection_date":"2013-03-12 15:24:54",
+	        	"Contact_info":"手机",
+	        	"users":"借款人",
+	        	'collection_code':"TC",
+	        	'collection_result':" ",
+	        	'collection_marks':"电话催收",
+	        	'date_time':"2013-03-12 15:24:54",
+	        	'amount_commitment':"1000",
+	        	'commitment_date':"2014-03-12",
+	        	'contract_num':"CR01240",
+	        	'user_id':"Nick",
+	        	"content_msg":"顾客要求推迟10天还款",
 	        	
         	}	
         ],
        
-        "content_msg":"顾客要求推迟10天还款",
+       
                
       
         marks:[
         	{
         	title:[
-	        		{"title":"序号",field:"num",width:"5.8%"},
+	        		{"title":"序号",field:"num",width:"7%"},
 	        		{"title":"备注内容",field:"content",width:"60%"},
 	        		{"title":"创建时间",field:"created_time",width:"20%"},
 	        		{"title":"用户ID",field:"userId",width:"10%"}

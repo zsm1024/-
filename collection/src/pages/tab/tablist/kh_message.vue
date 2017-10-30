@@ -50,12 +50,16 @@
 	        phoneinfo:[],
 	        phonedata:[],
 	        addressdata:[],
-	        addressinfo:[]
+	        addressinfo:[],
+	        id:this.$store.state.navTabs.tabId
 	      };
    	 	},
    	 	methods:{
    	 		getinfo(){
-   	 			userInfo().then(res =>{
+   	 			let para = {
+					id: this.id
+				};
+   	 			userInfo(para).then(res =>{
    	 			 	let data = res.data.msg[0];
    	 			 	this.baseTitle=res.data.msg[0].baseinfo;
    	 			 	this.baseData=res.data.msg[0].basedata;
@@ -75,5 +79,5 @@
 	
 </script>
 
-<style>
+<style>	
 </style>
