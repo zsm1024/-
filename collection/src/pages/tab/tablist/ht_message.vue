@@ -3,16 +3,17 @@
 		<el-collapse v-model="activeNames" >
 			<el-collapse-item title="合同详细信息" name="1">
 				<div>
+
 					<el-row :gutter="20">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">合同号</div></el-col>
+							<el-col :span="3"  style="padding:0"><div class="grid-content bg-purple">合同号</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-white">{{details.hth}}</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-purple">合同状态</div></el-col>
-							<el-col :span="5"><div class="grid-content bg-white">{{details.htzt}}</div></el-col>
-							<el-col :span="4"><div class="grid-content bg-purple">贷款产品</div></el-col>
-							<el-col :span="5"><div class="grid-content bg-white" style="height:20px;line-height:20px">{{details.dkcp}}</div></el-col>
+							<el-col :span="5"><div class="grid-content bg-white" >{{details.htzt}}</div></el-col>
+							<el-col :span="4"><div class="grid-content bg-purple" >贷款产品</div></el-col>
+							<el-col :span="5"><div class="grid-content bg-white" style="height:20px;line-height:20px;font-size:10px">{{details.dkcp}}</div></el-col>
 					</el-row>
 					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">合同起始日期</div></el-col>
+							<el-col :span="3"  style="padding:0"><div class="grid-content bg-purple">合同起始日期</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-white">{{details.htqsrq}}</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-purple">合同终止日期</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-white">{{details.htzzrq}}</div></el-col>
@@ -146,18 +147,20 @@ import { getdeal } from "@/api/api";
 	}
 	.bg-white{
 		text-align: left;
-	;
+		padding: 0;
 	}
 	.bg-purple {
+
 		background: #d3dce6;
 		text-align: center;
 	
 	}
 
 	.grid-content {
+
     border-radius: 1px;
-    min-height: 36px;
-		line-height: 36px;
+    min-height: 50px;
+		line-height: 50px;
   }
 	.el-col-4{
 		padding: 0;

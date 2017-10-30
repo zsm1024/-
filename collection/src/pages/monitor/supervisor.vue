@@ -98,6 +98,25 @@ export default {
   },
 
   methods: {
+    addTab(index,row){
+				
+				var indexlink = "tabView";
+				var label = '岗位任务详情';
+				this.$store.state.navTabs.tabId=row.id;
+				this.$store.state.navTabs.activeTabName = "tabView";
+				let component = resolve => require([`@/pages/tab/${indexlink}`], resolve)
+				if (this.$store.state.navTabs.tabList.filter(f => f.name == indexlink) != 0) {
+					this.$store.state.navTabs.tabList = this.$store.state.navTabs.tabList.filter(f => f.name != indexlink);
+				}
+				this.$store.state.navTabs.tabList.push({
+						label: label,
+						name: indexlink,
+						disabled: false,
+						closable: true,
+						component: component
+				})
+
+		},
     handleSizeChange(val) {
       this.pagesize = val;
       this.getlists();
@@ -115,7 +134,6 @@ export default {
 				id:this.id
       };
       this.listLoading = true;
-      console.log(this.province);
       //NProgress.start();
       getsupervisor(para).then(res => {
         this.total = res.data.total;
