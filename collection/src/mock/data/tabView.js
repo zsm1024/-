@@ -28,6 +28,7 @@ const TabView=[
     	"delyNum":"Br-A454456454",
     	"contractNum":"CR213211",
     	"ShoufuRatio":"50",
+    	"loan":"39000",
     	"startTime":"2013-03-12",
     	"endTime":"2016-05-04",
     	"loanProdut":"等额本息标准产品",

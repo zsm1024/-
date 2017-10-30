@@ -1,25 +1,22 @@
 <template>
 	<section>
-	<div>
-		<h4>催收信息</h4>
-		<el-table :data="items" border>
-			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
-			</el-table-column>			
-		</el-table>
-		<p class="p_marks"><span>备注:</span><span class="marks">{{marks}}</span></p>
-	</div>
-	<div>
-		<h4>案件备注</h4>
-		<el-table :data="item" border>
-			<el-table-column :prop="title.field" :label="title.title" :width="title.width" v-for="(title, index) in title" :key="index" align="center">
-		</el-table-column>			
-		</el-table>
-		
-		
-	</div>	
-	
-	
-	
+		<el-collapse v-model="activeNames">
+			<el-collapse-item name="1">
+				<template slot="title" ><span class="titles">催收信息</span></template>					
+				<el-table :data="items" border >
+					<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
+					</el-table-column>			
+				</el-table>
+				<p class="p_marks"><span>备注:</span><span class="marks">{{marks}}</span></p>					
+			</el-collapse-item>	
+			<el-collapse-item name="2">
+				<template slot="title" ><span class="titles">案件备注</span></template>	
+				<el-table :data="item" border >
+					<el-table-column :prop="title.field" :label="title.title" :width="title.width" v-for="(title, index) in title" :key="index" align="center">
+					</el-table-column>			
+				</el-table>				
+			</el-collapse-item>
+		</el-collapse >
 	</section>
 </template>
 
@@ -28,6 +25,7 @@
 	export default{
 		data(){
 			return{
+			activeNames:["1","2"],
 			 items:[],
 			 cols:[],
 			 title:[],

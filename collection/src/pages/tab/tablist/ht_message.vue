@@ -63,8 +63,8 @@
 							<el-col :span="3"><div class="grid-content bg-white">{{details.zjychkrq}}</div></el-col>
 					</el-row>
 					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-white"></div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white"></div></el-col>
+							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">核销状态</div></el-col>
+							<el-col :span="3"><div class="grid-content bg-white">{{details.hxzt}}</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-purple">本次逾期天数</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-white">{{details.bcyqts}}</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-purple">本期逾期天数</div></el-col>
@@ -73,8 +73,7 @@
 							<el-col :span="3"><div class="grid-content bg-white">{{details.yqyskzj}}</div></el-col>
 					</el-row>
 					<el-row :gutter="20" style="border-top:0">
-							<el-col :span="3" style="padding:0"><div class="grid-content bg-purple">核销状态</div></el-col>
-							<el-col :span="3"><div class="grid-content bg-white">{{details.hxzt}}</div></el-col>
+							
 							<el-col :span="3"><div class="grid-content bg-purple">省份</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-white">{{details.sf}}</div></el-col>
 							<el-col :span="3"><div class="grid-content bg-purple">城市</div></el-col>
@@ -143,7 +142,7 @@ import { getdeal } from "@/api/api";
 
 <style>
 	.el-row {
-		border:1px solid #cccccc;
+		border:1px solid #dfe6ec;
 	}
 	.bg-white{
 		text-align: left;

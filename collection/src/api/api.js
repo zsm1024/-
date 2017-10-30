@@ -30,6 +30,9 @@ export const getdeal = params => { return axios.get(`${base}/deal`, { params: pa
 export const tab_message = params => { return axios.get(`${base}/tab_message`, { params: params }); };
 
 
+//客户信息
+export const userInfo = params => { return axios.get(`${base}/userinfo`, { params: params }); };
+
 
 //还款计划
 export const getplan = params => { return axios.get(`${base}/plan`, { params: params }); };
@@ -39,3 +42,4 @@ export const getliushui = params => { return axios.get(`${base}/liushui`, { para
 //cms历史信息
 export const getcmsdetails = params => { return axios.get(`${base}/cmsdetails`, { params: params }); };
 export const getcmshistory = params => { return axios.get(`${base}/cmshistory`, { params: params }); };
+
