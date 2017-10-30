@@ -13,11 +13,11 @@ const userList=[
             {title:'区域',field:'Region',width:"120"},
             {title:'省份',field:'Provice',width:"120"},
             {title:'城市',field:'City',width:"120"},
-            {title:'最近行动代码',field:'M_Code',width:"100"},
+            {title:'最近行动代码',field:'M_Code',width:"130"},
             {title:'最近行动时间',field:'M_Time',width:"150"},
             {title:'贷款金额',field:'Loan_Amount',width:"120"},
             {title:'未偿本金',field:'No_Principal',width:"120"},
-            {title:'派单时间',field:'Post_Time',width:"150"},
+            {title:'派单时间',field:'Post_Time',width:"160"},
             {title:'核销状态',field:'check_statues',width:"120"},
             {title:'收车状态',field:'car_statues',width:"120"},
 

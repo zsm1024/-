@@ -1,6 +1,18 @@
 import Mock from 'mockjs';
 const TabView=[
-    {
+	{
+        cols:[
+            {title:'角色',field:'persontype',width:"90"},
+            {title:'姓名',field:'name',width:"90"},
+            {title:'电话',field:'phoneNum',width:"130"},
+            {title:'地址',field:'address',width:"160"},
+            {title:'信息来源',field:'m_path',width:"100"},
+            {title:'有效性',field:'validity',width:"100"},
+   
+        ],
+
+    data:[
+    	{
     	"id":1,
     	"statues":"正常催收",
     	"persons":[
@@ -31,7 +43,8 @@ const TabView=[
     	"total":"2145",
     	"messages":"您好,我啥上帝视角啦世纪东方金色的开放接口就极为微弱",
     	"remarkMessage":"首付付款然 人阿达历史地理我胃口热裤可莱丝抵扣佛为32134654wer1321放大"	
-    }
-];
-
+   	 }
+	]
+   }
+]
 export { TabView};

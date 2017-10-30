@@ -7,6 +7,7 @@ import { station, userstation, supervisor,history } from './data/monitor';
 import { deal } from './data/deal';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
+import {TabMessage} from './data/tabMessage'
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = userList[0].data;
 let _Users1 = Users1;
@@ -137,6 +138,14 @@ export default {
  		mock.onGet('/tab_view').reply(200, {
         msg:TabView
    });
+   //催收历史
+   
+   	mock.onGet('/tab_message').reply(200, {
+        msg:TabMessage
+   });
+   
+   
+   
     // //获取用户列表
     // mock.onGet('/user/list').reply(config => {
     //    //config.params放的是用户输入的name,params是user.vue中传递的

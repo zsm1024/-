@@ -21,53 +21,17 @@
 			</el-form>  
         </el-col>  
     <!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading"  style="width: 100%;">
+		<el-table :data="users" highlight-current-row v-loading="listLoading" border style="width: 100%;">
 			<el-table-column label="操作" width="80" fixed="left">
 				<template scope="scope">
-					<el-button type="text" size="small" @click="DealFile(scope.$index, scope.row)">处理</el-button>
+					<el-button type="text" size="small" align="center" @click="DealFile(scope.$index, scope.row)">处理</el-button>
 				</template>
 			</el-table-column>
 			<el-table-column type="index" width="60" sortable >
 			</el-table-column>
-			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" >
+			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
 			</el-table-column>
-			<!--<el-table-column prop="name" label="姓名" width="120" sortable>
-			</el-table-column>
-			<el-table-column prop="Cnum" label="合同号" width="100"  sortable>
-			</el-table-column>
-			<el-table-column prop="Occupation" label="职业" width="100" sortable>
-			</el-table-column>
-			<el-table-column prop="days" label="逾期天数" width="120" sortable>
-			</el-table-column>
-			<el-table-column prop="past_due" label="逾期金额" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Loan_Product" label="贷款产品" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Loan_Car" label="贷款车型" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Special_Date" label="约会日期" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Region" label="区域" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Provice" label="省份" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="City" label="城市" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="M_Code" label="最近行动代码" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="M_Time" label="最近行动时间" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Loan_Amount" label="贷款金额" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="No_Principal" label="未偿本金" min-width="180" sortable>
-			</el-table-column>
-			<el-table-column prop="Post_Time" label="贷款金额" min-width="180" sortable>
-			</el-table-column>
-            <el-table-column prop="Wrte_State" label="未偿本金" min-width="180" sortable>
-			</el-table-column>
-			<el-table-column prop="Receive_Statl" label="未偿本金" min-width="180" sortable>
-			</el-table-column>-->
-			
+		
 		</el-table>
         
 		<!--工具条-->
@@ -155,7 +119,6 @@
 					this.total = res.data.total;
 					this.users = res.data.users;
 					this.cols = res.data.cols;
-					console.log(this.cols)
 					this.listLoading = false;
 					//NProgress.done();
 				});

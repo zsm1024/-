@@ -14,12 +14,20 @@ export const station = params => { return axios.get(`${base}/station`, { params:
 
 export const userstation = params => { return axios.get(`${base}/userstation`, { params: params }); };
 
-export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
-
 export const getsupervisor = params => { return axios.get(`${base}/getsupervisor`, { params: params }); };
 
 export const getstation = params => { return axios.get(`${base}/getstation`, { params: params }); };
 
 export const gethistory = params => { return axios.get(`${base}/gethistory`, { params: params }); };
 
+
+//电催队列数据
+//催收信息
+export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
+//合同信息
+
+//催收历史
+export const tab_message = params => { return axios.get(`${base}/tab_message`, { params: params }); };
+
 export const getdeal = params => { return axios.get(`${base}/deal`, { params: params }); };
+
