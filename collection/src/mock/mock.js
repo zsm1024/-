@@ -5,7 +5,7 @@ import { Users1 } from './data/user1';
 import { LoginUsers, userList } from './data/user';
 import { station, userstation, supervisor,history } from './data/monitor';
 import { deal } from './data/deal';
-import { plan,liushui } from './data/plan';
+import { plan,liushui,cmshistory,cmsdetails } from './data/plan';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
 import {TabMessage} from './data/tabMessage'
@@ -75,6 +75,46 @@ export default {
         }, 1000);
       });
     });
+
+
+    mock.onGet('/cmshistory').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      
+      
+      let total = cmshistory[0].data.length;
+      let mockplan = cmshistory[0].data.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            data: mockplan,
+            cols: cmshistory[0].cols
+            
+          }]);
+        }, 1000);
+      });
+    });
+
+    mock.onGet('/cmsdetails').reply(config => {
+      
+      let {pagetwo, pagesizetwo} = config.params;
+      
+      
+      let total = cmsdetails[0].data.length;
+      let mockdetail = cmsdetails[0].data.filter((u, index) => index < pagesizetwo * pagetwo && index >= pagesizetwo * (pagetwo - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            data: mockdetail,
+            cols: cmsdetails[0].cols
+            
+          }]);
+        }, 1000);
+      });
+    });
+
     mock.onGet('/liushui').reply(config => {
       
       let {page, name, pagesize} = config.params;

@@ -61,4 +61,82 @@ for (let i = 0; i < 12; i++) {
   }));
 }
 
-export { plan,liushui };
+const cmshistory = [
+    {
+        cols:[
+            {title:'处理日期',field:'coldata'},
+            {title:'催收结果',field:'contact'},
+            {title:'承诺日期',field:'username'},
+            {title:'复催日期',field:'code'},
+            {title:'处理人',field:'colresult'},
+            {title:'承诺金额',field:'colmark'},
+            {title:'实地状态',field:'sdzt'},
+            {title:'实地日期',field:'sdrq'},
+            {title:'特殊案件标识',field:'tsajbz'},
+            {title:'代购标识',field:'dgbz'},
+            {title:'代购人姓名',field:'dgrxm'},
+            {title:'代购人身份证',field:'dgrsfz'},
+            {title:'崔收备注',field:'csbz'},
+            {title:'特殊备注',field:'tsbz'},
+           
+        ],
+        data:[]
+    }
+
+];
+for (let i = 0; i < 12; i++) {
+    cmshistory[0].data.push(Mock.mock({
+        id: Mock.Random.guid(),
+        coldata: Mock.Random.date(),
+        contact: Mock.Random.integer(0,10 ),
+        username: Mock.Random.cname( ),
+        code: Mock.Random.cword(),
+        colresult: Mock.Random.cword(0,10),
+        colmark:Mock.Random.cword(0,10),
+        menttime:Mock.Random.date(),
+        'promisemoney|10000-90000.1-2': 1,
+        sdzt: Mock.Random.date(),
+        sdrq: Mock.Random.integer(0,10 ),
+        tsajbz: Mock.Random.cname( ),
+        dgbz: Mock.Random.cword(),
+        dgrxm: Mock.Random.cword(0,10),
+        csbz:Mock.Random.cword(0,10),
+        tsbz:Mock.Random.date(),
+  }));
+}
+
+
+const cmsdetails = [
+    {
+        cols:[
+            {title:'费用描述',field:'coldata'},
+            {title:'费用总计',field:'contact'},
+            {title:'豁免%',field:'username'},
+            {title:'豁免额',field:'code'},
+            {title:'核销额',field:'colresult'},
+            {title:'到期金额',field:'colmark'},
+            {title:'豁免日期',field:'sdzt'},
+            {title:'豁免人',field:'sdrq'},
+           
+           
+        ],
+        data:[]
+    }
+
+];
+for (let i = 0; i < 12; i++) {
+    cmsdetails[0].data.push(Mock.mock({
+        id: Mock.Random.guid(),
+        coldata: Mock.Random.date(),
+        contact: Mock.Random.integer(0,10 ),
+        username: Mock.Random.cname( ),
+        code: Mock.Random.cword(),
+        colresult: Mock.Random.cword(0,10),
+        colmark:Mock.Random.cword(0,10),
+        sdrq:Mock.Random.date(),
+        'promisemoney|10000-90000.1-2': 1,
+        sdzt: Mock.Random.date(),
+       
+  }));
+}
+export { plan,liushui,cmsdetails,cmshistory };
