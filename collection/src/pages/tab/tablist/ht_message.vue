@@ -108,14 +108,14 @@ import { getdeal } from "@/api/api";
 
  export default {
     data() {
-      return {
-				activeNames: ['1','2'],
-				details: [],
-				lists: [],
-				cols: [],
-				id:this.$store.state.navTabs.tabId,
-				listLoading: false,
-      };
+		return {
+			activeNames: ['1','2'],
+			details: [],
+			lists: [],
+			cols: [],
+			id:this.$store.state.navTabs.tabId,
+			listLoading: false,
+		};
 		},
 		methods: {
 			    //获取列表
@@ -157,11 +157,11 @@ import { getdeal } from "@/api/api";
 	}
 
 	.grid-content {
-
-    border-radius: 1px;
-    min-height: 50px;
+		font-size: 10px;
+    	border-radius: 1px;
+   		min-height: 50px;
 		line-height: 50px;
-  }
+  	}
 	.el-col-4{
 		padding: 0;
 	}

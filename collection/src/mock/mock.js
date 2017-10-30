@@ -5,6 +5,7 @@ import { Users1 } from './data/user1';
 import { LoginUsers, userList } from './data/user';
 import { station, userstation, supervisor,history } from './data/monitor';
 import { deal } from './data/deal';
+import { plan } from './data/plan';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
 import {TabMessage} from './data/tabMessage'
@@ -52,6 +53,24 @@ export default {
             data: deal[0].data,
             cols: deal[0].cols,
             details:deal[0].details[0]
+          }]);
+        }, 1000);
+      });
+    });
+    mock.onGet('/plan').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      
+      
+      let total = plan[0].data.length;
+      let mockplan = plan[0].data.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            data: mockplan,
+            cols: plan[0].cols
+            
           }]);
         }, 1000);
       });
