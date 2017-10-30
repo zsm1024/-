@@ -4,6 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { Users1 } from './data/user1';
 import { LoginUsers, userList } from './data/user';
 import { station, userstation, supervisor,history } from './data/monitor';
+import { deal } from './data/deal';
 import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
 import {TabMessage} from './data/tabMessage'
@@ -34,6 +35,23 @@ export default {
             total: total,
             data: mockstation,
             cols: station[0].cols
+          }]);
+        }, 1000);
+      });
+    });
+    mock.onGet('/deal').reply(config => {
+      
+      let {id} = config.params;
+
+    
+     
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            
+            data: deal[0].data,
+            cols: deal[0].cols,
+            details:deal[0].details[0]
           }]);
         }, 1000);
       });
