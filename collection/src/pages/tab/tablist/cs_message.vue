@@ -6,13 +6,41 @@
 			</el-collapse-item>	
 			<el-collapse-item name="2" title="客户电话信息">	
 				<el-table :data="items.persons" border >
+					<el-table-column label="操作" width="120"  align="center">
+						<template scope="scope"  >
+							<el-button :type="scope.row.edit?'success':'primary'" size="small"  @click='phoneEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+						</template>
+					</el-table-column>
 					<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
+						<template scope="scope">
+							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols.field]"></el-input>
+							<span v-show="scope.row.edit" v-if="cols.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols.field] }}</span>
+							<span v-show="!scope.row.edit" >{{ scope.row[cols.field] }}</span>
+							<el-select v-show="scope.row.edit" v-if="cols.field=='validity'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
+								<el-option label="Y" value="Y"></el-option>
+								<el-option label="N" value="N"></el-option>
+							</el-select>
+						</template>
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
 			<el-collapse-item name="3" title="客户地址信息">	
 				<el-table :data="items.address" border >
+					<el-table-column label="操作" width="120"  align="center">
+						<template scope="scope" >
+							<el-button :type="scope.row.edit?'success':'primary'" size="small"  @click='addressEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+						</template>
+					</el-table-column>
 					<el-table-column :prop="cols1.field" :label="cols1.title" :width="cols1.width" v-for="(cols1, index) in cols1" :key="index" align="center">
+						<template scope="scope">
+							<el-input  v-show="scope.row.edit" v-if="cols1.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols1.field]"></el-input>
+							<span v-show="scope.row.edit" v-if="cols1.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols1.field] }}</span>
+							<span v-show="!scope.row.edit" >{{ scope.row[cols1.field] }}</span>
+							<el-select v-show="scope.row.edit" v-if="cols1.field=='validity'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
+								<el-option label="Y" value="Y"></el-option>
+								<el-option label="N" value="N"></el-option>
+							</el-select>
+						</template>
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
@@ -213,6 +241,15 @@ export default {
     };
   },
   methods: {
+		phoneEdit(row){
+				console.log(row.edit);
+			row.edit=!row.edit;
+		
+		},
+		addressEdit(row){
+				console.log(row.edit);
+			row.edit=!row.edit;
+		},
 		//短信方法
 		confirmmessage() {
 				this.messageopen=false;
@@ -254,7 +291,15 @@ export default {
 			};
       tab_view(para).then(res => {
         let data = res.data.msg[0]
-        this.items = data.data[0];
+				this.items = data.data[0];
+				this.items.persons = this.items.persons.map(v => {
+          this.$set(v, 'edit', false)
+          return v
+				});
+				this.items.address = this.items.address.map(v => {
+          this.$set(v, 'edit', false)
+          return v
+        })
         this.cols=data.cols;
         this.cols1=data.cols1;              
       });
