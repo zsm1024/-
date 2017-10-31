@@ -5,20 +5,31 @@ const TabView=[
             {title:'角色',field:'persontype',width:"90"},
             {title:'姓名',field:'name',width:"90"},
             {title:'电话',field:'phoneNum',width:"130"},
+            {title:'信息来源',field:'m_path',width:"100"},
+            {title:'有效性',field:'validity',width:"100"},
+   
+        ],
+        cols1:[
+            {title:'角色',field:'persontype',width:"90"},
+            {title:'姓名',field:'name',width:"90"},
             {title:'地址',field:'address',width:"160"},
             {title:'信息来源',field:'m_path',width:"100"},
             {title:'有效性',field:'validity',width:"100"},
    
         ],
-
     data:[
     	{
     	"id":1,
     	"statues":"正常催收",
     	"persons":[
-    		{"persontype":"主借人","name":"胡家刚","phoneNum":"13464545454","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},
-    		{"persontype":"共借人","name":"胡家刚","phoneNum":"13464545454","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},
-    		{"persontype":"担保人","name":"胡家刚","phoneNum":"13464545454","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"}
+    		{"persontype":"主借人","name":"胡家刚","phoneNum":"13464545454","m_path":"CMS","validity":"Y"},
+    		{"persontype":"共借人","name":"胡家刚","phoneNum":"13464545454","m_path":"CMS","validity":"Y"},
+    		{"persontype":"担保人","name":"胡家刚","phoneNum":"13464545454","m_path":"CMS","validity":"Y"}
+    	],
+    	"address":[
+    		{"persontype":"主借人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},
+    		{"persontype":"共借人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},
+    		{"persontype":"担保人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"}
     	],
     	"username":"马晓华",
     	"sex":"男",
