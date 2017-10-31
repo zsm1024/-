@@ -25,6 +25,20 @@
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>
+			<el-collapse-item name="3">
+				<template slot="title" ><span class="titles">催收轨迹</span></template>	
+				<el-table :data="pathMsg" border >
+					<el-table-column :prop="path.field" :label="path.title" :width="path.width" v-for="(path, index) in path" :key="index" align="center">
+					</el-table-column>			
+				</el-table>				
+			</el-collapse-item>
+			<el-collapse-item name="4">
+				<template slot="title" ><span class="titles">行动代码</span></template>	
+				<el-table :data="activeMsg" border >
+					<el-table-column :prop="actives.field" :label="actives.title" :width="actives.width" v-for="(actives, index) in actives" :key="index" align="center">
+					</el-table-column>			
+				</el-table>				
+			</el-collapse-item>
 		</el-collapse >
 	</section>
 </template>
@@ -34,11 +48,15 @@
 	export default{
 		data(){
 			return{
-			activeNames:["1","2"],
+			activeNames:["1","2","3","4"],
 			 items:[],
 			 cols:[],
 			 title:[],
 			 item:[],
+			 path:[],
+			 pathMsg:[],
+			 actives:[],
+			 activeMsg:[],
 			 marks:"",
 			 id:this.$store.state.navTabs.tabId
 			}
@@ -55,6 +73,11 @@
 				this.cols=data.cols;
 				this.title=data.marks[0].title;
 				this.item=data.marks[0].msg;
+				this.path=data.path[0].title;
+				this.pathMsg=data.path[0].msgs;
+				this.actives=data.activeCode[0].title;
+				this.activeMsg=data.activeCode[0].data;
+				
       			});
    			 }		
 		},

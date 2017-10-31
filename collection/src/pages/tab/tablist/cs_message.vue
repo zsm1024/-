@@ -4,9 +4,15 @@
 			<el-collapse-item name="1" title="催收状态">				
 				<p>{{items.statues}}</p>				
 			</el-collapse-item>	
-			<el-collapse-item name="2" title="客户联系信息">	
+			<el-collapse-item name="2" title="客户电话信息">	
 				<el-table :data="items.persons" border >
 					<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
+					</el-table-column>			
+				</el-table>				
+			</el-collapse-item>	
+			<el-collapse-item name="2" title="客户地址信息">	
+				<el-table :data="items.address" border >
+					<el-table-column :prop="cols1.field" :label="cols1.title" :width="cols1.width" v-for="(cols1, index) in cols1" :key="index" align="center">
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
@@ -137,6 +143,7 @@ export default {
     	activeNames:["1","2","3","4","5","6",'7'],
      	items: [],
      	cols:[],
+			cols1:[],
 			id:this.$store.state.navTabs.tabId,
 
 			remarkopen: false,
@@ -180,6 +187,8 @@ export default {
 			getMesTemplate: ['逾期提醒','提醒'],
 			getMesPhone: ['15830903200','15603230261'],
 
+     
+     
     };
   },
   methods: {
@@ -226,6 +235,7 @@ export default {
         let data = res.data.msg[0]
         this.items = data.data[0];
         this.cols=data.cols;
+        this.cols1=data.cols1;              
       });
     }
   },
