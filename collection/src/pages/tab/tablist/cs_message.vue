@@ -10,13 +10,13 @@
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
-			<el-collapse-item name="2" title="客户地址信息">	
+			<el-collapse-item name="3" title="客户地址信息">	
 				<el-table :data="items.address" border >
 					<el-table-column :prop="cols1.field" :label="cols1.title" :width="cols1.width" v-for="(cols1, index) in cols1" :key="index" align="center">
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
-			<el-collapse-item name="3" title="客户基本信息">
+			<el-collapse-item name="4" title="客户基本信息">
 				<table>
 					<tr>
 						<td>客户姓名</td><td>{{items.username}}</td>
@@ -27,7 +27,7 @@
 					</tr>
 				</table>
 			</el-collapse-item>	
-			<el-collapse-item name="4" title="合同基本信息">
+			<el-collapse-item name="5" title="合同基本信息">
 				<table>	
 					<tr>
 						<td>申请号</td><td>{{items.delyNum}}</td>
@@ -45,7 +45,7 @@
 					</tr>
 				</table>
 			</el-collapse-item>	
-			<el-collapse-item name="5" title="逾期基本信息">
+			<el-collapse-item name="6" title="逾期基本信息">
 				<table>
 					<tr>
 						<td>客户姓名</td><td>{{items.username}}</td>
@@ -56,10 +56,10 @@
 					</tr>
 				</table>
 			</el-collapse-item>	
-			<el-collapse-item name="6" title="话术指引">			
+			<el-collapse-item name="7" title="话术指引">			
 				<p>{{items.remarkMessage}}</p>
 			</el-collapse-item>	
-			<el-collapse-item name="7" title="客户信息维护">
+			<el-collapse-item name="8" title="客户信息维护">
 				<el-row>
 					<el-col :span="24">
 						<i class="el-icon-edit" @click="remarkopen = true">备注</i>
@@ -67,39 +67,60 @@
 						<i class="el-icon-upload2">附件</i>
 					</el-col>
 				</el-row>
-				<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;width:60%;min-width:600px;">
+				<el-row>
+					<el-col :span="11">
+						<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;" >
+							<div class="first">
+								<el-form-item label="行动代码" prop="daima">
+									<v-select v-model="mainform.daima" :options="getdaima"></v-select>
+								</el-form-item>
+	
+							</div>
+							<div class="second" style="display: flex;">
+								<el-form-item label="承诺金额" prop="maney" style="width: 50%;">
+									<el-input v-model="mainform.maney"></el-input>
+								</el-form-item>
+								<el-form-item label="承诺日期" prop="accdata" style="width: 50%;">
+									<el-col :span="24">
+										<el-date-picker type="date" placeholder="选择日期" v-model="mainform.accdata" style="width: 100%;"></el-date-picker>
+									</el-col>
+								</el-form-item>								
+							</div>
+							<div class="third">
+								<el-form-item label="联系人" prop="name">
+									<v-select v-model="mainform.name" :options="getname"></v-select>
+								</el-form-item>
+								<el-form-item label="联系方式"  prop="fangshi">
+									<v-select v-model="mainform.fangshi" :options="getfangshi"></v-select>
+								</el-form-item>								
+							</div>	
+							<div class="four">
+								<el-form-item label="约会时间"  prop="accdatetime">
+									<el-col :span="24">
+										<el-date-picker type="datetime" placeholder="选择约会时间" v-model="mainform.acctime" style="width: 100%;"></el-date-picker>
+									</el-col>
+								</el-form-item>								
+							</div>				
+						</el-form>
+					</el-col>
+					<el-col :span="12">
+						<el-form >
+							<el-form-item label="备注" prop="remark">
+								<el-input type="textarea" v-model="mainform.remark"></el-input>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="primary" @click="onSubmit('mainform')">确认</el-button>
+								<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
+							</el-form-item>
+							
+						</el-form>
+	
+					</el-col>
 					
-					<el-form-item label="行动代码" prop="daima">
-						<v-select v-model="mainform.daima" :options="getdaima"></v-select>
-					</el-form-item>
-					<el-form-item label="承诺金额" prop="maney">
-						<el-input v-model="mainform.maney"></el-input>
-					</el-form-item>
-					<el-form-item label="承诺日期" prop="accdata">
-						<el-col :span="11">
-							<el-date-picker type="date" placeholder="选择日期" v-model="mainform.accdata" style="width: 100%;"></el-date-picker>
-						</el-col>
-					</el-form-item>
-					<el-form-item label="联系人" prop="name">
-						<v-select v-model="mainform.name" :options="getname"></v-select>
-					</el-form-item>
-					<el-form-item label="联系方式"  prop="fangshi">
-						<v-select v-model="mainform.fangshi" :options="getfangshi"></v-select>
-					</el-form-item>
 					
-					<el-form-item label="约会时间"  prop="accdatetime">
-						<el-col :span="11">
-							<el-date-picker type="datetime" placeholder="选择约会时间" v-model="mainform.acctime" style="width: 100%;"></el-date-picker>
-						</el-col>
-					</el-form-item>
-					<el-form-item label="备注" prop="remark">
-						<el-input type="textarea" v-model="mainform.remark"></el-input>
-					</el-form-item>
-					<el-form-item>
-						<el-button type="primary" @click="onSubmit('mainform')">确认</el-button>
-						<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
-					</el-form-item>
-				</el-form>
+					
+				</el-row>
+			
 			</el-collapse-item>	
 		</el-collapse>
 		<el-dialog title="备注" :visible.sync="remarkopen">
@@ -140,7 +161,7 @@ import { tab_view } from "@/api/api";
 export default {
   data() {
     return {
-    	activeNames:["1","2","3","4","5","6",'7'],
+    	activeNames:["1","2","3","4","5","6",'7',"8"],
      	items: [],
      	cols:[],
 			cols1:[],
@@ -252,10 +273,6 @@ export default {
 	tr{width: 100%;}
 	td{border: 1px solid #dfe6ec;height: 50px;line-height: 50px;background: #f0f0f0;}	
 	.useraddress{width: 150px;}
-	.el-collapse-item__header{
-		font-size:15px;
-		font-weight: bold;
-		background:#dfe6ec;
-		border: 1px solid #f0f0f0;
-	}
+	.el-collapse-item__header{font-size:15px;font-weight: bold;background:#dfe6ec;border: 1px solid #f0f0f0;
+	};
 </style>
