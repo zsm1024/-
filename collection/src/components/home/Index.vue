@@ -37,9 +37,8 @@ export default {
     top: 0;
     bottom: 0;
     min-width:60px;
-
+	color:#000;
     width:5rem;
-    background-color: #324157;
 }
 .navopen {
     position: absolute;
@@ -47,12 +46,12 @@ export default {
     top: 0;
     bottom: 0;
     width:15rem;
-    background-color: #324157;
+
 }
 .pane {
     position: absolute;
     left:5rem;
-    top: 0;
+    top: 5px;
     bottom: 0;
     right: 0;
     overflow-x: hidden;
@@ -61,13 +60,13 @@ export default {
 .paneopen {
     position: absolute;
     left:15rem;
-    top: 0;
+    top: 5px;
     bottom: 0;
     right: 0;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+/*.el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 235px;
     min-height: 400px;
 }
@@ -89,6 +88,6 @@ i {
 
 .left-nav {
   padding: 0.3rem;
-}
+}*/
 </style>
 

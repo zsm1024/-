@@ -1,7 +1,7 @@
 <template>
-  <div class="tab-container">
+  <div class="tab-container abc">
     <el-tabs  type="border-card">
-    	<el-tab-pane label="催收信息"><cs-message></cs-message></el-tab-pane>
+    	<el-tab-pane label="催收信息" ><cs-message ></cs-message></el-tab-pane>
     	<el-tab-pane label="合同信息"><ht-message></ht-message></el-tab-pane>
     	<el-tab-pane label="催收历史"><cs-history></cs-history></el-tab-pane>
     	<el-tab-pane label="客户信息"><kh-message></kh-message></el-tab-pane>
@@ -33,10 +33,12 @@ export default {
   	hkPlan,
   	kkList,
   	cmsHistory
-  }
-  
+  } 
 }
 </script>
 <style >
-
+.tab-container{
+	height: 100%;
+	background: red;
+}
 </style>

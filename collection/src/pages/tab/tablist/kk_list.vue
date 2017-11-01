@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section ref="abc" style="overflow-y: auto;">
 		<el-collapse v-model="activeNames" >
 			<el-collapse-item title="扣款流水" name="1">
 				<el-col  :span="24" class="toolbar" style="padding-bottom: 0px;">
@@ -85,6 +85,8 @@ export default {
 		},
 		mounted() {
 			this.getlists();
+			 let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
+   this.$refs.abc.style.height= h+"px"
 		}
 }
 </script>

@@ -1,21 +1,21 @@
 <template>
-	<section>
+	<section  ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">
 		<el-collapse v-model="activeNames">
 			<el-collapse-item name="1" title="催收状态">				
 				<p>{{items.statues}}</p>				
 			</el-collapse-item>	
 			<el-collapse-item name="2" title="客户电话信息">	
 				<el-table :data="items.persons" border >
-					<el-table-column label="操作" width="35"  align="center">
-						<template scope="scope"  >
-							<el-button :type="scope.row.edit?'success':'primary'" size="small"  @click='phoneEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+					<el-table-column label="操作"  align="center">
+						<template scope="scope">
+							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
+					<el-table-column :prop="cols.field" :label="cols.title"  v-for="(cols, index) in cols" :key="index" align="center">
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols.field]"></el-input>
 							<span v-show="scope.row.edit" v-if="cols.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols.field] }}</span>
-							<span v-show="!scope.row.edit" >{{ scope.row[cols.field] }}</span>
+							<span v-show="!scope.row.edit" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
 							<el-select v-show="scope.row.edit" v-if="cols.field=='validity'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
@@ -26,12 +26,12 @@
 			</el-collapse-item>	
 			<el-collapse-item name="3" title="客户地址信息">	
 				<el-table :data="items.address" border >
-					<el-table-column label="操作" width="35"  align="center">
+					<el-table-column label="操作" align="center">
 						<template scope="scope" >
-							<el-button :type="scope.row.edit?'success':'primary'" size="small"  @click='addressEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols1.field" :label="cols1.title" :width="cols1.width" v-for="(cols1, index) in cols1" :key="index" align="center">
+					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center">
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols1.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols1.field]"></el-input>
 							<span v-show="scope.row.edit" v-if="cols1.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols1.field] }}</span>
@@ -87,7 +87,10 @@
 			<el-collapse-item name="7" title="话术指引">			
 				<p>{{items.remarkMessage}}</p>
 			</el-collapse-item>	
-			<el-collapse-item name="8" title="客户信息维护">
+			<el-collapse-item name="8" title="备注">			
+				<p>{{items.notice}}</p>
+			</el-collapse-item>	
+			<el-collapse-item name="9" title="客户信息维护">
 				<el-row>
 					<el-col :span="24">
 						<i class="el-icon-edit" @click="remarkopen = true">备注</i>
@@ -189,8 +192,9 @@ import { tab_view } from "@/api/api";
 export default {
   data() {
     return {
-    	activeNames:["1","2","3","4","5","6",'7',"8"],
+    	activeNames:["1","2","3","4","5","6",'7',"8","9"],
      	items: [],
+     	height:"",
      	cols:[],
 			cols1:[],
 			id:this.$store.state.navTabs.tabId,
@@ -241,6 +245,10 @@ export default {
     };
   },
   methods: {
+  	ring(phoneNum){
+    	 var divDom = this.$refs.abc;   	 
+    	 divDom.scrollTop=divDom .scrollHeight;
+   },
 		phoneEdit(row){
 				console.log(row.edit);
 			row.edit=!row.edit;
@@ -301,18 +309,21 @@ export default {
           return v
         })
         this.cols=data.cols;
-        this.cols1=data.cols1;              
+        this.cols1=data.cols1;   
+        this.height=document.documentElement.clientHeight-400;       
       });
-    }
+    },
+    
   },
   mounted() {
     this.getlist();
+     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
+   this.$refs.abc.style.height= h+"px"
   }
 };
 </script>
 
 <style>
-	
 	h4{background: #eef1f6;padding: 10px;border: 1px solid #dfe6ec;font-weight: bold;}
 	table{width: 100%;text-align: center;}
 	tr{width: 100%;}
@@ -320,4 +331,9 @@ export default {
 	.useraddress{width: 150px;}
 	.el-collapse-item__header{font-size:15px;font-weight: bold;background:#dfe6ec;border: 1px solid #f0f0f0;
 	};
+	.abc{height: 500px!important; }
+	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2{cursor: pointer; color: #20a0ff;margin-left: 5px;}
+	.el-col .el-icon-upload2:hover{color: #4db3ff;}
+	.el-col .el-icon-edit:hover{color: #4db3ff;}
+	.el-col .el-icon-message:hover{color:#4db3ff}
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section ref="abc" style="overflow-y: auto;">
 		<el-collapse v-model="activeNames">
 			<el-collapse-item name="1">
 				<template slot="title" ><span class="titles">当事人基本信息</span></template>
@@ -73,6 +73,8 @@
    	 	},
    	 	mounted(){
    	 		this.getinfo();
+   	 		 let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
+   this.$refs.abc.style.height= h+"px"
    	 	}
 	}
 	 

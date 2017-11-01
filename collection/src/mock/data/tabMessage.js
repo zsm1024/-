@@ -92,20 +92,12 @@ const TabMessage = [
 	            {"title":'行动代码注释',field:'resove',width:"120"},
 	            {"title":'录入时间',field:'addTime',width:"120"},	                            
         		],
-        		data:[       							{"nums":1,"UserId":"Nick","active":"qwe","resove":"cxvd","addTim":"014-08-13 08:19:27"},
+        		data:[ {"nums":1,"UserId":"Nick","active":"qwe","resove":"cxvd","addTim":"014-08-13 08:19:27"},
 	
         		]
-        		
-						
-						
-						
+
 					}
-       
-       
-       
-       
-       
-       
+
        ]
         
         

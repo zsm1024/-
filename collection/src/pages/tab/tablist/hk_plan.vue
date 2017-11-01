@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section ref="abc" style="overflow-y: auto;">
 	<el-collapse v-model="activeNames" >
 		<el-collapse-item title="还款计划" name="1">
 			<!--列表-->
@@ -65,6 +65,8 @@ export default {
 		},
 		mounted() {
 			this.getlists();
+			 let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
+   this.$refs.abc.style.height= h+"px"
 		}
 }
 </script>

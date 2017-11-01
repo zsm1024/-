@@ -1,5 +1,5 @@
 <template>
-	<section class="cslist">
+	<section class="cslist" ref="abc" style="overflow-y: auto;">
 		<el-collapse v-model="activeNames">
 			<el-collapse-item name="1">
 				<template slot="title" ><span class="titles">催收信息</span></template>					
@@ -82,7 +82,9 @@
    			 }		
 		},
 		mounted() {
-   			this.getmessage()
+   			this.getmessage();
+   			 let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
+   this.$refs.abc.style.height= h+"px"
   		}
 	}
 </script>
