@@ -1,72 +1,117 @@
 <template>
-  <div class="left-nav" style="z-index: ;">
-  	<el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-  <el-radio-button :label="false">展开</el-radio-button>
-  <el-radio-button :label="true">收起</el-radio-button>
-</el-radio-group>
-  	
-  	
-  	
-    <el-menu theme="dark" class="el-menu-vertical-demo":uniqueOpened='true' @select="addTab" :collapse="isCollapse">
-      <el-submenu :index="item.title" v-for="item in items" :key="item.id">
-        <template slot="title"> <i class=""></i>{{item.title}}</template>
-  <div class="left-nav">
-    <div class="logo" >
-    <i class="el-icon-menu" @click="colToggle()" ></i>
-    <a v-show="!isCollapse">催收管理系统</a>
-    </div>
+   <div class="left-nav">
+      <div class="logo" >
+      <i class="el-icon-menu" @click="colToggle()" ></i>
+      <a v-show="!isCollapse">催收管理系统</a>
+      </div>
 
-    <el-menu theme="dark" class=" el-menu-vertical-demo" :collapse="isCollapse" ref="isCollapse"  :uniqueOpened='true' @select="addTab"  >
-    <el-submenu :index="item.title" v-for="item in items" :key="item.id" >
-        <template slot="title"> <i :class="item.icon"></i><span>{{item.title}}</span></template>
-        <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
-    </el-submenu>
-    </el-menu>
+      <el-menu theme="dark" :default-active="activeTabName" class=" el-menu-vertical-demo" :collapse="isCollapse" ref="isCollapse"  :uniqueOpened='true' @select="addTab"  >
+      <el-submenu :index="item.title" v-for="item in items" :key="item.id" >
+          <template slot="title"> <i :class="item.icon"></i><span>{{item.title}}</span></template>
+          <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
+      </el-submenu>
+      </el-menu>
   </div>
   
 </template>
 <script>
-
+import { mapMutations } from "vuex";
+import { nav_view } from "@/api/api";
 export default {
 
   data() {
     return {
-      items: [],isCollapse: true
+    
       items: [],
       isCollapse: false,
     };
   },
+  
   name: "LeftNav",
+  computed: {
+    activeTabName: {
+        get() {
+            return this.$store.state.navTabs.activeTabName;
+        },
+        set(value) {
+            this.$store.commit("navTabs/setActiveTabName", value);
+        }
+    },
+  },
   methods: {
     colToggle(){
-      
-      if(this.isCollapse){
+    if(this.isCollapse){
+    
+      this.$parent.nav = false;
+      this.$parent.navopen = true;
+      this.$parent.paneopen = true;
+      this.$parent.pane = false;
+     
+        
         this.isCollapse = false;
-      }else{
+    }else{
+      this.$parent.nav = true;
+      this.$parent.navopen = false;
+      this.$parent.paneopen = false;
+      this.$parent.pane = true;
+       
+    
+        
         this.isCollapse = true;
-      }
+    }
     },
     ...mapMutations("navTabs", ["addTab"]),
     getlist() {
-      nav_view().then(res => {
+    nav_view().then(res => {
         let data = res.data.msg;
         this.items = data;
-      });
+    });
     }
   },
-
   mounted() {
-    this.getlist();
+      this.getlist();
   }
 };
 </script>
 <style scoped>
- .el-menu-vertical-demo:not(.el-menu--collapse) {
- 	width:230px;
-    min-height: 400px;
-  }
+.nav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    min-width:60px;
+
+    width:5rem;
+    background-color: #324157;
+}
+.navopen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width:15rem;
+    background-color: #324157;
+}
+.pane {
+    position: absolute;
+    left:5rem;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.paneopen {
+    position: absolute;
+    left:15rem;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    width: 235px;
     min-height: 400px;
 }
 

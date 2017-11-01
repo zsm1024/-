@@ -1,19 +1,7 @@
 <template>
     <div>
         <div :class="{navopen:navopen,nav:nav}">
-             <div class="left-nav">
-                <div class="logo" >
-                <i class="el-icon-menu" @click="colToggle()" ></i>
-                <a v-show="!isCollapse">催收管理系统</a>
-                </div>
-
-                <el-menu theme="dark" :default-active="activeTabName" class=" el-menu-vertical-demo" :collapse="isCollapse" ref="isCollapse"  :uniqueOpened='true' @select="addTab"  >
-                <el-submenu :index="item.title" v-for="item in items" :key="item.id" >
-                    <template slot="title"> <i :class="item.icon"></i><span>{{item.title}}</span></template>
-                    <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
-                </el-submenu>
-                </el-menu>
-            </div>
+            <left-pane></left-pane>
         </div>
         <div  :class="{paneopen:paneopen,pane:pane}" >
             <right-pane></right-pane>
@@ -22,62 +10,23 @@
 </template>
 <script>
 
-import RightPane from './RightPane'
-import { mapMutations } from "vuex";
-import { nav_view } from "@/api/api";
+import RightPane from './RightPane';
+import LeftPane from './LeftNav';
+
 export default {
     data() {
         return {
-        items: [],
-        isCollapse: false,
-        nav:false,
-        navopen:true,
-        paneopen:true,
-        pane:false,
+            nav:false,
+            navopen:true,
+            paneopen:true,
+            pane:false,
         };
     },
+  
     name: 'Home',
     components: {
+        LeftPane,
         RightPane
-    },
-    computed: {
-        activeTabName: {
-            get() {
-                return this.$store.state.navTabs.activeTabName;
-            },
-            set(value) {
-                this.$store.commit("navTabs/setActiveTabName", value);
-            }
-        },
-    },
-    methods: {
-        colToggle(){
-
-        if(this.isCollapse){
-            this.nav=false;
-            this.navopen = true;
-            this.paneopen = true;
-            this.pane = false;
-             this.isCollapse = false;
-        }else{
-            this.nav=true;
-            this.navopen = false;
-            this.paneopen = false;
-            this.pane = true;
-           
-            this.isCollapse = true;
-        }
-        },
-        ...mapMutations("navTabs", ["addTab"]),
-        getlist() {
-        nav_view().then(res => {
-            let data = res.data.msg;
-            this.items = data;
-        });
-        }
-    },
-    mounted() {
-        this.getlist();
     }
 }
 </script>
