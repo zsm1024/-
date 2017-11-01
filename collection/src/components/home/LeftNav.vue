@@ -19,7 +19,6 @@
     <el-menu theme="dark" class=" el-menu-vertical-demo" :collapse="isCollapse" ref="isCollapse"  :uniqueOpened='true' @select="addTab"  >
     <el-submenu :index="item.title" v-for="item in items" :key="item.id" >
         <template slot="title"> <i :class="item.icon"></i><span>{{item.title}}</span></template>
->>>>>>> 8c56cd71a688dc944295f8c671a9254b45993082
         <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
     </el-submenu>
     </el-menu>
