@@ -88,7 +88,7 @@
 				<p>{{items.remarkMessage}}</p>
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注">			
-				<p>{{items.notice}}</p>
+				<p>{{remarkform.remark}}</p>
 			</el-collapse-item>	
 			<el-collapse-item name="9" title="客户信息维护">
 				<el-row>
@@ -307,7 +307,8 @@ export default {
 				this.items.address = this.items.address.map(v => {
           this.$set(v, 'edit', false)
           return v
-        })
+				})
+				this.remarkform.remark = this.items.notice;
         this.cols=data.cols;
         this.cols1=data.cols1;   
         this.height=document.documentElement.clientHeight-400;       
