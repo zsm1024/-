@@ -24,12 +24,10 @@ const mutations = {
         
         nav_view().then((res)=>{
             let data=res.data.msg;                     
-            for(var i=0;i<data.length;i++){
-                let list = data[i].list;
+            for(let i of data){
+                let list = i.list;
                 if(typeof(list) != 'undefined'){
-                    
-                    for(var l=0;l<list.length;l++){
-                       
+                    for(let l in list){
                         if( list[l].path == index){
                             name =  list[l].title;     
                         }

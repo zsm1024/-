@@ -7,7 +7,7 @@
                 <a v-show="!isCollapse">催收管理系统</a>
                 </div>
 
-                <el-menu theme="dark" class=" el-menu-vertical-demo" :collapse="isCollapse" ref="isCollapse"  :uniqueOpened='true' @select="addTab"  >
+                <el-menu theme="dark" :default-active="activeTabName" class=" el-menu-vertical-demo" :collapse="isCollapse" ref="isCollapse"  :uniqueOpened='true' @select="addTab"  >
                 <el-submenu :index="item.title" v-for="item in items" :key="item.id" >
                     <template slot="title"> <i :class="item.icon"></i><span>{{item.title}}</span></template>
                     <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
@@ -39,6 +39,16 @@ export default {
     name: 'Home',
     components: {
         RightPane
+    },
+    computed: {
+        activeTabName: {
+            get() {
+                return this.$store.state.navTabs.activeTabName;
+            },
+            set(value) {
+                this.$store.commit("navTabs/setActiveTabName", value);
+            }
+        },
     },
     methods: {
         colToggle(){
