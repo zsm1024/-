@@ -1,6 +1,5 @@
 <template>
     <div>
-<<<<<<< HEAD
         <div class="nav">
         <div class="logo">
      		<i class="el-icon-menu" @click=""></i>
@@ -47,8 +46,6 @@ export default {
     components: {
         RightPane
     },
-<<<<<<< HEAD
-=======
     methods: {
         colToggle(){
 
@@ -78,7 +75,6 @@ export default {
     mounted() {
         this.getlist();
     }
->>>>>>> 8c56cd71a688dc944295f8c671a9254b45993082
 }
 </script>
 <style>
