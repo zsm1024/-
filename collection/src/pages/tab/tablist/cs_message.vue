@@ -6,7 +6,7 @@
 			</el-collapse-item>	
 			<el-collapse-item name="2" title="客户电话信息">	
 				<el-table :data="items.persons" border >
-					<el-table-column label="操作" width="120"  align="center">
+					<el-table-column label="操作" width="35"  align="center">
 						<template scope="scope"  >
 							<el-button :type="scope.row.edit?'success':'primary'" size="small"  @click='phoneEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>
@@ -26,7 +26,7 @@
 			</el-collapse-item>	
 			<el-collapse-item name="3" title="客户地址信息">	
 				<el-table :data="items.address" border >
-					<el-table-column label="操作" width="120"  align="center">
+					<el-table-column label="操作" width="35"  align="center">
 						<template scope="scope" >
 							<el-button :type="scope.row.edit?'success':'primary'" size="small"  @click='addressEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>

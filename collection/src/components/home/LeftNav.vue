@@ -1,10 +1,13 @@
 <template>
-  <div class="left-nav">
-    <div class="logo">
-      <i class="el-icon-menu"></i>
-      <a>催收管理系统</a>
-    </div>
-    <el-menu theme="dark"  :uniqueOpened='true' @select="addTab"  >
+  <div class="left-nav" style="z-index: ;">
+  	<el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+  <el-radio-button :label="false">展开</el-radio-button>
+  <el-radio-button :label="true">收起</el-radio-button>
+</el-radio-group>
+  	
+  	
+  	
+    <el-menu theme="dark" class="el-menu-vertical-demo":uniqueOpened='true' @select="addTab" :collapse="isCollapse">
       <el-submenu :index="item.title" v-for="item in items" :key="item.id">
         <template slot="title"> <i class=""></i>{{item.title}}</template>
         <el-menu-item v-for="a in item.list" :key="a.id" :index="a.path"><i class=""></i>{{a.title}}</el-menu-item>
@@ -19,7 +22,7 @@ import { nav_view } from "../../api/api";
 export default {
   data() {
     return {
-      items: []
+      items: [],isCollapse: true
     };
   },
   name: "LeftNav",
@@ -32,27 +35,17 @@ export default {
       });
     }
   },
+
   mounted() {
     this.getlist();
   }
 };
 </script>
 <style scoped>
-.logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  height: 3.5rem;
-  border-bottom: solid 0.01rem #48576a;
-}
-.logo a{
-  color:#fff
-}
-i {
-  margin-right: 0.5rem;
-}
-
+ .el-menu-vertical-demo:not(.el-menu--collapse) {
+ 	width:230px;
+    min-height: 400px;
+  }
 .left-nav {
   padding: 0.3rem;
 }

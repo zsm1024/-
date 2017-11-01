@@ -1,5 +1,5 @@
 <template>
-    <div class="right-pane">
+    <div class="right-pane el-menu-vertical-demo1" >
         <el-tabs class="tabs" v-model="activeTabName" @tab-remove="closeTab" type="border-card">
             <el-tab-pane v-for="item in tabList" :key="item.name" :name="item.name" :label="item.label" :closable="item.closable">
                 <component :is="item.component"></component>
@@ -35,11 +35,11 @@ export default {
 </script>
 <style scoped>
 .right-pane {
-    height: 100%;
+    overflow-y: auto;
 }
 
 .tabs {
-    height: 99%;
+    border-bottom: none;
 }
 </style>
 
