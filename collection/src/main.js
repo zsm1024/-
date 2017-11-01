@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-default/index.css';
 import store from './store';
 import Mock from './mock';
 import vSelect from 'vue-select'
-
+import 'font-awesome/css/font-awesome.css'
 
 Mock.bootstrap();
 
