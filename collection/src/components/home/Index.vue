@@ -1,12 +1,6 @@
 <template>
     <div>
-        <div class="nav">
-        <div class="logo">
-     		<i class="el-icon-menu" @click=""></i>
-      		<a>催收管理系统</a>
-   		 </div>
-            <left-nav></left-nav>
-        <div  :class="{navopen:navopen,nav:nav}">
+        <div :class="{navopen:navopen,nav:nav}">
              <div class="left-nav">
                 <div class="logo" >
                 <i class="el-icon-menu" @click="colToggle()" ></i>
