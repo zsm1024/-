@@ -42,8 +42,6 @@ export default {
     border-bottom: none;
     height: 100%;
 }
-.el-tabs--border-card>.el-tabs__content{
-	height: 500px!important;
-}
+
 </style>
 

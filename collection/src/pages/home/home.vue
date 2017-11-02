@@ -7,4 +7,8 @@ export default {
     name: 'Index'
 }
 </script>
+<style>
+	.el-input{height: 35px;width: 100%;}
+	.el-form-item{background: none;}
+</style>
 

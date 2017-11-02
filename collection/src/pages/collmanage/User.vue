@@ -22,14 +22,14 @@
         </el-col>  
     <!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" border style="width: 100%;">
-			<el-table-column label="操作" width="80" fixed="left">
+			<el-table-column label="操作" width="80" fixed="left" >
 				<template scope="scope">
 					<el-button type="text" size="small" align="center" @click="DealFile(scope.$index, scope.row)">处理</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column type="index" width="60" sortable >
+			<el-table-column type="index" width="60" fixed="left" >
 			</el-table-column>
-			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
+			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
 		
 		</el-table>
@@ -146,7 +146,6 @@
 		}
 	}
 </script>
-<style>
-	
+<style>	
 </style>
 
