@@ -74,7 +74,9 @@ export default {
     width: 235px;
     min-height: 400px;
 }
-
+.el-popover, .el-tabs--border-card{
+    box-shadow: none;
+}
 .logo {
   display: flex;
   justify-content: center;

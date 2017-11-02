@@ -35,14 +35,11 @@ export default {
 </script>
 <style scoped>
 .right-pane {
-       height: 99%;
     padding: 0 0rem;
 }
 .tabs {
     border-bottom: none;
 }
-.el-tabs--border-card>.el-tabs__content{
-	height: 500px!important;
-}
+
 </style>
 
