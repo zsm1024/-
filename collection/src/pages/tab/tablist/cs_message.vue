@@ -8,7 +8,8 @@
 				<el-table :data="items.persons" border  >
 					<el-table-column label="操作"   align="center">
 						<template scope="scope">
-							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
+							<el-button type="danger" size="mini" v-if=" scope.row.m_path!='CMS'"  @click.native.prevent="deleteRow(scope.$index, items.persons)"> 移除</el-button>
 						</template>
 					</el-table-column>
 					<el-table-column :prop="cols.field"   :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
@@ -24,18 +25,20 @@
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
+			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
 			<el-collapse-item name="3" title="客户地址信息">	
 				<el-table :data="items.address" border >
 					<el-table-column label="操作" align="center">
 						<template scope="scope" >
-							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
+							<el-button type="danger" size="mini" v-if=" scope.row.m_path!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, items.address)"> 移除</el-button>
 						</template>
 					</el-table-column>
 					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center">
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols1.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols1.field]"></el-input>
 							<span v-show="scope.row.edit" v-if="cols1.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols1.field] }}</span>
-							<span v-show="!scope.row.edit" >{{ scope.row[cols1.field] }}</span>
+							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['validity']=='N'}">{{ scope.row[cols1.field] }}</span>
 							<el-select v-show="scope.row.edit" v-if="cols1.field=='validity'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
@@ -137,7 +140,7 @@
 					<el-col :span="12">
 						<el-form >
 							<el-form-item label="备注" prop="remark">
-								<el-input type="textarea" v-model="mainform.remark"></el-input>
+								<el-input type="textarea" v-model="mainform.remark" ></el-input>
 							</el-form-item>
 							<el-form-item>
 								<el-button type="primary" @click="onSubmit('mainform')">确认</el-button>
@@ -192,6 +195,10 @@ import { tab_view } from "@/api/api";
 export default {
   data() {
     return {
+    	classObject: {
+    		active: true,
+    		'text-danger': false
+  		},
     	activeNames:["1","2","3","4","5","6",'7',"8","9"],
      	items: [],
      	height:"",
@@ -245,15 +252,23 @@ export default {
     };
   },
   methods: {
+
+		deleteRow(index, rows) {
+			rows.splice(index, 1);
+		},
+		deleteAdress(index, rows) {
+			rows.splice(index, 1);
+		},
 		ring(phoneNum){
-				var divDom = this.$refs.abc;   	 
-				divDom.scrollTop=divDom .scrollHeight;
+			var divDom = this.$refs.abc;   	 
+			divDom.scrollTop=divDom .scrollHeight;
 		},
 		phoneEdit(row){
-				
+			console.log(row.edit);
 			row.edit=!row.edit;
 		
 		},
+		
 		addressEdit(row){
 				
 			row.edit=!row.edit;

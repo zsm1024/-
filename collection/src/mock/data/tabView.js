@@ -29,7 +29,7 @@ const TabView=[
     	"address":[
     		{"persontype":"主借人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},
     		{"persontype":"共借人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},
-    		{"persontype":"担保人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"}
+    		{"persontype":"担保人","name":"胡家刚","address":"河北省保定市XXX","m_path":"ECMS","validity":"Y"}
     	],
     	"username":"马晓华",
     	"sex":"男",
