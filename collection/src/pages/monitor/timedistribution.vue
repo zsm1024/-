@@ -54,7 +54,7 @@
 				lists: [],
 				cols: [],
 				total: 0,
-				pagesize: 20,
+				pagesize: 10,
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列
