@@ -102,8 +102,9 @@
 					</el-col>
 				</el-row>
 				<el-row>
+					<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;" >
 					<el-col :span="11">
-						<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;" >
+						
 							<div class="first">
 								<el-form-item label="行动代码" prop="daima">
 									<v-select v-model="mainform.daima" :options="getdaima"></v-select>
@@ -135,10 +136,10 @@
 									</el-col>
 								</el-form-item>								
 							</div>				
-						</el-form>
+						
 					</el-col>
 					<el-col :span="12">
-						<el-form >
+						
 							<el-form-item label="备注" prop="remark">
 								<el-input type="textarea" v-model="mainform.remark" ></el-input>
 							</el-form-item>
@@ -147,12 +148,12 @@
 								<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
 							</el-form-item>
 							
-						</el-form>
+						
 	
 					</el-col>
 					
 					
-					
+					</el-form>
 				</el-row>
 			
 			</el-collapse-item>	
@@ -276,12 +277,18 @@ export default {
 		//短信方法
 		confirmmessage() {
 				this.messageopen=false;
-				alert('保存成功')
+				this.$message({
+					type:'success',
+					message:'保存成功',
+				});
 		},
 		//备注方法
 		confirmremarkopen() {
 				this.remarkopen=false;
-				alert('保存成功')
+				this.$message({
+					type:'success',
+					message:'保存成功',
+				});
 
 		},
 
@@ -289,7 +296,10 @@ export default {
 		onSubmit(mainform) {
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
-					alert('提交成功!');
+					this.$message({
+					type:'success',
+					message:'提交成功',
+				});
 				} else {
 					console.log('error submit!!');
 					return false;
@@ -299,7 +309,10 @@ export default {
 		onSubmitnext(mainform) {
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
-					alert('提交成功，处理下一条!');
+					this.$message({
+						type:'success',
+						message:'提交成功，处理下一条',
+					});
 					this.getlist();
 					this.$refs['mainform'].resetFields();
 				} else {
