@@ -35,10 +35,9 @@ export default {
 </script>
 <style scoped>
 .right-pane {
-    height: 99%;
-    padding: 0 0.3rem;
+       height: 99%;
+    padding: 0 0rem;
 }
-
 .tabs {
     /*border-bottom: none*/
    height: 100%;

@@ -74,69 +74,7 @@ export default {
 };
 </script>
 <style scoped>
-/*.nav {
-    position: absolute;
-    left: 0;
-    top: 5px;
-    bottom: 0;
-    min-width:60px;
-    width:5rem;
-    background-color: #324157;
-}
-.navopen {
-    position: absolute;
-    left: 0;
-    top: 5px;
-    bottom: 0;
-    width:15rem;
-    background-color: #324157;
-}
-.pane {
-    position: absolute;
-    left:5rem;
-    top:5px;
-    bottom: 0;
-    right: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-.paneopen {
-    position: absolute;
-    left:15rem;
-    top: 5px;
-    bottom: 0;
-    right: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-}*/
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 230px;
-    height:95%!important;
-    overflow-y: auto;
-}
-.el-menu--collapse{
-	 height:95%!important;
-	 width: 70px;
-}
-.logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  height:5%;
-  background: #324157;
-  border-bottom: solid 0.01rem #48576a;
-}
-.logo a{
-  color:#fff;
-}
-i {
-  margin-right: 0.5rem;
-}
 
-.left-nav {
-  padding: 0.3rem 0.3rem 0;
-  height: 99%;
-}
+
 </style>
 
