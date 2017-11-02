@@ -23,8 +23,8 @@ const TabView=[
     	"statues":"正常催收",
     	"persons":[
     		{"persontype":"主借人","name":"胡家刚","phoneNum":"13464545454","m_path":"WCMS","validity":"Y"},
-    		{"persontype":"共借人","name":"胡家刚","phoneNum":"13464545454","m_path":"WCMS","validity":"Y"},
-    		{"persontype":"担保人","name":"胡家刚","phoneNum":"13464545454","m_path":"CMS","validity":"Y"}
+    		{"persontype":"共借人","name":"胡家刚","phoneNum":"13464545454","m_path":"WCMS","validity":"N"},
+    		{"persontype":"担保人","name":"胡家刚","phoneNum":"13464545454","m_path":"CMS","validity":"N"}
     	],
     	"address":[
     		{"persontype":"主借人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},

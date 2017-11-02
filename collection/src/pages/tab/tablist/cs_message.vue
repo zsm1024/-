@@ -5,17 +5,17 @@
 				<p>{{items.statues}}</p>				
 			</el-collapse-item>	
 			<el-collapse-item name="2" title="客户电话信息">	
-				<el-table :data="items.persons" border >
-					<el-table-column label="操作"  align="center">
+				<el-table :data="items.persons" border  >
+					<el-table-column label="操作"   align="center">
 						<template scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' icon="edit"  >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field" :label="cols.title"  v-for="(cols, index) in cols" :key="index" align="center">
+					<el-table-column :prop="cols.field"   :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols.field]"></el-input>
 							<span v-show="scope.row.edit" v-if="cols.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols.field] }}</span>
-							<span v-show="!scope.row.edit" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
+							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
 							<el-select v-show="scope.row.edit" v-if="cols.field=='validity'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
@@ -245,17 +245,17 @@ export default {
     };
   },
   methods: {
-  	ring(phoneNum){
-    	 var divDom = this.$refs.abc;   	 
-    	 divDom.scrollTop=divDom .scrollHeight;
-   },
+		ring(phoneNum){
+				var divDom = this.$refs.abc;   	 
+				divDom.scrollTop=divDom .scrollHeight;
+		},
 		phoneEdit(row){
-				console.log(row.edit);
+				
 			row.edit=!row.edit;
 		
 		},
 		addressEdit(row){
-				console.log(row.edit);
+				
 			row.edit=!row.edit;
 		},
 		//短信方法
@@ -293,26 +293,28 @@ export default {
 				}
 			});
 		},
-    getlist() {
-    	let para = {
-				id: this.id
+		getlist() {
+			let para = {
+					id: this.id
 			};
-      tab_view(para).then(res => {
-        let data = res.data.msg[0]
+			tab_view(para).then(res => {
+				let data = res.data.msg[0]
 				this.items = data.data[0];
 				this.items.persons = this.items.persons.map(v => {
-          this.$set(v, 'edit', false)
-          return v
+					this.$set(v, 'edit', false)
+					return v;
+					
 				});
+				
 				this.items.address = this.items.address.map(v => {
-          this.$set(v, 'edit', false)
-          return v
+					this.$set(v, 'edit', false)
+					return v
 				})
 				this.remarkform.remark = this.items.notice;
-        this.cols=data.cols;
-        this.cols1=data.cols1;   
-        this.height=document.documentElement.clientHeight-400;       
-      });
+				this.cols=data.cols;
+				this.cols1=data.cols1;   
+				this.height=document.documentElement.clientHeight-400;       
+			});
     },
     
   },
@@ -337,4 +339,7 @@ export default {
 	.el-col .el-icon-upload2:hover{color: #4db3ff;}
 	.el-col .el-icon-edit:hover{color: #4db3ff;}
 	.el-col .el-icon-message:hover{color:#4db3ff}
+	.changecolor{
+		color: red;
+	}
 </style>
