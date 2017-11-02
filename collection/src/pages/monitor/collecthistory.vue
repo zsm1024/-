@@ -17,11 +17,11 @@
 
 		<!--列表-->
 		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
-			<el-table-column type="selection" width="55">
+			<el-table-column type="selection" >
 			</el-table-column>
 			
 			
-			<el-table-column :prop="col.field" :label="col.title" width="180" v-for="(col, index) in cols" :key="index" >
+			<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
      
 		</el-table>
