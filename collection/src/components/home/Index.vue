@@ -40,6 +40,8 @@ export default {
 
     width:5rem;
     background-color: #324157;
+	color:#000;
+
 }
 .navopen {
     position: absolute;
@@ -48,6 +50,7 @@ export default {
     bottom: 0;
     width:15rem;
     background-color: #324157;
+
 }
 .pane {
     position: absolute;
@@ -90,6 +93,7 @@ i {
 .left-nav {
  padding: 0.3rem;
 }
+
 
 </style>
 

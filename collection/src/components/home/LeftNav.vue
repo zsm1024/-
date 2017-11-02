@@ -1,7 +1,7 @@
 <template>
    <div class="left-nav">
-      <div class="logo" >
-      <i class="el-icon-menu" @click="colToggle()" ></i>
+      <div class="logo" @click="colToggle()" title="点击展开或关闭该列表" >
+      <i class="el-icon-menu" ></i>
       <a v-show="!isCollapse">催收管理系统</a>
       </div>
 
