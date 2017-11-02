@@ -19,12 +19,12 @@
 		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="操作" width="150" >
+			<el-table-column label="操作"  >
 				<template  scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column :prop="col.field" :label="col.title" width="180" v-for="(col, index) in cols" :key="index" >
+			<el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 		</el-table>
 
@@ -54,7 +54,7 @@
 				lists: [],
 				cols: [],
 				total: 0,
-				pagesize: 20,
+				pagesize: 10,
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列
