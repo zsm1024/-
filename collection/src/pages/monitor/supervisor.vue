@@ -48,7 +48,7 @@
 			<el-table-column type="selection" >
 			</el-table-column>
 			<el-table-column fixed label="操作"  >
-				<template scope="scope">
+				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >处理</el-button>
 				</template>
 			</el-table-column>
@@ -71,7 +71,7 @@
 
 <script>
 //import NProgress from 'nprogress'
-import { getsupervisor } from "@/api/api";
+import { getsupervisor } from "@/api/monitor";
 
 export default {
   data() {
@@ -135,6 +135,7 @@ export default {
       };
       this.listLoading = true;
       //NProgress.start();
+
       getsupervisor(para).then(res => {
         this.total = res.data.total;
 				this.lists = res.data.data;

@@ -315,6 +315,8 @@ export default {
 					});
 					this.getlist();
 					this.$refs['mainform'].resetFields();
+					var divDom = this.$refs.abc;   	 
+					divDom.scrollTop=0;
 				} else {
 					console.log('error submit!!');
 					return false;

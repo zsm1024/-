@@ -17,8 +17,7 @@ const NavView = [
     icon: 'fa fa-th-list',
     list:[
       {id:2-1,path:"monitor/supervisor",title:"主管任务监控"},
-      {id:2-2,path:"monitor/timedistribution",title:"岗位任务实时分布监控"},
-      {id:2-3,path:"monitor/userdistribution",title:"用户任务实时分布监控"},
+      {id:2-2,path:"monitor/stributotal",title:"任务分布监控"},
       {id:2-4,path:"monitor/collecthistory",title:"催收历史监控"}
     ]
   }

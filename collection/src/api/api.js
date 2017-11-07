@@ -10,17 +10,6 @@ export const getUserListPage1 = params => { return axios.get(`${base}/user1/list
 
 export const nav_view = params => { return axios.get(`${base}/nav_view`, { params: params }); };
 
-export const station = params => { return axios.get(`${base}/station`, { params: params }); };
-
-export const userstation = params => { return axios.get(`${base}/userstation`, { params: params }); };
-
-export const getsupervisor = params => { return axios.get(`${base}/getsupervisor`, { params: params }); };
-
-export const getstation = params => { return axios.get(`${base}/getstation`, { params: params }); };
-
-export const gethistory = params => { return axios.get(`${base}/gethistory`, { params: params }); };
-
-
 //电催队列数据
 //催收信息
 export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
