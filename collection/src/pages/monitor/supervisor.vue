@@ -86,7 +86,7 @@ export default {
         city:"",
         area:""
 			},
-			id:this.$store.state.navTabs.tabId ,
+			id:this.$store.state.navTabs.tabId,
 			lists: [],
 			cols: [],
       total: 0,

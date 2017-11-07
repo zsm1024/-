@@ -10,7 +10,7 @@ import store from './store';
 import Mock from './mock';
 import vSelect from 'vue-select'
 import 'font-awesome/css/font-awesome.css'
-
+import Validator from 'vue-validator'
 Mock.bootstrap();
 
 
@@ -18,7 +18,7 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueResource);
 Vue.component('v-select', vSelect);
-
+Vue.use(Validator)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

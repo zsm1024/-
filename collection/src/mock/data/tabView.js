@@ -4,9 +4,14 @@ const TabView=[
         cols:[
             {title:'角色',field:'persontype',width:"90"},
             {title:'姓名',field:'name',width:"90"},
+            {title:'性别',field:'sex',width:"130"},
             {title:'电话',field:'phoneNum',width:"130"},
+            {title:'证件类型',field:'cardType',width:"100"},
+            {title:'证件号码',field:'cardCode',width:"100"},
+            {title:'出生日期',field:'birth',width:"100"},
             {title:'信息来源',field:'m_path',width:"100"},
             {title:'有效性',field:'validity',width:"100"},
+            
    
         ],
         cols1:[
@@ -22,9 +27,9 @@ const TabView=[
     	"id":1,
     	"statues":"正常催收",
     	"persons":[
-    		{"persontype":"主借人","name":"胡家刚","phoneNum":"13464545454","m_path":"WCMS","validity":"Y"},
-    		{"persontype":"共借人","name":"胡家刚","phoneNum":"13464545454","m_path":"WCMS","validity":"N"},
-    		{"persontype":"担保人","name":"胡家刚","phoneNum":"13464545454","m_path":"CMS","validity":"N"}
+    		{"persontype":"主借人","name":"胡家刚",'sex':'男',"phoneNum":"13464545454","m_path":"WCMS","validity":"Y",'cardType':'居民身份证','cardCode':'130623154684782455','birth':'1990-04-02'},
+    		{"persontype":"共借人","name":"胡家刚",'sex':'男',"phoneNum":"13464545454","m_path":"WCMS","validity":"N",'cardType':'居民身份证','cardCode':'130623154684782455','birth':'1990-04-02'},
+    		{"persontype":"担保人","name":"胡家刚",'sex':'男',"phoneNum":"13464545454","m_path":"CMS","validity":"N",'cardType':'居民身份证','cardCode':'130623154684782455','birth':'1990-04-02'}
     	],
     	"address":[
     		{"persontype":"主借人","name":"胡家刚","address":"河北省保定市XXX","m_path":"CMS","validity":"Y"},

@@ -74,7 +74,7 @@ export default {
 };
 </script>
 <style scoped>
-
-
+.left-nav .logo{cursor: pointer;width: 100%;}
+.left-nav .logo:hover{background:#48576a;}
 </style>
 

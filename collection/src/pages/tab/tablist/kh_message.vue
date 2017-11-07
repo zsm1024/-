@@ -5,7 +5,7 @@
 				<template slot="title" ><span class="titles">当事人基本信息</span></template>
 				<div>
 					<el-table :data="baseData" border stripe>
-						<el-table-column :prop="baseTitle.field" :label="baseTitle.title" :width="baseTitle.width" v-for="(baseTitle, index) in baseTitle" :key="index" align="center">
+						<el-table-column :prop="baseTitle.field" :label="baseTitle.title"  v-for="(baseTitle, index) in baseTitle" :key="index" align="center">
 						</el-table-column>			
 					</el-table>
 				</div>
@@ -15,7 +15,7 @@
 				<template slot="title" ><span class="titles">联系电话信息</span></template>
 				<div>					
 					<el-table :data="phonedata" border stripe>
-						<el-table-column :prop="phoneinfo.field" :label="phoneinfo.title" :width="phoneinfo.width" v-for="(phoneinfo, index) in phoneinfo" :key="index" align="center">
+						<el-table-column :prop="phoneinfo.field" :label="phoneinfo.title"  v-for="(phoneinfo, index) in phoneinfo" :key="index" align="center">
 						</el-table-column>			
 					</el-table>
 
@@ -27,7 +27,7 @@
 				<template slot="title" ><span class="titles">联系地址信息</span></template>
 				<div>
 					<el-table :data="addressdata" border stripe>
-						<el-table-column :prop="addressinfo.field" :label="addressinfo.title" :width="addressinfo.width" v-for="(addressinfo, index) in addressinfo" :key="index" align="center">
+						<el-table-column :prop="addressinfo.field" :label="addressinfo.title" v-for="(addressinfo, index) in addressinfo" :key="index" align="center">
 						</el-table-column>			
 					</el-table>
 					

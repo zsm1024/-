@@ -4,7 +4,7 @@
 			<el-collapse-item name="1">
 				<template slot="title" ><span class="titles">催收信息</span></template>					
 				<el-table :data="items" border :default-expand-all="true">
-					<el-table-column type="expand">
+					<el-table-column type="expand" >
 						<template slot-scope="items">
 							<el-form  inline class="demo-table-expand BZ">
          						<el-form-item label="备注：">
@@ -13,7 +13,7 @@
 							</el-form>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center">
+					<el-table-column :prop="cols.field" min-width="130" :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
 					</el-table-column>									
 				</el-table>
 								
@@ -21,21 +21,21 @@
 			<el-collapse-item name="2">
 				<template slot="title" ><span class="titles">案件备注</span></template>	
 				<el-table :data="item" border >
-					<el-table-column :prop="title.field" :label="title.title" :width="title.width" v-for="(title, index) in title" :key="index" align="center">
+					<el-table-column :prop="title.field" :label="title.title"  v-for="(title, index) in title" :key="index" align="center">
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>
 			<el-collapse-item name="3">
-				<template slot="title" ><span class="titles">催收轨迹</span></template>	
-				<el-table :data="pathMsg" border >
-					<el-table-column :prop="path.field" :label="path.title" :width="path.width" v-for="(path, index) in path" :key="index" align="center">
+				<template slot="title"><span class="titles">催收轨迹</span></template>	
+				<el-table :data="pathMsg" border>
+					<el-table-column :prop="path.field" :label="path.title"  v-for="(path, index) in path" min-width="130" :key="index" align="center">
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>
 			<el-collapse-item name="4">
 				<template slot="title" ><span class="titles">行动代码</span></template>	
 				<el-table :data="activeMsg" border >
-					<el-table-column :prop="actives.field" :label="actives.title" :width="actives.width" v-for="(actives, index) in actives" :key="index" align="center">
+					<el-table-column :prop="actives.field" :label="actives.title" :width="80" v-for="(actives, index) in actives" :key="index" align="center">
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>
@@ -83,8 +83,8 @@
 		},
 		mounted() {
    			this.getmessage();
-   			 let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
-   this.$refs.abc.style.height= h+"px"
+   			let h = (window.innerHeight || document.documentElement.clientHeight || 			document.body.clientHeight)-155;
+   			this.$refs.abc.style.height= h+"px"
   		}
 	}
 </script>

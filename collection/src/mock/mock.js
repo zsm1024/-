@@ -44,9 +44,6 @@ export default {
     mock.onGet('/deal').reply(config => {
       
       let {id} = config.params;
-
-    
-     
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
@@ -225,7 +222,9 @@ export default {
     	mock.onGet('/userinfo').reply(200, {
         msg:userInfo
    });
-   
+    mock.onGet('/addInfo').reply(200, {
+      msg: 'ok'
+    });
     // //获取用户列表
     // mock.onGet('/user/list').reply(config => {
     //    //config.params放的是用户输入的name,params是user.vue中传递的
@@ -285,6 +284,28 @@ export default {
               }, 1000);
             });
           });
+          
+          
+      mock.onGet('/addInfo').reply(config =>{
+      	
+      	 let {UType, UNname,UPhone} = config.params;
+      	 return new Promise((resolve, reject)=> {    	 	
+      	 	  setTimeout(() => {
+                resolve([200, {
+                  
+                  
+                  
+                }]);
+              }, 1000);
+      	 	
+      	 	
+      	 	
+      	 })
+      	 
+      	
+      	
+      	
+      })
 
   }
 };

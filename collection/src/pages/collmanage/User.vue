@@ -29,7 +29,7 @@
 			</el-table-column>
 			<el-table-column type="index" width="60" fixed="left" >
 			</el-table-column>
-			<el-table-column :prop="cols.field" :label="cols.title" :width="cols.width" v-for="(cols, index) in cols" :key="index" align="center" >
+			<el-table-column :prop="cols.field" :label="cols.title" :min-width="160" v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
 		
 		</el-table>

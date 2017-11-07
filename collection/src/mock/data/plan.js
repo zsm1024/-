@@ -47,7 +47,7 @@ const liushui = [
     }
 
 ];
-for (let i = 0; i < 12; i++) {
+for (let i = 0; i < 12; i++){
     liushui[0].data.push(Mock.mock({
         id: Mock.Random.guid(),
         coldata: Mock.Random.date(),

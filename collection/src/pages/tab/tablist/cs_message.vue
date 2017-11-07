@@ -4,15 +4,16 @@
 			<el-collapse-item name="1" title="催收状态">				
 				<p>{{items.statues}}</p>				
 			</el-collapse-item>	
-			<el-collapse-item name="2" title="客户电话信息">	
+			<el-collapse-item name="2" title="客户电话信息">
+				<el-button class="filter-item" style="margin: 0 0 10px 10px;"  type="primary" icon="edit" @click="addUserInfos = true">添加</el-button>
 				<el-table :data="items.persons" border  >
-					<el-table-column label="操作"   align="center">
+					<el-table-column label="操作" min-width="120"  align="center">
 						<template scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
 							<el-button type="danger" size="mini" v-if=" scope.row.m_path!='CMS'"  @click.native.prevent="deleteRow(scope.$index, items.persons)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field"   :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
+					<el-table-column :prop="cols.field" min-width="160"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols.field]"></el-input>
 							<span v-show="scope.row.edit" v-if="cols.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols.field] }}</span>
@@ -22,7 +23,7 @@
 								<el-option label="N" value="N"></el-option>
 							</el-select>
 						</template>
-					</el-table-column>			
+					</el-table-column>
 				</el-table>				
 			</el-collapse-item>	
 			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
@@ -87,13 +88,14 @@
 					</tr>
 				</table>
 			</el-collapse-item>	
+			<el-collapse-item name="8" title="备注">			
+				<p>{{remarkform.remark}}</p>
+			</el-collapse-item>
 			<el-collapse-item name="7" title="话术指引">			
 				<p>{{items.remarkMessage}}</p>
 			</el-collapse-item>	
-			<el-collapse-item name="8" title="备注">			
-				<p>{{remarkform.remark}}</p>
-			</el-collapse-item>	
-			<el-collapse-item name="9" title="客户信息维护">
+				
+			<el-collapse-item name="9" title="催收记录">
 				<el-row>
 					<el-col :span="24">
 						<i class="el-icon-edit" @click="remarkopen = true">备注</i>
@@ -186,29 +188,65 @@
 			<div slot="footer" class="dialog-footer">
 				<el-button type="primary" @click="confirmmessage">确 定</el-button>
 			</div>
-		</el-dialog>		
+		</el-dialog>	
+		<el-dialog title="新增客户电话信息" :visible.sync="addUserInfos" >
+			<el-form :model="AdduserForm" ref="AdduserForm" :rules="rules">
+				<el-form-item label="角色：" prop="UType" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.UType" ></el-input>
+				</el-form-item>
+				<el-form-item label="姓名：" prop="UName" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.UName"></el-input>
+				</el-form-item>
+				<el-form-item type="number" label="电话：" prop="UPhone" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.UPhone" ></el-input>
+				</el-form-item>
+				<el-form-item label="信息来源：" :label-width="formLabelWidth">
+					<el-input disabled value="WCMS"></el-input>
+				</el-form-item>
+				<el-form-item label="有效性：" :label-width="formLabelWidth">
+					<el-input disabled value="Y"></el-input>
+				</el-form-item>				
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+        <el-button @click="addUserInfos = false">取 消</el-button>
+ <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
+        <el-button  type="primary" @click.native.prevent="choice">确 定</el-button>
+      </div>
+			
+		</el-dialog>
+		
 	</section>
 </template>
 
 <script>
-import { tab_view } from "@/api/api";
+import { tab_view,addInfo } from "@/api/api";
+import { isCodeNum, isPhoneNum } from "@/utils/validate";
 export default {
   data() {
-    return {
-    	classObject: {
-    		active: true,
-    		'text-danger': false
-  		},
-    	activeNames:["1","2","3","4","5","6",'7',"8","9"],
-     	items: [],
-     	height:"",
-     	cols:[],
+	  	const PhoneNum =(rule,value,callback)=>{
+				 if (! isPhoneNum(value)) {					   
+					console.log(isPhoneNum(value))
+					callback(new Error('您输入的'))
+				}else{					
+					callback()
+					return false;
+				}
+		}
+    	return {
+			classObject: {
+				active: true,
+				'text-danger': false
+			},
+			activeNames:["1","2","3","4","5","6",'7',"8","9"],
+			items: [],
+			height:"",
+			cols:[],
+			dialogStatus: '',
 			cols1:[],
-			id:this.$store.state.navTabs.tabId,
-
+			id:this.$store.state.navTabs.tabId,	
 			remarkopen: false,
 			messageopen: false,
-
+			addUserInfos:false,
 			formLabelWidth: '120px',
 			//备注弹出层
 			remarkform: {
@@ -222,7 +260,13 @@ export default {
 				messagedesc: '',
 
 			},
-
+			//用户信息弹出层
+			AdduserForm:{
+				UType:"",
+				UName:"",
+				UPhone:""
+	
+			},						
 			mainform: {
 					daima: '',
 					money: '',
@@ -231,14 +275,26 @@ export default {
 					fangshi: false,
 					accdatetime: '',
 					remark:'',
-			},
+			},		
 			rules: {
-					daima: [
-            { required: true, message: '请输入行动代码', trigger: 'blur' }
-					],
-					remark: [
-            { required: true, message: '请填写备注', trigger: 'blur' }
-          ]
+				daima: [
+            		{ required: true, message: '请输入行动代码', trigger: 'blur' }
+				],
+				remark: [
+           			 { required: true, message: '请填写备注', trigger: 'blur' }
+         		],
+				UPhone:[
+					{ required:true, trigger: 'blur',validator:PhoneNum},
+					
+				],
+				UType:[
+					{required:true,message:"请输入角色信息", trigger: 'blur',validator:isCodeNum},
+					
+				],
+				UName:[
+					{required:true,message:"请输入角色姓名", trigger: 'blur'},
+					
+				],
 			},
 			getdaima: ['PTP','TSM'],
 			getname: ['借款人','共借人','担保人'],
@@ -252,7 +308,40 @@ export default {
     };
   },
   methods: {
-
+ 		choice(){	
+ 		
+ 			let para ={
+    			UType:this.UType,
+    			UNname:this.UNname,
+    			UPhone:this.UPhone
+    	};
+    	if(this.$refs['AdduserForm'].model.UType!=""&&this.$refs['AdduserForm'].model.UName!=""&&this.$refs['AdduserForm'].model.UPhone!=""){
+    		addInfo(para).then(res =>{
+    		if(res.data.msg=="ok"){
+    			this.items.persons.unshift(
+				{"persontype":this.$refs['AdduserForm'].model.UType	,"name":this.$refs['AdduserForm'].model.UName,"phoneNum":this.$refs['AdduserForm'].model.UPhone,"m_path":"WCMS","val						idity":"Y"},	
+				
+			);
+			this.addUserInfos=false;
+			this.$refs['AdduserForm'].resetFields();
+    		}else{
+    			alert("数据未同步")
+    		}   		   		
+    		})
+    	}else{
+    		
+    		this.addUserInfos=true;
+    		this.$refs.AdduserForm.validate((valid) => {
+         		if (valid) {
+				
+           		 alert('submit!');
+          	} else {
+				  console.log('error submit!')
+            	return false;
+          }
+        });
+    	}   	
+ 		},
 		deleteRow(index, rows) {
 			rows.splice(index, 1);
 		},
@@ -284,8 +373,11 @@ export default {
 				alert('保存成功')
 
 		},
-
-
+		//添加客户信息方法
+		addUserInfo(){
+			this.addUserInfos=false;
+			
+		},
 		onSubmit(mainform) {
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
@@ -307,7 +399,7 @@ export default {
 					return false;
 				}
 			});
-		},
+		},		 		
 		getlist() {
 			let para = {
 					id: this.id
@@ -330,7 +422,7 @@ export default {
 				this.cols1=data.cols1;   
 				this.height=document.documentElement.clientHeight-400;       
 			});
-    },
+   },
     
   },
   mounted() {

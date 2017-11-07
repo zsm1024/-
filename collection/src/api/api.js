@@ -24,6 +24,12 @@ export const gethistory = params => { return axios.get(`${base}/gethistory`, { p
 //电催队列数据
 //催收信息
 export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
+
+//催收信息新增数据
+
+export const addInfo = params => { return axios.get(`${base}/addInfo`, { params: params }); };
+
+
 //合同信息
 export const getdeal = params => { return axios.get(`${base}/deal`, { params: params }); };
 //催收历史
@@ -41,5 +47,7 @@ export const getliushui = params => { return axios.get(`${base}/liushui`, { para
 
 //cms历史信息
 export const getcmsdetails = params => { return axios.get(`${base}/cmsdetails`, { params: params }); };
+
 export const getcmshistory = params => { return axios.get(`${base}/cmshistory`, { params: params }); };
+
 
