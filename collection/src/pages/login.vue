@@ -4,15 +4,15 @@
       class="card-box login-form">
       <h3 class="title">系统登录</h3>
       <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
+        <!-- <span class="svg-container svg-container_login">
          <i class="" />
-        </span>
+        </span> -->
         <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
       </el-form-item>
       <el-form-item prop="password">
-        <span class="svg-container">
+        <!-- <span class="svg-container">
           <i class=""></i>
-        </span>
+        </span> -->
         <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
           placeholder="password"></el-input>
       </el-form-item>

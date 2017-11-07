@@ -20,7 +20,7 @@
 			<el-table-column type="selection" width="55">
 			</el-table-column>
 			<el-table-column label="操作"  >
-				<template  scope="scope">
+				<template  slot-scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
 				</template>
 			</el-table-column>
@@ -43,7 +43,7 @@
 <script>
 	
 	//import NProgress from 'nprogress'
-	import { station } from '@/api/api';
+	import { station } from '@/api/monitor';
 
 	export default {
 		data() {

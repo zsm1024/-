@@ -1,10 +1,52 @@
 import Mock from 'mockjs';
 
+const stationtotal = [
+    {
+        cols:[
+            {title:'岗位名称',field:'stationname'},
+            {title:'数量',field:'num'},
+        ],
+           
+        data: [{
+            id: 1,
+            stationname: '前期电催岗（2-5）天',
+            num: 80,
+        },
+        {
+            id: 2,
+            stationname: '后期电催岗（2-5）天',
+            num: 75,
+        }]
+    }
+
+    
+];
+
+const userstationtotal = [
+    { 
+        cols:[
+            {title:'用户名称',field:'username'},
+            {title:'数量',field:'num'},
+          
+        ],
+        data:[]
+    }
+
+];
+for (let i = 0; i < 43; i++) {
+    userstationtotal[0].data.push(Mock.mock({
+        id: Mock.Random.guid(),
+        username: Mock.Random.cname(),
+        num: Mock.Random.integer(0,100),
+      
+  }));
+}
+
 const station = [
     {
         cols:[
-            {title:'队列名称',field:'queuename'},
             {title:'岗位名称',field:'stationname'},
+            {title:'队列名称',field:'queuename'},
             {title:'数量',field:'num'},
             {title:'逾期应收款总计',field:'overduerec'},
             {title:'剩余总金额',field:'surplustotalmoney'},
@@ -14,8 +56,8 @@ const station = [
            
         data: [{
             id: 1,
-            queuename: '前期电催队列（2-10）天',
             stationname: '前期电催岗（2-5）天',
+            queuename: '前期电催队列（2-10）天',
             num: 80,
             overduerec: '￥540729.36',
             surplustotalmoney: '￥5252368.81',
@@ -24,8 +66,8 @@ const station = [
         },
         {
             id: 2,
-            queuename: '后期电催队列（2-10）天',
             stationname: '后期电催岗（2-5）天',
+            queuename: '后期电催队列（2-10）天',
             num: 75,
             overduerec: '￥640729.36',
             surplustotalmoney: '￥6252368.81',
@@ -40,6 +82,7 @@ const userstation = [
     { 
         cols:[
             {title:'用户名称',field:'username'},
+            {title:'队列名称',field:'queuename'},
             {title:'数量',field:'num'},
             {title:'逾期应收款总计',field:'overduerec'},
             {title:'剩余总金额',field:'surplustotalmoney'},
@@ -53,6 +96,7 @@ const userstation = [
 for (let i = 0; i < 43; i++) {
     userstation[0].data.push(Mock.mock({
         id: Mock.Random.guid(),
+        queuename:'后期电催队列（2-10）天',
         username: Mock.Random.cname(),
         num: Mock.Random.integer(0,100),
         'overduerec|10000-90000.1-2': 1,
@@ -158,4 +202,4 @@ for (let i = 0; i < 43; i++) {
   }));
 }
 
-export { station,userstation,supervisor,history };
+export { station,userstation,supervisor,history,stationtotal,userstationtotal };

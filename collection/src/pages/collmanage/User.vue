@@ -23,7 +23,7 @@
     <!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" border style="width: 100%;">
 			<el-table-column label="操作" width="80" fixed="left" >
-				<template scope="scope">
+				<template slot-scope="scope">
 					<el-button type="text" size="small" align="center" @click="DealFile(scope.$index, scope.row)">处理</el-button>
 				</template>
 			</el-table-column>

@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 // MockAdapter是一个模拟后台get的请求，es6语法
 import { List2 } from './data/user1';
 import { LoginUsers, userList } from './data/user';
-import { station, userstation, supervisor,history } from './data/monitor';
+import { station, userstation, supervisor,history,stationtotal,userstationtotal } from './data/monitor';
 import { deal } from './data/deal';
 import { plan,liushui,cmshistory,cmsdetails } from './data/plan';
 import { NavView } from './data/navview';
@@ -37,6 +37,48 @@ export default {
             total: total,
             data: mockstation,
             cols: station[0].cols
+          }]);
+        }, 1000);
+      });
+    });
+    mock.onGet('/stationtotal').reply(config => {
+      
+      let {page, name} = config.params;
+   
+      let mockstation = stationtotal[0].data.filter(stationsearch => {
+        if (name && stationsearch.queuename.indexOf(name) == -1) return false;
+        return true;
+      });
+
+      let total = stationtotal[0].data.length;
+      mockstation = mockstation.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            data: mockstation,
+            cols: stationtotal[0].cols
+          }]);
+        }, 1000);
+      });
+    });
+    mock.onGet('/userstationtotal').reply(config => {
+      
+      let {page, name, pagesize} = config.params;
+      let mockuserstation = userstationtotal[0].data.filter(user => {
+        
+        if (name && user.username.indexOf(name) == -1) return false;
+        return true;
+      });
+      
+      let total = userstationtotal[0].data.length;
+      mockuserstation = mockuserstation.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            data: mockuserstation,
+            cols: userstationtotal[0].cols
           }]);
         }, 1000);
       });
@@ -205,14 +247,14 @@ export default {
     mock.onGet('/error').reply(500, {
       msg: 'failure'
     });
-
+    
     mock.onGet('/nav_view').reply(200, {
         msg: NavView
-      });
-      //催收信息
+    });
+    //催收信息
  		mock.onGet('/tab_view').reply(200, {
         msg:TabView
-   });
+    });
    //催收历史
    
    	mock.onGet('/tab_message').reply(200, {

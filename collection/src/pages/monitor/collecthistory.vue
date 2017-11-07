@@ -40,7 +40,7 @@
 
 <script>
 //import NProgress from 'nprogress'
-import { gethistory } from "@/api/api";
+import { gethistory } from "@/api/monitor";
 
 export default {
   data() {
