@@ -2,6 +2,20 @@
 	<section>
         <el-collapse v-model="activeNames" >
 			<el-collapse-item title="各岗位任务数量" name="1">
+				<!--工具条-->
+				<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+					<el-form :inline="true" :model="filters">
+						<el-form-item>
+							<el-input v-model="filters.station" placeholder="岗位名称"></el-input>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary"  @click="getlists" >查询</el-button>
+						</el-form-item>
+						<el-form-item>
+						
+						</el-form-item>
+					</el-form>
+				</el-col>
                 <!--列表-->
                 <el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>
                     
@@ -22,6 +36,20 @@
                 </el-col>
             </el-collapse-item>
             <el-collapse-item title="各用户任务数量" name="2">
+				<!--工具条-->
+				<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+					<el-form :inline="true" :model="filters">
+						<el-form-item>
+							<el-input v-model="filters.name" placeholder="用户名称"></el-input>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="getliststwo" >查询</el-button>
+						</el-form-item>
+						<el-form-item>
+						
+						</el-form-item>
+					</el-form>
+				</el-col>
                 <!--列表-->
                 <el-table :data="liststwo" highlight-current-row v-loading="listLoadingtwo"  style="width: 100%;" stripe>
                     <el-table-column type="selection" width="55">
@@ -54,6 +82,10 @@
 	export default {
 		data() {
 			return {
+				filters: {
+					name: '',
+					station:'',
+				},
 				activeNames: ['1','2'],
 				lists: [],
 				cols: [],
@@ -133,6 +165,7 @@
 			getlists() {
 				let para = {
 					page: this.page,
+					station: this.filters.station,
 					pagesize: this.pagesize
 				};
 				this.listLoading = true;
@@ -149,6 +182,7 @@
 				let para = {
 					id: this.id,
 					page: this.pagetwo,
+					name: this.filters.name,
 					pagesize: this.pagesizetwo,
 					
 				};

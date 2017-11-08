@@ -43,10 +43,10 @@ export default {
     });
     mock.onGet('/stationtotal').reply(config => {
       
-      let {page, name} = config.params;
+      let {page,station ,name} = config.params;
    
       let mockstation = stationtotal[0].data.filter(stationsearch => {
-        if (name && stationsearch.queuename.indexOf(name) == -1) return false;
+        if (station && stationsearch.stationname.indexOf(station) == -1) return false;
         return true;
       });
 
