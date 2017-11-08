@@ -33,7 +33,7 @@ export function validatAlphabets(str) {
 // 验证手机号
 export function isPhoneNum(str) {
   let pattern = /^1[34578]\d{9}$/, phone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
-  return pattern.test(str) || phone.test(tel);
+  return pattern.test(str) || phone.test(str);
 }
 //验证中文名字
 function isChinaName(str) {

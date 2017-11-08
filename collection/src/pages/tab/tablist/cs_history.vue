@@ -83,7 +83,7 @@
 		},
 		mounted() {
    			this.getmessage();
-   			let h = (window.innerHeight || document.documentElement.clientHeight || 			document.body.clientHeight)-155;
+   			let h = (window.innerHeight || document.documentElement.clientHeight ||document.body.clientHeight)-155;
    			this.$refs.abc.style.height= h+"px"
   		}
 	}

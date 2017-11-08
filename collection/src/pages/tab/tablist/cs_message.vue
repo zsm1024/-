@@ -3,10 +3,19 @@
 		<el-collapse v-model="activeNames">
 			<el-collapse-item name="1" title="催收状态">				
 				<p>{{items.statues}}</p>				
-			</el-collapse-item>	
+			</el-collapse-item>		
+			<el-collapse-item name="10">				
+				<template slot="title" ><span class="titles">客户基本信息</span></template>
+				<div>
+					<el-table :data="items.basedata" border stripe>
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index" align="center">
+						</el-table-column>			
+					</el-table>
+				</div>
+			</el-collapse-item>
 			<el-collapse-item name="2" title="客户电话信息">
 				<el-button class="filter-item" style="margin: 0 0 10px 10px;"  type="primary" icon="edit" @click="addUserInfos = true">添加</el-button>
-				<el-table :data="items.persons" border  >
+				<el-table :data="items.persons" border stripe >
 					<el-table-column label="操作" min-width="120"  align="center">
 						<template scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
@@ -15,9 +24,11 @@
 					</el-table-column>
 					<el-table-column :prop="cols.field" min-width="160"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
 						<template scope="scope">
-							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols.field]"></el-input>
-							<span v-show="scope.row.edit" v-if="cols.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols.field] }}</span>
-							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
+							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path!='CMS' && cols.field!='m_path'" size="small" v-model="scope.row[cols.field]"></el-input>
+							<span v-show="scope.row.edit" v-if="(cols.field!='validity' && scope.row.m_path=='CMS')|cols.field=='m_path'" >{{ scope.row[cols.field] }}</span>
+							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="rings =true"></i></span>
+
+							<!-- ring(scope.row.phoneNum) -->
 							<el-select v-show="scope.row.edit" v-if="cols.field=='validity'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
@@ -28,7 +39,7 @@
 			</el-collapse-item>	
 			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
 			<el-collapse-item name="3" title="客户地址信息">	
-				<el-table :data="items.address" border >
+				<el-table :data="items.address" border stripe >
 					<el-table-column label="操作" align="center">
 						<template scope="scope" >
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
@@ -47,20 +58,40 @@
 						</template>
 					</el-table-column>			
 				</el-table>				
-			</el-collapse-item>	
-			<el-collapse-item name="4" title="客户基本信息">
-				<table>
-					<tr>
-						<td>客户姓名</td><td>{{items.username}}</td>
-						<td>性别</td><td>{{items.sex}}</td>
-						<td>单位名称</td><td class="useraddress">{{items.useraddress}}</td>
-						<td>证件类别</td><td>{{items.usercardType}}</td>
-						<td>证件号码</td><td>{{items.usercardNum}}</td>
-					</tr>
-				</table>
-			</el-collapse-item>	
+			</el-collapse-item>					
 			<el-collapse-item name="5" title="合同基本信息">
-				<table>	
+				<el-form :data="items" inline class="table-expand">
+					<el-form-item label="申请号:" :label-width="formLabelWidth">
+						<span>{{items.delyNum}}</span>
+					</el-form-item>
+					<el-form-item label="合同号:" :label-width="formLabelWidth">
+						<span>{{items.contractNum}}</span>
+					</el-form-item>
+					<el-form-item label="首付比例:" :label-width="formLabelWidth">
+						<span>{{items.ShoufuRatio}}</span>
+					</el-form-item>
+					<el-form-item label="贷款金额:" :label-width="formLabelWidth">
+						<span>{{items.loan}}</span>
+					</el-form-item>
+					<el-form-item label="合同起始日:" :label-width="formLabelWidth">
+						<span>{{items.startTime}}</span>
+					</el-form-item>
+					<el-form-item label="贷款产品:" :label-width="formLabelWidth">
+						<span>{{items.RepayTime}}</span>
+					</el-form-item>
+					<el-form-item label="付款日:" :label-width="formLabelWidth">
+						<span>{{items.loanTime}}</span>
+					</el-form-item>
+					<el-form-item label="贷款期限:" :label-width="formLabelWidth">
+						<span>{{items.endTime}}</span>
+					</el-form-item>
+					<el-form-item label="合同终止日:" :label-width="formLabelWidth">
+						<span>{{items.total}}</span>
+					</el-form-item>
+				</el-form>				
+
+
+				<!-- <table>	
 					<tr>
 						<td>申请号</td><td>{{items.delyNum}}</td>
 						<td>合同号</td><td>{{items.contractNum}}</td>
@@ -75,18 +106,38 @@
 						<td> </td><td></td>
 						<td>合同终止日</td><td>{{items.endTime}}</td>
 					</tr>
-				</table>
+				</table> -->
 			</el-collapse-item>	
 			<el-collapse-item name="6" title="逾期基本信息">
-				<table>
-					<tr>
-						<td>客户姓名</td><td>{{items.username}}</td>
-						<td>性别</td><td>{{items.sex}}</td>
-						<td>单位名称</td><td class="useraddress">{{items.useraddress}}</td>
-						<td>证件类别</td><td>{{items.usercardType}}</td>
-						<td>证件号码</td><td>{{items.usercardNum}}</td>
-					</tr>
-				</table>
+				<el-form :data="items" inline class="table-expand">
+					<el-form-item label="逾期日期:" :label-width="formLabelWidth">
+						<span>{{items.overdueDate}}</span>
+					</el-form-item>
+					<el-form-item label="本次逾期天数:" :label-width="formLabelWidth">
+						<span>{{items.ThisOverdueDay}}</span>
+					</el-form-item>
+					<el-form-item label="本期逾期天数:" :label-width="formLabelWidth">
+						<span>{{items.ThisCurrentdDay}}</span>
+					</el-form-item>
+					<el-form-item label="月还款金额:" :label-width="formLabelWidth">
+						<span>{{items.MonthPay}}</span>
+					</el-form-item>
+					<el-form-item label="逾期金额总计:" :label-width="formLabelWidth">
+						<span>{{items.OverTotalMoney}}</span>
+					</el-form-item>
+					<el-form-item label="到期利息总计:" :label-width="formLabelWidth">
+						<span>{{items.OverAccrualTotal}}</span>
+					</el-form-item>
+					<el-form-item label="逾期还款总额:" :label-width="formLabelWidth">
+						<span>{{items.MonthRePay}}</span>
+					</el-form-item>
+					<el-form-item label="逾期利息:" :label-width="formLabelWidth">
+						<span>{{items.overaccrual}}</span>
+					</el-form-item>
+					<el-form-item label="逾期应收总计:" :label-width="formLabelWidth">
+						<span>{{items.total}}</span>
+					</el-form-item>
+				</el-form>				
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注">			
 				<p>{{remarkform.remark}}</p>
@@ -102,16 +153,17 @@
 						<i class="el-icon-message" @click="messageopen = true">短信</i>
 						<i class="el-icon-upload2">附件</i>
 					</el-col>
-				</el-row>
-				<el-row>
+				</el-row>						
+			</el-collapse-item>	
+		</el-collapse>
+		<el-dialog title="客户信息" :visible.sync="rings">
 					<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;" >
 					<el-col :span="11">
 						
 							<div class="first">
 								<el-form-item label="行动代码" prop="daima">
 									<v-select v-model="mainform.daima" :options="getdaima"></v-select>
-								</el-form-item>
-	
+								</el-form-item>	
 							</div>
 							<div class="second" style="display: flex;">
 								<el-form-item label="承诺金额" prop="maney" style="width: 50%;">
@@ -149,17 +201,11 @@
 								<el-button type="primary" @click="onSubmit('mainform')">确认</el-button>
 								<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
 							</el-form-item>
-							
-						
-	
 					</el-col>
 					
 					
 					</el-form>
-				</el-row>
-			
-			</el-collapse-item>	
-		</el-collapse>
+		</el-dialog>
 		<el-dialog title="备注" :visible.sync="remarkopen">
 			<el-form :model="remarkform">
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
@@ -209,7 +255,7 @@
 				</el-form-item>				
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-        <el-button @click="addUserInfos = false">取 消</el-button>
+        <el-button @click="addUserInfo">取 消</el-button>
  <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
         <el-button  type="primary" @click.native.prevent="choice">确 定</el-button>
       </div>
@@ -238,16 +284,18 @@ export default {
 				active: true,
 				'text-danger': false
 			},
-			activeNames:["1","2","3","4","5","6",'7',"8","9"],
+			activeNames:["1","2","3","4","5","6",'7',"8","9","10"],
 			items: [],
 			height:"",
 			cols:[],
 			dialogStatus: '',
 			cols1:[],
+			baseinfo:[],
 			id:this.$store.state.navTabs.tabId,	
 			remarkopen: false,
 			messageopen: false,
 			addUserInfos:false,
+			rings:false,
 			formLabelWidth: '120px',
 			//备注弹出层
 			remarkform: {
@@ -293,8 +341,7 @@ export default {
 					
 				],
 				UName:[
-					{required:true,message:"请输入角色姓名", trigger: 'blur'},
-					
+					{required:true,message:"请输入角色姓名", trigger: 'blur'},	
 				],
 			},
 			getdaima: ['PTP','TSM'],
@@ -320,7 +367,7 @@ export default {
     		addInfo(para).then(res =>{
     		if(res.data.msg=="ok"){
     			this.items.persons.unshift(
-				{"persontype":this.$refs['AdduserForm'].model.UType	,"name":this.$refs['AdduserForm'].model.UName,"phoneNum":this.$refs['AdduserForm'].model.UPhone,"m_path":"WCMS","val						idity":"Y"},	
+				{"persontype":this.$refs['AdduserForm'].model.UType	,"name":this.$refs['AdduserForm'].model.UName,"phoneNum":this.$refs['AdduserForm'].model.UPhone,"m_path":"WCMS","validity":"Y","edit":false},	
 				
 			);
 			this.addUserInfos=false;
@@ -349,10 +396,11 @@ export default {
 		deleteAdress(index, rows) {
 			rows.splice(index, 1);
 		},
-		ring(phoneNum){
-			var divDom = this.$refs.abc;   	 
-			divDom.scrollTop=divDom .scrollHeight;
-		},
+		// ring(phoneNum){
+		// 	var divDom = this.$refs.abc;   	 
+		// 	divDom.scrollTop=divDom .scrollHeight;
+		// 	this.ringPhone=false;
+		// },		
 		phoneEdit(row){
 			console.log(row.edit);
 			row.edit=!row.edit;
@@ -383,15 +431,16 @@ export default {
 		//添加客户信息方法
 		addUserInfo(){
 			this.addUserInfos=false;
-			
+			this.$refs['AdduserForm'].resetFields();
 		},
-		onSubmit(mainform) {
+		onSubmit(mainform ) {
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
 					this.$message({
 					type:'success',
 					message:'提交成功',
 				});
+				this.rings=false;
 				} else {
 					console.log('error submit!!');
 					return false;
@@ -434,7 +483,8 @@ export default {
 				})
 				this.remarkform.remark = this.items.notice;
 				this.cols=data.cols;
-				this.cols1=data.cols1;   
+				this.cols1=data.cols1; 
+				this.baseinfo=data.baseinfo;  
 				this.height=document.documentElement.clientHeight-400;       
 			});
    },
@@ -464,4 +514,14 @@ export default {
 	.changecolor{
 		color: red;
 	}
+  .table-expand label {
+    width:100px!important;  
+	text-align:right;
+  }
+  .table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width:210px; 
+	color: #99a9bf;
+  }
 </style>

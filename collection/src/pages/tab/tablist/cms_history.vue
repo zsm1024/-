@@ -20,9 +20,7 @@
 			</el-collapse-item>
 			<el-collapse-item title="罚息减免明细表" name="2">
 				<!--列表-->
-				<el-table :data="liststwo" border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe>
-					
-					
+				<el-table :data="liststwo" border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe>									
 					<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in colstwo" :key="index" >
 					</el-table-column>
 				</el-table>
