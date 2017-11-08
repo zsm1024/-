@@ -5,12 +5,12 @@
                 <!--列表-->
                 <el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>
                     
-                    <el-table-column label="操作"  >
+                    <el-table-column label="操作"  align="center" >
                         <template  slot-scope="scope">
                             <el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
+                    <el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
                     </el-table-column>
                 </el-table>
        
@@ -26,12 +26,12 @@
                 <el-table :data="liststwo" highlight-current-row v-loading="listLoadingtwo"  style="width: 100%;" stripe>
                     <el-table-column type="selection" width="55">
                     </el-table-column>
-                    <el-table-column label="操作"  >
+                    <el-table-column label="操作"  align="center" >
                         <template  slot-scope="scope">
                             <el-button type="text" size="small" @click="addTabtwo(scope.$index, scope.row)"  >详情</el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in colstwo" :key="index" >
+                    <el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in colstwo" :key="index" >
                     </el-table-column>
                 </el-table>
 
