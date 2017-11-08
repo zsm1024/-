@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="岗位名称"></el-input>
+					<el-input v-model="filters.name" placeholder="队列名称"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" >查询</el-button>
@@ -19,12 +19,12 @@
 		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="操作"  >
+			<el-table-column label="操作"  align="center" >
 				<template  slot-scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
+			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 		</el-table>
 

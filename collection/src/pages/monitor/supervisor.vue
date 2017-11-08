@@ -47,13 +47,13 @@
 		<el-table :data="lists"  highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" >
 			</el-table-column>
-			<el-table-column fixed label="操作"  >
+			<el-table-column fixed label="操作"  align="center">
 				<template slot-scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >处理</el-button>
 				</template>
 			</el-table-column>
 			
-			<el-table-column :prop="col.field" :label="col.title" width="180" v-for="(col, index) in cols" :key="index" >
+			<el-table-column  align="center" :prop="col.field" :label="col.title" width="180" v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 		</el-table>
 
