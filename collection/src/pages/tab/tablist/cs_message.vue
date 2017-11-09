@@ -26,7 +26,7 @@
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path!='CMS' && cols.field!='m_path'" size="small" v-model="scope.row[cols.field]"></el-input>
 							<span v-show="scope.row.edit" v-if="(cols.field!='validity' && scope.row.m_path=='CMS')|cols.field=='m_path'" >{{ scope.row[cols.field] }}</span>
-							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="rings =true"></i></span>
+							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
 
 							<!-- ring(scope.row.phoneNum) -->
 							<el-select v-show="scope.row.edit" v-if="cols.field=='validity'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
@@ -153,10 +153,8 @@
 						<i class="el-icon-message" @click="messageopen = true">短信</i>
 						<i class="el-icon-upload2">附件</i>
 					</el-col>
-				</el-row>						
-			</el-collapse-item>	
-		</el-collapse>
-		<el-dialog title="客户信息" :visible.sync="rings">
+				</el-row>	
+				<el-row>
 					<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;" >
 					<el-col :span="11">
 						
@@ -205,7 +203,10 @@
 					
 					
 					</el-form>
-		</el-dialog>
+				</el-row>					
+			</el-collapse-item>	
+		</el-collapse>
+	
 		<el-dialog title="备注" :visible.sync="remarkopen">
 			<el-form :model="remarkform">
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
@@ -290,12 +291,10 @@ export default {
 			cols:[],
 			dialogStatus: '',
 			cols1:[],
-			baseinfo:[],
 			id:this.$store.state.navTabs.tabId,	
 			remarkopen: false,
 			messageopen: false,
 			addUserInfos:false,
-			rings:false,
 			formLabelWidth: '120px',
 			//备注弹出层
 			remarkform: {
@@ -396,11 +395,10 @@ export default {
 		deleteAdress(index, rows) {
 			rows.splice(index, 1);
 		},
-		// ring(phoneNum){
-		// 	var divDom = this.$refs.abc;   	 
-		// 	divDom.scrollTop=divDom .scrollHeight;
-		// 	this.ringPhone=false;
-		// },		
+		ring(phoneNum){
+			var divDom = this.$refs.abc;   	 
+			divDom.scrollTop=divDom .scrollHeight;
+		},		
 		phoneEdit(row){
 			console.log(row.edit);
 			row.edit=!row.edit;
@@ -440,7 +438,6 @@ export default {
 					type:'success',
 					message:'提交成功',
 				});
-				this.rings=false;
 				} else {
 					console.log('error submit!!');
 					return false;
