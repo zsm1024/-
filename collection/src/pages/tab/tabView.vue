@@ -8,6 +8,7 @@
     	<el-tab-pane label="还款计划"><hk-plan></hk-plan></el-tab-pane>
     	<el-tab-pane label="扣款流水"><kk-list></kk-list></el-tab-pane>
     	<el-tab-pane label="cms历史"><cms-history></cms-history></el-tab-pane>
+			<el-tab-pane label="维保信息"><maintenance></maintenance></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -19,6 +20,7 @@
 	import hkPlan from "./tablist/hk_plan";
 	import kkList from "./tablist/kk_list"	;
 	import cmsHistory from "./tablist/cms_history"	;
+	import maintenance from "./tablist/maintenance"	;
 export default {
   data(){
      return{
@@ -32,7 +34,8 @@ export default {
   	// khMessage,
   	hkPlan,
   	kkList,
-  	cmsHistory
+		cmsHistory,
+		maintenance
   } 
 }
 </script>
