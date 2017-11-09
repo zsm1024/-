@@ -291,6 +291,7 @@ export default {
 			cols:[],
 			dialogStatus: '',
 			cols1:[],
+			baseinfo:[],
 			id:this.$store.state.navTabs.tabId,	
 			remarkopen: false,
 			messageopen: false,
