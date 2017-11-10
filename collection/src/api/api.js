@@ -38,5 +38,5 @@ export const getliushui = params => { return axios.get(`${base}/liushui`, { para
 export const getcmsdetails = params => { return axios.get(`${base}/cmsdetails`, { params: params }); };
 
 export const getcmshistory = params => { return axios.get(`${base}/cmshistory`, { params: params }); };
-
-
+//维保记录信息
+export const repair = params => { return axios.get(`${base}/repair`, { params: params }); };

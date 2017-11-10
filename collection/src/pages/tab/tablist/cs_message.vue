@@ -8,7 +8,7 @@
 				<template slot="title" ><span class="titles">客户基本信息</span></template>
 				<div>
 					<el-table :data="items.basedata" border stripe>
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index" align="center">
+						<el-table-column min-width="120"  :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index" align="center">
 						</el-table-column>			
 					</el-table>
 				</div>

@@ -6,6 +6,10 @@ a{
 	text-decoration: none;
 	color: #48576a;
 }
+@media screen and(max-width:1400px) {
+	font-size: 12px;
+	color: red;
+}
 /*html,body,#app{
   		height:100%!important;
 }*/

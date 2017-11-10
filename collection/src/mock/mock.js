@@ -10,6 +10,7 @@ import { NavView } from './data/navview';
 import { TabView } from './data/tabView';
 import {TabMessage} from './data/tabMessage';
 import {userInfo} from './data/userInfo';
+import { repair } from "./data/repair";
 //同样以LoginUsers, Users 的方式来接收，from的url
 let _Users = userList[0].data;
 let _Users1 = List2[0].data;
@@ -264,6 +265,21 @@ export default {
     	mock.onGet('/userinfo').reply(200, {
         msg:userInfo
    });
+    //维保信息
+    mock.onGet('/repair').reply(config => {
+      // let { id } = config.params;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            data:repair[0].data
+          }]);
+        }, 1000);
+      });
+    });
+
+    // mock.onGet('/repair').reply(200, {
+    //   msg: repair
+    // });
     mock.onGet('/addInfo').reply(200, {
       msg: 'ok'
     });

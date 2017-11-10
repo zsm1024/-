@@ -16,10 +16,10 @@ import LeftPane from './LeftNav';
 export default {
     data() {
         return {
-            nav:false,
-            navopen:true,
-            paneopen:true,
-            pane:false,
+            nav:true,
+            navopen:false,
+            paneopen:false,
+            pane:true,
         };
     },
   
