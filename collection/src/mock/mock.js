@@ -265,6 +265,24 @@ export default {
     	mock.onGet('/userinfo').reply(200, {
         msg:userInfo
    });
+    //维保信息列表
+    mock.onGet('/repairlist').reply(config => {
+
+        let {page, pagesize} = config.params;
+       
+        
+        let total = repair[0].data.length;
+        let repairlist = repair[0].data.filter((u, index) => index < pagesize * page && index >= pagesize * (page - 1));
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve([200, {
+              total: total,
+              data: repairlist,
+              cols: repair[0].Maintenance
+            }]);
+          }, 1000);
+        });
+    });
     //维保信息
     mock.onGet('/repair').reply(config => {
       // let { id } = config.params;
