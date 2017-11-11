@@ -8,13 +8,13 @@
 				<el-form-item>
 					<el-input v-model="filters.Cnum" placeholder="合同号"></el-input>
 				</el-form-item>
-                <el-form-item>
+                <!-- <el-form-item>
 					<el-select v-model="formInline.region" placeholder="请选择" @change="handleOptionChange">
                     <el-option label="合同号" value="合同号"></el-option>
                     <el-option label="派单时间" value="派单时间"></el-option>
                     <el-option label="当事人"  value="当事人间"></el-option>
                     </el-select>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUsers" >查询</el-button>
 				</el-form-item>				

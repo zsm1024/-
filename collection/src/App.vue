@@ -13,6 +13,4 @@ export default {
 <style>
 @import url('assets/style/reset.css');
 @import url('assets/style/common.css');
-
-
 </style>
