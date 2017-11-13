@@ -66,6 +66,6 @@ export default {
 
 <style>
 	.lable{color: #99a9bf;margin:0 10px;}
-	.titles{display:inline-block;width:90px;text-align:right}
+	.titles{display:inline-block;width:90px;text-align:right;}
 		
 </style>
