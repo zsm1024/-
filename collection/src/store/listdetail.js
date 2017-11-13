@@ -4,9 +4,9 @@ import Vuex from 'vuex'
 const Home = resolve => require(['@/pages/tab/tablist/showlist'], resolve)
 
 const state = {
-    tabId: "",
-    activeTabName: "list",
-    tabList: [
+    tabdetailId: "",
+    activeTabdetailName: "list",
+    tabListdetail: [
         {
             label: '维保列表',
             name: 'list',
@@ -18,12 +18,12 @@ const state = {
 }
 const mutations = {
     setActiveTabName(state, name) {
-        state.activeTabName = name;
+        state.activeTabdetailName = name;
     },
     addTab(state, index) {
-        if (state.tabList.filter(f => f.name == index) == 0) {
+        if (state.tabListdetail.filter(f => f.name == index) == 0) {
             let component = resolve => require([`@/pages/${index}`], resolve)
-            state.tabList.push({
+            state.tabListdetail.push({
                 label: '维保详情信息',
                 name: index,
                 disabled: false,
@@ -31,18 +31,18 @@ const mutations = {
                 component: component  
             })
         }
-        state.activeTabName = index;
+        state.activeTabdetailName = index;
     },
     closeTab(state, name) {
         
-        let tab = state.tabList.filter(f => f.name == name)[0];
-        let index = state.tabList.indexOf(tab);
-        if (index != state.tabList.length - 1) {
-            state.activeTabName = state.tabList[index + 1].name;
+        let tab = state.tabListdetail.filter(f => f.name == name)[0];
+        let index = state.tabListdetail.indexOf(tab);
+        if (index != state.tabListdetail.length - 1) {
+            state.activeTabdetailName = state.tabListdetail[index + 1].name;
         } else {
-            state.activeTabName = state.tabList[index - 1].name;
+            state.activeTabdetailName = state.tabListdetail[index - 1].name;
         }
-        state.tabList = state.tabList.filter(f => f.name != name);
+        state.tabListdetail = state.tabListdetail.filter(f => f.name != name);
     }
 }
 
