@@ -77,7 +77,7 @@ const repair=[
                  { title: '联系人地址', field: '荣成市宁津办事处东墩村151号' },
                  { title: '开户银行', field: '中国工商银行xxxxxx' },
                  { title: '账号', field: '1234567899874128111' },
-                 { title: '账号', field: '12415414541145' },                
+                 { title: '税号', field: '12415414541145' },                
              ],
              "repairPerson":[
                  { title: '送修人姓名', field: '刘永明' },
@@ -177,7 +177,7 @@ const repair=[
                      { title: '联系人地址', field: '荣成市宁津办事处东墩村151号' },
                      { title: '开户银行', field: '中国工商银行xxxxxx' },
                      { title: '账号', field: '1234567899874128111' },
-                     { title: '账号', field: '12415414541145' },                
+                     { title: '税号', field: '12415414541145' },                
                  ],
                  "repairPerson":[
                      { title: '送修人姓名', field: '刘永明' },
