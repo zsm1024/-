@@ -77,8 +77,8 @@ const TabMessage = [
 	            {"title":'关闭日期',field:'Close_date',width:"190"},                   
         		],
         		
-        msgs:[      						{"nums":1,"UserId":"Nick","Actual_person":"","Custodian":"","Task":"PC_LO_RISK","Task_name":"逾期15天之前的催收队列","post":"外包电催主任","Creation_time":"2014-08-13 08:19:27","Close_date":""},
-        						{"nums":2,"UserId":"Nick","Actual_person":"qwe","Custodian":"cxvd","Task":"PC_LO_RISK","Task_name":"逾期15天之前的催收队列","post":"外包电催主任","Creation_time":"2014-08-13 08:19:27","Close_date":"2014-08-13 08:19:27"},
+        msgs:[  {"nums":1,"UserId":"Nick","Actual_person":"","Custodian":"","Task":"PC_LO_RISK","Task_name":"逾期15天之前的催收队列","post":"外包电催主任","Creation_time":"2014-08-13 08:19:27","Close_date":""},
+        		{"nums":2,"UserId":"Nick","Actual_person":"qwe","Custodian":"cxvd","Task":"PC_LO_RISK","Task_name":"逾期15天之前的催收队列","post":"外包电催主任","Creation_time":"2014-08-13 08:19:27","Close_date":"2014-08-13 08:19:27"},
 
         		]	
         	}   

@@ -25,7 +25,7 @@
 					<el-table-column :prop="cols.field" min-width="160"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
 						<template scope="scope">
 							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path!='CMS' && cols.field!='m_path'" size="small" v-model="scope.row[cols.field]"></el-input>
-							<span v-show="scope.row.edit" v-if="(cols.field!='validity' && scope.row.m_path=='CMS')|cols.field=='m_path'" >{{ scope.row[cols.field] }}</span>
+							<span v-show="scope.row.edit" v-if="(cols.field!='validity' && scope.row.m_path=='CMS')||cols.field=='m_path'" >{{ scope.row[cols.field] }}</span>
 							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
 
 							<!-- ring(scope.row.phoneNum) -->
@@ -38,7 +38,8 @@
 				</el-table>				
 			</el-collapse-item>	
 			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
-			<el-collapse-item name="3" title="客户地址信息">	
+			<el-collapse-item name="3" title="客户地址信息">
+				<el-button class="filter-item" style="margin: 0 0 10px 10px;"  type="primary" icon="edit" @click="addWorkInfos = true">添加</el-button>	
 				<el-table :data="items.address" border stripe >
 					<el-table-column label="操作" align="center">
 						<template scope="scope" >
@@ -48,8 +49,8 @@
 					</el-table-column>
 					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center">
 						<template scope="scope">
-							<el-input  v-show="scope.row.edit" v-if="cols1.field!='validity' &&scope.row.m_path=='WCMS'" size="small" v-model="scope.row[cols1.field]"></el-input>
-							<span v-show="scope.row.edit" v-if="cols1.field!='validity' && scope.row.m_path=='CMS'" >{{ scope.row[cols1.field] }}</span>
+							<el-input  v-show="scope.row.edit" v-if="cols1.field!='validity' &&scope.row.m_path!='CMS'&& cols1.field!='m_path'" size="small" v-model="scope.row[cols1.field]"></el-input>
+							<span v-show="scope.row.edit" v-if="(cols1.field!='validity' && scope.row.m_path=='CMS')||cols1.field=='m_path'" >{{ scope.row[cols1.field] }}</span>
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['validity']=='N'}">{{ scope.row[cols1.field] }}</span>
 							<el-select v-show="scope.row.edit" v-if="cols1.field=='validity'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
@@ -89,24 +90,6 @@
 						<span>{{items.total}}</span>
 					</el-form-item>
 				</el-form>				
-
-
-				<!-- <table>	
-					<tr>
-						<td>申请号</td><td>{{items.delyNum}}</td>
-						<td>合同号</td><td>{{items.contractNum}}</td>
-						<td>首付比例</td><td>{{items.ShoufuRatio}}</td>
-						<td>贷款金额</td><td>{{items.loan}}</td>
-						<td>合同起始日</td><td>{{items.startTime}}</td>
-					</tr>
-					<tr>
-						<td>贷款产品</td><td>{{items.loanProdut}}</td>
-						<td>付款日</td><td>{{items.RepayTime}}</td>
-						<td>贷款期限</td><td>{{items.loanTime}}</td>
-						<td> </td><td></td>
-						<td>合同终止日</td><td>{{items.endTime}}</td>
-					</tr>
-				</table> -->
 			</el-collapse-item>	
 			<el-collapse-item name="6" title="逾期基本信息">
 				<el-form :data="items" inline class="table-expand">
@@ -259,22 +242,44 @@
         <el-button @click="addUserInfo">取 消</el-button>
  <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
         <el-button  type="primary" @click.native.prevent="choice">确 定</el-button>
-      </div>
-			
+      </div>			
 		</el-dialog>
-		
+		<el-dialog title="新增客户地址信息" :visible.sync="addWorkInfos" >
+			<el-form :model="AddWorkForm" ref="AddWorkForm" :rules="rules">
+				<el-form-item label="角色：" prop="UType" :label-width="formLabelWidth">
+					<el-input v-model="AddWorkForm.UType" ></el-input>
+				</el-form-item>
+				<el-form-item label="姓名：" prop="UName" :label-width="formLabelWidth">
+					<el-input v-model="AddWorkForm.UName"></el-input>
+				</el-form-item>
+				<el-form-item  label="地址：" prop="UAddress" :label-width="formLabelWidth">
+					<el-input v-model="AddWorkForm.UAddress" ></el-input>
+				</el-form-item>
+				<el-form-item label="信息来源：" :label-width="formLabelWidth">
+					<el-input disabled value="WCMS"></el-input>
+				</el-form-item>
+				<el-form-item label="有效性：" :label-width="formLabelWidth">
+					<el-input disabled value="Y"></el-input>
+				</el-form-item>				
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+        <el-button @click="addWorkInfo">取 消</el-button>
+ <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
+        <el-button  type="primary" @click.native.prevent="address">确 定</el-button>
+      </div>			
+		</el-dialog>
 	</section>
 </template>
 
 <script>
-import { tab_view,addInfo } from "@/api/api";
-import { isCodeNum, isPhoneNum } from "@/utils/validate";
+import { tab_view,addInfo,addAddress } from "@/api/api";
+import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
 export default {
   data() {
 	  	const PhoneNum =(rule,value,callback)=>{
 				 if (! isPhoneNum(value)) {					   
 					console.log(isPhoneNum(value))
-					callback(new Error('您输入的'))
+					callback(new Error('您输入的电话信息有误！座机：xx-xx'))
 				}else{					
 					callback()
 					return false;
@@ -296,6 +301,7 @@ export default {
 			remarkopen: false,
 			messageopen: false,
 			addUserInfos:false,
+			addWorkInfos:false,
 			formLabelWidth: '120px',
 			//备注弹出层
 			remarkform: {
@@ -315,7 +321,13 @@ export default {
 				UName:"",
 				UPhone:""
 	
-			},						
+			},
+			AddWorkForm:{
+				UType:"",
+				UName:"",
+				UAddress:""
+	
+			},							
 			mainform: {
 					daima: '',
 					money: '',
@@ -337,11 +349,13 @@ export default {
 					
 				],
 				UType:[
-					{required:true,message:"请输入角色信息", trigger: 'blur',validator:isCodeNum},
-					
+					{required:true,message:"请输入角色信息", trigger: 'blur'},	
+				],
+				UAddress:[
+					{required:true,message:"请输入地址信息", trigger: 'blur'},	
 				],
 				UName:[
-					{required:true,message:"请输入角色姓名", trigger: 'blur'},	
+					{required:true,message:"请输入角色姓名", trigger: 'blur',validator:isChinaName},	
 				],
 			},
 			getdaima: ['PTP','TSM'],
@@ -356,8 +370,8 @@ export default {
     };
   },
   methods: {
- 		choice(){	
- 		
+	  //电话信息
+ 		choice(){			
  			let para ={
     			UType:this.UType,
     			UNname:this.UNname,
@@ -376,10 +390,42 @@ export default {
     			alert("数据未同步")
     		}   		   		
     		})
-    	}else{
-    		
+    	}else{   		
     		this.addUserInfos=true;
     		this.$refs.AdduserForm.validate((valid) => {
+         		if (valid) {
+				
+           		 alert('submit!');
+          	} else {
+				  console.log('error submit!')
+            	return false;
+          }
+        });
+    	}   	
+		 },
+		 //地址信息
+		 address(){			
+ 			let para ={
+    			UType:this.UType,
+    			UNname:this.UNname,
+    			UAddress:this.UAddress
+    	};
+    	if(this.$refs['AddWorkForm'].model.UType!=""&&this.$refs['AddWorkForm'].model.UName!=""&&this.$refs['AddWorkForm'].model.UAddress!=""){
+    		addAddress(para).then(res =>{
+    		if(res.data.msg=="ok"){
+    			this.items.address.unshift(
+				{"persontype":this.$refs['AddWorkForm'].model.UType	,"name":this.$refs['AddWorkForm'].model.UName,"address":this.$refs['AddWorkForm'].model.UAddress,"m_path":"WCMS","validity":"Y","edit":false},	
+				
+			);
+			this.addWorkInfos=false;
+			this.$refs['AddWorkForm'].resetFields();
+    		}else{
+    			alert("数据未同步")
+    		}   		   		
+    		})
+    	}else{   		
+    		this.addWorkInfos=true;
+    		this.$refs.AddWorkForm.validate((valid) => {
          		if (valid) {
 				
            		 alert('submit!');
@@ -431,6 +477,11 @@ export default {
 		addUserInfo(){
 			this.addUserInfos=false;
 			this.$refs['AdduserForm'].resetFields();
+		},
+		//添加客户地址信息方法
+		addWorkInfo(){
+			this.addWorkInfos=false;
+			this.$refs['AddWorkForm'].resetFields();
 		},
 		onSubmit(mainform ) {
 			this.$refs[mainform].validate((valid) => {

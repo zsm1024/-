@@ -14,21 +14,21 @@ export const nav_view = params => { return axios.get(`${base}/nav_view`, { param
 //催收信息
 export const tab_view = params => { return axios.get(`${base}/tab_view`, { params: params }); };
 
-//催收信息新增数据
 
+
+//催收信息新增数据
 export const addInfo = params => { return axios.get(`${base}/addInfo`, { params: params }); };
+
+//催收信息地址新增
+export const addAddress = params => { return axios.get(`${base}/addAddress`, { params: params }); };
 
 
 //合同信息
 export const getdeal = params => { return axios.get(`${base}/deal`, { params: params }); };
 //催收历史
 export const tab_message = params => { return axios.get(`${base}/tab_message`, { params: params }); };
-
-
 //客户信息
 export const userInfo = params => { return axios.get(`${base}/userinfo`, { params: params }); };
-
-
 //还款计划
 export const getplan = params => { return axios.get(`${base}/plan`, { params: params }); };
 //扣款流水

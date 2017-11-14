@@ -301,6 +301,9 @@ export default {
     mock.onGet('/addInfo').reply(200, {
       msg: 'ok'
     });
+    mock.onGet('/addAddress').reply(200, {
+      msg: 'ok'
+    });
     // //获取用户列表
     // mock.onGet('/user/list').reply(config => {
     //    //config.params放的是用户输入的name,params是user.vue中传递的
@@ -362,26 +365,15 @@ export default {
           });
           
           
-      mock.onGet('/addInfo').reply(config =>{
-      	
-      	 let {UType, UNname,UPhone} = config.params;
-      	 return new Promise((resolve, reject)=> {    	 	
-      	 	  setTimeout(() => {
-                resolve([200, {
-                  
-                  
-                  
-                }]);
-              }, 1000);
-      	 	
-      	 	
-      	 	
-      	 })
-      	 
-      	
-      	
-      	
-      })
+      // mock.onGet('/addInfo').reply(config =>{     	
+      // 	 let {UType, UNname,UPhone} = config.params;
+      // 	 return new Promise((resolve, reject)=> {    	 	
+      // 	 	  setTimeout(() => {
+      //           resolve([200, {  
+      //           }]);
+      //         }, 1000);	
+      // 	 })
+      // })
 
   }
 };
