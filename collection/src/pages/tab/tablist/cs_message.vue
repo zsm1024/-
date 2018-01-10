@@ -1,35 +1,38 @@
 <template>
-	<section  ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">
-		<el-collapse v-model="activeNames">
-			<el-collapse-item name="1" title="催收状态">				
-				<p>{{items.statues}}</p>				
-			</el-collapse-item>		
-			<el-collapse-item name="10">				
-				<template slot="title" ><span class="titles">客户基本信息</span></template>
-				<div>
-					<el-table :data="items.basedata" border stripe>
-						<el-table-column min-width="120"  :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index" align="center">
+	<section  ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">	
+		<el-collapse v-model="activeNames">	
+			<el-collapse-item name="10" title="客户基本信息">				
+				<template slot-scope="title" >
+                    <el-table :data="items.customerSimpleList" border stripe > 
+						<!-- width="60" -->
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
 						</el-table-column>			
 					</el-table>
-				</div>
+                </template>
 			</el-collapse-item>
-			<el-collapse-item name="2" title="客户电话信息">
-				<el-button class="filter-item" style="margin: 0 0 10px 10px;"  type="primary" icon="edit" @click="addUserInfos = true">添加</el-button>
-				<el-table :data="items.persons" border stripe >
-					<el-table-column label="操作" min-width="120"  align="center">
-						<template scope="scope">
+			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
+				<el-button class="filter-item"   type="primary" style=" position:absolute;top:14px;left:125px"   @click="addUserInfos = true">添加</el-button>
+				<el-table :data="items.customerPhones" border stripe >
+					<el-table-column label="操作"  align="center" width="100"> 
+						<!-- width="95" -->
+						<template slot-scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
-							<el-button type="danger" size="mini" v-if=" scope.row.m_path!='CMS'"  @click.native.prevent="deleteRow(scope.$index, items.persons)"> 移除</el-button>
+							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteRow(scope.$index, scope.row,items.customerPhones)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field" min-width="160"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center">
-						<template scope="scope">
-							<el-input  v-show="scope.row.edit" v-if="cols.field!='validity' &&scope.row.m_path!='CMS' && cols.field!='m_path'" size="small" v-model="scope.row[cols.field]"></el-input>
-							<span v-show="scope.row.edit" v-if="(cols.field!='validity' && scope.row.m_path=='CMS')||cols.field=='m_path'" >{{ scope.row[cols.field] }}</span>
-							<span v-show="!scope.row.edit"  :class="{changecolor:scope.row['validity']=='N'}" >{{ scope.row[cols.field] }}<i v-if="cols.field=='phoneNum'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phoneNum)"></i></span>
+					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width"  >
+						<template slot-scope="scope">
+							<!-- v-if="cols.field!='effectiveness' &&scope.row.infoSource!='CMS' && cols.field!='infoSource'" -->
+							<el-input  v-show="scope.row.edit" v-if="cols.field=='phoneNum'||cols.field=='relationship'" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
+							 <span v-show="scope.row.edit" v-if="(cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span>
+							<span style="display:inline-block;padding:0 15px" v-show="!scope.row.edit"  :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}
+								<i v-if="cols.field=='phone'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phone,scope.row)"></i>
+								<i v-if="cols.field=='name'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring1(scope.row.phone,scope.row)"></i>
+								
+								</span>
 
 							<!-- ring(scope.row.phoneNum) -->
-							<el-select v-show="scope.row.edit" v-if="cols.field=='validity'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
+							<el-select v-show="scope.row.edit" v-if="cols.field=='effectiveness'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
 							</el-select>
@@ -38,332 +41,354 @@
 				</el-table>				
 			</el-collapse-item>	
 			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
-			<el-collapse-item name="3" title="客户地址信息">
-				<el-button class="filter-item" style="margin: 0 0 10px 10px;"  type="primary" icon="edit" @click="addWorkInfos = true">添加</el-button>	
-				<el-table :data="items.address" border stripe >
-					<el-table-column label="操作" align="center">
-						<template scope="scope" >
+			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
+				<el-button class="filter-item" style="  position:absolute;top:14px;left:125px"  type="primary"  @click="addWorkInfos = true">添加</el-button>	
+				<el-table :data="items.customerAddresses" border stripe >
+					<el-table-column label="操作" align="center"  width="100">
+						<template slot-scope="scope" >
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
-							<el-button type="danger" size="mini" v-if=" scope.row.m_path!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, items.address)"> 移除</el-button>
+							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, scope.row,items.customerAddresses)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center">
-						<template scope="scope">
-							<el-input  v-show="scope.row.edit" v-if="cols1.field!='validity' &&scope.row.m_path!='CMS'&& cols1.field!='m_path'" size="small" v-model="scope.row[cols1.field]"></el-input>
-							<span v-show="scope.row.edit" v-if="(cols1.field!='validity' && scope.row.m_path=='CMS')||cols1.field=='m_path'" >{{ scope.row[cols1.field] }}</span>
-							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['validity']=='N'}">{{ scope.row[cols1.field] }}</span>
-							<el-select v-show="scope.row.edit" v-if="cols1.field=='validity'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
+					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width" >
+						<template slot-scope="scope">
+							<!-- v-if="cols1.field!='effectiveness' &&scope.row.infoSource!='CMS'&& cols1.field!='infoSource'" -->
+							<el-input  v-show="scope.row.edit"  v-if="cols1.field=='relationship'" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
+							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span>
+							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
+							<el-select v-show="scope.row.edit" v-if="cols1.field=='effectiveness'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
 							</el-select>
 						</template>
 					</el-table-column>			
 				</el-table>				
-			</el-collapse-item>					
+			</el-collapse-item>	
+			<el-collapse-item name="11" title="经销商基本信息">
+				<table style="border-collapse:collapse" id="jxs">
+					<tr id="titleTr">
+						<td style="background:#eef1f6">名称</td>
+						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
+						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6">{{address.name}} </td>					
+					</tr>
+					<tr>
+						<td>{{jxsName}}</td>
+						<td v-for="phone in phoneList" :key="phone.index">{{phone.phone}} </td>
+						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>	
+					</tr>
+				</table>
+				<!-- <label v-for="phone in phoneList" :key="phone.index">
+					<span>电话</span>
+					<span>{{phone}}</span>	
+				</label>		 -->
+				<!-- <template slot-scope="title" >
+                    <el-table :data="items.customerSimpleList" border stripe > 			
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
+						</el-table-column>			
+					</el-table>
+                </template> -->
+			</el-collapse-item>				
 			<el-collapse-item name="5" title="合同基本信息">
 				<el-form :data="items" inline class="table-expand">
-					<el-form-item label="申请号:" :label-width="formLabelWidth">
-						<span>{{items.delyNum}}</span>
+					
+					<el-form-item label="申请号:" >
+						<span>{{items.appNum}}</span>
+						<!-- <span>{{items.delyNum}}</span> -->
 					</el-form-item>
-					<el-form-item label="合同号:" :label-width="formLabelWidth">
-						<span>{{items.contractNum}}</span>
+					<el-form-item label="合同号:">
+						<span>{{items.applicationNumber}}</span>
+						<!-- <span>{{items.contractNum}}</span> -->
 					</el-form-item>
-					<el-form-item label="首付比例:" :label-width="formLabelWidth">
-						<span>{{items.ShoufuRatio}}</span>
+					<el-form-item label="首付比例:" >
+						<span>{{items.firstRatio}}</span>
+						<!-- <span>{{items.ShoufuRatio}}</span> -->
 					</el-form-item>
-					<el-form-item label="贷款金额:" :label-width="formLabelWidth">
-						<span>{{items.loan}}</span>
+					<el-form-item label="贷款金额:" >
+						<span>{{items.loanAmount}}</span>
+						<!-- <span>{{items.loan}}</span> -->
 					</el-form-item>
-					<el-form-item label="合同起始日:" :label-width="formLabelWidth">
+					<el-form-item label="合同起始日:" >
 						<span>{{items.startTime}}</span>
+						<!-- <span>{{items.startTime}}</span> -->
 					</el-form-item>
-					<el-form-item label="贷款产品:" :label-width="formLabelWidth">
-						<span>{{items.RepayTime}}</span>
+					<el-form-item label="贷款产品:" >
+						<span>{{items.loanProducts}}</span>
+						<!-- <span>{{items.RepayTime}}</span> -->
 					</el-form-item>
-					<el-form-item label="付款日:" :label-width="formLabelWidth">
-						<span>{{items.loanTime}}</span>
+					<el-form-item label="还款日:" >
+						<span>{{items.datePayment}}</span>
+						<!-- <span>{{items.loanTime}}</span> -->
 					</el-form-item>
-					<el-form-item label="贷款期限:" :label-width="formLabelWidth">
+					<el-form-item label="贷款期数:" >
+						<span>{{items.loanNum}}</span>
+						<!-- <span>{{items.endTime}}</span> -->
+					</el-form-item>
+					<el-form-item label="合同终止日:" >
 						<span>{{items.endTime}}</span>
-					</el-form-item>
-					<el-form-item label="合同终止日:" :label-width="formLabelWidth">
-						<span>{{items.total}}</span>
+						<!-- <span>{{items.total}}</span> -->
 					</el-form-item>
 				</el-form>				
 			</el-collapse-item>	
 			<el-collapse-item name="6" title="逾期基本信息">
 				<el-form :data="items" inline class="table-expand">
-					<el-form-item label="逾期日期:" :label-width="formLabelWidth">
+					<el-form-item label="逾期日期:" >
 						<span>{{items.overdueDate}}</span>
 					</el-form-item>
-					<el-form-item label="本次逾期天数:" :label-width="formLabelWidth">
-						<span>{{items.ThisOverdueDay}}</span>
+					<el-form-item label="本次逾期天数:">
+						<span>{{items.overdueDays}}</span>
+						<!-- <span>{{items.ThisOverdueDay}}</span> -->
 					</el-form-item>
-					<el-form-item label="本期逾期天数:" :label-width="formLabelWidth">
-						<span>{{items.ThisCurrentdDay}}</span>
+					<el-form-item label="本期逾期天数:">
+						<span>{{items.overdueDaysperiod}}</span>
+						<!-- <span>{{items.ThisCurrentdDay}}</span> -->
 					</el-form-item>
-					<el-form-item label="月还款金额:" :label-width="formLabelWidth">
-						<span>{{items.MonthPay}}</span>
+					<el-form-item label="月应还款金额:">
+						<span>{{items.monthlyRepayment}}</span>
 					</el-form-item>
-					<el-form-item label="逾期金额总计:" :label-width="formLabelWidth">
-						<span>{{items.OverTotalMoney}}</span>
+					<el-form-item label="逾期金额总计:" >
+						<span>{{items.sumOverdue}}</span>
 					</el-form-item>
-					<el-form-item label="到期利息总计:" :label-width="formLabelWidth">
-						<span>{{items.OverAccrualTotal}}</span>
+					<el-form-item label="到期利息总计:">
+						<span>{{items.totalDue}}</span>
 					</el-form-item>
-					<el-form-item label="逾期还款总额:" :label-width="formLabelWidth">
-						<span>{{items.MonthRePay}}</span>
+					<el-form-item label="逾期还款总额:" >
+						<span>{{items.totalPayment}}</span>
 					</el-form-item>
-					<el-form-item label="逾期利息:" :label-width="formLabelWidth">
-						<span>{{items.overaccrual}}</span>
+					<el-form-item label="逾期利息:" >
+						<span>{{items.overdueInterest}}</span>
 					</el-form-item>
-					<el-form-item label="逾期应收总计:" :label-width="formLabelWidth">
-						<span>{{items.total}}</span>
+					<el-form-item label="逾期应收总计:">
+						<span>{{items.overdueTotal}}</span>
+					</el-form-item>
+					<el-form-item label="ET结算金额:">
+						<span>{{items.ET}}</span>
 					</el-form-item>
 				</el-form>				
 			</el-collapse-item>	
-			<el-collapse-item name="8" title="备注">			
-				<p>{{remarkform.remark}}</p>
-			</el-collapse-item>
-			<el-collapse-item name="7" title="话术指引">			
-				<p>{{items.remarkMessage}}</p>
-			</el-collapse-item>	
-				
-			<el-collapse-item name="9" title="催收记录">
-				<el-row>
-					<el-col :span="24">
-						<i class="el-icon-edit" @click="remarkopen = true">备注</i>
-						<i class="el-icon-message" @click="messageopen = true">短信</i>
-						<i class="el-icon-upload2">附件</i>
-					</el-col>
-				</el-row>	
-				<el-row>
-					<el-form ref="mainform" :rules="rules" :model="mainform" label-width="80px" style="margin:20px;" >
-					<el-col :span="11">
-						
-							<div class="first">
-								<el-form-item label="行动代码" prop="daima">
-									<v-select v-model="mainform.daima" :options="getdaima"></v-select>
-								</el-form-item>	
-							</div>
-							<div class="second" style="display: flex;">
-								<el-form-item label="承诺金额" prop="maney" style="width: 50%;">
-									<el-input v-model="mainform.maney"></el-input>
-								</el-form-item>
-								<el-form-item label="承诺日期" prop="accdata" style="width: 50%;">
-									<el-col :span="24">
-										<el-date-picker type="date" placeholder="选择日期" v-model="mainform.accdata" style="width: 100%;"></el-date-picker>
-									</el-col>
-								</el-form-item>								
-							</div>
-							<div class="third">
-								<el-form-item label="联系人" prop="name">
-									<v-select v-model="mainform.name" :options="getname"></v-select>
-								</el-form-item>
-								<el-form-item label="联系方式"  prop="fangshi">
-									<v-select v-model="mainform.fangshi" :options="getfangshi"></v-select>
-								</el-form-item>								
-							</div>	
-							<div class="four">
-								<el-form-item label="约会时间"  prop="accdatetime">
-									<el-col :span="24">
-										<el-date-picker type="datetime" placeholder="选择约会时间" v-model="mainform.acctime" style="width: 100%;"></el-date-picker>
-									</el-col>
-								</el-form-item>								
-							</div>				
-						
-					</el-col>
-					<el-col :span="12">
-						
-							<el-form-item label="备注" prop="remark">
-								<el-input type="textarea" v-model="mainform.remark" ></el-input>
-							</el-form-item>
-							<el-form-item>
-								<el-button type="primary" @click="onSubmit('mainform')">确认</el-button>
-								<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
-							</el-form-item>
-					</el-col>
-					
-					
-					</el-form>
-				</el-row>					
-			</el-collapse-item>	
+			<el-collapse-item name="8" title="备注" style="position:relative">			
+                     <el-button type="primary" size="mini" v-on:click="remarkopen = true" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
+				<p>{{remarkform.remarks}}</p>											
+			</el-collapse-item>							
 		</el-collapse>
-	
+		</div>
+		
 		<el-dialog title="备注" :visible.sync="remarkopen">
-			<el-form :model="remarkform">
+			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
-					<el-input type="textarea" v-model="remarkform.remark"></el-input>
-				</el-form-item>
-				
+					<el-input type="textarea" v-model="remarkform.remarks"></el-input>
+				</el-form-item>				
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="confirmremarkopen">确 定</el-button>
+				<el-button type="primary" @click.native.prevent="confirmremarkopen('remarkform')">确 定</el-button>
 			</div>
 		</el-dialog>
-		<el-dialog title="短信" :visible.sync="messageopen">
-			<el-form :model="messageform" :ref="messageform" >
-				<el-form-item label="合同号" :label-width="formLabelWidth">
-					<el-input v-model="messageform.hth"></el-input>
+	
+		<el-dialog title="新增客户电话信息" :visible.sync="addUserInfos"  id="addUserInfos">
+			<el-form :model="AdduserForm" ref="AdduserForm" :rules="phonerules" :data='items.customerPhones'>
+				<el-form-item label="角色：" prop="roleName" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.roleName" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item label="短信模板" :label-width="formLabelWidth">
-					<v-select v-model="messageform.template" :options="getMesTemplate"></v-select>
+				<el-form-item label="姓名：" prop="name" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.name" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item label="手机号码" :label-width="formLabelWidth">
-					<v-select v-model="messageform.phone" :options="getMesPhone"></v-select>
+				<el-form-item label="关系：" prop="relationship" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.relationship" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item label="内容栏" :label-width="formLabelWidth">
-						<el-input type="textarea" v-model="messageform.messagedesc"></el-input>
+				<el-form-item label="电话：" prop="phone" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.phone" style="width:300px"></el-input>
 				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="confirmmessage">确 定</el-button>
-			</div>
-		</el-dialog>	
-		<el-dialog title="新增客户电话信息" :visible.sync="addUserInfos" >
-			<el-form :model="AdduserForm" ref="AdduserForm" :rules="rules">
-				<el-form-item label="角色：" prop="UType" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.UType" ></el-input>
+				<el-form-item label="电话类型：" prop="phoneType" :label-width="formLabelWidth">
+					<!-- <el-select v-model="AdduserForm.phoneType" style="width:300px">
+							<el-option v-for="(item,index) in items.customerPhones"  :key="index" :value="item.phoneType"></el-option>
+					</el-select> -->
+					<el-input v-model="AdduserForm.phoneType" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item label="姓名：" prop="UName" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.UName"></el-input>
-				</el-form-item>
-				<el-form-item type="number" label="电话：" prop="UPhone" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.UPhone" ></el-input>
+				<el-form-item label="电话码：" prop="phoneNum" :label-width="formLabelWidth">
+					<el-select v-model="AdduserForm.phoneNum" style="width:300px">
+							<el-option v-for="(item,index) in items.customerPhones"  :key="index" :value="item.phoneNum"></el-option>
+					</el-select>
+					<!-- <el-input v-model="AdduserForm.phoneNum" style="width:300px"> </el-input> -->
 				</el-form-item>
 				<el-form-item label="信息来源：" :label-width="formLabelWidth">
-					<el-input disabled value="WCMS"></el-input>
+					<el-input disabled  v-model="AdduserForm.infoSource" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="有效性：" :label-width="formLabelWidth">
-					<el-input disabled value="Y"></el-input>
+					<el-input disabled v-model="AdduserForm.effectiveness" style="width:300px"></el-input>
 				</el-form-item>				
 			</el-form>
 			<div slot="footer" class="dialog-footer">
         <el-button @click="addUserInfo">取 消</el-button>
  <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
-        <el-button  type="primary" @click.native.prevent="choice">确 定</el-button>
+        <el-button  type="primary" @click.native.prevent="choice('AdduserForm')">确 定</el-button>
       </div>			
 		</el-dialog>
-		<el-dialog title="新增客户地址信息" :visible.sync="addWorkInfos" >
-			<el-form :model="AddWorkForm" ref="AddWorkForm" :rules="rules">
-				<el-form-item label="角色：" prop="UType" :label-width="formLabelWidth">
-					<el-input v-model="AddWorkForm.UType" ></el-input>
+		<el-dialog title="新增客户地址信息" :visible.sync="addWorkInfos"  id="addWorkInfos">
+			<el-form :model="AddWorkForm" ref="AddWorkForm" :rules="addressrules">
+				<el-form-item label="角色：" prop="roleName" :label-width="formLabelWidth">
+					<el-input v-model="AddWorkForm.roleName" style="width:300px" ></el-input>
 				</el-form-item>
-				<el-form-item label="姓名：" prop="UName" :label-width="formLabelWidth">
-					<el-input v-model="AddWorkForm.UName"></el-input>
+				<el-form-item label="姓名：" prop="name" :label-width="formLabelWidth"  >
+					<el-input v-model="AddWorkForm.name" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item  label="地址：" prop="UAddress" :label-width="formLabelWidth">
-					<el-input v-model="AddWorkForm.UAddress" ></el-input>
+				<el-form-item label="关系：" prop="relationship" :label-width="formLabelWidth">
+					<el-input v-model="AddWorkForm.relationship" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item label="信息来源：" :label-width="formLabelWidth">
-					<el-input disabled value="WCMS"></el-input>
+				<el-form-item  label="地址：" prop="address" :label-width="formLabelWidth" >
+					<el-input v-model="AddWorkForm.address" style="width:300px"></el-input>
+				</el-form-item>
+				<el-form-item  label="地址类型：" prop="addressType" :label-width="formLabelWidth" >
+					<el-input v-model="AddWorkForm.addressType" style="width:300px"></el-input>
+				</el-form-item>
+				<el-form-item label="信息来源：" :label-width="formLabelWidth" >
+					<el-input disabled  v-model="AddWorkForm.infoSource" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="有效性：" :label-width="formLabelWidth">
-					<el-input disabled value="Y"></el-input>
-				</el-form-item>				
+					<el-input disabled v-model="AddWorkForm.effectiveness" style="width:300px"></el-input>
+				</el-form-item>					
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-        <el-button @click="addWorkInfo">取 消</el-button>
+        <el-button @click="addWorkInfo" >取 消</el-button>
  <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
-        <el-button  type="primary" @click.native.prevent="address">确 定</el-button>
+        <el-button  type="primary" @click.native.prevent="address('AddWorkForm')" >确 定</el-button>
       </div>			
 		</el-dialog>
+		<div id="bottomFrom">
+			<form-message :callback='callback'></form-message>
+			<!-- :callback='callback' -->
+		</div>
 	</section>
 </template>
 
 <script>
-import { tab_view,addInfo,addAddress } from "@/api/api";
+import $ from 'jquery'
+import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo } from "@/api/tablist";
 import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
+import formMessage from '../tablist/form_message';
+import{clickCallOut} from '../../../../ngcc/softPhone'
+// import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx} from ""
 export default {
   data() {
-	  	const PhoneNum =(rule,value,callback)=>{
-				 if (! isPhoneNum(value)) {					   
-					console.log(isPhoneNum(value))
-					callback(new Error('您输入的电话信息有误！座机：xx-xx'))
-				}else{					
-					callback()
-					return false;
-				}
-		}
+	 
     	return {
+			floatForm:{
+				 background:"#fff",
+				 zIndex:"10"
+	 		},
 			classObject: {
 				active: true,
 				'text-danger': false
 			},
-			activeNames:["1","2","3","4","5","6",'7',"8","9","10"],
+			activeNames:["1","2","3","4","5","6",'7',"8","9","10",'11'],
 			items: [],
-			height:"",
-			cols:[],
+			phoneList:[],
+			addressList:[],	
+			jxsName:"",		
+			cols:[
+				{title:'角色',field:'roleName',width:"70"},
+            	{title:'姓名',field:'name',width:"80"}, 
+            	{title: '关系', field: 'relationship', width: "50" },         
+            	{title:'电话',field:'phone',width:"140"},
+            	{title: '电话类型', field: 'phoneType', width: "90" },
+            	{title: '电话码', field: 'phoneNum', width: "60" },	
+            	{title:'信息来源',field:'infoSource',width:"60"},
+            	{title:'有效性',field:'effectiveness',width:"60"},
+			],
 			dialogStatus: '',
-			cols1:[],
-			baseinfo:[],
+			cols1:[
+				{title:'角色',field:'roleName',width:"70"},
+            	{title:'姓名',field:'name',width:"80"},
+            	{title:'关系', field: 'relationship', width: "50" },      
+            	{title:'地址',field:'address',width:"200"},
+            	{title: '地址类型', field: 'addressType', width: "70" },
+            	{title:'信息来源',field:'infoSource',width:"60"},
+            	{title:'有效性',field:'effectiveness',width:"60"},
+			],
+			baseinfo:[
+				{ title: '角色名', field: 'roleName', width: "60" },
+				{ title: '姓名', field: 'name', width: "80" },
+				{ title: '拼音', field: 'pinyin', width: "80" },
+				{ title: '职业', field: 'occupation', width: "80" },
+				{ title: '单位名称', field: 'unitName', width: "110" },
+				{ title: '性别', field: 'sex', width: "45" },
+				{ title: '证件类型', field: 'documentType', width: "90"},
+				{ title: '证件号码', field: 'documentNum', width: "145"},
+				{ title: '出生日期', field: 'birthDate', width: "80"}
+			],
+			callback:{
+				phoneType:'',
+				roleName:'',
+			},		
 			id:this.$store.state.navTabs.tabId,	
 			remarkopen: false,
 			messageopen: false,
 			addUserInfos:false,
 			addWorkInfos:false,
-			formLabelWidth: '120px',
+			 formLabelWidth: '120px',
 			//备注弹出层
 			remarkform: {
-				remark:'',
+				remarks:'',
 			},
-			//短信弹出层
-			messageform: {
-				hth:'',
-				template:'',
-				phone:'',
-				messagedesc: '',
 
-			},
 			//用户信息弹出层
 			AdduserForm:{
-				UType:"",
-				UName:"",
-				UPhone:""
-	
+				roleName:"",
+				name:"",
+				relationship:"",
+				phone:"",
+				phoneType:"",
+				phoneNum:"",
+				infoSource:"ICS",
+				effectiveness:"Y",	
 			},
 			AddWorkForm:{
-				UType:"",
-				UName:"",
-				UAddress:""
-	
+				roleName:"",
+				name:"",
+				relationship:"",
+				address:"",
+				addressType:"",
+				infoSource:"ICS",
+				effectiveness:"Y",	
 			},							
-			mainform: {
-					daima: '',
-					money: '',
-					accdata: '',
-					name: '',
-					fangshi: false,
-					accdatetime: '',
-					remark:'',
-			},		
-			rules: {
-				daima: [
-            		{ required: true, message: '请输入行动代码', trigger: 'blur' }
-				],
-				remark: [
-           			 { required: true, message: '请填写备注', trigger: 'blur' }
-         		],
-				UPhone:[
-					{ required:true, trigger: 'blur',validator:PhoneNum},
-					
-				],
-				UType:[
-					{required:true,message:"请输入角色信息", trigger: 'blur'},	
-				],
-				UAddress:[
-					{required:true,message:"请输入地址信息", trigger: 'blur'},	
-				],
-				UName:[
-					{required:true,message:"请输入角色姓名", trigger: 'blur',validator:isChinaName},	
-				],
-			},
-			getdaima: ['PTP','TSM'],
-			getname: ['借款人','共借人','担保人'],
-			getfangshi:["手机",'邮箱'],
+	
+			phonerules: {
+			    roleName: [
+                    { required: true, message: '请输入角色', trigger: 'blur' }
+                ],
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ],
+                relationship: [
+                    { required: true, message: '请输入关系', trigger: 'blur' }
+                ],
+                phone: [
+                    { required: true, message: '请输入电话', trigger: 'blur' }
+                ],
+                phoneType: [
+                    { required: true, message: '请输入电话类型', trigger: 'blur' }
+                ],
+                // phoneNum: [
+                //     { required: true, message: '请输入电话码', trigger: 'blur' }
+                // ],
+            },
+            addressrules:{
+                roleName: [
+                    { required: true, message: '请输入角色', trigger: 'blur' }
+                ],
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ],
+                relationship: [
+                    { required: true, message: '请输入关系', trigger: 'blur' }
+                ],
+                address: [
+                    { required: true, message: '请输入地址', trigger: 'blur' }
+                ],
+                addressType: [
+                    { required: true, message: '请输入地址类型', trigger: 'blur' }
+                ],
+               
+            }
 
-			getMesTemplate: ['逾期提醒','提醒'],
-			getMesPhone: ['15830903200','15603230261'],
 
      
      
@@ -371,90 +396,272 @@ export default {
   },
   methods: {
 	  //电话信息
- 		choice(){			
+ 		choice(AdduserForm){			
  			let para ={
-    			UType:this.UType,
-    			UNname:this.UNname,
-    			UPhone:this.UPhone
-    	};
-    	if(this.$refs['AdduserForm'].model.UType!=""&&this.$refs['AdduserForm'].model.UName!=""&&this.$refs['AdduserForm'].model.UPhone!=""){
-    		addInfo(para).then(res =>{
-    		if(res.data.msg=="ok"){
-    			this.items.persons.unshift(
-				{"persontype":this.$refs['AdduserForm'].model.UType	,"name":this.$refs['AdduserForm'].model.UName,"phoneNum":this.$refs['AdduserForm'].model.UPhone,"m_path":"WCMS","validity":"Y","edit":false},	
+    			roleName:this.AdduserForm.roleName,
+				name:this.AdduserForm.name,
+				relationship:this.AdduserForm.relationship,
+				phone:this.AdduserForm.phone,
+				phoneType:this.AdduserForm.phoneType,
+				phoneNum:this.AdduserForm.phoneNum,
+				infoSource:'ICS',
+				effectiveness:"Y",
+				afpId: this.$route.params.id,
 				
-			);
-			this.addUserInfos=false;
-			this.$refs['AdduserForm'].resetFields();
-    		}else{
-    			alert("数据未同步")
-    		}   		   		
-    		})
-    	}else{   		
-    		this.addUserInfos=true;
-    		this.$refs.AdduserForm.validate((valid) => {
-         		if (valid) {
-				
-           		 alert('submit!');
-          	} else {
-				  console.log('error submit!')
-            	return false;
-          }
-        });
-    	}   	
-		 },
+            };
+            this.$refs[AdduserForm].validate((valid) => {
+                if(valid){
+                    addInfo(para).then(res =>{
+                    // debugger;
+                    if(res.data.success){
+                        this.$message({
+                            type: 'success',
+                            message: '添加成功！'
+                        })
+                        this.items.customerPhones.unshift(
+                        {"roleName":this.$refs['AdduserForm'].model.roleName,"name":this.$refs['AdduserForm'].model.name,"relationship":this.$refs['AdduserForm'].model.relationship,
+                        "phone":this.$refs['AdduserForm'].model.phone,
+                        "phoneType":this.$refs['AdduserForm'].model.phoneType,"phoneNum":this.$refs['AdduserForm'].model.phoneNum,                                         
+                        "infoSource":"ICS","effectiveness":"Y","edit":false},	
+                        
+                    );
+                    this.addUserInfos=false;
+                    this.$refs['AdduserForm'].resetFields();
+                    }else{
+                        this.$message({
+                            type: 'error',
+                            message: '添加失败，请联系管理员'
+                        })
+                        
+                    }   		   		
+                    })
+                }else{   		
+                    this.addUserInfos=true;
+                    this.$refs.AdduserForm.validate((valid) => {
+                        if (valid) {				
+                        alert('submit!');
+                        } else {
+                            return false;
+                        }
+                    });
+                } 
+            });  	
+		},
+		//备注方法
+		confirmremarkopen(remarkform) {
+				this.remarkopen=false;
+				let para ={
+					remarks:this.remarkform.remarks,
+					id:this.$route.params.id
+				}
+				this.$refs[remarkform].validate((valid) => {
+                if(valid){
+                    addMessage(para).then(res =>{
+                        if(res.data.success){
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功！'
+                            })
+                            // this.items.customerAddresses.unshift(
+                            // {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
+                            // "address":this.$refs['AddWorkForm'].model.address,
+                            // "addressType":this.$refs['AddWorkForm'].model.addressType,                  
+                            // "infoSource":"WCMS","effectiveness":"Y","edit":false},	
+                            
+                            // );
+                        this.remarkopen=false;
+                        this.$refs['remarkform'].resetFields();
+                        }else{
+                            this.$message({
+                            type: 'error',
+                            message: '添加失败，请联系管理员'
+                            })
+                        }   		   		
+                    })
+                }else{   		
+                    this.remarkopen=true;
+                    this.$refs.remarkform.validate((valid) => {
+                        if (valid) {                       
+                        alert('submit!');
+                        } else {
+                            return false;
+                        }
+                    });
+                } 
+            }); 
+				this.$message({
+					type:'success',
+					message:'保存成功',
+				});
+
+		},
 		 //地址信息
-		 address(){			
+		 address(AddWorkForm){			
  			let para ={
-    			UType:this.UType,
-    			UNname:this.UNname,
-    			UAddress:this.UAddress
-    	};
-    	if(this.$refs['AddWorkForm'].model.UType!=""&&this.$refs['AddWorkForm'].model.UName!=""&&this.$refs['AddWorkForm'].model.UAddress!=""){
-    		addAddress(para).then(res =>{
-    		if(res.data.msg=="ok"){
-    			this.items.address.unshift(
-				{"persontype":this.$refs['AddWorkForm'].model.UType	,"name":this.$refs['AddWorkForm'].model.UName,"address":this.$refs['AddWorkForm'].model.UAddress,"m_path":"WCMS","validity":"Y","edit":false},	
-				
-			);
-			this.addWorkInfos=false;
-			this.$refs['AddWorkForm'].resetFields();
-    		}else{
-    			alert("数据未同步")
-    		}   		   		
-    		})
-    	}else{   		
-    		this.addWorkInfos=true;
-    		this.$refs.AddWorkForm.validate((valid) => {
-         		if (valid) {
-				
-           		 alert('submit!');
-          	} else {
-				  console.log('error submit!')
-            	return false;
-          }
-        });
-    	}   	
+    			roleName:this.AddWorkForm.roleName,
+				name:this.AddWorkForm.name,
+				relationship:this.AddWorkForm.relationship,
+				address:this.AddWorkForm.address,
+				addressType:this.AddWorkForm.addressType,
+				infoSource:'ICS',
+				effectiveness:"Y",
+				afpId: this.$route.params.id,
+            };
+            this.$refs[AddWorkForm].validate((valid) => {
+                if(valid){
+                    addAddress(para).then(res =>{
+                        if(res.data.success){
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功！'
+                            })
+                            this.items.customerAddresses.unshift(
+                            {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
+                            "address":this.$refs['AddWorkForm'].model.address,
+                            "addressType":this.$refs['AddWorkForm'].model.addressType,                                          
+                            "infoSource":"ICS","effectiveness":"Y","edit":false},	
+                            
+                            );
+                        this.addWorkInfos=false;
+                        this.$refs['AddWorkForm'].resetFields();
+                        }else{
+                            this.$message({
+                            type: 'error',
+                            message: '添加失败，请联系管理员'
+                            })
+                        }   		   		
+                    })
+                }else{   		
+                    this.addWorkInfos=true;
+                    this.$refs.AddWorkForm.validate((valid) => {
+                        if (valid) {
+                        
+                        alert('submit!');
+                        } else {
+                            return false;
+                        }
+                    });
+                } 
+            });    	
  		},
-		deleteRow(index, rows) {
-			rows.splice(index, 1);
+		deleteRow(index, rows, datas) {
+			let para ={
+				id:rows.id,
+			}
+			this.$confirm('确定删除信息吗？','提示',{
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type:'warning'
+			}).then(() => {
+				delPhoneInfo(para).then(res =>{
+			
+					if(res.data.success){
+						datas.splice(index, 1);
+						this.$message({
+							type: 'success',
+							message: '删除成功！'
+						})
+					}else{
+						this.$message({
+							type: 'error',
+							message: '删除失败，请联系管理员！'
+						})
+					}
+				});
+				
+			}).catch(() =>{
+				this.$message({
+					type: 'info',
+					message: '已取消删除'
+				});
+			});
+
+			
 		},
-		deleteAdress(index, rows) {
-			rows.splice(index, 1);
+		deleteAdress(index, rows, datas) {
+				let para ={
+				id:rows.id,
+			}
+			this.$confirm('确定删除信息吗？','提示',{
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type:'warning'
+			}).then(() => {
+				delAddress(para).then(res =>{
+			
+					if(res.data.success){
+						datas.splice(index, 1);
+						this.$message({
+							type: 'success',
+							message: '删除成功！'
+						})
+					}else{
+						this.$message({
+							type: 'error',
+							message: '删除失败，请联系管理员！'
+						})
+					}
+				});
+				
+			}).catch(() =>{
+				this.$message({
+					type: 'info',
+					message: '已取消删除'
+				});
+			});
 		},
-		ring(phoneNum){
-			var divDom = this.$refs.abc;   	 
-			divDom.scrollTop=divDom .scrollHeight;
-		},		
+		ring(phoneNum,row,){
+			 clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
+		},	
+		ring1(phoneNum,row,){		
+			 clickCallOut("0",phoneNum,row.name,this.applicationNumbers)					
+		},	
 		phoneEdit(row){
-			console.log(row.edit);
-			row.edit=!row.edit;
+			let para = row
+			if(row.edit=!row.edit){
+			
+			}else{
+				updatePhoneInfo(para).then(res =>{
+						if(res.data.success){
+							this.$message({
+								type: 'success',
+								message: '编辑成功！'
+							})
+						}else{
+							this.$message({
+								type: 'error',
+								message: '编辑失败，请联系管理员！'
+							})
+						}
+				});
+				
+				
+			}
+			//row.edit=!row.edit;
 		
 		},
 		
 		addressEdit(row){
+			let para = row
+			if(row.edit=!row.edit){
+			
+			}else{
+				updateAddress(para).then(res =>{
+						if(res.data.success){
+							this.$message({
+								type: 'success',
+								message: '编辑成功！'
+							})
+						}else{
+							this.$message({
+								type: 'error',
+								message: '编辑失败，请联系管理员！'
+							})
+						}
+				});
 				
-			row.edit=!row.edit;
+				
+			}
 		},
 		//短信方法
 		confirmmessage() {
@@ -464,15 +671,7 @@ export default {
 					message:'保存成功',
 				});
 		},
-		//备注方法
-		confirmremarkopen() {
-				this.remarkopen=false;
-				this.$message({
-					type:'success',
-					message:'保存成功',
-				});
-
-		},
+		
 		//添加客户信息方法
 		addUserInfo(){
 			this.addUserInfos=false;
@@ -483,66 +682,83 @@ export default {
 			this.addWorkInfos=false;
 			this.$refs['AddWorkForm'].resetFields();
 		},
-		onSubmit(mainform ) {
-			this.$refs[mainform].validate((valid) => {
-				if (valid) {
-					this.$message({
-					type:'success',
-					message:'提交成功',
-				});
-				} else {
-					console.log('error submit!!');
-					return false;
-				}
-			});
-		},
-		onSubmitnext(mainform) {
-			this.$refs[mainform].validate((valid) => {
-				if (valid) {
-					this.$message({
-						type:'success',
-						message:'提交成功，处理下一条',
-					});
-					this.getlist();
-					this.$refs['mainform'].resetFields();
-					var divDom = this.$refs.abc;   	 
-					divDom.scrollTop=0;
-				} else {
-					console.log('error submit!!');
-					return false;
-				}
-			});
-		},		 		
+		// slibceshi(){
+           
+		// 	let para = {
+		// 		missionId: this.$route.params.id
+		// 	};
+		// 	tab_view(para).then(res => {
+		// 		 let data = res.data.result;			
+		// 		 this.items = data;								
+		// 		this.items.customerPhones = this.items.customerPhones.map(v => {
+                   
+		// 			this.$set(v, 'edit', false)
+		// 			return v;
+					
+		// 		});
+				
+		// 		this.items.customerAddresses = this.items.customerAddresses.map(v => {
+		// 			this.$set(v, 'edit', false)
+		// 			return v
+		// 		})
+		// 		this.remarkform.remarks = this.items.remarks;
+		// 		// this.cols=data.cols;
+        //         // this.cols1=data.cols1; 
+		// 		this.height=document.documentElement.clientHeight-400;       
+		// 	});
+        // },	
 		getlist() {
 			let para = {
-					id: this.id
+				missionId: this.$route.params.id
 			};
 			tab_view(para).then(res => {
-				let data = res.data.msg[0]
-				this.items = data.data[0];
-				this.items.persons = this.items.persons.map(v => {
+				
+				 let data = res.data.result;			
+				 this.items = data;	
+				 this.applicationNumbers=data.applicationNumber;						
+				this.items.customerPhones = this.items.customerPhones.map(v => {
 					this.$set(v, 'edit', false)
 					return v;
 					
 				});
 				
-				this.items.address = this.items.address.map(v => {
+				this.items.customerAddresses = this.items.customerAddresses.map(v => {
 					this.$set(v, 'edit', false)
 					return v
 				})
-				this.remarkform.remark = this.items.notice;
-				this.cols=data.cols;
-				this.cols1=data.cols1; 
-				this.baseinfo=data.baseinfo;  
+				this.remarkform.remarks = this.items.remarks;
+				// this.cols=data.cols;
+                // this.cols1=data.cols1; 
 				this.height=document.documentElement.clientHeight-400;       
 			});
    },
-    
+	//经销商信息
+	getJxsInfo(){
+		let para = {
+			missionId: this.$route.params.id
+		};
+			jxsInfo(para).then(res =>{
+				let data =res.data.result;
+				this.jxsName=data.name;
+				data.phone.forEach(element => {
+					this.phoneList.push({"phone":element.phone,"name":"电话"})
+				});
+				data.address.forEach(element => {					
+					 this.addressList.push({"address":element,"name":"地址"})
+				});
+				// console.log(data.address)
+			})
+	}
+	
+  },
+  components:{
+	  formMessage
   },
   mounted() {
-    this.getlist();
-     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
-   this.$refs.abc.style.height= h+"px";
+	this.getlist();
+	this.getJxsInfo()
+    let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
+   	this.$refs.abc.style.height= h+"px";
   }
 };
 </script>
@@ -551,26 +767,35 @@ export default {
 	h4{background: #eef1f6;padding: 10px;border: 1px solid #dfe6ec;font-weight: bold;}
 	table{width: 100%;text-align: center;}
 	tr{width: 100%;}
-	td{border: 1px solid #dfe6ec;height: 50px;line-height: 50px;background: #f0f0f0;}	
+	td{border-right: 1px solid #dfe6ec;border-bottom: 1px solid #dfe6ec;height:23px!important;line-height: 23px!important;background: #f0f0f0;}	
 	.useraddress{width: 150px;}
-	.el-collapse-item__header{font-size:15px;font-weight: bold;background:#dfe6ec;border: 1px solid #f0f0f0;
-	};
+	.el-collapse-item__header{font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
 	.abc{height: 500px!important; }
 	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2{cursor: pointer; color: #20a0ff;margin-left: 5px;}
 	.el-col .el-icon-upload2:hover{color: #4db3ff;}
 	.el-col .el-icon-edit:hover{color: #4db3ff;}
 	.el-col .el-icon-message:hover{color:#4db3ff}
-	.changecolor{
-		color: red;
-	}
-  .table-expand label {
-    width:100px!important;  
-	text-align:right;
-  }
-  .table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width:210px; 
-	color: #99a9bf;
-  }
+	.changecolor{color: red;}
+	.el-tabs--border-card>.el-tabs__content{padding: 0!important}
+	.el-collapse-item__content{padding:5px!important}
+	.el-form-item__label{padding: 5px 0!important}
+	.el-form-item__content{line-height: 24px!important}
+  	.table-expand label { width:90px!important;text-align:el-pagination__rightwrapper;}
+  	.table-expand .el-form-item {margin: 0 0 0 2px!important; min-width:220px!important;color: #269aff!important;}
+  	.el-table .cell{padding: 0!important;white-space:nowrap!important};
+	.floatForm{position: fixed;bottom: 0;right:0}
+	::-webkit-scrollbar{width:2px;height:12px }
+	::-webkit-scrollbar-track{background-color:#fff;border-radius: 8px}
+ 	::-webkit-scrollbar-thumb{background-color:#bee1eb;border-radius: 8px}
+	::-webkit-scrollbar-thumb:active {background-color:#bee1eb} 
+	.el-button{padding: 2px!important;font-size: 13px!important}
+	.el-table th{height: 0px!important}
+	#bottomFrom{position: fixed;bottom: 30px}
+	/* #jxs td{display:inline-block;min-width: 120px} */
+	#titleTr td{background:#eef1f6}
+	.el-table::after,.el-table::before{background-color: transparent!important}
+	#addWorkInfos .el-form-item,#addUserInfos .el-form-item{margin-bottom: 22px} 
+	#addWorkInfos .addWorkInfos{top:66%;left:11px } 
+	#addWorkInfos button,#addUserInfos button{padding:8px }
+	.inputInner .el-input__inner{margin-left: 0px!important}
 </style>

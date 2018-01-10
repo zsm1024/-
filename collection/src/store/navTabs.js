@@ -1,10 +1,8 @@
 import Vuex from 'vuex'
-import { nav_view } from '@/api/api';
 
-const Home = resolve => require(['../pages/home/Home'], resolve)
+const Home = resolve => require(['../pages/home/home'], resolve)
 
 const state = {
-    tabId: "",
     activeTabName: "home",
     tabList: [
         {
@@ -16,40 +14,25 @@ const state = {
         }
     ]
 }
+
 const mutations = {
     setActiveTabName(state, name) {
         state.activeTabName = name;
     },
     addTab(state, index) {
-        
-        nav_view().then((res)=>{
-            let data=res.data.msg;                     
-            for(let i of data){
-                let list = i.list;
-                if(typeof(list) != 'undefined'){
-                    for(let l in list){
-                        if( list[l].path == index){
-                            name =  list[l].title;     
-                        }
-                    }
-                }
-            }
-            
-            if (state.tabList.filter(f => f.name == index) == 0) {
-                let component = resolve => require([`@/pages/${index}`], resolve)
-                state.tabList.push({
-                    label: name,
-                    name: index,
-                    disabled: false,
-                    closable: true,
-                    component: component  
-                })
-            }
-            state.activeTabName = index;
-        }) 
+        if (state.tabList.filter(f => f.name == index) == 0) {
+            let component = resolve => require([`../pages/${index}`], resolve)
+            state.tabList.push({
+                label: index,
+                name: index,
+                disabled: false,
+                closable: true,
+                component: component
+            })
+        }
+        state.activeTabName = index;
     },
     closeTab(state, name) {
-
         let tab = state.tabList.filter(f => f.name == name)[0];
         let index = state.tabList.indexOf(tab);
         if (index != state.tabList.length - 1) {

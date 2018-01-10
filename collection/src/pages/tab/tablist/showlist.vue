@@ -3,19 +3,18 @@
 
 
 		<!--列表-->
-		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
-			<el-table-column label="操作"  align="center" >
+		<el-table :data="lists"  border highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+			<el-table-column label="操作"  align="center"  width="40" >
 				<template  slot-scope="scope">
 					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
+			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" :width="col.width">
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
-		<el-col :span="24" class="toolbar">
-			
+		<el-col :span="24" class="toolbar">			
 			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"  style="float:right;">
 			</el-pagination>
 		</el-col>
@@ -28,22 +27,27 @@
 <script>
 	
 	//import NProgress from 'nprogress'
-	import { repairlist } from '@/api/api';
+	import { repairlist } from '@/api/tablist';
 
 	export default {
 		data() {
 			return {
 				
 				lists: [],
-				cols: [],
+				cols: [ 
+					{ title: '服务站名称', field: 'serviceName',width:"120" },
+            		{ title: '服务站城市', field: 'serviceCity' ,width:"100" },
+           		 	{ title: '服务站地址', field: 'serviceAddress',width:"100" },
+            		{ title: '服务站电话', field: 'servicePhone',width:"100"  },
+            		{ title: '送修人', field: 'RepairName',width:"50" },
+            		{ title: '送修人手机号', field: 'Repairphone',width:"100"  },
+            		{ title: '修理类别', field: 'Repairtype',width:"60" },
+            		{ title: '进厂时间', field: 'incomingTime',width:"80"  },
+            		{ title: '出厂时间', field: 'factoryTime' ,width:"80" },],
 				total: 0,
 				pagesize: 10,
 				page: 1,
 				listLoading: false,
-			
-				
-				
-
 			}
 		},
 		methods: {
@@ -78,16 +82,17 @@
 			getlists() {
 				let para = {
 					page: this.page,
-					pagesize: this.pagesize
+					pageSize: this.pagesize,
+					missionId:this.$route.params.id
 				};
 				this.listLoading = true;
 				//NProgress.start();
 				repairlist(para).then((res) => {
-					this.total = res.data.total;
-					this.lists = res.data.data;
-					this.cols = res.data.cols;
+					let data=res.data.result;				
+					this.total = data.data.length;
+					this.lists = data.data;
 					this.listLoading = false;
-					//NProgress.done();
+
 				});
 			},
 			

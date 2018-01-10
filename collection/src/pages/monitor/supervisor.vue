@@ -2,54 +2,38 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="filters">
-      
-        <el-form-item>
-					<el-input v-model="filters.job" placeholder="岗位"></el-input>
-				</el-form-item>
-        <el-form-item>
-					<el-input v-model="filters.queue" placeholder="任务队列"></el-input>
-				</el-form-item>
-        <el-form-item>
-					<el-input v-model="filters.name" placeholder="用户"></el-input>
-				</el-form-item>
-        <el-form-item>
-					<el-input v-model="filters.day" placeholder="逾期天数"></el-input>
-				</el-form-item>
-        <el-form-item>
-					<el-input v-model="filters.money" placeholder="剩余金额"></el-input>
-				</el-form-item>
-        <el-form-item>
-        <el-select v-model="filters.province" placeholder="请选择省份">
-          <el-option value="河北省" label="河北省">
-            
-          </el-option>
-        </el-select>
-        <el-select v-model="filters.city" placeholder="请选择城市">
-          <el-option value="保定市" label="保定市">
-            
-          </el-option>
-        </el-select>
-        <el-select v-model="filters.area" placeholder="请选择区域">
-          <el-option value="南市区" label="南市区">
-            
-          </el-option>
-        </el-select>
-        </el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="getlists" >查询</el-button> 
-				</el-form-item>
-			
-			</el-form>
+            <el-form :inline="true" :model="filters">
+
+                <el-form-item>
+                    <el-input v-model="filters.job" placeholder="岗位"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.queue" placeholder="任务队列"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.name" placeholder="用户"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.day" placeholder="逾期天数"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.money" placeholder="逾期金额"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
+                </el-form-item>
+
+            </el-form>
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists"  highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" >
 			</el-table-column>
 			<el-table-column fixed label="操作"  align="center">
 				<template slot-scope="scope">
-					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >处理</el-button>
+					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}">处理</router-link>
 				</template>
 			</el-table-column>
 			
@@ -85,7 +69,8 @@ export default {
         province:"",
         city:"",
         area:""
-			},
+      },
+      heights:0,
 			id:this.$store.state.navTabs.tabId,
 			lists: [],
 			cols: [],
@@ -98,25 +83,7 @@ export default {
   },
 
   methods: {
-    addTab(index,row){
-				
-				var indexlink = "tabView";
-				var label = '处理详情页';
-				this.$store.state.navTabs.tabId=row.id;
-				this.$store.state.navTabs.activeTabName = "tabView";
-				let component = resolve => require([`@/pages/tab/${indexlink}`], resolve)
-				if (this.$store.state.navTabs.tabList.filter(f => f.name == indexlink) != 0) {
-					this.$store.state.navTabs.tabList = this.$store.state.navTabs.tabList.filter(f => f.name != indexlink);
-				}
-				this.$store.state.navTabs.tabList.push({
-						label: label,
-						name: indexlink,
-						disabled: false,
-						closable: true,
-						component: component
-				})
 
-		},
     handleSizeChange(val) {
       this.pagesize = val;
       this.getlists();
@@ -127,6 +94,8 @@ export default {
     },
     //获取列表
     getlists() {
+      let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+			this.heights=h;
       let para = {
         page: this.page,
         name: this.filters.name,

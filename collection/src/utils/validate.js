@@ -36,12 +36,12 @@ export function isPhoneNum(str) {
   return pattern.test(str) || phone.test(str);
 }
 //验证中文名字
-function isChinaName(str) {
+export function isChinaName(str) {
   let reg =/^[\u4E00-\u9FA5]{1,6}$/;
   return reg.test(str);
 }
 //验证身份证号码
-function isCodeNum(str) {
+export function isCodeNum(str) {
   let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
   return reg.test(str);
 }

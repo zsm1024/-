@@ -40,7 +40,7 @@
 </template>
 
 <script>
-	import { userInfo } from "@/api/api";
+	import { userInfo } from "@/api/tablist";
 	export default{
 		data() {
 	      return {

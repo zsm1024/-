@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="用户名称"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="getlists" >查询</el-button>
+					<el-button type="primary" size="mini" @click="getlists" >查询</el-button>
 				</el-form-item>
 				<el-form-item>
 				
@@ -16,7 +16,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" >
 			</el-table-column>
 			
@@ -48,6 +48,7 @@ export default {
       filters: {
         name: ""
       },
+      heights:0,
       lists: [],
       cols: [],
       total: 0,
@@ -69,6 +70,8 @@ export default {
     },
     //获取列表
     getlists() {
+      let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+			this.heights=h;
       let para = {
         page: this.page,
         name: this.filters.name,

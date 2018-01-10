@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="队列名称"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="getlists" >查询</el-button>
+					<el-button type="primary"  size="mini" @click="getlists" >查询</el-button>
 				</el-form-item>
 				<el-form-item>
 				
@@ -16,12 +16,12 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
+		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe>
 			<el-table-column type="selection" width="55">
 			</el-table-column>
 			<el-table-column label="操作" width="120"  align="center" >
 				<template  slot-scope="scope">
-					<el-button type="text" size="small" @click="addTab(scope.$index, scope.row)"  >详情</el-button>
+					 <router-link class="a-href" :to="{path:'/monitor/stributotaldetail/'+scope.row.id}">详情</router-link>
 				</template>
 			</el-table-column>
 			
@@ -60,7 +60,7 @@
                 pagesize:10,
 				listLoading: false,
 				sels: [],//列表选中列
-
+				heights:0,
 				
 				
 
@@ -98,6 +98,8 @@
 			},
 			//获取列表
 			getlists() {
+				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+				this.heights=h;
 				let para = {
 					page: this.page,
                     name: this.filters.name,

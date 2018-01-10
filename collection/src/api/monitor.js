@@ -1,23 +1,17 @@
 import fetch from '@/utils/fetch'
 
-export function nav_view(params) {
-  return fetch({
-    url: '/nav_view',
-    method: 'get',
-    params: params
-  })
-}
+
 
 export function station(params) {
     return fetch({
-      url: '/station',
+      url: '/queueMission/getQueueMission2List',
       method: 'get',
       params: params
     })
 }
-export function stationtotal(params) {
+export function queuetotal(params) {
     return fetch({
-      url: '/stationtotal',
+      url: '/queueMission/getQueueMissionList',
       method: 'get',
       params: params
     })
@@ -29,20 +23,28 @@ export function userstation(params) {
       params: params
     })
 }
-export function userstationtotal(params) {
+export function userstotal(params) {
     return fetch({
-      url: '/userstationtotal',
+      url: '/userMoitoring/list',
       method: 'get',
       params: params
     })
 }
 export function getsupervisor(params) {
     return fetch({
-      url: '/getsupervisor',
+      url: '/queueMission/getQueueMissionListByDate',
       method: 'get',
       params: params
     })
 }
+export function getMissionListByUser(params){
+    return fetch({
+        url: '/userMoitoring/getMissionListByUser',
+        method: 'get',
+        params: params
+    })
+}
+
 export function getstation(params) {
     return fetch({
       url: '/getstation',
