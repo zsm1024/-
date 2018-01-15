@@ -7,7 +7,7 @@
 		<router-view></router-view>
 	</div>
 </section>
-
+  
   <!-- <div class="tab-container abc"> -->
     <!-- <el-tabs  type="border-card">
     	<el-tab-pane label="催收信息">
