@@ -607,6 +607,12 @@ function refreshBtns(state){
 	$("#btnTransfer").removeAttr("disabled");
 	
 	
+
+
+
+
+
+	
 	$("#btnsetRetrieveHold").attr("disabled", true);
 	$("#btnCallOut").attr("disabled", true);
 	$("#btnAnswer").attr("disabled", true);

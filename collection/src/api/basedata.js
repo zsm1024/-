@@ -205,6 +205,12 @@ export function PhoneCodList(params) {
     params: params
   })
 }
+export function PhoneCodeListAll() {
+  return fetch({
+    url: '/PhoneCode/listAll',
+    method: 'get',
+  })
+}
 export function PhoneCodeDelete(params){
   return fetch({
     url: '/PhoneCode/delete/'+params.id,

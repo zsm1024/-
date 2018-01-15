@@ -28,7 +28,6 @@
 		<!-- <input id="btnSingleStepConfCallEx"  type="button" value="会议" @click="SingleStepConfCallEx()"  disabled="disabled"/>  -->
 		<input id="state" type="text" style="width: 75px" readonly="readonly" placeholder="状态" />
         </div>
-		
 	</section>
 </template>
 

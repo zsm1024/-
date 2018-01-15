@@ -67,7 +67,7 @@
 			<el-collapse-item name="11" title="经销商基本信息">
 				<table style="border-collapse:collapse" id="jxs">
 					<tr id="titleTr">
-						<td style="background:#eef1f6">名称</td>
+						<td style="background:#eef1f6">{{JXSNAME}}</td>
 						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
 						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6">{{address.name}} </td>					
 					</tr>
@@ -160,9 +160,9 @@
 					<el-form-item label="逾期应收总计:">
 						<span>{{items.overdueTotal}}</span>
 					</el-form-item>
-					<el-form-item label="ET结算金额:">
+					<!-- <el-form-item label="ET结算金额:">
 						<span>{{items.ET}}</span>
-					</el-form-item>
+					</el-form-item> -->
 				</el-form>				
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注" style="position:relative">			
@@ -205,7 +205,7 @@
 				</el-form-item>
 				<el-form-item label="电话码：" prop="phoneNum" :label-width="formLabelWidth">
 					<el-select v-model="AdduserForm.phoneNum" style="width:300px">
-							<el-option v-for="(item,index) in items.customerPhones"  :key="index" :value="item.phoneNum"></el-option>
+							<el-option v-for="(item,index) in PhoneCodeList"  :key="index" :value="item.phoneCode +'('+ item.phoneNotes + ')'"></el-option>
 					</el-select>
 					<!-- <el-input v-model="AdduserForm.phoneNum" style="width:300px"> </el-input> -->
 				</el-form-item>
@@ -264,7 +264,8 @@ import $ from 'jquery'
 import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo } from "@/api/tablist";
 import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
 import formMessage from '../tablist/form_message';
-import{clickCallOut} from '../../../../ngcc/softPhone'
+import {clickCallOut} from '../../../../ngcc/softPhone';
+import {PhoneCodeListAll} from "@/api/basedata";
 // import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx} from ""
 export default {
   data() {
@@ -282,7 +283,9 @@ export default {
 			items: [],
 			phoneList:[],
 			addressList:[],	
-			jxsName:"",		
+			PhoneCodeList:[],
+			jxsName:"",	
+			JXSNAME:"",
 			cols:[
 				{title:'角色',field:'roleName',width:"70"},
             	{title:'姓名',field:'name',width:"80"}, 
@@ -611,10 +614,14 @@ export default {
 			});
 		},
 		ring(phoneNum,row,){
-			 clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
+			var pattern="-";
+			phoneNum=phoneNum.replace(new RegExp(pattern),"");
+			clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
 		},	
-		ring1(phoneNum,row,){		
-			 clickCallOut("0",phoneNum,row.name,this.applicationNumbers)					
+		ring1(phoneNum,row,){
+			var pattern="-";
+			phoneNum=phoneNum.replace(new RegExp(pattern),"")		
+			clickCallOut("0",phoneNum,row.name,this.applicationNumbers)					
 		},	
 		phoneEdit(row){
 			let para = row
@@ -740,6 +747,7 @@ export default {
 			jxsInfo(para).then(res =>{
 				let data =res.data.result;
 				this.jxsName=data.name;
+				this.JXSNAME="姓名"
 				data.phone.forEach(element => {
 					this.phoneList.push({"phone":element.phone,"name":"电话"})
 				});
@@ -748,6 +756,14 @@ export default {
 				});
 				// console.log(data.address)
 			})
+	},
+	//获取电话码
+	getPhoneCode(){
+		PhoneCodeListAll().then(res =>{
+			let data =res.data.result;
+			this.PhoneCodeList =data;
+			
+		})
 	}
 	
   },
@@ -757,12 +773,12 @@ export default {
   mounted() {
 	this.getlist();
 	this.getJxsInfo()
+	this.getPhoneCode()
     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
    	this.$refs.abc.style.height= h+"px";
   }
 };
 </script>
-
 <style>
 	h4{background: #eef1f6;padding: 10px;border: 1px solid #dfe6ec;font-weight: bold;}
 	table{width: 100%;text-align: center;}

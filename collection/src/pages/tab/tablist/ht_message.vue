@@ -48,7 +48,8 @@
 							<td class="tds">逾期应收款总计</td><td>{{details.overdueReceivables}}</td>
 						</tr>
 						<tr>
-							<td class="tds">贷款产品</td><td colspan="3">{{details.loanProducts}}</td>
+							<td class="tds">ET结算金额</td><td>{{details.loanProducts}}</td>
+							<td class="tds">贷款产品</td><td colspan="2">{{details.loanProducts}}</td>
 							<td class="tds">贷款车型</td><td colspan="3">{{details.loanCar}}</td>
 						</tr>
 					</table>
