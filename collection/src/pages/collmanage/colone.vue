@@ -43,7 +43,7 @@
 			</el-form>  
         </el-col>  
     <!--列表-->
-		<el-table :data="datas" :max-height="heights" highlight-current-row v-loading="listLoading" border style="width: 100%;" id="asew" >
+		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName">
 			<el-table-column label="操作" width="60" fixed="left"  align="center" >
 				<template slot-scope="scope">
 					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}">处理</router-link>
@@ -69,6 +69,8 @@
 	import $ from "jquery";
 	import { getcolone} from '@/api/collmanage';
 	export default {
+
+		
 		data() {			
 			return {
 			heights:0,
@@ -165,6 +167,22 @@
 					let data=res.data.result;					
 					 this.datas=data.data;					 
 					 this.total=data.recordsTotal;
+					//  console.log(this.datas);
+					// for( var i=0; i<this.datas.length; i++){
+					// 		 console.log(this.datas[i])
+					// }
+					//  this.datas.forEach((element,index) => {
+					// 	//  console.log(element.name)
+					// 	  element.name = element.name.replace(/\s+/g,"")
+					// 	 if(element.name=="赵现杰"){
+					// 		 console.log("123")
+					// 		// element.push({"class":"aaa"})
+					// 		// console.log(this.datas)
+					// 		//  alert(element[index])
+					// 		// alert("123")
+					// 	 }
+						
+					//  });
 					// this.cols = data.cols;
 					//  this.datas = res;
 					//  console.log(users)
@@ -179,7 +197,7 @@
 					  this.listLoading = false;
 					//NProgress.done();
 				});
-			},
+			},			
 			getNowFormatDate() {
 				var date = new Date();
 				var seperator1 = "-";
@@ -194,13 +212,20 @@
 				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;						
 				// return currentdate;
 				this.NowFormatDate=currentdate;
-			}		
+			},	
+			tableRowClassName(row, rowIndex) {
+				console.log(row.appointmentTime)
+				// row.appointmentTime=row.appointmentTime.replace(/\s+/g,"");
+				if (row.appointmentTime ==this.NowFormatDate) {
+				return 'warning-row';
+				} 
+				return '';
+			}	
 		},
 		mounted() {
 			this.getUsers();
 			this.getNowFormatDate()
-			console.log(this.NowFormatDate);
-			console.log($("#asew").td)
+			// console.log($("#asew"))
 		}
 	}
 </script>
@@ -211,7 +236,17 @@
 		white-space: nowrap!important	
 	}; 
 	.cell{white-space: nowrap!important}
-	#asew td{height:24px!important;background:#fff;}
 	.el-table__fixed{height:100%!important}
+	.el-table .warning-row {
+    background: rgb(218, 149, 21)!important;
+  }
+.el-table .warning-row td{
+	 background: rgb(233, 12, 12)!important;
+	 color: #fff;
+}
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+
 </style>
 
