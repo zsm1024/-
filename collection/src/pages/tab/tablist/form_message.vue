@@ -493,4 +493,5 @@ export default{
 	#el-icons{font-size: 13px!important;margin-top: 5px!important}
 	#inp .el-input__inner{margin-left: 0!important};
 	#selectMes .el-input{height: 24px!important} 
+	#FixForm .el-form-item{margin-bottom: 13px!important}
 </style>

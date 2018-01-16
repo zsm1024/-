@@ -1,8 +1,20 @@
 <template>
 <section ref="abc" style="height:100%;overflow:auto">
     <!-- @selection-change="handleSelectionChange" -->
-    <el-form inline >
-      <el-form-item label="代管人姓名">
+    <el-form inline :model="filters">   
+      <el-form-item>
+			<el-input v-model="filters.name" placeholder="当事人" clearable></el-input>
+	  </el-form-item>
+	  <el-form-item>
+			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable>></el-input>
+		</el-form-item>
+		<el-form-item>
+			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable></el-input>
+		</el-form-item>
+        <el-form-item>
+            <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable></el-input>
+        </el-form-item>
+        <el-form-item label="代管人姓名">
            <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入代管人姓名"  @select="handleSelect" class="autoInput">
             </el-autocomplete>
       </el-form-item>
@@ -94,6 +106,15 @@ export default {
 				pagesize:10,
                 currentPage:1,
                 listLoading: false, 
+                filters: {					
+					name: '',
+					applicationNumber:"",
+					overdueDays:"",
+					appointmentTime:"",
+					phone:"",
+					startTime:"",
+					endTime:"",
+				},
       }
   },
   methods: {

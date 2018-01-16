@@ -1,9 +1,38 @@
 <template>
 <section ref="abc" style="height:100%;">
     <!-- @selection-change="handleSelectionChange" -->
-            <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入待分配人员姓名"  @select="handleSelect" class="autoInput">
-            </el-autocomplete>
-            <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">重分配</el-button>
+    <el-form :inline="true" :model="filters">
+                <el-form-item>
+					<el-input v-model="filters.name" placeholder="当事人" clearable></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable>></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable></el-input>
+				</el-form-item>
+                <el-form-item>
+                <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable></el-input>
+					<!-- 
+					<el-date-picker v-model="value6" 
+					type="daterange" 
+					range-separator="至" 				
+					placeholder="请选择约会时间区域" 				
+					@change="dataChange"
+					>
+					</el-date-picker> -->
+				</el-form-item>
+                <el-form-item>
+                    <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入待分配人员姓名"  @select="handleSelect" class="autoInput">
+                    </el-autocomplete>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">重分配</el-button>
+                </el-form-item>
+    </el-form>
+           
+
+            
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
        <el-table-column  :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :key="index" align="center" >
@@ -57,6 +86,15 @@ export default {
 				pagesize:10,
                 currentPage:1,
                 listLoading: false, 
+                filters: {					
+					name: '',
+					applicationNumber:"",
+					overdueDays:"",
+					appointmentTime:"",
+					phone:"",
+					startTime:"",
+					endTime:"",
+				},
       }
   },
   methods: {
