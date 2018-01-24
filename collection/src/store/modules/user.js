@@ -84,6 +84,8 @@ const user = {
                 commit('SET_NAME', data.username)
                 commit('SET_ID', data.id)
                 localStorage.setItem("UserId",data.id);
+                localStorage.setItem("UserName",data.username);
+
                 resolve(response)
               }).catch(error => {
                 reject(error)
@@ -93,6 +95,7 @@ const user = {
             commit('SET_NAME', user.username)
             commit('SET_ID', user.id)
             localStorage.setItem("UserId",user.id);
+            localStorage.setItem("UserName",user.username);
           }
         
       })

@@ -18,7 +18,7 @@
           placeholder="请输入密码" ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;padding:10px 15px;font-size:18px;letter-space:10px" class="LoginBtn" :loading="loading" @click.native.prevent="handleLogin">
+        <el-button type="primary" style="width:100%;" class="LoginBtn" :loading="loading" @click.native.prevent="handleLogin">
           登录
         </el-button>
       </el-form-item>
@@ -83,6 +83,7 @@
           console.log('error submit!!')
           return false
         }
+       localStorage.setItem("userName",this.loginForm.username);
       })
     }
   }
@@ -112,7 +113,7 @@
       border: 0px;
       -webkit-appearance: none;
       border-radius: 0px;
-      padding: 12px 5px 12px 15px;
+      /* padding: 12px 5px 12px 15px; */
       color: #eee;
       height: 36px!important;
        -webkit-box-shadow: 0 0 0px 1000px #565f6e inset !important; 
@@ -186,5 +187,6 @@
 #login .el-button{padding: 10px 15px!important}
 #login .LoginBtn{font-size:18px;letter-spacing: 10px}
 #login .top{text-align: center;font-size:40px;letter-spacing: 10px;text-shadow: -1px -1px 0 #fff,1px 1px 0 #333,1px 1px 0 #444;width: 100%;position: absolute;top:60px;color: #bb9c25}
-
+#login .el-form-item{margin-bottom: 22px!important}
+.LoginBtn{padding:10px 15px!important;font-size:18px!important;letter-space:10px!important}
 </style>

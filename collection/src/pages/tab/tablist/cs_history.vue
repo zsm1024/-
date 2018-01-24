@@ -1,6 +1,6 @@
 <template>
 	<section class="cslist" ref="abc" style="overflow-y: auto;">
-		<el-collapse v-model="activeNames">
+		<el-collapse v-model="activeNames" accordion>
 			<el-collapse-item name="1">
 				<template slot="title" ><span class="titles">催收信息</span></template>					
 				<el-table :data="items" border :default-expand-all="true">					
@@ -64,7 +64,7 @@
 	export default{
 		data(){
 			return{
-			activeNames:["1","2","3","4"],
+			activeNames:["1"],
 			 items:[],
 			 cols:[
               	{title:'催收日期',field:'afpDate',width:"190"},
@@ -108,7 +108,7 @@
 			 marks:"",
 			 id:this.$store.state.navTabs.tabId,
 			 total: 0,
-			 pagesize: 5,
+			 pagesize:10,
 			 page: 1,
 			}
 		},

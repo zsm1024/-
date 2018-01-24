@@ -21,7 +21,7 @@
 		</el-form-item>
 		<el-form-item label="承诺日期" prop="allDate" >
 			<el-col >
-				<el-date-picker type="date" placeholder="选择日期" v-model="mainform.allDate" @change="dataChange1"style="width: 100%;"></el-date-picker>
+				<el-date-picker type="date" placeholder="选择日期" v-model="mainform.allDate" @change="dataChange1" style="width: 100%;"></el-date-picker>
 			</el-col>
 		</el-form-item>								
 		<el-form-item label="联系人" prop="linkman">
@@ -48,6 +48,7 @@
 		<!--  -->
 		<el-col id="bzt">			
 			<el-form-item label="备注" prop="afpRecord" style="justify-content: space-around;display:flex">
+				<span class="tips">(不超过1000字)</span>
 				<el-input type="textarea" v-model="mainform.afpRecord" inline></el-input>
 				<el-button type="primary" @click="onSubmit('mainform')" :disabled="disabledto" >{{tosubtext}}</el-button>
 				<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
@@ -55,7 +56,7 @@
 		</el-col>  
 		</el-form>							
 	</div>			
-	<el-dialog title="短信" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false">
+	<el-dialog title="短信" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false'>
 			<el-form :model="messageform" :ref="messageform" >
 				<el-form-item label="合同号" :label-width="formLabelWidth" >
 					<el-input :value="applicationNumber" disabled style="width:300px;margin-left:5px" id="inp"></el-input>
@@ -107,6 +108,7 @@ export default{
 			TypeArr:[],
 			addressType:[],
 			templateId:'',
+			phone:'',
 			// UserArrList:[],		
 			selectCont:'',
 			state:"",
@@ -226,9 +228,10 @@ export default{
 				
 			};
 			this.$refs[mainform].validate((valid) => {
+				debugger;
 				if (valid) {
 					recordAdd(para).then(res =>{
-				
+				// console.log(res)
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
 							this.$message({
@@ -268,6 +271,7 @@ export default{
 			
         },
 		onSubmitnext(mainform) {
+			debugger;
             let para ={
     			actSign:this.mainform.actSign,
 				allowance:this.mainform.allowance,
@@ -283,13 +287,12 @@ export default{
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
                     getNextMissonId(para).then(res => {
-						console.log(res)
 						var nextId = res.data.result;
 						// console.log(nextId)
-						 this.$router.push(nextId)
-						 
+						 this.$router.push(nextId)						 
 					});
 					recordAdd(para).then(res =>{
+						
 						// console.log(res)				
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
@@ -304,8 +307,7 @@ export default{
 								type: 'error',
 								message: '提交失败，请联系管理员！'
 							})
-						}
-				
+						}				
 					});				
 					// this.$message({
 					// 	type:'success',
@@ -376,54 +378,22 @@ export default{
 				// });				
 				// return res;	
 			},
-			//短信方法
-		confirmmessage(messageform) {			
-				let phoneNum =this.messageform.phone.split('-').shift("-");
-				// this.messageopen=false;
-				let para={
-					phone:phoneNum,
-					smsContent:this.messageform.messagedesc
-				}
-
-				 
-			// 	this.messageform.selectTitle="";
-				if(this.messageform.messagedesc==""){
-					this.$message("请确认您的信息是否填写完整！")
-					// this.$alert('请确认您的信息是否填写完整！','提示',{
-					// 	confirmButtonText:'确定',
-					// 	callback: action =>{
-					// 		this.message({
-					// 			type:'warning',
-					// 			closeOnClickModal:"true"
-					// 		})
-					// 	}
-						
-					// })
-			}else{
-				messageSend(para).then(res =>{
-					//  console.log(res)
-				 });
-				 this.messageopen=false;
-				 let a="";
-				//   console.log(this.messageform.messagedesc)
-				this.messageform.messagedesc=a;
-				this.messageform.selectTitle=a;
-			}
-				// resetFields()
-				// this.$message({
-				// 	type:'success',shi
-				// 	message:'保存成功',
-				// });
-		},
+			//短信方法	
 		cancle(){
-			 this.messageopen=false;
+			this.messageopen=false;
+			let a="";
+			this.messageform.messagedesc=a;
+			this.messageform.selectTitle=a;
 		},
 		 messageOpen(){
 			this.messageopen=true;  
 			 this.callParent();
 			 let pList=[];
 			 this.phoneListNums.forEach(e =>{
-				 if(e.infoSource=="CMS"&&e.roleName=="主借人"&&e.effectiveness=="Y"){
+				 if(e.infoSource=="CMS"
+				//  &&e.roleName=="主借人"
+				 &&e.effectiveness=="Y"){
+					 e.phone=e.phone.replace(/\s+/g,"");
 					 this.userList.push({"value":e.phone+'-'+e.roleName})
 					 pList.push(e.phone)
 				 }else{
@@ -455,13 +425,65 @@ export default{
 			});
 			let para={
 				templateId:this.templateId,
-				contractNum:this.applicationNumber
+				contractNum:this.applicationNumber,
+				phone:this.messageform.phone.split("-").shift("-")
 				}
 				// messageTemplate
 				messageTemplate(para).then(res =>{
 					let data =res.data.result
 					this.messageform.messagedesc=data;
 				});		
+		},
+			confirmmessage(messageform) {			
+				let phoneNum =this.messageform.phone.split('-').shift("-");
+				// this.messageopen=false;
+				let para={
+					phone:phoneNum,
+					smsContent:this.messageform.messagedesc,
+					missionId: this.$route.params.id,
+					linkman:this.messageform.phone.split('-').pop("-")
+				}
+
+				 
+			// 	this.messageform.selectTitle="";
+				if(this.messageform.messagedesc==""){
+					this.$message("请确认您的信息是否填写完整！")
+					// this.$alert('请确认您的信息是否填写完整！','提示',{
+					// 	confirmButtonText:'确定',
+					// 	callback: action =>{
+					// 		this.message({
+					// 			type:'warning',
+					// 			closeOnClickModal:"true"
+					// 		})
+					// 	}
+						
+					// })
+			}else{
+				messageSend(para).then(res =>{
+					if(res.data.success){
+						this.$message({
+                            type:'success',
+                            message:'短信已发送！',
+                        });
+					}else{
+						this.$message({
+                            type:'warning',
+                            message:'短信未发送！',
+                        });
+					}
+					//  console.log(res)
+				 });
+				 this.messageopen=false;
+				 let a="";
+				//   console.log(this.messageform.messagedesc)
+				this.messageform.messagedesc=a;
+				this.messageform.selectTitle=a;
+			}
+				// resetFields()
+				// this.$message({
+				// 	type:'success',shi
+				// 	message:'保存成功',
+				// });
 		},
 		handleSelect(item){
 		},
@@ -473,8 +495,6 @@ export default{
 	  this.restaurants=this.userList;
 	  this.restaurants1=this.getname;
 	  this.restaurants2=this.getfangshi;
-
-
     }
 }
 </script>
@@ -494,4 +514,6 @@ export default{
 	#inp .el-input__inner{margin-left: 0!important};
 	#selectMes .el-input{height: 24px!important} 
 	#FixForm .el-form-item{margin-bottom: 13px!important}
+	#MsgDialog .el-form-item{margin-bottom: 15px!important}
+	.tips{font-size: 12px;color: red}
 </style>

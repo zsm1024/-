@@ -53,12 +53,12 @@
 			</el-table-column>
 			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
-		
+		 
 		</el-table>
         
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" style="float:right;">
+			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" :page-size='[50,100,200,500]' style="float:right;">
 			</el-pagination>
 		</el-col>
     </section>
@@ -114,7 +114,7 @@
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:100,
 				currentPage:1,
 				SelectOption:"",
 				listLoading: true,
@@ -148,7 +148,7 @@
             },
 			//获取用户列表
 			getUsers() {
-				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-195;
 				this.heights=h;
 				
 				let para = {
@@ -214,9 +214,10 @@
 				this.NowFormatDate=currentdate;
 			},	
 			tableRowClassName(row, rowIndex) {
-				console.log(row.appointmentTime)
+				
 				// row.appointmentTime=row.appointmentTime.replace(/\s+/g,"");
-				if (row.appointmentTime ==this.NowFormatDate) {
+				if (row.appointmentTime <=this.NowFormatDate) {
+				
 				return 'warning-row';
 				} 
 				return '';
@@ -240,7 +241,7 @@
 	.el-table .warning-row {
     background: rgb(218, 149, 21)!important;
   }
-.el-table .warning-row td{
+.el-table .warning-row td:nth-of-type(10){
 	 background: rgb(233, 12, 12)!important;
 	 color: #fff;
 }

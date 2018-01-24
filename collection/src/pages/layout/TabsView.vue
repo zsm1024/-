@@ -1,7 +1,7 @@
 <template>
   <div class='tabs-view-container'>
     <router-link class="tabs-view" v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path">
-      <el-tag :closable="true" :type="isActive(tag.path)?'primary':''" @close='closeViewTabs(tag,$event)'>
+      <el-tag v-if="tag.name!=undefined" :closable="true" :type="isActive(tag.path)?'primary':''" @close='closeViewTabs(tag,$event)'>
         {{tag.name}}
       </el-tag>
     </router-link>
@@ -12,7 +12,7 @@
 export default {
   computed: {
     visitedViews() {
-      return this.$store.state.app.visitedViews.slice(-3)
+      return this.$store.state.app.visitedViews.slice(-5)
     }
   },
   methods: {
@@ -56,7 +56,6 @@ export default {
   }
 }
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
   .tabs-view-container {
     display: inline-block;

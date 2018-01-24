@@ -46,7 +46,7 @@
         </el-col>  
     <!--列表-->
 		<el-table :data="datas" :max-height="heights" highlight-current-row v-loading="listLoading" border style="width: 100%;" id="asew" >
-			<el-table-column label="操作" width="60" fixed="left"  align="center" >
+			<el-table-column label="操作" width="60" fixed="left"  align="center">
 				<template slot-scope="scope">
 					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}">处理</router-link>
 				</template>
@@ -108,7 +108,7 @@
 					{ title: '最近行动时间', field: 'M_Time', width: "120" },
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '未偿本金', field: 'residualAmount', width: "90" },
-					{ title: '派单时间', field: 'Post_Time', width: "120" },
+					{ title: '派单时间', field: 'updateTime', width: "120" },
 					{ title: '核销状态', field: 'check_statues', width: "100" },
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,

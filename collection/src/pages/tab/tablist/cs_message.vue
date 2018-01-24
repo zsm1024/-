@@ -65,11 +65,13 @@
 			<el-collapse-item name="11" title="经销商基本信息">
 				<table style="border-collapse:collapse" id="jxs">
 					<tr id="titleTr">
+						<td>金融专员</td>
 						<td style="background:#eef1f6">{{JXSNAME}}</td>
 						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
 						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6">{{address.name}} </td>					
 					</tr>
 					<tr>
+						<td>{{dealerName}}</td>
 						<td>{{jxsName}}</td>
 						<td v-for="phone in phoneList" :key="phone.index">{{phone.phone}} </td>
 						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>	
@@ -143,7 +145,7 @@
 					<el-form-item label="月应还款金额:">
 						<span>{{items.monthlyRepayment}}</span>
 					</el-form-item>
-					<el-form-item label="逾期金额总计:" >
+					<el-form-item label="逾期本金总计:" >
 						<span>{{items.sumOverdue}}</span>
 					</el-form-item>
 					<el-form-item label="到期利息总计:">
@@ -158,9 +160,9 @@
 					<el-form-item label="逾期应收总计:">
 						<span>{{items.overdueTotal}}</span>
 					</el-form-item>
-					<!-- <el-form-item label="ET结算金额:">
-						<span>{{items.ET}}</span>
-					</el-form-item> -->
+					<el-form-item label="ET结算金额:">
+						<span>{{ET}}</span>
+					</el-form-item>
 				</el-form>				
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注" style="position:relative">			
@@ -170,10 +172,11 @@
 		</el-collapse>
 		</div>
 		
-		<el-dialog title="备注" :visible.sync="remarkopen">
+		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false'>
 			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
 					<el-input type="textarea" v-model="remarkform.remarks"></el-input>
+					<span>(不超过1000字)</span>
 				</el-form-item>				
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -181,7 +184,7 @@
 			</div>
 		</el-dialog>
 	
-		<el-dialog title="新增客户电话信息" :visible.sync="addUserInfos"  id="addUserInfos">
+		<el-dialog title="新增客户电话信息" :visible.sync="addUserInfos"  id="addUserInfos" :show-close='false'>
 			<el-form :model="AdduserForm" ref="AdduserForm" :rules="phonerules" :data='items.customerPhones'>
 				<el-form-item label="角色：" prop="roleName" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.roleName" style="width:300px"></el-input>
@@ -220,7 +223,7 @@
         <el-button  type="primary" @click.native.prevent="choice('AdduserForm')">确 定</el-button>
       </div>			
 		</el-dialog>
-		<el-dialog title="新增客户地址信息" :visible.sync="addWorkInfos"  id="addWorkInfos">
+		<el-dialog title="新增客户地址信息" :visible.sync="addWorkInfos"  id="addWorkInfos" :show-close='false'>
 			<el-form :model="AddWorkForm" ref="AddWorkForm" :rules="addressrules">
 				<el-form-item label="角色：" prop="roleName" :label-width="formLabelWidth">
 					<el-input v-model="AddWorkForm.roleName" style="width:300px" ></el-input>
@@ -259,7 +262,7 @@
 
 <script>
 import $ from 'jquery'
-import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo } from "@/api/tablist";
+import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo,getdeal} from "@/api/tablist";
 import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
 import formMessage from '../tablist/form_message';
 import {clickCallOut} from '../../../../ngcc/softPhone';
@@ -284,6 +287,8 @@ export default {
 			PhoneCodeList:[],
 			jxsName:"",	
 			JXSNAME:"",
+			dealerName:"",
+			ET:'',
 			cols:[
 				{title:'角色',field:'roleName',width:"70"},
             	{title:'姓名',field:'name',width:"80"}, 
@@ -736,6 +741,10 @@ export default {
                 // this.cols1=data.cols1; 
 				this.height=document.documentElement.clientHeight-400;       
 			});
+			getdeal(para).then(res =>{
+				let data =res.data.result;
+				this.ET=data.et;			
+			})
    },
 	//经销商信息
 	getJxsInfo(){
@@ -812,4 +821,5 @@ export default {
 	#addWorkInfos .addWorkInfos{top:66%;left:11px } 
 	#addWorkInfos button,#addUserInfos button{padding:8px }
 	.inputInner .el-input__inner{margin-left: 0px!important}
+	.tips{font-size: 12px;color: red}
 </style>

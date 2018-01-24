@@ -35,7 +35,7 @@
             
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :key="index" align="center" >
+       <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" :key="index" align="center" >
 		</el-table-column>
         
    </el-table>
@@ -78,7 +78,7 @@ export default {
 					{ title: '最近行动时间', field: 'M_Time', width: "120" },
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '未偿本金', field: 'residualAmount', width: "90" },
-					{ title: '派单时间', field: 'Post_Time', width: "120" },
+					{ title: '派单时间', field: 'updateTime', width: "120" },
 					{ title: '核销状态', field: 'check_statues', width: "100" },
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,

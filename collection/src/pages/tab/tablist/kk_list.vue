@@ -58,10 +58,10 @@ export default {
                     {title:'扣款金额',field:'amount',width:"50"},
                     {title:'还款人',field:'repayments',width:"40"},
                     {title:'银行编号',field:'bankNumber',width:"80"},
-                    {title:'银行账号',field:'bankAccount',width:"120"},
-                    {title:'扣款结果',field:'debitResults',width:"50"},
-                    {title:'银行备注',field:'bankNotes',width:"80"},
-                    {title:'银行摘要',field:'bankAbstracts',width:"80"},
+                    {title:'银行账号',field:'bankAccount',width:"120"},                 
+                    {title:'扣款方式',field:'payment',width:"80"},
+					{title:'银行摘要',field:'bankAbstracts',width:"80"},
+					{title:'扣款结果',field:'debitResults',width:"50"},
                 ],
 				total: 0,
 				pagesize: 20,
@@ -83,7 +83,7 @@ export default {
 			
 			//获取列表
 			getlists() {
-				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-260;
+				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-290;
         		this.heights=h;
 				let para = {
 					missionId: this.id,
@@ -96,7 +96,6 @@ export default {
 				getliushui(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
-					console.log(this.lists)
 					this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();

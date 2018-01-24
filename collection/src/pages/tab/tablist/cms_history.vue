@@ -1,12 +1,13 @@
 <template>
 	<section ref="abc" style="overflow-y: auto;" id="cslist">
-		<el-collapse v-model="activeNames" >
+		<el-collapse v-model="activeNames" accordion >
 			<el-collapse-item title="催收历史明细表" name="1">
-				<!--列表-->
-				<el-table :data="lists" max-height="170" border  v-loading="listLoading" style="width: 100%;" stripe :default-expand-all="true">											<el-table-column type="expand" >						
+				<!--列表--> 
+				<!-- max-height="170" -->
+				<el-table :data="lists" border  v-loading="listLoading" style="width: 100%;" stripe :default-expand-all="true">											<el-table-column type="expand" >						
 						<template slot-scope="props">
 							<el-form  inline class="demo-table-expand" style="text-align:left;min-height:20px;line-height:20px">
-         						<el-form-item  style="min-height:20px;line-height20px">
+         						<el-form-item  style="min-height:20px;line-height20px;margin-bottom:0px!important">
            							备注: {{ props.row.afpRecord }}
           						</el-form-item>							
 							</el-form>
@@ -33,7 +34,7 @@
 				<span>{{spMarks}}</span>
 			</el-collapse-item>
 			 <el-collapse-item title="费用减免明细表" name="2">
-				<el-table :data="liststwo"  max-height="150" border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe>									
+				<el-table :data="liststwo"  border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe>									
 					<el-table-column 
                         :prop="col.field" 
                         :label="col.title" 
@@ -50,7 +51,7 @@
 
 			</el-collapse-item>
 			 <el-collapse-item title="罚息减免明细表" name="3">
-				<el-table :data="liststhr"  max-height="145" border highlight-current-row v-loading="listLoadingthr" style="width: 100%;" stripe>									
+				<el-table :data="liststhr"  border highlight-current-row v-loading="listLoadingthr" style="width: 100%;" stripe>									
 					<el-table-column 
                         :prop=" col.field" 
                         :label=" col.title" 
@@ -78,7 +79,7 @@ import { getcmsdetails,getcmshistory,getcmsthr } from "@/api/tablist";
 export default {
 		data() {
 			return {
-				activeNames: ['1','2','3','4'],
+				activeNames: ['1'],
 				lists: [],
 				cols: [
                     {title:'处理日期',field:'processingDate',width:"70"},

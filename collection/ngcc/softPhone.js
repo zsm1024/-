@@ -95,7 +95,7 @@ function onSucc_() {
 	//eh.regEvent("OnCallOutsideFailure", OnCallOutsideFailure);//外呼失败
 	eh.regEvent("OnCallOutsideSuccTalk", OnCallOutsideSuccTalk);//外呼通话成功
 	//eh.regEvent("OnCallOutsideSuccess", OnCallOutsideSuccess);//外呼外呼成功
-	eh.regEvent("OnReleaseSuccess", OnReleaseSuccess);//释放呼叫成功
+	eh.regEvent("OnRelease", OnReleaseSuccess);//释放呼叫成功
 	//eh.regEvent("OnReleaseFailure", OnReleaseFailure);
 	eh.regEvent("OnRingingEvent", fOnRingingEvent); //震铃事件
 	eh.regEvent("OnAnswerSuccess", fOnAnswerSuccess); //应当成功

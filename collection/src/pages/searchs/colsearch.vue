@@ -33,7 +33,7 @@
                     
                 </template>
             </el-table-column>
-            <el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
+            <el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" sortable >
             </el-table-column>
         </el-table>
 
@@ -59,7 +59,7 @@
 					documentType:"",
 					documentNum:""
 				},
-				height:0,
+				heights:0,
 				lists: [],
 				cols: [
                  	{ title: '姓名', field: 'name', width: "60" },

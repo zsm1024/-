@@ -12,20 +12,20 @@
         <el-button type="primary" size="mini" @click="clickCallOut" style="padding:4px!important"><i class="fa fa-phone"></i></el-button>
         <input id="softPhoneNumber" type="text" style="width: 125px" v-model="phone" placeholder="请输入呼出号码"/>
 		<input id="btnInit" type="button" value="初始化" @click="initParam" />
-        <input id="btnSignIn" type="button" value="登录" @click="doSignIn()" disabled="disabled" />
-        <input id="btnAnswer" type="button" value="接听" @click="answer()"   disabled="disabled" />
-        <input id="btnSignOut" type="button" value="签出" @click="clickSignOut()" disabled="disabled" />
+        <input id="btnSignIn" type="button" value="登录" @click="doSignIn" disabled="disabled" />
+        <input id="btnAnswer" type="button" value="接听" @click="answer"   disabled="disabled" />
+        <input id="btnSignOut" type="button" value="签出" @click="clickSignOut" disabled="disabled" />
         <input id="btnCallOut" type="button" value="呼出" @click="clickCallOut" disabled="disabled" />
-        <input id="btnSetIdle" type="button" value="示闲" @click="clickSetIdle()"  disabled="disabled" />
-        <input id="btnSetBusy" type="button" value="示忙" @click="clickSetBusy()" disabled="disabled" />
+        <input id="btnSetIdle" type="button" value="示闲" @click="clickSetIdle"  disabled="disabled" />
+        <input id="btnSetBusy" type="button" value="示忙" @click="clickSetBusy" disabled="disabled" />
 		<input id="btnHangup"  type="button" value="挂机" @click="clickHangup"  disabled="disabled" />
-		<input id="btnHold"  type="button" value="保持" @click="Hold()"  disabled="disabled"/>
+		<input id="btnHold"  type="button" value="保持" @click="Hold"  disabled="disabled"/>
 		<input id="btnCannel"  type="button" value="取消" @click="cannel"  disabled="disabled"/>
-		<input id="btnsetRetrieveHold"  type="button" value="唤醒" @click="setRetrieveHold()"  disabled="disabled"/>
-		<input id="btnConsultation"  type="button" value="咨询" @click="doConsultation()"  disabled="disabled"/>
+		<input id="btnsetRetrieveHold"  type="button" value="唤醒" @click="setRetrieveHold"  disabled="disabled"/>
+		<input id="btnConsultation"  type="button" value="咨询" @click="doConsultation"  disabled="disabled"/>
 		<input id="CallNumber" type="text" style="width: 120px" v-model="callphone" placeholder="请输入咨询号码"/>
-		<input id="btnTransfer"  type="button" value="转接" @click="Transfer()"  disabled="disabled"/>
-		<!-- <input id="btnSingleStepConfCallEx"  type="button" value="会议" @click="SingleStepConfCallEx()"  disabled="disabled"/>  -->
+		<input id="btnTransfer"  type="button" value="转接" @click="Transfer"  disabled="disabled"/>
+		<!-- <input id="btnSingleStepConfCallEx"  type="button" value="会议" @click="SingleStepConfCallEx"  disabled="disabled"/>  -->
 		<input id="state" type="text" style="width: 75px" readonly="readonly" placeholder="状态" />
         </div>
 	</section>
@@ -46,7 +46,7 @@ export default {
 	data(){
 		return{
 			disable:true,
-			names:'liulijun',
+			names:localStorage.getItem("UserName"),
 			phone:"",
 			callphone:"",
 			PhoneUserName:this.$store.getters.name
@@ -54,6 +54,15 @@ export default {
 		
 	},
 	methods:{
+		changeNmeType(){
+			if(this.names=="czhangliang"){
+				this.names=this.names.substr(1);
+			}else if(this.names=="chenjing_cms"){
+				this.names=this.names.split('_').shift("_");
+			}else{
+				this.names=this.names
+			}
+		},
 		 initParam:function(){
            initParam(this.names);
         //   this.doSignIn()
@@ -109,6 +118,7 @@ export default {
   },
 	mounted () {
 	console.log(this.PhoneUserName)
+	this.changeNmeType()
 	//  let w = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)-210;
   //   this.$refs.right.style.width= w+"px";
 	}
