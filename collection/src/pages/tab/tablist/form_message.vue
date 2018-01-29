@@ -216,7 +216,7 @@ export default{
             //     }
             // },1000)
 			let para ={
-    			actSign:this.mainform.actSign,
+    			actSign:this.mainform.actSign.split("-").shift("-"),
 				allowance:this.mainform.allowance,
 				allDate:this.allDate,
 				linkman:this.mainform.linkman,
@@ -224,11 +224,9 @@ export default{
 				appointmentTime:this.times,
 				afpRecord:this.mainform.afpRecord,
 				missionId: this.$route.params.id,
-				userId: localStorage.getItem("UserId")
-				
+				userId: localStorage.getItem("UserId")				
 			};
 			this.$refs[mainform].validate((valid) => {
-				debugger;
 				if (valid) {
 					recordAdd(para).then(res =>{
 				// console.log(res)
@@ -256,9 +254,10 @@ export default{
 	
         getlists(){	
              getCodeAll().then(res => {
+				 console.log(res)
                  var arrpush = [];
                  res.data.result.forEach(function(value,index){
-                    arrpush.push(value.actCode);
+                    arrpush.push(value.actCode+"-"+value.actNotes);
                  })
                  this.getdaima = arrpush;
               
@@ -271,7 +270,6 @@ export default{
 			
         },
 		onSubmitnext(mainform) {
-			debugger;
             let para ={
     			actSign:this.mainform.actSign,
 				allowance:this.mainform.allowance,

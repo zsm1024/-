@@ -39,14 +39,14 @@
 				</template>
 			</el-table-column>
 			
-			<el-table-column  align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" >
+			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			
-			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"   style="float:right;">
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100,500,1000]"   :total="total"   style="float:right;">
 			</el-pagination>
 		</el-col>
 
@@ -99,7 +99,7 @@ export default {
         ],
         total: 0,
         page: 1,
-        pagesize: 10,
+        pagesize: 50,
         listLoading: false,
         sels: [] //列表选中列
     };

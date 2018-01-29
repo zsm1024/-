@@ -11,7 +11,7 @@
 <div class="phoneList" id="AdButton">
         <el-button type="primary" size="mini" @click="clickCallOut" style="padding:4px!important"><i class="fa fa-phone"></i></el-button>
         <input id="softPhoneNumber" type="text" style="width: 125px" v-model="phone" placeholder="请输入呼出号码"/>
-		<input id="btnInit" type="button" value="初始化" @click="initParam" />
+		<input id="btnInit" type="button" value="初始化" @click="initParam()" />
         <input id="btnSignIn" type="button" value="登录" @click="doSignIn" disabled="disabled" />
         <input id="btnAnswer" type="button" value="接听" @click="answer"   disabled="disabled" />
         <input id="btnSignOut" type="button" value="签出" @click="clickSignOut" disabled="disabled" />
@@ -46,7 +46,8 @@ export default {
 	data(){
 		return{
 			disable:true,
-			names:localStorage.getItem("UserName"),
+			// names:'liulijun',
+			names:localStorage.getItem("userName"),
 			phone:"",
 			callphone:"",
 			PhoneUserName:this.$store.getters.name
@@ -64,7 +65,7 @@ export default {
 			}
 		},
 		 initParam:function(){
-           initParam(this.names);
+           	initParam(this.names);
         //   this.doSignIn()
 			 },
 			  clickCallOut:function(){
@@ -117,7 +118,6 @@ export default {
 	
   },
 	mounted () {
-	console.log(this.PhoneUserName)
 	this.changeNmeType()
 	//  let w = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)-210;
   //   this.$refs.right.style.width= w+"px";

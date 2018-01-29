@@ -1,18 +1,27 @@
 <template>
 <section ref="abc" style="height:100%;">
     <!-- @selection-change="handleSelectionChange" -->
-    <el-form :inline="true" :model="filters">
-                <el-form-item>
-					<el-input v-model="filters.name" placeholder="当事人" clearable></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable>></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable></el-input>
-				</el-form-item>
-                <el-form-item>
-                <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable></el-input>
+    <el-form :model="filters" :inline="true">
+         <el-form-item>
+			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:150px"></el-input>
+		</el-form-item>
+		<el-form-item>
+			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:150px"></el-input>
+		</el-form-item>
+		<el-form-item>
+			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable style="width:150px"></el-input>
+		</el-form-item>
+        <el-form-item>
+            <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input>
+        </el-form-item> 
+         <el-form-item>
+            <el-input v-model="filters.appointmentTime" placeholder="用户ID"  clearable style="width:150px"></el-input>
+        </el-form-item> 
+        <el-form-item>
+            <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">查询</el-button>
+        </el-form-item>
+    </el-form>
+    <el-form :inline="true" >              
 					<!-- 
 					<el-date-picker v-model="value6" 
 					type="daterange" 
@@ -21,9 +30,9 @@
 					@change="dataChange"
 					>
 					</el-date-picker> -->
-				</el-form-item>
+				<!-- </el-form-item> -->
                 <el-form-item>
-                    <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入待分配人员姓名"  @select="handleSelect" class="autoInput">
+                    <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入待分配人员姓名"  @select="handleSelect" class="autoInput" style="width:150px">
                     </el-autocomplete>
                 </el-form-item>
                 <el-form-item>
@@ -86,6 +95,7 @@ export default {
 				pagesize:10,
                 currentPage:1,
                 listLoading: false, 
+                labelWidth:"120px",
                 filters: {					
 					name: '',
 					applicationNumber:"",
@@ -94,7 +104,7 @@ export default {
 					phone:"",
 					startTime:"",
 					endTime:"",
-				},
+                },               
       }
   },
   methods: {

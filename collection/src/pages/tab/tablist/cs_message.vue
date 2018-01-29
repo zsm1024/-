@@ -3,7 +3,7 @@
 		<el-collapse v-model="activeNames">	
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
-                    <el-table :data="items.customerSimpleList" border stripe > 
+                    <el-table :data="items.customerSimpleList" border stripe  :row-class-name="tableRowClassNames"> 
 						<!-- width="60" -->
 						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
 						</el-table-column>			
@@ -12,7 +12,7 @@
 			</el-collapse-item>
 			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
 				<el-button class="filter-item"   type="primary" style=" position:absolute;top:14px;left:125px"   @click="addUserInfos = true">添加</el-button>
-				<el-table :data="items.customerPhones" border stripe >
+				<el-table :data="items.customerPhones" border stripe :row-class-name="tableRowClassNameCustom" >
 					<el-table-column label="操作"  align="center" width="100"> 
 						<!-- width="95" -->
 						<template slot-scope="scope">
@@ -23,12 +23,15 @@
 					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width"  >
 						<template slot-scope="scope">
 							<!-- v-if="cols.field!='effectiveness' &&scope.row.infoSource!='CMS' && cols.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit" v-if="cols.field=='phoneNum'||cols.field=='relationship'" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
-							 <span v-show="scope.row.edit" v-if="(cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span>
+							<el-input  v-show="scope.row.edit" v-if="cols.field=='relationship'" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
+							 <span v-show="scope.row.edit" v-if="(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span>
 							<span style="display:inline-block;padding:0 15px" v-show="!scope.row.edit"  :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}
 								<i v-if="cols.field=='phone'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phone,scope.row)"></i>
 								<i v-if="cols.field=='name'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring1(scope.row.phone,scope.row)"></i>								
 								</span>
+								<el-select v-show="scope.row.edit" v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="请选择">
+								<el-option v-for="(item,index) in PhoneCodeList"  :key="index" :value="item.phoneNotes  +'('+ item.phoneCode + ')'"></el-option>
+							</el-select>
 							<!-- ring(scope.row.phoneNum) -->
 							<el-select v-show="scope.row.edit" v-if="cols.field=='effectiveness'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
@@ -41,7 +44,7 @@
 			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
 			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
 				<el-button class="filter-item" style="  position:absolute;top:14px;left:125px"  type="primary"  @click="addWorkInfos = true">添加</el-button>	
-				<el-table :data="items.customerAddresses" border stripe >
+				<el-table :data="items.customerAddresses" border stripe :row-class-name="tableRowClassNameAddress" >
 					<el-table-column label="操作" align="center"  width="100">
 						<template slot-scope="scope" >
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
@@ -65,7 +68,7 @@
 			<el-collapse-item name="11" title="经销商基本信息">
 				<table style="border-collapse:collapse" id="jxs">
 					<tr id="titleTr">
-						<td>金融专员</td>
+						<td>{{JRZY}}</td>
 						<td style="background:#eef1f6">{{JXSNAME}}</td>
 						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
 						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6">{{address.name}} </td>					
@@ -169,9 +172,7 @@
                      <el-button type="primary" size="mini" v-on:click="remarkopen = true" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
 				<p>{{remarkform.remarks}}</p>											
 			</el-collapse-item>							
-		</el-collapse>
-		</div>
-		
+		</el-collapse>		
 		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false'>
 			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
@@ -288,6 +289,7 @@ export default {
 			jxsName:"",	
 			JXSNAME:"",
 			dealerName:"",
+			JRZY:"",
 			ET:'',
 			cols:[
 				{title:'角色',field:'roleName',width:"70"},
@@ -295,7 +297,7 @@ export default {
             	{title: '关系', field: 'relationship', width: "50" },         
             	{title:'电话',field:'phone',width:"140"},
             	{title: '电话类型', field: 'phoneType', width: "90" },
-            	{title: '电话码', field: 'phoneNum', width: "60" },	
+            	{title: '电话码', field: 'phoneNum', width: "90" },	
             	{title:'信息来源',field:'infoSource',width:"60"},
             	{title:'有效性',field:'effectiveness',width:"60"},
 			],
@@ -617,14 +619,20 @@ export default {
 			});
 		},
 		ring(phoneNum,row,){
+			debugger;
 			var pattern="-";
 			phoneNum=phoneNum.replace(new RegExp(pattern),"");
-			clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
+			let a=phoneNum;
+			a.replace(/(^\s*)|(\s*$)/g, "")
+			console.log(a.length);
+			// phoneNum=phoneNum.replace(/\s+/g,"")
+			 clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
 		},	
 		ring1(phoneNum,row,){
 			var pattern="-";
-			phoneNum=phoneNum.replace(new RegExp(pattern),"")		
-			clickCallOut("0",phoneNum,row.name,this.applicationNumbers)					
+			phoneNum=phoneNum.replace(new RegExp(pattern),"").trim()
+			// phoneNum=phoneNum;	
+			 clickCallOut("0",phoneNum,row.name,this.applicationNumbers)			
 		},	
 		phoneEdit(row){
 			let para = row
@@ -752,7 +760,9 @@ export default {
 			missionId: this.$route.params.id
 		};
 			jxsInfo(para).then(res =>{
+				if(res.data.success){
 				let data =res.data.result;
+				this.JRZY="金融专员";
 				this.jxsName=data.name;
 				this.JXSNAME="姓名"
 				data.phone.forEach(element => {
@@ -761,17 +771,40 @@ export default {
 				data.address.forEach(element => {					
 					 this.addressList.push({"address":element,"name":"地址"})
 				});
+				}
+				
 				// console.log(data.address)
 			})
 	},
+	//  getCodeAll().then(res => {
+	// 			 console.log(res)
+    //              var arrpush = [];
+    //              res.data.result.forEach(function(value,index){
+    //                 arrpush.push(value.actCode+"-"+value.actNotes);
+    //              })
+    //              this.getdaima = arrpush;
+              
+	// 		});
 	//获取电话码
 	getPhoneCode(){
 		PhoneCodeListAll().then(res =>{
 			let data =res.data.result;
 			this.PhoneCodeList =data;
-			
+			console.log(this.PhoneCodeList)
 		})
-	}
+	},
+	//客户基本信息中英文
+	tableRowClassNames(row,rowIndex){
+		row.documentType=row.documentType.split(" ").shift(" ").trim()
+		row.sex=row.sex.split("(").shift("(").trim()
+	},
+	tableRowClassNameCustom(row,rowIndex){
+		row.phoneType=row.phoneType.split(" ").shift(" ").trim()
+	},
+	tableRowClassNameAddress(row,rowIndex){
+		let rows=row.addressType.split(":").pop(":").trim();
+		row.addressType=rows.split(" ").shift(" ").trim();
+	},
 	
   },
   components:{

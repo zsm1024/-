@@ -25,7 +25,7 @@
 				</template>
 			</el-table-column>
 			
-			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
+			<el-table-column sortable  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 			
 		</el-table>
@@ -57,7 +57,7 @@
 				cols: [],
 				total: 0,
                 page: 1,
-                pagesize:10,
+                pagesize:20,
 				listLoading: false,
 				sels: [],//列表选中列
 				heights:0,

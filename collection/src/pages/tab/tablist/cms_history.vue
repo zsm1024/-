@@ -26,7 +26,7 @@
 
 				<!--工具条-->
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[5,10, 20, 50, 100]"   :total="total"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[5,10, 20, 50, 100,500]"   :total="total"   style="float:right;">
 					</el-pagination>
 				</el-col>
 			</el-collapse-item>
@@ -79,7 +79,7 @@ import { getcmsdetails,getcmshistory,getcmsthr } from "@/api/tablist";
 export default {
 		data() {
 			return {
-				activeNames: ['1'],
+				activeNames: ['1','4'],
 				lists: [],
 				cols: [
                     {title:'处理日期',field:'processingDate',width:"70"},
@@ -99,7 +99,7 @@ export default {
                 
                 ],
 				total: 0,
-				pagesize:10,
+				pagesize:20,
 				page: 1,
 				id:this.$route.params.id,
 				listLoading: false,

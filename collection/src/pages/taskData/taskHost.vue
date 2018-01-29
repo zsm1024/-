@@ -1,25 +1,31 @@
 <template>
 <section ref="abc" style="height:100%;overflow:auto">
-    <!-- @selection-change="handleSelectionChange" -->
-    <el-form inline :model="filters">   
-      <el-form-item>
-			<el-input v-model="filters.name" placeholder="当事人" clearable></el-input>
+    <el-form :model="filters" inline>
+        <el-form-item>
+			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:150px"></el-input>
 	  </el-form-item>
 	  <el-form-item>
-			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable>></el-input>
+			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:150px"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable></el-input>
+			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable style="width:150px"></el-input>
 		</el-form-item>
         <el-form-item>
-            <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable></el-input>
+            <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input>
         </el-form-item>
+        <el-form-item>
+            <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">查询</el-button>
+        </el-form-item>
+    </el-form>
+    
+    <!-- @selection-change="handleSelectionChange" -->
+    <el-form inline >        
         <el-form-item label="代管人姓名">
-           <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入代管人姓名"  @select="handleSelect" class="autoInput">
+           <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入代管人姓名"  @select="handleSelect" class="autoInput" style="width:150px">
             </el-autocomplete>
       </el-form-item>
        <el-form-item label="代管到期日">
-           <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChange"></el-date-picker>  
+           <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChange" ></el-date-picker>  
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">代管</el-button>
