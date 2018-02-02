@@ -19,14 +19,15 @@
         <el-collapse-item v-else title="固定利率合同" name="2">
 			<!--列表-->
 			 <!--  -->
-			<el-table :data="liststwo" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
+			<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in colstwo" :key="index" align="center" :width="col.width" sortable :fixed="col.fixed">
 				</el-table-column>
 			</el-table>
 
 			<!--工具条-->
-			<el-col :span="24" class="toolbar">				
-				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangetwo" @size-change="handleSizeChangetwo" :page-size="pagesizetwo" :page-sizes="[10, 20, 50, 100]"   :total="totaltwo"   style="float:right;">
+			<el-col :span="24" class="toolbar">
+				
+				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"   style="float:right;">
 				</el-pagination>
 			</el-col>
 		</el-collapse-item>
@@ -35,7 +36,7 @@
 </template>
 
 <script>
-import {repaymentPlanFixed} from "@/api/collmanage";
+import { repaymentPlanFixeds } from "@/api/collmanage";
 export default {
 		data() {
 			return {
@@ -59,7 +60,7 @@ export default {
 				total: 0,
 				pagesize: 20,
 				page: 1,
-				id:this.$store.state.navTabs.tabId,
+				id:this.$route.params.id,
                 listLoading: false,	                
                 liststwo: [],
 				colstwo: [
@@ -86,7 +87,7 @@ export default {
 			}
 		},
 		methods: {
-            handleSizeChangetwo(val) {
+            handleSizeChangetwo(val) { 
 				this.pagesizetwo = val;
 				this.getliststwo();
 			},
@@ -107,55 +108,45 @@ export default {
 				 let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-260;
         		this.heights=h;
 				let para = {
-					// missionId: this.$route.params.id,
+					contractId: this.id,
 					page: this.page,
 					pageSize: this.pagesize
 				};
 				this.listLoading = true;
-				getplan(para).then((res) => {
-					//  console.log(res.data.result.fixed)
+				repaymentPlanFixeds(para).then((res) => {
 					let data=res.data.result;
 					this.isFixed=data.isFixed;
 					
 					if(data.isFixed==0){
 						this.lists =data.floating.data;
 						this.total=data.floating.recordsTotal;
+					}else{
+						this.lists =data.fixed.data;
+						this.total=data.fixed.recordsTotal;
 					}
-					// }else{
-					// 	this.this.liststwo =[];
-					// 	this.totaltwo=1;
-					// }
 					this.listLoading = false;
 				});
             },
             getliststwo() {
-				// let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-260;
-        		// this.heights=h;
 				let para = {
-					missionId: this.$route.params.id,
-					page: this.pagetwo,
-					pageSize: this.pagesizetwo
+					contractId: this.id,
+					page: this.page,
+					pageSize: this.pagesize
 				};
-				this.listLoading = true;
+				this.listLoadingtwo = true;
 				// NProgress.start();
 				gettwo(para).then((res) => {
+					
 					let data=res.data.result;
 					this.isFixed=data.isFixed;
-					this.liststwo=data.fixed.data;
-					this.listLoading=false
-					// if(data.isFixed==1){
-					// 	this.isFixed=data.isFixed;
-					// 	this.liststwo =data.fixed.data;
-					// 	this.totaltwo=data.fixed.recordsTotal;
-					// }
-					
+					this.liststwo =data.fixed.data;
+					this.listLoading = false;
 				});
-				this.listLoading = false;
 			},
 		},
 		mounted() {
             this.getlists();
-            this.getliststwo();
+            // this.getliststwo();
 			let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
    			this.$refs.abc.style.height= h+"px"
 		}

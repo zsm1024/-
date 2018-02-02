@@ -8,7 +8,9 @@
 		</div>
 		
 	</div>
-<div class="phoneList" id="AdButton">
+	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="./if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px"></iframe>
+	
+<!-- <div class="phoneList" id="AdButton">
         <el-button type="primary" size="mini" @click="clickCallOut" style="padding:4px!important"><i class="fa fa-phone"></i></el-button>
         <input id="softPhoneNumber" type="text" style="width: 125px" v-model="phone" placeholder="请输入呼出号码"/>
 		<input id="btnInit" type="button" value="初始化" @click="initParam()" />
@@ -26,8 +28,8 @@
 		<input id="CallNumber" type="text" style="width: 120px" v-model="callphone" placeholder="请输入咨询号码"/>
 		<input id="btnTransfer"  type="button" value="转接" @click="Transfer"  disabled="disabled"/>
 		<!-- <input id="btnSingleStepConfCallEx"  type="button" value="会议" @click="SingleStepConfCallEx"  disabled="disabled"/>  -->
-		<input id="state" type="text" style="width: 75px" readonly="readonly" placeholder="状态" />
-        </div>
+		<!-- <input id="state" type="text" style="width: 75px" readonly="readonly" placeholder="状态" />
+        </div> --> 
 	</section>
 </template>
 

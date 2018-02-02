@@ -11,14 +11,22 @@
 		<el-form-item>
 			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable style="width:150px"></el-input>
 		</el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
             <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input>
-        </el-form-item> 
+        </el-form-item>  -->
          <el-form-item>
-            <el-input v-model="filters.appointmentTime" placeholder="用户ID"  clearable style="width:150px"></el-input>
-        </el-form-item> 
+            <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:150px"></el-input>           
+        </el-form-item>
+        <el-form-item> 
+            <el-date-picker v-model="value6" 
+				type="daterange" 
+				range-separator="至" 				
+				placeholder="请选择约会时间区域" 				
+				@change="dataChange">
+			</el-date-picker>
+		</el-form-item>
         <el-form-item>
-            <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">查询</el-button>
+            <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
         </el-form-item>
     </el-form>
     <el-form :inline="true" >              
@@ -66,6 +74,9 @@ export default {
           restaurants:[],
           state:'',
           items:"",
+          value6:"",
+		  times1:"",
+		  times2:"",
           itemsId:0,
           addlists:[],
           userList:[],
@@ -77,17 +88,17 @@ export default {
            			{ title: '职业', field: 'occupation', width: "90" },
            			{ title: '逾期天数', field: 'overdueDays', width: "75" },
 					{ title: '逾期金额', field: 'overdueTotal', width: "80" },
-					{ title: '贷款产品', field: 'loanProducts', width: "150" },
-					{ title: '贷款车型', field: 'car', width: "150" },
-					{ title: '约会日期', field: 'appointmentTime', width: "80" },
+					{ title: '贷款产品', field: 'loanProducts', width: "180" },
+					{ title: '贷款车型', field: 'car', width: "180" },
+					{ title: '约会日期', field: 'appointmentTime', width: "150" },
 					{ title: '区域', field: 'Region', width: "80" },
 					{ title: '省份', field: 'province', width: "50" },
 					{ title: '城市', field: 'city', width: "50" },
-					{ title: '最近行动代码', field: 'M_Code', width: "120" },
-					{ title: '最近行动时间', field: 'M_Time', width: "120" },
+					{ title: '最近行动代码', field: 'M_Code', width: "140" },
+					{ title: '最近行动时间', field: 'M_Time', width: "140" },
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '未偿本金', field: 'residualAmount', width: "90" },
-					{ title: '派单时间', field: 'updateTime', width: "120" },
+					{ title: '派单时间', field: 'updateTime', width: "150" },
 					{ title: '核销状态', field: 'check_statues', width: "100" },
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
@@ -101,13 +112,17 @@ export default {
 					applicationNumber:"",
 					overdueDays:"",
 					appointmentTime:"",
-					phone:"",
+					processer:"",
 					startTime:"",
 					endTime:"",
                 },               
       }
   },
   methods: {
+      dataChange(val){			
+			this.times2=val.split("至").pop();
+			this.times1=val.split("至").shift();
+     	},
       querySearch(queryString,cb){
           var data =this.restaurants;
           var results = queryString ? data.filter(this.createFilter(queryString)) :data;
@@ -171,7 +186,14 @@ export default {
         this.listLoading = true;
         let para = {
 			page: this.page,
-			pageSize:this.pagesize,												
+            pageSize:this.pagesize,
+            name:this.filters.name,
+			applicationNumber:this.filters.applicationNumber,
+			overdueDays:this.filters.overdueDays,
+			appointmentTime:this.filters.appointmentTime,
+			startTime:this.times1,
+            endTime:this.times2	,
+            processer:this.processer,																
         };
         getTaskHostList(para).then((res) => {
             let data =res.data.result;

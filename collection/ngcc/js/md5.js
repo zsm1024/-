@@ -182,6 +182,6 @@ function MD5(){
     }
 
 }
-export{
-  MD5
-}
+// export{
+//   MD5
+// }

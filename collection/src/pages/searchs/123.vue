@@ -3,7 +3,7 @@
 		<el-collapse v-model="activeNames">	
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
-                    <el-table :data="items.customerSimpleList" border stripe :row-class-name="TableRowClassNames"> 
+                    <el-table :data="items.customerSimpleList" border stripe> 
 						<!-- width="60" -->
 						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center">
 						</el-table-column>			
@@ -12,7 +12,7 @@
 			</el-collapse-item>
 			<el-collapse-item name="2" title="客户电话信息" id="asd">
 				
-				<el-table :data="items.customerPhones" border stripe :row-class-name="TableRowClassCustom" >
+				<el-table :data="items.customerPhones" border stripe >
 					
 					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center"  >
 						<template slot-scope="scope">
@@ -26,10 +26,11 @@
 			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
 			<el-collapse-item name="3" title="客户地址信息">
 					
-				<el-table :data="items.customerAddresses" border stripe :row-class-name="TableRowClassAddress" >
+				<el-table :data="items.customerAddresses" border stripe >
 					
 					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center"  >
-						<template slot-scope="scope">							
+						<template slot-scope="scope">
+							
 							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span>
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
 							
@@ -117,7 +118,7 @@
 						<span>{{items.overdueTotal}}</span>
 					</el-form-item>
 					<el-form-item label="ET结算金额:">
-						<span>{{ET}}</span>
+						<span>{{items.ET}}</span>
 					</el-form-item>
 				</el-form>				
 			</el-collapse-item>	
@@ -175,9 +176,7 @@ export default {
 				{title:'角色',field:'roleName',width:"60"},
             	{title:'姓名',field:'name',width:"60"},
             	{title:'关系', field: 'relationship', width: "50" },      
-				{title:'地址',field:'address',width:"200"},
-				{title:'省',field:'province',width:"60"},
-				{title:'市',field:'city',width:"60"},
+            	{title:'地址',field:'address',width:"200"},
             	{title: '地址类型', field: 'addressType', width: "70" },
             	{title:'信息来源',field:'infoSource',width:"60"},
             	{title:'有效性',field:'effectiveness',width:"60"},
@@ -185,7 +184,7 @@ export default {
 			baseinfo:[
 				{ title: '角色名', field: 'roleName', width: "60" },
 				{ title: '姓名', field: 'name', width: "60" },
-				// { title: '拼音', field: 'pinyin', width: "80" },
+				{ title: '拼音', field: 'pinyin', width: "80" },
 				{ title: '职业', field: 'occupation', width: "80" },
 				{ title: '单位名称', field: 'unitName', width: "110" },
 				{ title: '性别', field: 'sex', width: "45" },
@@ -206,6 +205,9 @@ export default {
     };
   },
   methods: {
+
+
+
 		//备注方法
 		confirmremarkopen() {
 				this.remarkopen=false;
@@ -213,31 +215,28 @@ export default {
 					type:'success',
 					message:'保存成功',
 				});
+
 		},
+
+
 		getlist() {
 			let para = {
 				contractId: this.id
-            };           
-			getlistAfpRest(para).then(res => {				
-                let data = res.data.result;		                
+            };
+            
+			getlistAfpRest(para).then(res => {
+				
+                let data = res.data.result;		
+                
 				this.items = data;								
+				
 				this.remarkform.remarks = this.items.remarks;
 				// this.cols=data.cols;
                 // this.cols1=data.cols1; 
 				       
 			});
    },
-   TableRowClassNames(row,rowIndex){
-	   row.documentType= row.documentType.split(" ").shift(" ").trim();
-	   row.sex=row.sex.split("(").shift("(").trim();
-   },
-    TableRowClassCustom(row){
-	   row.phoneType= row.phoneType.split(" ").shift(" ").trim();
-   },
-    TableRowClassAddress(row){
-		let rows=row.addressType.split(":").shift(":").trim()
-	   row.addressType= row.addressType.split(" ").shift(" ").trim();
-   },
+    
   },
   mounted() {
     this.getlist();
@@ -263,7 +262,7 @@ export default {
 	.el-form-item__label{padding: 5px 0!important}
 	.el-form-item__content{line-height: 24px!important}
   	.table-expand label { width:90px!important;text-align:el-pagination__rightwrapper;}
-  	.table-expand .el-form-item {margin: 0 0 0 2px!important; width:225px!important;color: #269aff!important;}
+  	.table-expand .el-form-item {margin: 0 0 0 2px!important; width:220px!important;color: #269aff!important;}
   	.el-table .cell{padding: 0!important;white-space:nowrap!important};
 	.floatForm{position: fixed;bottom: 0;right:0}
 	::-webkit-scrollbar{width:2px;height:12px }

@@ -1,6 +1,6 @@
 <template>
 	<section class="cslist" ref="abc" style="overflow-y: auto;">
-		<el-collapse v-model="activeNames" accordion>
+		<el-collapse v-model="activeNames">
 			<el-collapse-item name="1">
 				<template slot="title" ><span class="titles">催收信息</span></template>					
 				<el-table :data="items" border :default-expand-all="true">					
@@ -19,7 +19,7 @@
 					</el-table-column>									
 				</el-table>
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[5,10, 20, 50, 100]"   :total="total"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[20, 50, 100,500,1000]"   :total="total"   style="float:right;">
 					</el-pagination>
 				</el-col>				
 			</el-collapse-item>	
@@ -38,7 +38,7 @@
 					</el-table-column>			
 				</el-table>	
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeTrail" @size-change="handleSizeChangeTrail" :page-size="pagesizeTrail" :page-sizes="[5,10, 20, 50, 100]"   :total="totalTrail"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeTrail" @size-change="handleSizeChangeTrail" :page-size="pagesizeTrail" :page-sizes="[20, 50, 100,500,1000]"   :total="totalTrail"   style="float:right;">
 					</el-pagination>
 				</el-col>			
 			</el-collapse-item>
@@ -51,7 +51,7 @@
 					</el-table-column>			
 				</el-table>	
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeCode" @size-change="handleSizeChangeCode" :page-size="pagesizeCode" :page-sizes="[5,10, 20, 50, 100]"   :total="totalCode"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeCode" @size-change="handleSizeChangeCode" :page-size="pagesizeCode" :page-sizes="[20, 50,100,500,1000]"   :total="totalCode"   style="float:right;">
 					</el-pagination>
 				</el-col>			
 			</el-collapse-item> 
@@ -60,11 +60,12 @@
 </template>
 
 <script>
-	import { colHistory_msg,colHistory_note,colHistory_trail,colHistory_code } from "@/api/tablist";
+	// import {colHistory_trail,colHistory_code } from "@/api/tablist";
+	import { listAfpSimplesRestByContractId, colHistory_note,colHistory_trail,colHistory_code } from "@/api/collmanage";
 	export default{
 		data(){
 			return{
-			activeNames:["1"],
+			activeNames:["1","2","3","4"],
 			 items:[],
 			 cols:[
               	{title:'催收日期',field:'afpDate',width:"190"},
@@ -75,8 +76,7 @@
               	{title:'约会日期',field:'appointmentTime',width:"190"},
               	{title:'承诺金额',field:'allowance',width:"60"},
               	{title:'承诺日期',field:'allDate',width:"190"},
-				{title:'用户ID',field:'username',width:"60"},	
-				{title:'录入人',field:'username',width:"60"},				
+				{title:'用户ID',field:'username',width:"60"},				
 				],
 			 titles:[
 					],
@@ -92,23 +92,21 @@
                   {"title":'关闭时间',field:'closeTime',width:"190"},],
 			 pathMsg:[],
 			 totalTrail:0,
-			 pagesizeTrail:5,
+			 pagesizeTrail:20,
 			 pageTrail:1,
 			 actives:[
                   {"title":'用户ID',field:'username',width:"70"},
                   {"title":'行动代码',field:'actSign',width:"80"},
                   {"title":'行动代码注释',field:'actNotes',width:"120"},
-				  {"title":'录入时间',field:'inputTime',width:"120"},
-				  {"title":'录入人',field:'inputTime',width:"120"},
-				],
+                  {"title":'录入时间',field:'inputTime',width:"120"},	   ],
 			 activeMsg:[],
 			 totalCode:0,
-			 pagesizeCode:5,
+			 pagesizeCode:20,
 			 pageCode:1,
 			 marks:"",
 			 id:this.$store.state.navTabs.tabId,
 			 total: 0,
-			 pagesize:10,
+			 pagesize:50,
 			 page: 1,
 			}
 		},
@@ -126,11 +124,11 @@
 			},
 			getmessage() {
 				let para = {
-					missionId: this.$route.params.id,
+					contractId: this.$route.params.id,
 					page:this.page,
 					pageSize:this.pagesize
 				};
-     		 	colHistory_msg(para).then(res => {				 
+     		 	listAfpSimplesRestByContractId(para).then(res => {				 
 					let data = res.data.result;
 					this.total=data.recordsTotal
 					this.items=data.data;					
@@ -138,7 +136,7 @@
 				},
 				getmessage_note() {
 				let para = {
-					missionId:this.$route.params.id,					
+					contractId: this.$route.params.id,					
 				};
 
      		 	colHistory_note(para).then(res => {				 
@@ -161,7 +159,7 @@
 			},
 				getmessage_trail() {
 				let para = {
-					missionId: this.$route.params.id,
+					contractId: this.$route.params.id,
 					page:this.pageTrail,
 					pageSize:this.pagesizeTrail
 				};
@@ -182,7 +180,7 @@
 			},
 				getmessage_code() {
 				let para = {
-					missionId: this.$route.params.id,
+					contractId: this.$route.params.id,
 					page:this.pageCode,
 					pageSize:this.pagesizeCode
 				};

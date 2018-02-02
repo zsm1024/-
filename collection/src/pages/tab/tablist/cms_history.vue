@@ -63,7 +63,7 @@
 				</el-table>
 				<el-col :span="24" class="toolbar">
 					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[5,10, 20, 50, 100]"   :total="totalthr"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[5,10, 20, 50, 100,500,1000]"   :total="totalthr"   style="float:right;">
 					</el-pagination>
 				</el-col>
 
@@ -99,7 +99,7 @@ export default {
                 
                 ],
 				total: 0,
-				pagesize:20,
+				pagesize:50,
 				page: 1,
 				id:this.$route.params.id,
 				listLoading: false,

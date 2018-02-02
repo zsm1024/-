@@ -102,7 +102,7 @@
 						<span>{{items.applicationNumber}}</span>
 						<!-- <span>{{items.contractNum}}</span> -->
 					</el-form-item>
-					<el-form-item label="首付比例:" >
+					<el-form-item label="首付比例(%):" >
 						<span>{{items.firstRatio}}</span>
 						<!-- <span>{{items.ShoufuRatio}}</span> -->
 					</el-form-item>
@@ -266,9 +266,9 @@ import $ from 'jquery'
 import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo,getdeal} from "@/api/tablist";
 import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
 import formMessage from '../tablist/form_message';
-import {clickCallOut} from '../../../../ngcc/softPhone';
+import {clickCallOut,initParam} from '../../../../ngcc/softPhone';
 import {PhoneCodeListAll} from "@/api/basedata";
-// import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx} from ""
+// import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx} from "../../../../ngcc/softPhone"
 export default {
   data() {
 	 
@@ -306,7 +306,9 @@ export default {
 				{title:'角色',field:'roleName',width:"70"},
             	{title:'姓名',field:'name',width:"80"},
             	{title:'关系', field: 'relationship', width: "50" },      
-            	{title:'地址',field:'address',width:"200"},
+				{title:'地址',field:'address',width:"200"},
+				{title:'省',field:'province',width:"60"},
+				{title:'市',field:'city',width:"60"},
             	{title: '地址类型', field: 'addressType', width: "70" },
             	{title:'信息来源',field:'infoSource',width:"60"},
             	{title:'有效性',field:'effectiveness',width:"60"},
@@ -314,7 +316,7 @@ export default {
 			baseinfo:[
 				{ title: '角色名', field: 'roleName', width: "60" },
 				{ title: '姓名', field: 'name', width: "80" },
-				{ title: '拼音', field: 'pinyin', width: "80" },
+				// { title: '拼音', field: 'pinyin', width: "80" },
 				{ title: '职业', field: 'occupation', width: "80" },
 				{ title: '单位名称', field: 'unitName', width: "110" },
 				{ title: '性别', field: 'sex', width: "45" },
@@ -619,20 +621,30 @@ export default {
 			});
 		},
 		ring(phoneNum,row,){
-			debugger;
+			window.frames['']
 			var pattern="-";
 			phoneNum=phoneNum.replace(new RegExp(pattern),"");
-			let a=phoneNum;
-			a.replace(/(^\s*)|(\s*$)/g, "")
-			console.log(a.length);
+			// let a=phoneNum;
+			// a.replace(/(^\s*)|(\s*$)/g, "");
+			// console.log(phoneNum.length)
+			// console.log(a.length);
 			// phoneNum=phoneNum.replace(/\s+/g,"")
-			 clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
+			// phoneNum="0"+a;
+			localStorage.setItem("phoneNum",phoneNum);
+			var user=localStorage.getItem("userName");
+			// initParam(user)
+			document.getElementById("frame2").contentWindow.clickCallOut("0","0"+phoneNum,this.appNum,row.name);
+			// clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
 		},	
 		ring1(phoneNum,row,){
 			var pattern="-";
-			phoneNum=phoneNum.replace(new RegExp(pattern),"").trim()
+			phoneNum=phoneNum.replace(new RegExp(pattern),"");
 			// phoneNum=phoneNum;	
-			 clickCallOut("0",phoneNum,row.name,this.applicationNumbers)			
+			localStorage.setItem("phoneNum",phoneNum);
+			var user=localStorage.getItem("userName");
+			document.getElementById("frame2").contentWindow.clickCallOut("0",phoneNum,this.appNum,row.name);
+        	// initParam(user)
+			// clickCallOut("0",phoneNum,row.name,this.applicationNumbers)			
 		},	
 		phoneEdit(row){
 			let para = row
@@ -643,7 +655,7 @@ export default {
 						if(res.data.success){
 							this.$message({
 								type: 'success',
-								message: '编辑成功！'
+								message: '编辑成功'
 							})
 						}else{
 							this.$message({
@@ -733,7 +745,8 @@ export default {
 				
 				 let data = res.data.result;			
 				 this.items = data;	
-				 this.applicationNumbers=data.applicationNumber;						
+				 this.appNum=data.appNum;	
+
 				this.items.customerPhones = this.items.customerPhones.map(v => {
 					this.$set(v, 'edit', false)
 					return v;
@@ -764,7 +777,8 @@ export default {
 				let data =res.data.result;
 				this.JRZY="金融专员";
 				this.jxsName=data.name;
-				this.JXSNAME="姓名"
+				this.dealerName=data.dealerName;
+				this.JXSNAME="名称"
 				data.phone.forEach(element => {
 					this.phoneList.push({"phone":element.phone,"name":"电话"})
 				});
@@ -790,7 +804,6 @@ export default {
 		PhoneCodeListAll().then(res =>{
 			let data =res.data.result;
 			this.PhoneCodeList =data;
-			console.log(this.PhoneCodeList)
 		})
 	},
 	//客户基本信息中英文
@@ -813,7 +826,7 @@ export default {
   mounted() {
 	this.getlist();
 	this.getJxsInfo()
-	this.getPhoneCode()
+	this.getPhoneCode();
     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
    	this.$refs.abc.style.height= h+"px";
   }

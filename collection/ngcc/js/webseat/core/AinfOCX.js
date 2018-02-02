@@ -264,8 +264,8 @@ WebAgent.AinfOCX =
 		
 		"188" : "OnRingingEvent", //振铃
 		
-		"196" : "OnMediaAbilityEvent",// IM能力改变
-        
+		"196" : "OnMediaAbilityEvent", // IM能力改变
+		"210" : "OnRelease", //挂机事件
         // AgentService事件
         "OnBeginScreenRecSuccess" : "OnBeginScreenRecSuccess",
         "OnBeginScreenRecFailure" : "OnBeginScreenRecFailure",

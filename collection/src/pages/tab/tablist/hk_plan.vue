@@ -75,7 +75,7 @@ export default {
             		{title:'已付款总额',field:'totalPaid'},
             		{title:'未承兑/取消',field:'trueday'},
             		{title:'实际还款日',field:'actualDay'},
-            		{title:'逾期天数',field:'yuqideday'},
+            		{title:'逾期天数',field:'overdueDays'},
 				],
 				totaltwo: 0,
 				pagesizetwo: 20,

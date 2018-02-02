@@ -106,7 +106,7 @@
 					{ title: '省份', field: 'province', width: "50" },
 					{ title: '城市', field: 'city', width: "50" },
 					{ title: '最近行动代码', field: 'actSign', width: "120" },
-					{ title: '最近行动时间', field: 'inputTime', width: "120" },
+					{ title: '最近行动时间', field: 'inputTime', width: "150" },
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '未偿本金', field: 'residualAmount', width: "90" },
 					{ title: '派单时间', field: 'createTime', width: "120" },

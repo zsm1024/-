@@ -29,11 +29,11 @@
             
             <el-table-column label="操作"  align="center" >
                 <template  slot-scope="scope">
-                    <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+scope.row.id}">详情</router-link>
-                    
+                     <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+scope.row.id}">详情</router-link> 
+                      <!-- <router-link class="a-href" :to="{path:'/searchs/123'}">详情</router-link> -->
                 </template>
             </el-table-column>
-            <el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" sortable >
+            <el-table-column  align="center" :prop="col.field" sortable :label="col.title"  v-for="(col, index) in cols" :key="index" >
             </el-table-column>
         </el-table>
 
@@ -63,14 +63,12 @@
 				lists: [],
 				cols: [
                  	{ title: '姓名', field: 'name', width: "60" },
-            		{ title: '合同号', field: 'applicationNumber', width: "80" },
-           			
+            		{ title: '合同号', field: 'applicationNumber', width: "80" },         			
 					{ title: '贷款产品', field: 'loanProducts', width: "150" },
 					{ title: '贷款车型', field: 'loanCar', width: "150" },
 					{ title: '付款日期', field: 'datePayment', width: "80" },
 					{ title: '证件类型', field: 'documentType', width: "80" },
-					{ title: '证件号', field: 'documentNum', width: "50" },
-				
+					{ title: '证件号', field: 'documentNum', width: "50" },				
 					{ title: '合同状态', field: 'state', width: "100" },
 
                 ],

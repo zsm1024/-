@@ -1,18 +1,16 @@
-import {MD5} from '../ngcc/js/md5'
-import '../ngcc/js/webseat/core/webagent.js';
-import '../ngcc/js/webseat/core/util/jquery.jsonp-2.1.4.js';
+// import {MD5} from '../ngcc/js/md5'
+// import '../ngcc/js/webseat/core/webagent.js';
+// import '../ngcc/js/webseat/core/util/jquery.jsonp-2.1.4.js';
 
 var ctiNum,vcid=3,currentStat=-1,displayNum,currentOPT,currentCallId=0,currentVoiceId,keepCallId=0,direct;
 var username,unitId,userStaffid;//用户基本信息
 var zeroCfgURL="http://10.50.16.30:8081/was";//CTI服务地址
 var interfaceURL="http://10.50.130.235:8080/gwaf/IService";//CCS接口地址
-// var interfaceURL="http://10.50.130.235:8080/gwaf/IService";//CCS接口地址
 var app_no,cusName;//申请号,客户姓名
 var loginStatus = 0;
 var eh;
 //初始化参数
 function initParam(userId){
-	console.log(userId)
 	if(userId.length==0){
 		alert('用户账号不能为空!')
 		return;
@@ -97,7 +95,7 @@ function onSucc_() {
 	//eh.regEvent("OnCallOutsideFailure", OnCallOutsideFailure);//外呼失败
 	eh.regEvent("OnCallOutsideSuccTalk", OnCallOutsideSuccTalk);//外呼通话成功
 	//eh.regEvent("OnCallOutsideSuccess", OnCallOutsideSuccess);//外呼外呼成功
-	eh.regEvent("OnRelease", OnReleaseSuccess);//释放呼叫成功
+	eh.regEvent("OnRelease", fnOnRelease);//释放呼叫成功
 	//eh.regEvent("OnReleaseFailure", OnReleaseFailure);
 	eh.regEvent("OnRingingEvent", fOnRingingEvent); //震铃事件
 	eh.regEvent("OnAnswerSuccess", fOnAnswerSuccess); //应当成功
@@ -151,22 +149,9 @@ function clickHangup() {
 }
 //呼出
 function clickCallOut(type,callee,applicationno,borrower) {
-    //alert(callee);
-    
-
-    //$.fn.invoke("00001HY4L3K230000A07", [applicationno], function (result) {
-    //    if (result) {
-    //        var model = result.data;
-    //        app_no = result.ID;
-    //    }
-
-
-    //});
-   
 
     app_no = applicationno;
-    cusName = borrower;
-   // alert(app_no);
+	cusName = borrower;
    // alert(cusName);
     if (loginStatus == 0)
     {
@@ -186,7 +171,6 @@ function clickCallOut(type,callee,applicationno,borrower) {
 		{
 		   var callee = $.trim($("#softPhoneNumber").val());
 		}
-		console.log(callee);
 		if (callee == undefined)
 		{
 		    alert("未输入呼出号码");
@@ -273,7 +257,6 @@ function cannel(){
 
 //调用咨询功能
 function doConsultation(){
-	debugger
 	var callNum= $.trim($("#CallNumber").val());
 	if(callNum.length==0){
 		alert('请输入咨询号码!')
@@ -281,14 +264,14 @@ function doConsultation(){
 	}
 	keepCallId=currentCallId;
 	var calling= displayNum;
-	alert("calling:"+displayNum)
+	// alert("calling:"+displayNum)
 	if(calling.length<=6){
 		calling='6527'+calling;
 		// alert("号码少于8位")
 		// calling='65276777';
 	}
 //calling='1001';
-	alert(calling);
+	// alert(calling);
 	var flag10 = 0;
 	if(callNum.length>6){
 		flag10=1
@@ -508,7 +491,8 @@ function Transfer(){
 		}); 
 }
 //挂机成功
-function OnReleaseSuccess(){
+function fnOnRelease(droper,dropee,callid,cause,exinfo){
+	console.log("fnOnRelease->droper is "+droper);
 	voiceHandler("HANDUP",null);
 }
 
@@ -524,7 +508,7 @@ function voiceHandler(code, param){
 	}else if(code=="VOICEREC"){
 		data={"code":"VOICEREC","voiceId":currentVoiceId,"path":param};	
 	}else if(code=="HANDUP"){
-		data={"code":"HANDUP","voiceId":currentVoiceId,"app_no":app_no,"cusName":cusName};
+		data={"code":"HANDUP","voiceId":currentVoiceId,"app_no":app_no};
 	}
 	
 	$.ajax({
@@ -535,6 +519,9 @@ function voiceHandler(code, param){
 		  	async : true,
 		 　　dataType:'text',//返回的数据格式
 		 　　success:function(data){ //请求成功的回调函数
+		 		if(code=="HANDUP"){
+		 			currentVoiceId="";
+		 			}
 		　　},
 		　　complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
 			console.log("status->"+status);
@@ -608,12 +595,6 @@ function refreshBtns(state){
 	//转接按钮
 	$("#btnTransfer").removeAttr("disabled");
 	
-	
-
-
-
-
-
 	
 	$("#btnsetRetrieveHold").attr("disabled", true);
 	$("#btnCallOut").attr("disabled", true);
@@ -697,7 +678,8 @@ function refreshBtns(state){
 	$("#btnsetRetrieveHold").addClass("Shover");
 	$("#btnCannel").addClass("Shover");
 	$("#btnSignIn").addClass("Shover");
-
+	currentCallId=0;
+	currentOPT='';
 	if ($("[data-bind=PHONE]") != undefined)
 	{
 	    $("[data-bind=PHONE]").next().find("#callout").removeAttr("disabled");
@@ -714,41 +696,40 @@ function refreshBtns(state){
 	$("#btnCannel").unbind("click");
 	$("#btnCannel").one("click",cannel);
 	$("#btnCannel").val("取消");
-	currentCallId=0;
-	currentOPT='';
+	
 
 	} 
 	if(state==401){
 		
 	}
 }
-export {
-	initParam,
-	addMessage,
-	onSucc_,
-	clickSetIdle,
-	clickSetBusy,
-	answer,
-	clickHangup,
-	clickCallOut,
-	Hold,
-	setRetrieveHold,
-	cannel,
-	doConsultation,
-	reConnect,
-	doTransfer,
-	doSingleStepConfCall,
-	clickSignOut,
-	promptLastError,
-	test,
-	fOnRingingEvent,
-	fOnRecordEvent,
-	fOnAnswerSuccess,
-	onCallInsideSuccTalk,
-	OnCallOutsideSuccTalk,
-	OnConsultationSuccess,
-	Transfer,
-	OnReleaseSuccess,
-	voiceHandler,
-	refreshBtns
-  };
+// export {
+// 	initParam,
+// 	addMessage,
+// 	onSucc_,
+// 	clickSetIdle,
+// 	clickSetBusy,
+// 	answer,
+// 	clickHangup,
+// 	clickCallOut,
+// 	Hold,
+// 	setRetrieveHold,
+// 	cannel,
+// 	doConsultation,
+// 	reConnect,
+// 	doTransfer,
+// 	doSingleStepConfCall,
+// 	clickSignOut,
+// 	promptLastError,
+// 	test,
+// 	fOnRingingEvent,
+// 	fOnRecordEvent,
+// 	fOnAnswerSuccess,
+// 	onCallInsideSuccTalk,
+// 	OnCallOutsideSuccTalk,
+// 	OnConsultationSuccess,
+// 	Transfer,
+// 	fnOnRelease,
+// 	voiceHandler,
+// 	refreshBtns
+//   };

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<style>
+  .Shover{background: #666!important}
+#AdButton input{background:#4694e4 }
+#AdButton input{padding:3px!important;background:#4694e4;border: 1px solid #4694e4; border-radius: 3px;height: 100%;cursor:pointer}
+#AdButton input:disabled{color:#97a8be;background:#c9d0da;border: 1px solid #c9d0da;border-radius: 3px }
+#AdButton input::-webkit-input-placeholder { color:#fff;font-size:14px;}
+#AdButton input:-moz-placeholder { color:#fff;font-size:14px;}/* Mozilla Firefox 4 to 18*/ 
+#AdButton input::-moz-placeholder {color:#fff;font-size:14px;} /* Mozilla Firefox 19+*/
+#AdButton input:-ms-input-placeholder {color:#fff;font-size:14px;}/* Internet Explorer 10+*/
+</style>
+<script type="text/javascript" src="./ngcc/js/webseat/core/util/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="./ngcc/js/md5.js"></script>
+<script type="text/javascript" src="./ngcc/js/webseat/core/webagent.js"></script>
+<script type="text/javascript" src="./ngcc/softPhone.js"></script>
+<script type="text/javascript" src="./ngcc/js/webseat/core/util/jquery.jsonp-2.1.4.js"></script>
+</head>
+<body>
+    <div class="phoneList" id="AdButton">
+       <!-- <el-button type="primary" size="mini" @click="clickCallOut" style="padding:4px!important"><i class="fa fa-phone"></i></el-button> -->
+      <input  id="softPhoneNumber" type="text" style="width: 125px" v-model="phone" placeholder="请输入呼出号码"/>
+		  <input id="btnInit" type="button" value="初始化" onclick="init()" />
+      <input id="btnSignIn" type="button" value="登录" onclick="doSignIn()" disabled="disabled" />
+      <input id="btnAnswer" type="button" value="接听" onclick="answer()"   disabled="disabled" />
+      <input id="btnSignOut" type="button" value="签出" onclick="clickSignOut" disabled="disabled" />
+      <input id="btnCallOut" type="button" value="呼出" onclick="callout()" disabled="disabled" />
+      <input id="btnSetIdle" type="button" value="示闲" onclick="clickSetIdle()"  disabled="disabled" />
+      <input id="btnSetBusy" type="button" value="示忙" onclick="clickSetBusy()" disabled="disabled" />
+		<input id="btnHangup"  type="button" value="挂机" onclick="clickHangup()"  disabled="disabled" />
+		<input id="btnHold"  type="button" value="保持" onclick="Hold()"  disabled="disabled"/>
+		<input id="btnCannel"  type="button" value="取消" onclick="cannel()"  disabled="disabled"/>
+		<input id="btnsetRetrieveHold"  type="button" value="唤醒" onclick="setRetrieveHold()"  disabled="disabled"/>
+		<input id="btnConsultation"  type="button" value="咨询" onclick="doConsultation()"  disabled="disabled"/>
+		<input id="CallNumber" type="text" style="width: 120px" v-model="callphone" placeholder="请输入咨询号码"/>
+    <input id="btnTransfer"  type="button" value="转接"onclick="Transfer()"  disabled="disabled"/>
+    <input id="state" type="text" style="width: 120px" readonly="readonly" />
+    </div>	
+    <script>
+      function init(){
+        // var a= localStorage.getItem("userName")
+        var user=localStorage.getItem("userName");
+        initParam(user)
+      }
+     function callout(){
+      //  console.log("123");
+      // var phone=$.trim($("#softPhoneNumber").val());      
+      clickCallOut(1);
+     }
+    
+    </script>
+</body> 
+
+</html>

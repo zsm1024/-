@@ -10,11 +10,21 @@
 		<el-form-item>
 			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable style="width:150px"></el-input>
 		</el-form-item>
-        <el-form-item>
-            <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input>
+          <el-form-item>
+            <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:150px"></el-input>           
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">查询</el-button>
+            <el-date-picker v-model="value6" 
+					type="daterange" 
+					range-separator="至" 				
+					placeholder="请选择约会时间区域" 				
+					@change="dataChange"
+					>
+					</el-date-picker>
+            <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
         </el-form-item>
     </el-form>
     
@@ -74,6 +84,9 @@ export default {
           heights:0,    
           datas: [],
           times:"",
+          value6:"",
+		  times1:"",
+		  times2:"",
           restaurants:[],
           file:[],
           state:'',
@@ -117,16 +130,20 @@ export default {
 					applicationNumber:"",
 					overdueDays:"",
 					appointmentTime:"",
-					phone:"",
+					processer:"",
 					startTime:"",
 					endTime:"",
 				},
       }
   },
   methods: {
-      dataChange(val){
-           this.times=val;
-      },
+      dataChange(val){			
+		this.times2=val.split("至").pop();
+		this.times1=val.split("至").shift();
+     	},
+    //   dataChange(val){
+    //        this.times=val;
+    //   },
       querySearch(queryString,cb){
           let data =this.restaurants;
           let results = queryString ? data.filter(this.createFilter(queryString)) :data;
@@ -215,8 +232,16 @@ export default {
     listShow(){       
         let para = {
 			page: this.page,
-			pageSize:this.pagesize,												
+            pageSize:this.pagesize,
+            name:this.filters.name,
+			applicationNumber:this.filters.applicationNumber,
+			overdueDays:this.filters.overdueDays,
+			appointmentTime:this.filters.appointmentTime,
+			startTime:this.times1,
+            endTime:this.times2	,
+            processer:this.processer,													
         };
+        console.log(para);
         this.listLoading = true;
         getTaskHostList(para).then((res) => {
             let data =res.data.result;           
@@ -254,7 +279,7 @@ export default {
        cancelEscrow(para).then(res =>{
            this.cancelhost=false;
            this.userLists.splice(0,this.userLists.length) 
-          this.getlists();
+           this.getlists();
        })
     }
 },
