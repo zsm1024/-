@@ -630,8 +630,10 @@ export default {
 			// console.log(a.length);
 			// phoneNum=phoneNum.replace(/\s+/g,"")
 			// phoneNum="0"+a;
-			localStorage.setItem("phoneNum",phoneNum);
+			localStorage.setItem("phoneNum","0"+phoneNum);
 			var user=localStorage.getItem("userName");
+			let phoneNumVal="0"+phoneNum
+			document.getElementById("frame2").contentWindow.telNumVal(phoneNumVal);
 			// initParam(user)
 			document.getElementById("frame2").contentWindow.clickCallOut("0","0"+phoneNum,this.appNum,row.name);
 			// clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
@@ -642,6 +644,7 @@ export default {
 			// phoneNum=phoneNum;	
 			localStorage.setItem("phoneNum",phoneNum);
 			var user=localStorage.getItem("userName");
+			document.getElementById("frame2").contentWindow.telNumVal(phoneNum);
 			document.getElementById("frame2").contentWindow.clickCallOut("0",phoneNum,this.appNum,row.name);
         	// initParam(user)
 			// clickCallOut("0",phoneNum,row.name,this.applicationNumbers)			

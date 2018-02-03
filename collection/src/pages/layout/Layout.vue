@@ -8,7 +8,7 @@
 		</div>
 		
 	</div>
-	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="./if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px"></iframe>
+	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="./if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px;bottom:0"></iframe>
 	
 <!-- <div class="phoneList" id="AdButton">
         <el-button type="primary" size="mini" @click="clickCallOut" style="padding:4px!important"><i class="fa fa-phone"></i></el-button>
