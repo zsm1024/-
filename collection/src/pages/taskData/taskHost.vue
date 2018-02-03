@@ -35,7 +35,7 @@
             </el-autocomplete>
       </el-form-item>
        <el-form-item label="代管到期日">
-           <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChange" ></el-date-picker>  
+           <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">代管</el-button>
@@ -141,9 +141,9 @@ export default {
 		this.times2=val.split("至").pop();
 		this.times1=val.split("至").shift();
      	},
-    //   dataChange(val){
-    //        this.times=val;
-    //   },
+      dataChanges(val){
+           this.times=val;
+      },
       querySearch(queryString,cb){
           let data =this.restaurants;
           let results = queryString ? data.filter(this.createFilter(queryString)) :data;
@@ -239,7 +239,7 @@ export default {
 			appointmentTime:this.filters.appointmentTime,
 			startTime:this.times1,
             endTime:this.times2	,
-            processer:this.processer,													
+            processer:this.filters.processer,													
         };
         console.log(para);
         this.listLoading = true;

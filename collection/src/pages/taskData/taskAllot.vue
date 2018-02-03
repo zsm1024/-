@@ -193,7 +193,7 @@ export default {
 			appointmentTime:this.filters.appointmentTime,
 			startTime:this.times1,
             endTime:this.times2	,
-            processer:this.processer,																
+            processer:this.filters.processer,																
         };
         getTaskHostList(para).then((res) => {
             let data =res.data.result;

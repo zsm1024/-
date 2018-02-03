@@ -117,6 +117,7 @@ export default {
 				liststwo: [],
 				colstwo: [
                      {title:'主借人',field:'borrower'},
+					 {title:'处理人',field:'username'}
                     {title:'合同号',field:'applicationNumber'},                  
                     {title:'逾期天数',field:'overdueDays'},
                     {title:'还款日',field:'datePayment'},

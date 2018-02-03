@@ -254,7 +254,6 @@ export default{
 	
         getlists(){	
              getCodeAll().then(res => {
-				 console.log(res)
                  var arrpush = [];
                  res.data.result.forEach(function(value,index){
                     arrpush.push(value.actCode+"-"+value.actNotes);
@@ -382,11 +381,13 @@ export default{
 			let a="";
 			this.messageform.messagedesc=a;
 			this.messageform.selectTitle=a;
+			this.userList=[];
 		},
 		 messageOpen(){
 			this.messageopen=true;  
 			 this.callParent();
 			 let pList=[];
+			  this.userList=[];
 			 this.phoneListNums.forEach(e =>{
 				 if(e.infoSource=="CMS"
 				//  &&e.roleName=="主借人"
@@ -476,6 +477,7 @@ export default{
 				//   console.log(this.messageform.messagedesc)
 				this.messageform.messagedesc=a;
 				this.messageform.selectTitle=a;
+				this.userList=[];
 			}
 				// resetFields()
 				// this.$message({
