@@ -203,6 +203,7 @@ export default{
 		   this.allDate=val;
 	  },
 		onSubmit(mainform) {
+		
             // var self = this;
             // var num = 10;
             // var timer = setInterval(function() {
@@ -227,7 +228,9 @@ export default{
 				userId: localStorage.getItem("UserId")				
 			};
 			this.$refs[mainform].validate((valid) => {
-				if (valid) {
+				
+				if (valid) {	
+					this.disabledto=true;
 					recordAdd(para).then(res =>{
 				// console.log(res)
 						if(res.data.success){	
@@ -235,14 +238,20 @@ export default{
 							this.$message({
                                 type:'success',
                                 message:'提交成功',
-                            });
+							});
+							setTimeout(()=>{
+								this.disabledto=false;
+							},1000)
                             
 						}else{
 							this.$refs['mainform'].resetFields();
 							this.$message({
 								type: 'error',
 								message: '提交失败，请联系管理员！'
-							})
+							});
+							setTimeout(()=>{
+								this.disabledto=false;
+							},1000)
 						}
 				
 					});
@@ -270,7 +279,7 @@ export default{
         },
 		onSubmitnext(mainform) {
             let para ={
-    			actSign:this.mainform.actSign,
+    			actSign:this.mainform.actSign.split("-").shift("-"),
 				allowance:this.mainform.allowance,
 				allDate:this.allDate,
 				linkman:this.mainform.linkman,
