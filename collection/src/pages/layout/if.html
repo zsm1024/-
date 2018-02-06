@@ -2,8 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
+<title>催收</title>
 <style>
+    .phoneList{height:25px;background: #f0f0f0;text-align: center;}
   .Shover{background: #666!important}
 #AdButton input{background:#4694e4 }
 #AdButton input{padding:3px!important;background:#4694e4;border: 1px solid #4694e4; border-radius: 3px;height: 100%;cursor:pointer}
@@ -40,9 +41,24 @@
     <input id="state" type="text" style="width: 120px" readonly="readonly" />
     </div>	
     <script>
+       function telNumVal (item){
+        $("#softPhoneNumber").val(item);
+      }  
       function init(){
         // var a= localStorage.getItem("userName")
         var user=localStorage.getItem("userName");
+        if(user=="czhangliang"){	
+          var a=user.trim().substr(1);
+          user=a;        
+				// let a=this.names	
+				// this.names=a;
+			}else if(user=="chenjing_cms"){
+        var b=user.split('_').shift("_");
+				user=b
+			}else{
+        var c=user
+				user=c
+			}
         initParam(user)
       }
      function callout(){

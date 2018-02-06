@@ -305,10 +305,10 @@ export default {
 			cols1:[
 				{title:'角色',field:'roleName',width:"70"},
             	{title:'姓名',field:'name',width:"80"},
-            	{title:'关系', field: 'relationship', width: "50" },      
-				{title:'地址',field:'address',width:"200"},
+				{title:'关系', field: 'relationship', width: "50" }, 
 				{title:'省',field:'province',width:"60"},
-				{title:'市',field:'city',width:"60"},
+				{title:'市',field:'city',width:"60"},     
+				{title:'地址',field:'address',width:"200"},				
             	{title: '地址类型', field: 'addressType', width: "70" },
             	{title:'信息来源',field:'infoSource',width:"60"},
             	{title:'有效性',field:'effectiveness',width:"60"},
@@ -815,11 +815,17 @@ export default {
 		row.sex=row.sex.split("(").shift("(").trim()
 	},
 	tableRowClassNameCustom(row,rowIndex){
-		row.phoneType=row.phoneType.split(" ").shift(" ").trim()
+		row.phoneType=row.phoneType.split(" ").shift(" ").trim();
+		// let reg=/[a-zA-Z]/g;
+		// console.log(row.relationship.replace(reg," ").trim())
+		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
 	tableRowClassNameAddress(row,rowIndex){
 		let rows=row.addressType.split(":").pop(":").trim();
 		row.addressType=rows.split(" ").shift(" ").trim();
+		// let reg=/[a-zA-Z]/g;
+		// console.log(row.relationship.replace(reg," ").trim());
+		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
 	
   },

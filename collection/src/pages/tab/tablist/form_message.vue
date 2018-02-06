@@ -279,11 +279,13 @@ export default{
 				afpRecord:this.mainform.afpRecord,
 				missionId: this.$route.params.id,
 				userId: localStorage.getItem("UserId"),
-				id:this.$route.params.id
+				id:this.$route.params.id,
+				type:localStorage.getItem("nextNum")
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
                     getNextMissonId(para).then(res => {
+						
 						var nextId = res.data.result;
 						// console.log(nextId)
 						 this.$router.push(nextId)						 
@@ -387,7 +389,7 @@ export default{
 			this.messageopen=true;  
 			 this.callParent();
 			 let pList=[];
-			  this.userList=[];
+			//   this.userList=[];
 			 this.phoneListNums.forEach(e =>{
 				 if(e.infoSource=="CMS"
 				//  &&e.roleName=="主借人"

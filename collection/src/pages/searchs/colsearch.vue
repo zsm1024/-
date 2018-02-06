@@ -40,7 +40,7 @@
         <!--工具条-->
         <el-col :span="24" class="toolbar">
             
-            <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"  style="float:right;">
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[50, 100,500,1000,2000]"   :total="total"  style="float:right;">
             </el-pagination>
         </el-col>
     </section>
@@ -73,7 +73,7 @@
 
                 ],
 				total: 0,
-				pagesize: 10,
+				pagesize:500,
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列

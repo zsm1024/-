@@ -58,16 +58,20 @@ export default {
 	},
 	methods:{
 		changeNmeType(){
-			if(this.names=="czhangliang"){
-				this.names=this.names.substr(1);
+			if(this.names=="czhangliang"){	
+				let a=this.names.trim().substr(1);	
+				console.log( a)	
+				this.names=a;
 			}else if(this.names=="chenjing_cms"){
 				this.names=this.names.split('_').shift("_");
 			}else{
 				this.names=this.names
 			}
 		},
-		 initParam:function(){
-           	initParam(this.names);
+		 initParam:function(){ 
+			 console.log(this.names);
+			   initParam(this.names);
+			  
         //   this.doSignIn()
 			 },
 			  clickCallOut:function(){

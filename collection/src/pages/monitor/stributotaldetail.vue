@@ -62,7 +62,7 @@
 			</el-table-column>
 			<el-table-column fixed label="操作" align="center" width="80" >
 				<template slot-scope="scope">
-					<router-link class="a-href"  :to="{path:'/tab/tabview/'+scope.row.id}">处理</router-link>
+					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="localNumber">处理</span></router-link>
 				</template>
 			</el-table-column>
 			
@@ -133,6 +133,9 @@ export default {
   },
 
   methods: {
+    localNumber(){
+      localStorage.setItem("nextNum","1");
+    },
     dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
@@ -154,7 +157,7 @@ export default {
         name: this.filters.name,
         applicationNumber:this.filters.applicationNumber,
         startTime:this.times1,
-					endTime:this.times2	,
+				endTime:this.times2	,
         pageSize: this.pagesize,
         overdueDays:this.id
       };

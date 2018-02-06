@@ -6,6 +6,7 @@ var ctiNum,vcid=3,currentStat=-1,displayNum,currentOPT,currentCallId=0,currentVo
 var username,unitId,userStaffid;//用户基本信息
 var zeroCfgURL="http://10.50.16.30:8081/was";//CTI服务地址
 var interfaceURL="http://10.50.130.235:8080/gwaf/IService";//CCS接口地址
+//var interfaceURL="http://10.50.16.20";//CCS接口正式地址
 var app_no,cusName;//申请号,客户姓名
 var loginStatus = 0;
 var eh;
@@ -111,7 +112,8 @@ function onSucc_() {
 	WebAgent.invoker("FullRecord",[true]);
 	//设置录音为媒体录音
 	WebAgent.invoker("RecordMode", [1]);
-	clickSetIdle();
+	// clickSetIdle();
+	clickSetBusy();
 	$("#phonestatus").addClass("background","#00BB00");
 }
 /**
@@ -426,7 +428,13 @@ function  fOnRecordEvent(filename,len){
 	console.log("recFileName->"+filename);
 	var recFileName ="/zxinrecwav/rec/" + filename.substring(filename.indexOf("recPath=")+8);
 	if(recFileName.length>20){
-	voiceHandler("VOICEREC",recFileName);
+		// setTimeout(function(){
+			voiceHandler("VOICEREC",recFileName);
+		// }, 500);
+	// setTimeout(() => {
+	// 	
+	// },500);	
+	// voiceHandler("VOICEREC",recFileName);
 	}
 	
 } 
@@ -493,7 +501,8 @@ function Transfer(){
 //挂机成功
 function fnOnRelease(droper,dropee,callid,cause,exinfo){
 	console.log("fnOnRelease->droper is "+droper);
-	voiceHandler("HANDUP",null);
+	setTimeout(function(){
+		voiceHandler("HANDUP",null)},500);	
 }
 
 function voiceHandler(code, param){

@@ -49,8 +49,8 @@
     </el-form>
            
 
-            
-   <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
+      <!--       -->
+   <el-table :data="datas"  style="width:100% ;margin-top:5px;" highlight-current-row border :max-height="this.heights"  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
        <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" :key="index" align="center" >
 		</el-table-column>
@@ -58,7 +58,7 @@
    </el-table>
    <!--工具条-->
 	<el-col :span="24" class="toolbar">			
-		<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" style="float:right;">
+		<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize"  :page-sizes='[100,200,500,1000,2000]' :total="total" style="float:right;">
 		</el-pagination>
 	</el-col>
 </section>
@@ -103,7 +103,7 @@ export default {
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:1000,
                 currentPage:1,
                 listLoading: false, 
                 labelWidth:"120px",
@@ -135,7 +135,7 @@ export default {
       },
     getlists(){
         this.listShow();
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-500;
         this.heights=h;
 
     },  
@@ -193,7 +193,7 @@ export default {
 			appointmentTime:this.filters.appointmentTime,
 			startTime:this.times1,
             endTime:this.times2	,
-            processer:this.filters.processer,																
+            username:this.filters.processer,																
         };
         getTaskHostList(para).then((res) => {
             let data =res.data.result;
@@ -211,7 +211,7 @@ export default {
     this.getlists();
     this.getTaskUser();
     this.restaurants=this.userList;
-     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-85;
+     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
      this.heights=h;
     // console.log(this.heights)
     // this.$refs.abc.style.height= h+"px";

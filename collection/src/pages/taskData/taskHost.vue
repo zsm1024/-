@@ -49,7 +49,7 @@
    </el-table>
    <!--工具条-->
 	<el-col :span="24" class="toolbar">			
-		<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" style="float:right;">
+		<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize"  :page-sizes='[100,200,500,1000,2000]' :total="total" style="float:right;">
 		</el-pagination>
 	</el-col>
     <el-dialog  title="取消代管" :visible.sync="cancelhost">
@@ -122,7 +122,7 @@ export default {
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:1000,
                 currentPage:1,
                 listLoading: false, 
                 filters: {					
@@ -239,9 +239,8 @@ export default {
 			appointmentTime:this.filters.appointmentTime,
 			startTime:this.times1,
             endTime:this.times2	,
-            processer:this.filters.processer,													
+            username:this.filters.processer,													
         };
-        console.log(para);
         this.listLoading = true;
         getTaskHostList(para).then((res) => {
             let data =res.data.result;           

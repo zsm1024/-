@@ -4,13 +4,14 @@
 		<el-collapse v-model="activeNames" >
 			<el-collapse-item title="新增逾期案件" name="1">
 				<!--列表-->
-				<el-table :data="lists" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe>									
+				<el-table :data="lists" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >									
 					<el-table-column 
                         :prop="col.field" 
                         :label="col.title" 
                         v-for="(col, index) in cols" 
                         :key="index" 
                         align="center"
+						sortable
                     >
 					</el-table-column>
 				</el-table>
@@ -36,7 +37,7 @@
 
 				<!--工具条-->
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[50,100,200,500]"   :total="total"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[50,100,200,500,1000]"   :total="total"   style="float:right;">
 					</el-pagination>
 				</el-col>
 			</el-collapse-item>
@@ -44,36 +45,36 @@
 				<span>{{spMarks}}</span>
 			</el-collapse-item> -->
 			 <el-collapse-item title="转队列案件" name="2">
-				<el-table :data="liststwo" border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe>									
+				<el-table :data="liststwo" border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe >									
 					<el-table-column 
                         :prop="col.field" 
                         :label="col.title" 
                         v-for="(col, index) in colstwo" 
                         :key="index" 
-                        align="center"
+                        align="center" sortable
                     >
 					</el-table-column>
 				</el-table>
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangetwo" @size-change="handleSizeChangetwo" :page-size="pagesizetwo" :page-sizes="[50,100,200,500]"   :total="totaltwo"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangetwo" @size-change="handleSizeChangetwo" :page-size="pagesizetwo" :page-sizes="[100,200,500,1000,2000]"   :total="totaltwo"   style="float:right;">
 					</el-pagination>
 				</el-col>
 
 			</el-collapse-item>
 			 <el-collapse-item title="预审出队列列表" name="3">
-				<el-table :data="liststhr" border highlight-current-row v-loading="listLoadingthr" style="width: 100%;" stripe>									
+				<el-table :data="liststhr" border highlight-current-row v-loading="listLoadingthr" style="width: 100%;" stripe >									
 					<el-table-column 
                         :prop=" col.field" 
                         :label=" col.title" 
                         v-for="(col, index) in colsthr" 
                         :key="index" 
-                        align="center"
+                        align="center" sortable
                     >
 					</el-table-column>
 				</el-table>
 				<el-col :span="24" class="toolbar">
 					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[50,100,200,500]"   :total="totalthr"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[100,200,500,1000,2000]"   :total="totalthr"   style="float:right;">
 					</el-pagination>
 				</el-col>
 
@@ -110,14 +111,14 @@ export default {
                 
                 ],
 				total: 0,
-				pagesize:50,
+				pagesize:1000,
 				page: 1,
 				id:this.$route.params.id,
 				listLoading:false,
 				liststwo: [],
 				colstwo: [
                      {title:'主借人',field:'borrower'},
-					 {title:'处理人',field:'username'}
+					 {title:'处理人',field:'username'},
                     {title:'合同号',field:'applicationNumber'},                  
                     {title:'逾期天数',field:'overdueDays'},
                     {title:'还款日',field:'datePayment'},
@@ -128,7 +129,7 @@ export default {
                 ],
 				totaltwo: 0,
 				pagetwo:1,
-				pagesizetwo:50,
+				pagesizetwo:1000,
 				listLoadingtwo: false,
 				liststhr: [],
 				colsthr:[
@@ -139,7 +140,7 @@ export default {
 				],
 				totalthr: 0,
 				pagethr:1,
-				pagesizethr:50,
+				pagesizethr:1000,
 				listLoadingthr: false,
 				// spMarks:'',
 			}

@@ -27,7 +27,7 @@
     </el-tabs> -->
   <!-- </div> -->
 </template>
-// <script>
+<script>
 // 	import csMessage from "./tablist/cs_message";
 // 	import formMessage from "./tablist/form_message";
 // 	import htMessage from "./tablist/ht_message";

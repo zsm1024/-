@@ -266,7 +266,7 @@ export default {
   	.table-expand .el-form-item {margin: 0 0 0 2px!important; width:225px!important;color: #269aff!important;}
   	.el-table .cell{padding: 0!important;white-space:nowrap!important};
 	.floatForm{position: fixed;bottom: 0;right:0}
-	::-webkit-scrollbar{width:2px;height:12px }
+	::-webkit-scrollbar{width:8px;height:12px }
 	::-webkit-scrollbar-track{background-color:#fff;border-radius: 8px}
  	::-webkit-scrollbar-thumb{background-color:#bee1eb;border-radius: 8px}
 	::-webkit-scrollbar-thumb:active {background-color:#bee1eb} 

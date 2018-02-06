@@ -43,14 +43,23 @@
 			</el-form>  
         </el-col>  
     <!--列表-->
-		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName">
+		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName" >
 			<el-table-column label="操作" width="60" fixed="left"  align="center" >
 				<template slot-scope="scope">
-					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}">处理</router-link>
+					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="localNumber">处理</span></router-link>
 				</template>
+				
 			</el-table-column>
-			<el-table-column type="index" width="30" fixed="left" align="center">
-			</el-table-column>
+			<!-- <el-table-column label="标记" width="60" fixed="left"  align="center" >
+				<template slot-scope="scope">
+						<span  @click="setCurrent(this.rowsIndes)"></span>
+						<el-button type="danger" size="mini"  @click="sings(scope.$index)"> 标记</el-button>
+						
+					 <!-- <span @click="sings">标记</span> -->
+				<!-- </template>
+			</el-table-column> --> 
+			<!-- <el-table-column type="index" width="30" fixed="left" align="center"> -->
+			<!-- </el-table-column> -->
 			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
 		 
@@ -58,7 +67,7 @@
         
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" :page-sizes='[50,100,200,500]' style="float:right;">
+			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize" :total="total" :page-sizes='[50,100,200,500]' style="float:right;">
 			</el-pagination>
 		</el-col>
     </section>
@@ -114,19 +123,38 @@
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:100,
+				pagesize:200,
 				currentPage:1,
 				SelectOption:"",
 				listLoading: true,
 				sels: [],//列表选中列
 				tpageSize:20,
-				NowFormatDate:""
+				NowFormatDate:"",
+				// currentRow: null,
+				// rowsIndes:""
             }           
 		},
 		watch:{
 			pageSize:"changeSize"
 		},
 		methods: {
+			// setCurrent(row) {
+        	// 	this.$refs.singleTable.setCurrentRow(row);
+      		// },
+			// sings(row){
+			// 	let a=row;
+			// 	console.log(row);
+			// 	this.rowsIndes=a;
+			// 	console.log("rowsIndes"+this.rowsIndes);
+			// 	this.setCurrent(row);
+			// 	// this.$refs.singleTable.sings(this.rowsIndes);
+			// },
+			// handleCurrentChanges(val) {
+        	// 	this.currentRow = val;
+      		// },
+			localNumber(){
+     			localStorage.setItem("nextNum","0");
+    		},
 			dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
@@ -241,7 +269,7 @@
 	.el-table .warning-row {
     background: rgb(218, 149, 21)!important;
   }
-.el-table .warning-row td:nth-of-type(10){
+.el-table .warning-row td:nth-of-type(9){
 	 background: rgb(233, 12, 12)!important;
 	 color: #fff;
 }

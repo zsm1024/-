@@ -84,6 +84,7 @@
           return false
         }
        localStorage.setItem("userName",this.loginForm.username);
+        localStorage.setItem("nextNum"," ");
       })
     }
   }

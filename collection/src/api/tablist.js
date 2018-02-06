@@ -201,9 +201,11 @@ export function getCodeAll(params) {
 
 
 export function getNextMissonId(params) {
+  // +params.id
     return fetch({
-      url: '/missionInfos/findNext/'+params.id,
+      url: '/missionInfos/findNext',
       method: 'get',
+      params:params
     })
 }
 export function jxsInfo(params){

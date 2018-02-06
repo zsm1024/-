@@ -31,7 +31,7 @@ html,body,#contain{height:100%}
 #app{height:97%;}
 span.active{border-bottom:1px solid #20a0ff;cursor:pointer;color: #20a0ff}
 table{	width:100%!important;}
-::-webkit-scrollbar{width:2px;height:12px }
+::-webkit-scrollbar{width:5px;height:12px }
 ::-webkit-scrollbar-track{background-color:#fff;border-radius: 8px}
 ::-webkit-scrollbar-thumb{background-color:#bee1eb;border-radius: 8px}
 ::-webkit-scrollbar-thumb:active {background-color:#bee1eb} 

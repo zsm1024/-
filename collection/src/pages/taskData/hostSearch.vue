@@ -60,7 +60,7 @@
         
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" style="float:right;">
+			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page"  :total="total" :page-size="pagesize"  style="float:right;" :page-sizes='[100,200,500,1000,2000]' >
 			</el-pagination>
 		</el-col>
     </section>
@@ -113,7 +113,7 @@
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:1000,
 				currentPage:1,
 				SelectOption:"",
 				listLoading: true,
@@ -125,6 +125,9 @@
 			pageSize:"changeSize"
 		},
 		methods: {
+			localNumber(){
+				localStorage.setItem("nextNum")
+			},
 			dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
