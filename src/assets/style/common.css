@@ -1,0 +1,16 @@
+*{padding: 0;margin: 0;}
+ul,li,ol,li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+	color: #48576a;
+}
+@media screen and(max-width:1400px) {
+	html,body,#app{
+		font-size: 13px;
+	}		
+}
+/*html,body,#app{
+  		height:100%!important;
+}*/
