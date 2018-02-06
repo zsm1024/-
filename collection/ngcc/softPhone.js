@@ -428,13 +428,7 @@ function  fOnRecordEvent(filename,len){
 	console.log("recFileName->"+filename);
 	var recFileName ="/zxinrecwav/rec/" + filename.substring(filename.indexOf("recPath=")+8);
 	if(recFileName.length>20){
-		// setTimeout(function(){
 			voiceHandler("VOICEREC",recFileName);
-		// }, 500);
-	// setTimeout(() => {
-	// 	
-	// },500);	
-	// voiceHandler("VOICEREC",recFileName);
 	}
 	
 } 
