@@ -270,7 +270,7 @@
 	.el-table .warning-row {
     background: rgb(218, 149, 21)!important;
   }
-.el-table .warning-row td:nth-of-type(9){
+.el-table .warning-row td:nth-of-type(6){
 	 background: rgb(233, 12, 12)!important;
 	 color: #fff;
 }
