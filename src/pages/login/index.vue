@@ -22,10 +22,10 @@
           登录
         </el-button>
       </el-form-item>
-      <div class='tips'>
+      <!-- <div class='tips'>
         <span style="margin-right:20px;">用户名: admin</span>
         </span> 密码: admin</span>
-      </div>
+      </div> -->
     </el-form>
      <div class="footer">&copy;  2016 Tianjin Great Wall Binyin Automotive Finance Co. Ltd. All rights reserved</div>
   </div>

@@ -78,23 +78,23 @@ export default {
         cols: [
             {title:'借款人',field:'name',width:80}, 
             {title:'合同号',field:'applicationNumber',width:80},
-            {title:'职业',field:'occupation',width:100},
             {title:'逾期天数',field:'overdueDays',width:80},
             {title:'逾期金额',field:'sumOverdue',width:80},
-            {title:'经销商',field:'dealer',width:120},
-            {title:'贷款产品',field:'loanProducts',width:120},
-            {title:'车型',field:'loanCar',width:160},          
-            {title:'省份',field:'province',width:80},
-            {title:'城市',field:'city',width:80},
-            {title:'最近行动代码',field:'actSign',width:100},
             {title:'岗位ID',field:'position'},
             {title:'处理人',field:'realUser'},
             {title:'用户ID',field:'username'},
+            {title:'最近行动代码',field:'actSign',width:100},
             {title:'最近行动时间',field:'inputTime'},
             {title:'贷款金额',field:'loanAmount'},
-            {title:'未偿本金',field:'residualAmount'},
+            {title:'未偿本金',field:'residualAmount'},           
+            {title:'职业',field:'occupation',width:100},
             {title:'首付比例',field:'firstRatio'},
-            {title:'承诺兑现标识',field:'mark'},
+            // {title:'承诺兑现标识',field:'mark'},
+            {title:'省份',field:'province',width:80},
+            {title:'城市',field:'city',width:80},
+             {title:'车型',field:'loanCar',width:160}, 
+            {title:'经销商',field:'dealer',width:120},
+            {title:'贷款产品',field:'loanProducts',width:120},  
             {title:'核销状态',field:'isnodis'},
         ],
         total: 0,
@@ -137,14 +137,12 @@ export default {
         startTime:this.times1,
 				endTime:this.times2	
       };
-      console.log(para)
       this.listLoading = true;
       //NProgress.start();
 
       getMissionListByUser(para).then(res => {         
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
-      console.log(this.lists)
             this.cols = this.cols;
             this.listLoading = false;
         //NProgress.done();

@@ -121,7 +121,7 @@ export default {
             {title:'贷款金额',field:'loanAmount',width: "60"},
             {title:'未偿本金',field:'residualAmount',width: "60"},
             {title:'首付比例',field:'firstRatio',width: "60"},
-            {title:'承诺兑现标识',field:'mark',width: "60"},
+            // {title:'承诺兑现标识',field:'mark',width: "60"},
             {title:'核销状态',field:'isnodis',width: "60"},
         ],
         total: 0,

@@ -20,11 +20,12 @@
 							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteRow(scope.$index, scope.row,items.customerPhones)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width"  >
+					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width">
 						<template slot-scope="scope">
 							<!-- v-if="cols.field!='effectiveness' &&scope.row.infoSource!='CMS' && cols.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit" v-if="cols.field=='relationship'" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
-							 <span v-show="scope.row.edit" v-if="(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span>
+							<el-input  v-show="scope.row.edit" v-if="scope.row.infoSource!='CMS'&&(cols.field=='relationship'||cols.field=='phone')" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
+							 <span v-show="scope.row.edit" v-if="(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'||(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols.field] }}</span>
+							 <!-- <span v-show="!scope.row.edit" v-if="(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span> -->
 							<span style="display:inline-block;padding:0 15px" v-show="!scope.row.edit"  :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}
 								<i v-if="cols.field=='phone'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phone,scope.row)"></i>
 								<i v-if="cols.field=='name'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring1(scope.row.phone,scope.row)"></i>								
@@ -54,8 +55,9 @@
 					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width" >
 						<template slot-scope="scope">
 							<!-- v-if="cols1.field!='effectiveness' &&scope.row.infoSource!='CMS'&& cols1.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit"  v-if="cols1.field=='relationship'" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
-							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span>
+							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
+							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span>
+							<!-- <span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span> -->
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
 							<el-select v-show="scope.row.edit" v-if="cols1.field=='effectiveness'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
 								<el-option label="Y" value="Y"></el-option>
@@ -235,6 +237,12 @@
 				<el-form-item label="关系：" prop="relationship" :label-width="formLabelWidth">
 					<el-input v-model="AddWorkForm.relationship" style="width:300px"></el-input>
 				</el-form-item>
+				<el-form-item  label="省：" prop="province" :label-width="formLabelWidth" >
+					<el-input v-model="AddWorkForm.province" style="width:300px"></el-input>
+				</el-form-item>
+				<el-form-item  label="市：" prop="city" :label-width="formLabelWidth" >
+					<el-input v-model="AddWorkForm.city" style="width:300px"></el-input>
+				</el-form-item>
 				<el-form-item  label="地址：" prop="address" :label-width="formLabelWidth" >
 					<el-input v-model="AddWorkForm.address" style="width:300px"></el-input>
 				</el-form-item>
@@ -354,6 +362,8 @@ export default {
 				roleName:"",
 				name:"",
 				relationship:"",
+				province:"",
+				city:"",
 				address:"",
 				addressType:"",
 				infoSource:"ICS",
@@ -389,10 +399,16 @@ export default {
                 ],
                 relationship: [
                     { required: true, message: '请输入关系', trigger: 'blur' }
-                ],
+				],
+				 province: [
+                    { required: true, message: '请输入省名', trigger: 'blur' }
+				],
+				 city: [
+                    { required: true, message: '请输入市名', trigger: 'blur' }
+				],
                 address: [
                     { required: true, message: '请输入地址', trigger: 'blur' }
-                ],
+				],				
                 addressType: [
                     { required: true, message: '请输入地址类型', trigger: 'blur' }
                 ],
@@ -511,6 +527,8 @@ export default {
     			roleName:this.AddWorkForm.roleName,
 				name:this.AddWorkForm.name,
 				relationship:this.AddWorkForm.relationship,
+				province:this.AddWorkForm.province,
+				city:this.AddWorkForm.city,
 				address:this.AddWorkForm.address,
 				addressType:this.AddWorkForm.addressType,
 				infoSource:'ICS',
@@ -526,11 +544,15 @@ export default {
                                 message: '添加成功！'
                             })
                             this.items.customerAddresses.unshift(
-                            {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
+							{"roleName":this.$refs['AddWorkForm'].model.roleName,
+							"name":this.$refs['AddWorkForm'].model.name,
+							"relationship":this.$refs['AddWorkForm'].model.relationship,
+							"province":this.$refs['AddWorkForm'].model.province,
+							"city":this.$refs['AddWorkForm'].model.city,
                             "address":this.$refs['AddWorkForm'].model.address,
                             "addressType":this.$refs['AddWorkForm'].model.addressType,                                          
-                            "infoSource":"ICS","effectiveness":"Y","edit":false},	
-                            
+							"infoSource":"ICS","effectiveness":"Y","edit":false
+							},	                          
                             );
                         this.addWorkInfos=false;
                         this.$refs['AddWorkForm'].resetFields();

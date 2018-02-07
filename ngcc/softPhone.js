@@ -5,8 +5,8 @@
 var ctiNum,vcid=3,currentStat=-1,displayNum,currentOPT,currentCallId=0,currentVoiceId,keepCallId=0,direct;
 var username,unitId,userStaffid;//用户基本信息
 var zeroCfgURL="http://10.50.16.30:8081/was";//CTI服务地址
-var interfaceURL="http://10.50.130.235:8080/gwaf/IService";//CCS接口地址
-//var interfaceURL="http://10.50.16.20";//CCS接口正式地址
+//var interfaceURL="http://10.50.130.235:8080/gwaf/IService";//CCS接口地址
+var interfaceURL="http://10.50.16.20:8080/gwaf/IService";//CCS接口正式地址
 var app_no,cusName;//申请号,客户姓名
 var loginStatus = 0;
 var eh;
@@ -428,13 +428,7 @@ function  fOnRecordEvent(filename,len){
 	console.log("recFileName->"+filename);
 	var recFileName ="/zxinrecwav/rec/" + filename.substring(filename.indexOf("recPath=")+8);
 	if(recFileName.length>20){
-		// setTimeout(function(){
 			voiceHandler("VOICEREC",recFileName);
-		// }, 500);
-	// setTimeout(() => {
-	// 	
-	// },500);	
-	// voiceHandler("VOICEREC",recFileName);
 	}
 	
 } 
