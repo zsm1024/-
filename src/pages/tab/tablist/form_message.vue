@@ -78,7 +78,6 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<!-- @click="addWorkInfo" -->
 				<el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
 				<el-button type="primary" @click.native.prevent="confirmmessage('messageform')" style="padding:10px">确 定</el-button>
 			</div>
@@ -126,10 +125,6 @@ export default{
 					allowance: '',
 					allDate: '',
 					linkman:"",
-					// {
-					// 	type:"",
-					// 	data:this.callback.roleName,
-					// },
 					linkInfomation:'',
 					appointmentTime: '',
 					afpRecord:'',					
@@ -202,19 +197,7 @@ export default{
 	   dataChange1(val){			
 		   this.allDate=val;
 	  },
-		onSubmit(mainform) {
-            // var self = this;
-            // var num = 10;
-            // var timer = setInterval(function() {
-            //     num--
-            //     self.tosubtext = num+'s后点击';
-            //     self.disabledto = true;
-            //     if(num ===0){
-            //         self.tosubtext = '确定';
-            //         self.disabledto = false;
-            //         clearInterval(timer);
-            //     }
-            // },1000)
+		onSubmit(mainform) {          
 			let para ={
     			actSign:this.mainform.actSign.split("-").shift("-"),
 				allowance:this.mainform.allowance,
@@ -228,21 +211,27 @@ export default{
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
+					this.disabledto=true;
 					recordAdd(para).then(res =>{
-				// console.log(res)
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
 							this.$message({
                                 type:'success',
                                 message:'提交成功',
                             });
+							setTimeout(()=>{
+								this.disabledto=false;
+							},1000)
                             
 						}else{
 							this.$refs['mainform'].resetFields();
 							this.$message({
 								type: 'error',
 								message: '提交失败，请联系管理员！'
-							})
+							});
+							setTimeout(()=>{
+								this.disabledto=false;
+							},1000)
 						}
 				
 					});
@@ -270,7 +259,7 @@ export default{
         },
 		onSubmitnext(mainform) {
             let para ={
-    			actSign:this.mainform.actSign,
+    			actSign:this.mainform.actSign.split("-").shift("-"),
 				allowance:this.mainform.allowance,
 				allDate:this.allDate,
 				linkman:this.mainform.linkman,
@@ -284,6 +273,7 @@ export default{
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
+					this.disabledto=true;
                     getNextMissonId(para).then(res => {
 						
 						var nextId = res.data.result;
@@ -299,13 +289,19 @@ export default{
                                 type:'success',
                                 message:'提交成功',
                             });
+							setTimeout(()=>{
+								this.disabledto=false;
+							},1000)
                             
 						}else{
 							this.$refs['mainform'].resetFields();
 							this.$message({
 								type: 'error',
 								message: '提交失败，请联系管理员！'
-							})
+							});
+							setTimeout(()=>{
+								this.disabledto=false;
+							},1000)
 						}				
 					});				
 					// this.$message({
