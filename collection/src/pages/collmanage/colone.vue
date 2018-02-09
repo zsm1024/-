@@ -43,10 +43,10 @@
 			</el-form>  
         </el-col>  
     <!--列表-->
-		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName" >
+		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName"  id="ClOne" @current-change="handleCurrentChanges" ref="singleTable" border>
 			<el-table-column label="操作" width="60" fixed="left"  align="center" >
 				<template slot-scope="scope">
-					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="localNumber">处理</span></router-link>
+					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index)">处理</span></router-link>
 				</template>
 				
 			</el-table-column>
@@ -55,11 +55,11 @@
 						<span  @click="setCurrent(this.rowsIndes)"></span>
 						<el-button type="danger" size="mini"  @click="sings(scope.$index)"> 标记</el-button>
 						
-					 <!-- <span @click="sings">标记</span> -->
+					 <! <span @click="sings">标记</span> -->
 				<!-- </template>
 			</el-table-column> --> 
-			<!-- <el-table-column type="index" width="30" fixed="left" align="center"> -->
-			<!-- </el-table-column> -->
+			<!-- <el-table-column type="index" width="30" fixed="left" align="center"> 
+			</el-table-column> -->
 			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
 		 
@@ -131,7 +131,7 @@
 				sels: [],//列表选中列
 				tpageSize:20,
 				NowFormatDate:"",
-				// currentRow: null,
+				currentRow: null,
 				// rowsIndes:""
             }           
 		},
@@ -139,9 +139,16 @@
 			pageSize:"changeSize"
 		},
 		methods: {
-			// setCurrent(row) {
-        	// 	this.$refs.singleTable.setCurrentRow(row);
-      		// },
+			setCurrent(row) {
+				this.$refs.singleTable.setCurrentRow(row);
+				localStorage.setItem("nextNum","0");
+				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
+				localStorage.setItem("total",this.total)				
+			  },
+			handleCurrentChanges(val) {
+				// console.log(val)
+        		this.currentRow = val;
+      		},
 			// sings(row){
 			// 	let a=row;
 			// 	console.log(row);
@@ -150,12 +157,10 @@
 			// 	this.setCurrent(row);
 			// 	// this.$refs.singleTable.sings(this.rowsIndes);
 			// },
-			// handleCurrentChanges(val) {
-        	// 	this.currentRow = val;
-      		// },
-			localNumber(){
-     			localStorage.setItem("nextNum","0");
-    		},
+			
+			// localNumber(){
+     		// 	
+    		// },
 			dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
@@ -267,14 +272,14 @@
 	}; 
 	.cell{white-space: nowrap!important}
 	.el-table__fixed{height:100%!important}
-	.el-table .warning-row {
+	.el-table#ClOne .warning-row {
     background: rgb(218, 149, 21)!important;
   }
-.el-table .warning-row td:nth-of-type(6){
+.el-table#ClOne .warning-row td:nth-of-type(6){
 	 background: rgb(233, 12, 12)!important;
 	 color: #fff;
 }
-  .el-table .success-row {
+  .el-table#ClOne .success-row {
     background: #f0f9eb;
   }
 

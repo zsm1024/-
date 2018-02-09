@@ -113,6 +113,7 @@ export default{
 			selectCont:'',
 			state:"",
 			 applicationNumber:'',
+			 sort:"1",
 			//短信弹出层
 			messageform: {
 				// contractNum:this.applicationNumber,
@@ -278,6 +279,15 @@ export default{
 			
         },
 		onSubmitnext(mainform) {
+			let NextIndex=parseInt(localStorage.getItem("currentRow"));
+			let TotalNum=parseInt(localStorage.getItem("total"));
+			if(NextIndex>=TotalNum){
+				this.sort="1",
+				localStorage.setItem("currentRow","1");
+			}else{
+				this.sort=NextIndex+1;
+				localStorage.setItem("currentRow",this.sort);				
+			}
             let para ={
     			actSign:this.mainform.actSign.split("-").shift("-"),
 				allowance:this.mainform.allowance,
@@ -289,7 +299,8 @@ export default{
 				missionId: this.$route.params.id,
 				userId: localStorage.getItem("UserId"),
 				id:this.$route.params.id,
-				type:localStorage.getItem("nextNum")
+				type:localStorage.getItem("nextNum"),
+				sort:this.sort,
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
@@ -307,7 +318,7 @@ export default{
 							this.$message({
                                 type:'success',
                                 message:'提交成功',
-                            });
+							});							
                             
 						}else{
 							this.$refs['mainform'].resetFields();
@@ -338,7 +349,7 @@ export default{
 					this.UserArr.splice(0,this.UserArr.length);
 					this.TypeArr.splice(0,this.TypeArr.length)
 					this.phoneListNums.forEach(el =>{
-						this.UserArr.push(el.roleName)
+					this.UserArr.push(el.roleName)
 					});
 					
 					data.customerAddresses.forEach(el =>{

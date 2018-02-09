@@ -30,12 +30,12 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border>
+		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
 			<el-table-column type="selection"  align="center">
 			</el-table-column>
 			<el-table-column fixed label="操作"  align="center">
 				<template slot-scope="scope">
-					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="localNumber">处理</span></router-link>
+					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index)">处理</span></router-link>
 				</template>
 			</el-table-column>
 			
@@ -73,6 +73,7 @@ export default {
             startTime:"",
 					  endTime:"",         
         },
+        currentRow: null,
         id:this.$route.params.id,
         lists: [],
         cols: [
@@ -99,16 +100,26 @@ export default {
         ],
         total: 0,
         page: 1,
-        pagesize: 50,
+        pagesize: 500,
         listLoading: false,
         sels: [] //列表选中列
     };
   },
 
   methods: {
-    localNumber(){
-      localStorage.setItem("nextNum","2");
-    },
+    setCurrent(row) {
+				this.$refs.singleTable2.setCurrentRow(row);
+			  localStorage.setItem("nextNum","0");
+				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
+				localStorage.setItem("total",this.total)				
+			  },
+			handleCurrentChanges(val) {
+				// console.log(val)
+        		this.currentRow = val;
+      		},
+    // localNumber(){
+      
+    // },
     dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
