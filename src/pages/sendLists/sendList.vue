@@ -1,6 +1,9 @@
 <template>
 	<section ref="abcd" style="overflow-y: auto;" id="cslists">
-		<el-button type="primary"  @click='openDilog' style="margin-bottom:3px!important;padding:10px 15px!important">分单</el-button>	
+		<el-button type="primary"  @click='openDilog' style="margin-bottom:9px!important;padding:10px 15px!important">分单</el-button>	
+			<span class="T1">新增逾期案件:<b>{{total}}</b></span>
+			<span class="T1">转队列案件:<b>{{totaltwo}}</b></span>
+			<span class="T1">预审出队列案件:<b>{{totalthr}}</b></span>		
 		<el-collapse v-model="activeNames" >
 			<el-collapse-item title="新增逾期案件" name="1">
 				<!--列表-->
@@ -61,7 +64,7 @@
 				</el-col>
 
 			</el-collapse-item>
-			 <el-collapse-item title="预审出队列列表" name="3">
+			 <el-collapse-item title="预审出队列案件" name="3">
 				<el-table :data="liststhr" border highlight-current-row v-loading="listLoadingthr" style="width: 100%;" stripe >									
 					<el-table-column 
                         :prop=" col.field" 
@@ -269,6 +272,7 @@ export default {
 </script>
 
 <style>
+.T1{margin-left: 20px}
 #cslists .el-table__expanded-cell{padding: 0;}
 #cslists .el-form-item__content{line-height: 20px;margin-left: 10px}
 #cslists .el-form-item__label{padding: 0;}
