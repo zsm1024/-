@@ -47,8 +47,6 @@
           <el-option value="南市区" label="南市区">
             
           </el-option> -->
-        </el-select>
-        </el-form-item>
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
 				</el-form-item>
@@ -57,12 +55,12 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  align="center">
+		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  align="center" @current-change="handleCurrentChanges" ref="singleTable1">
 			<el-table-column type="selection" align="center" >
 			</el-table-column>
 			<el-table-column fixed label="操作" align="center" width="80" >
 				<template slot-scope="scope">
-					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="localNumber">处理</span></router-link>
+					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index)">处理</span></router-link>
 				</template>
 			</el-table-column>
 			
@@ -72,7 +70,7 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100,500,1000]"   :total="total"   style="float:right;">
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[50, 100,500,1000]"   :total="total"   style="float:right;">
 			</el-pagination>
 		</el-col>
 
@@ -100,42 +98,77 @@ export default {
 					  endTime:"",  
 					  phone:""
           },
+          currentRow: null,
         id:this.$route.params.id,
         lists: [],
         cols: [
-            {title:'借款人',field:'name',width: "60"},
-            {title:'合同号',field:'applicationNumber',width: "80"},
-            {title:'职业',field:'occupation',width: "60"},
-            {title:'逾期天数',field:'overdueDays',width: "80"},
-            {title:'逾期金额',field:'sumOverdue',width: "80"},
-            {title:'经销商',field:'dealer',width: "160"},
-            {title:'贷款产品',field:'loanProducts',width: "90"},
-            {title:'车型',field:'loanCar',width: "160"},           
-            {title:'省份',field:'province',width: "60"},
-            {title:'城市',field:'city',width: "60"},
-            {title:'最近行动代码',field:'actSign',width: "60"},
-            {title:'岗位ID',field:'position',width: "60"},
-            {title:'处理人',field:'realUser',width: "60"},
-            {title:'用户ID',field:'username',width: "60"},
-            {title:'最近行动时间',field:'inputTime',width: "120"},
-            {title:'贷款金额',field:'loanAmount',width: "60"},
-            {title:'未偿本金',field:'residualAmount',width: "60"},
-            {title:'首付比例',field:'firstRatio',width: "60"},
-            // {title:'承诺兑现标识',field:'mark',width: "60"},
-            {title:'核销状态',field:'isnodis',width: "60"},
+          {title:'借款人',field:'name',width:80}, 
+          {title:'合同号',field:'applicationNumber',width:80},
+          {title:'逾期天数',field:'overdueDays',width:80},
+          {title:'逾期金额',field:'sumOverdue',width:80},
+          {title:'岗位ID',field:'position'},
+          {title:'处理人',field:'realUser'},
+          {title:'用户ID',field:'username'},
+          {title:'最近行动代码',field:'actSign',width:100},
+          {title:'最近行动时间',field:'inputTime'},
+          {title:'贷款金额',field:'loanAmount'},
+          {title:'未偿本金',field:'residualAmount'},           
+          {title:'职业',field:'occupation',width:100},
+          {title:'首付比例',field:'firstRatio'},
+            // {title:'承诺兑现标识',field:'mark'},
+          {title:'省份',field:'province',width:80},
+          {title:'城市',field:'city',width:80},
+          {title:'车型',field:'loanCar',width:160}, 
+          {title:'经销商',field:'dealer',width:120},
+          {title:'贷款产品',field:'loanProducts',width:120},  
+          {title:'核销状态',field:'isnodis'},
+            // {title:'借款人',field:'name',width: "60"},
+            // {title:'合同号',field:'applicationNumber',width: "80"},
+            // {title:'职业',field:'occupation',width: "60"},
+            // {title:'逾期天数',field:'overdueDays',width: "80"},
+            // {title:'逾期金额',field:'sumOverdue',width: "80"},
+            // {title:'经销商',field:'dealer',width: "160"},
+            // {title:'贷款产品',field:'loanProducts',width: "90"},
+            // {title:'车型',field:'loanCar',width: "160"},           
+            // {title:'省份',field:'province',width: "60"},
+            // {title:'城市',field:'city',width: "60"},
+            // {title:'最近行动代码',field:'actSign',width: "60"},
+            // {title:'岗位ID',field:'position',width: "60"},
+            // {title:'处理人',field:'realUser',width: "60"},
+            // {title:'用户ID',field:'username',width: "60"},
+            // {title:'最近行动时间',field:'inputTime',width: "120"},
+            // {title:'贷款金额',field:'loanAmount',width: "60"},
+            // {title:'未偿本金',field:'residualAmount',width: "60"},
+            // {title:'首付比例',field:'firstRatio',width: "60"},
+            // // {title:'承诺兑现标识',field:'mark',width: "60"},
+            // {title:'核销状态',field:'isnodis',width: "60"},
+
+
+
+
         ],
         total: 0,
         page: 1,
-        pagesize: 50,
+        pagesize: 500,
         listLoading: false,
         sels: [] //列表选中列
     };
   },
 
   methods: {
-    localNumber(){
-      localStorage.setItem("nextNum","1");
-    },
+    setCurrent(row) {
+				this.$refs.singleTable1.setCurrentRow(row);
+			localStorage.setItem("nextNum","1");
+				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
+				localStorage.setItem("total",this.total)				
+			  },
+			handleCurrentChanges(val) {
+				// console.log(val)
+        		this.currentRow = val;
+      		},
+    // localNumber(){
+      
+    // },
     dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
