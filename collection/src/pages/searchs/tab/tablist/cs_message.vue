@@ -101,7 +101,7 @@
 					<el-form-item label="月应还款金额:">
 						<span>{{items.monthlyRepayment}}</span>
 					</el-form-item>
-					<el-form-item label="逾期金额总计:" >
+					<el-form-item label="逾期本金总计:" >
 						<span>{{items.sumOverdue}}</span>
 					</el-form-item>
 					<el-form-item label="到期利息总计:">
