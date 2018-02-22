@@ -201,6 +201,7 @@ export default {
             this.multipleSelection=val;
         },
     hostList(){
+        this.addlists=[];
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);
             });          
@@ -248,14 +249,16 @@ export default {
             this.total=data.recordsTotal;
             this.listLoading = false;
         });
-        this.restaurants=this.userList;
-        this.file=this.userLists; 
+         
          getTaskHostUser().then((res) => {
+             this.userList=[];
              let data =res.data.result;
              this.a=data;
              this.a.forEach(el => {
                  this.userList.push({"value":el.nickname,"id":el.id})
              });
+            this.restaurants=this.userList;
+            this.file=this.userLists;
             //  this.datas=data.data;
             // this.total=data.recordsTotal;
         })

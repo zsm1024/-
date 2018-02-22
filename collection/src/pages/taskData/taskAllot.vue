@@ -141,10 +141,12 @@ export default {
     },  
     getTaskUser(){
          getTaskHostUser().then((res) => {
+             this.userList=[];
              let data =res.data.result;
              data.forEach(el => {
                  this.userList.push({"value":el.nickname,"id":el.id})
              });
+             this.restaurants=this.userList;
             //  this.datas=data.data;
             // this.total=data.recordsTotal;
         })
@@ -153,6 +155,7 @@ export default {
             this.multipleSelection=val;
         },
     hostList(){
+        this.addlists=[];
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);
             });  
@@ -210,9 +213,8 @@ export default {
   mounted () {
     this.getlists();
     this.getTaskUser();
-    this.restaurants=this.userList;
-     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
-     this.heights=h;
+    let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
+    this.heights=h;
     // console.log(this.heights)
     // this.$refs.abc.style.height= h+"px";
   }

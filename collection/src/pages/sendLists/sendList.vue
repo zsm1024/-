@@ -272,7 +272,7 @@ export default {
 </script>
 
 <style>
-.T1{margin-left: 20px}
+.T1{margin-left: 20px;font-size: 14px;}
 #cslists .el-table__expanded-cell{padding: 0;}
 #cslists .el-form-item__content{line-height: 20px;margin-left: 10px}
 #cslists .el-form-item__label{padding: 0;}
