@@ -51,7 +51,7 @@
 				<span class="tips">(不超过1000字)</span>
 				<el-input type="textarea" v-model="mainform.afpRecord" inline></el-input>
 				<el-button type="primary" @click="onSubmit('mainform')" :disabled="disabledto" >{{tosubtext}}</el-button>
-				<el-button @click="onSubmitnext('mainform')">确认&处理下一条</el-button>
+				<el-button @click="onSubmitnext('mainform')" :disabled="disabledNex">确认&处理下一条</el-button>
 			</el-form-item>
 		</el-col>  
 		</el-form>							
@@ -93,7 +93,8 @@ export default{
 	data(){				
 		return{
             tosubtext:'确认',
-            disabledto: false,
+			disabledto: false,
+			disabledNex:false,
 			items: [],
 			phoneListNums:[],
 			messageModel:[],
@@ -172,29 +173,29 @@ export default{
             }
 	},
 	methods:{
-		querySearch(queryString,cb){
+		querySearch(querySt,cb){
 		  let data =this.restaurants;
-		  let results = queryString ? data.filter(this.createFilter(queryString)) :data;
+		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
           cb(results) 
       },    
-	  querySearch1(queryString,cb){
+	  querySearch1(querySt,cb){
 		  let data =this.restaurants1;
-		  let results = queryString ? data.filter(this.createFilter(queryString)) :data;
+		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
           cb(results) 
 	  },
-	    querySearch2(queryString,cb){
+	    querySearch2(querySt,cb){
 		  let data =this.restaurants2;
-		  let results = queryString ? data.filter(this.createFilter(queryString)) :data;
+		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
           cb(results) 
 	  },
-	   createFilter(queryString){
+	   createFilter(querySt){
           return(item) =>{
-               return (item.value.toLowerCase().indexOf(queryString.toLowerCase()) ===0)
+               return (item.value.toLowerCase().indexOf(querySt.toLowerCase()) ===0)
           }
       },
-    //   createFilter1(queryString){
+    //   createFilter1(querySt){
     //       return(item) =>{
-    //            return (item.value.toLowerCase().indexOf(queryString.toLowerCase()) ===0)
+    //            return (item.value.toLowerCase().indexOf(querySt.toLowerCase()) ===0)
     //       }
     //   },
 		 dataChange(val){			
@@ -260,6 +261,7 @@ export default{
 					return false;
 				}
 			});
+			localStorage.removeItem("CJPhone");
 		},
 	
         getlists(){	
@@ -281,6 +283,8 @@ export default{
 		onSubmitnext(mainform) {
 			let NextIndex=parseInt(localStorage.getItem("currentRow"));
 			let TotalNum=parseInt(localStorage.getItem("total"));
+			let  CJBZ="";
+			CJBZ+=localStorage.getItem("CJPhone");
 			if(NextIndex>=TotalNum){
 				this.sort="1",
 				localStorage.setItem("currentRow","1");
@@ -304,8 +308,8 @@ export default{
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
-                    getNextMissonId(para).then(res => {
-						
+					this.disabledNex=true;
+                    getNextMissonId(para).then(res => {						
 						var nextId = res.data.result;
 						// console.log(nextId)
 						 this.$router.push(nextId)						 
@@ -319,13 +323,18 @@ export default{
                                 type:'success',
                                 message:'提交成功',
 							});							
-                            
+                            setTimeout(()=>{
+								this.disabledNex=false;
+							},1000)
 						}else{
 							this.$refs['mainform'].resetFields();
 							this.$message({
 								type: 'error',
 								message: '提交失败，请联系管理员！'
-							})
+							});
+							 setTimeout(()=>{
+								this.disabledNex=false;
+							},1000);
 						}				
 					});				
 					// this.$message({
@@ -336,6 +345,7 @@ export default{
 					return false;
 				}
 			});
+			localStorage.removeItem("CJPhone");
         },
 			callParent(){
 				let para = {
@@ -509,7 +519,10 @@ export default{
 		},
 		handleSelect(item){
 		},
-		
+		PhoneCtr(){
+			let nums=localStorage.getItem("CJPhone");
+			this.mainform.afpRecord+=nums;
+		}
 	},
 	mounted() {
 	  this.getlists();

@@ -8,7 +8,7 @@
 							<td class="tds">申请号</td><td>{{details.applicationNumber}}</td>
 							<td class="tds">合同状态</td><td>{{details.state}}</td>		
 							<td class="tds">省份</td><td>{{details.province}}</td>
-							<td class="tds">城市</td><td colspan="5">{{details.city}}</td>
+							<td class="tds">城市</td><td colspan="4">{{details.city}}</td>
 							
 						</tr>
 						<tr>
@@ -32,24 +32,27 @@
 						<tr>
 							<td class="tds">到期利息总计</td><td>{{details.interestDue}}</td>
 							<td class="tds">罚息</td><td>{{details.penalty}}</td>
+							<td class="tds">费用</td><td>{{details.overdueMoney}}</td>
 							<td class="tds">诉讼费</td><td>{{details.litigationFee}}</td>
-							<td class="tds">收车费</td><td>{{details.collectFare}}</td>
+							
 						</tr>
 						<tr>
+							<td class="tds">收车费</td><td>{{details.collectFare}}</td>
 							<td class="tds">未偿催收工本费</td><td>{{details.withoutFee}}</td>
-							<td class="tds">付款日</td><td>{{details.datePayment}}</td>
 							<td class="tds">最近一次还款金额</td><td>{{details.latestRepayment}}</td>
 							<td class="tds">最近一次还款日期</td><td>{{details.latestDate}}</td>
 						</tr>
 						<tr>
-							<td class="tds">核销状态</td><td>{{details.stateVerification}}</td>
+							<td class="tds">付款日</td><td>{{details.datePayment}}</td>							
 							<td class="tds">本次逾期天数</td><td>{{details.overdueDays}}</td>
 							<td class="tds">本期逾期天数</td><td>{{details.numberOverdue}}</td>
 							<td class="tds">逾期应收款总计</td><td>{{details.overdueReceivables}}</td>
 						</tr>
 						<tr>
-							<td class="tds">贷款产品</td><td colspan="3">{{details.loanProducts}}</td>
-							<td class="tds">贷款车型</td><td colspan="3">{{details.loanCar}}</td>
+							<td class="tds">核销状态</td><td>{{details.stateVerification}}</td>
+							<td class="tds">ET结算金额</td><td>{{details.et}}</td>
+							<td class="tds">贷款产品</td><td colspan="1">{{details.loanProducts}}</td>
+							<td class="tds">贷款车型</td><td colspan="1">{{details.loanCar}}</td>
 						</tr>
 					</table>
 				</div>

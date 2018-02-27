@@ -52,10 +52,10 @@
 							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, scope.row,items.customerAddresses)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width" >
+					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width"  >
 						<template slot-scope="scope">
 							<!-- v-if="cols1.field!='effectiveness' &&scope.row.infoSource!='CMS'&& cols1.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
+							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='addressType'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
 							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span>
 							<!-- <span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span> -->
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
@@ -73,7 +73,7 @@
 						<td>{{JRZY}}</td>
 						<td style="background:#eef1f6">{{JXSNAME}}</td>
 						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
-						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6">{{address.name}} </td>					
+						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6" >{{address.name}} </td>					
 					</tr>
 					<tr>
 						<td>{{dealerName}}</td>
@@ -162,6 +162,9 @@
 					<el-form-item label="逾期利息:" >
 						<span>{{items.overdueInterest}}</span>
 					</el-form-item>
+					<el-form-item label="逾期费用:" >
+						<span>{{items.overdueMoney}}</span>
+					</el-form-item>
 					<el-form-item label="逾期应收总计:">
 						<span>{{items.overdueTotal}}</span>
 					</el-form-item>
@@ -249,6 +252,9 @@
 				<el-form-item  label="地址类型：" prop="addressType" :label-width="formLabelWidth" >
 					<el-input v-model="AddWorkForm.addressType" style="width:300px"></el-input>
 				</el-form-item>
+				<el-form-item  label="所有权类型：" prop="propertyType" :label-width="formLabelWidth" >
+					<el-input v-model="AddWorkForm.propertyType" style="width:300px"></el-input>
+				</el-form-item>
 				<el-form-item label="信息来源：" :label-width="formLabelWidth" >
 					<el-input disabled  v-model="AddWorkForm.infoSource" style="width:300px"></el-input>
 				</el-form-item>
@@ -263,7 +269,7 @@
       </div>			
 		</el-dialog>
 		<div id="bottomFrom">
-			<form-message :callback='callback'></form-message>
+			<form-message ref="CJlist"></form-message>
 			<!-- :callback='callback' -->
 		</div>
 	</section>
@@ -317,9 +323,11 @@ export default {
 				{title:'省',field:'province',width:"60"},
 				{title:'市',field:'city',width:"60"},     
 				{title:'地址',field:'address',width:"200"},				
-            	{title: '地址类型', field: 'addressType', width: "70" },
+				{title: '地址类型', field: 'addressType', width: "70" },
+				{title:'所有权类型',field:'propertyType',width:"60"},
             	{title:'信息来源',field:'infoSource',width:"60"},
-            	{title:'有效性',field:'effectiveness',width:"60"},
+				{title:'有效性',field:'effectiveness',width:"60"},
+				
 			],
 			baseinfo:[
 				{ title: '角色名', field: 'roleName', width: "60" },
@@ -366,6 +374,7 @@ export default {
 				city:"",
 				address:"",
 				addressType:"",
+				propertyType:"",
 				infoSource:"ICS",
 				effectiveness:"Y",	
 			},							
@@ -531,10 +540,11 @@ export default {
 				city:this.AddWorkForm.city,
 				address:this.AddWorkForm.address,
 				addressType:this.AddWorkForm.addressType,
+				propertyType:this.AddWorkForm.propertyType,
 				infoSource:'ICS',
 				effectiveness:"Y",
 				afpId: this.$route.params.id,
-            };
+			};
             this.$refs[AddWorkForm].validate((valid) => {
                 if(valid){
                     addAddress(para).then(res =>{
@@ -550,7 +560,8 @@ export default {
 							"province":this.$refs['AddWorkForm'].model.province,
 							"city":this.$refs['AddWorkForm'].model.city,
                             "address":this.$refs['AddWorkForm'].model.address,
-                            "addressType":this.$refs['AddWorkForm'].model.addressType,                                          
+							"addressType":this.$refs['AddWorkForm'].model.addressType, 
+							"propertyType":this.$refs['AddWorkForm'].model.propertyType,                                          
 							"infoSource":"ICS","effectiveness":"Y","edit":false
 							},	                          
                             );
@@ -652,7 +663,10 @@ export default {
 			// console.log(a.length);
 			// phoneNum=phoneNum.replace(/\s+/g,"")
 			// phoneNum="0"+a;
+			localStorage.removeItem("CJPhone");
 			localStorage.setItem("phoneNum","0"+phoneNum);
+			localStorage.setItem("CJPhone",phoneNum);
+			this.$refs.CJlist.PhoneCtr();
 			var user=localStorage.getItem("userName");
 			let phoneNumVal="0"+phoneNum
 			document.getElementById("frame2").contentWindow.telNumVal(phoneNumVal);
@@ -661,10 +675,13 @@ export default {
 			// clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
 		},	
 		ring1(phoneNum,row,){
-			var pattern="-";
+			var pattern="-";			
 			phoneNum=phoneNum.replace(new RegExp(pattern),"");
 			// phoneNum=phoneNum;	
+			localStorage.removeItem("CJPhone");
 			localStorage.setItem("phoneNum",phoneNum);
+			localStorage.setItem("CJPhone",phoneNum);
+			this.$refs.CJlist.PhoneCtr();
 			var user=localStorage.getItem("userName");
 			document.getElementById("frame2").contentWindow.telNumVal(phoneNum);
 			document.getElementById("frame2").contentWindow.clickCallOut("0",phoneNum,this.appNum,row.name);
@@ -767,11 +784,10 @@ export default {
 				missionId: this.$route.params.id
 			};
 			tab_view(para).then(res => {
-				
 				 let data = res.data.result;			
 				 this.items = data;	
 				 this.appNum=data.appNum;	
-
+				
 				this.items.customerPhones = this.items.customerPhones.map(v => {
 					this.$set(v, 'edit', false)
 					return v;

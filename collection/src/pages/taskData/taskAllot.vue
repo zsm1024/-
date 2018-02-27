@@ -162,7 +162,8 @@ export default {
                    
         let para={
             userId:this.itemsId,
-            missionIds:this.addlists
+            missionIds:this.addlists,
+            status:"2",
         }
         if(this.items==""|| this.addlists.length==0){          
              this.$alert('请选择分配人或待分配案件！','提示',{

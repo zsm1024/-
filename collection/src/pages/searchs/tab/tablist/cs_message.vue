@@ -113,6 +113,9 @@
 					<el-form-item label="逾期利息:" >
 						<span>{{items.overdueInterest}}</span>
 					</el-form-item>
+					<el-form-item label="逾期费用:" >
+						<span>{{items.overdueMoney}}</span>
+					</el-form-item>
 					<el-form-item label="逾期应收总计:">
 						<span>{{items.overdueTotal}}</span>
 					</el-form-item>
@@ -178,9 +181,11 @@ export default {
 				{title:'地址',field:'address',width:"200"},
 				{title:'省',field:'province',width:"60"},
 				{title:'市',field:'city',width:"60"},
-            	{title: '地址类型', field: 'addressType', width: "70" },
+				{title: '地址类型', field: 'addressType', width: "70" },
+				{title:'所有权类型',field:'propertyType',width:"60"},
             	{title:'信息来源',field:'infoSource',width:"60"},
-            	{title:'有效性',field:'effectiveness',width:"60"},
+				{title:'有效性',field:'effectiveness',width:"60"},
+				
 			],
 			baseinfo:[
 				{ title: '角色名', field: 'roleName', width: "60" },
@@ -220,7 +225,7 @@ export default {
             };           
 			getlistAfpRest(para).then(res => {				
                 let data = res.data.result;		                
-				this.items = data;								
+				this.items = data;							
 				this.remarkform.remarks = this.items.remarks;
 				// this.cols=data.cols;
                 // this.cols1=data.cols1; 

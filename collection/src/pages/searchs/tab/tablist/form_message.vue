@@ -21,7 +21,7 @@
 		</el-form-item>
 		<el-form-item label="承诺日期" prop="allDate" >
 			<el-col >
-				<el-date-picker type="date" placeholder="选择日期" v-model="mainform.allDate" @change="dataChange1"style="width: 100%;"></el-date-picker>
+				<el-date-picker type="date" placeholder="选择日期" v-model="mainform.allDate" @change="dataChange1" style="width: 100%;"></el-date-picker>
 			</el-col>
 		</el-form-item>								
 		<el-form-item label="联系人" prop="linkman">
@@ -282,8 +282,7 @@ export default{
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
-                    getNextMissonId(para).then(res => {
-						console.log(res)
+                    getNextMissonId(para).then(res => {0
 						var nextId = res.data.result;
 						// console.log(nextId)
 						 this.$router.push(nextId)

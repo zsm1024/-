@@ -94,7 +94,7 @@ export default {
                     {title:'代购标识',field:'purchasingLabel',width:"70"},
                     {title:'代购人姓名',field:'nameAgent',width:"70"},
                     {title:'代购人身份证',field:'purchasingId',width:"90"},
-                    // {title:'催收备注',field:'afpRecord',width:"220"},
+                    {title:'催收备注',field:'afpRecord',width:"220"},
                     //  {title:'特殊备注',field:'spRecord',width:"70"},
                 
                 ],
@@ -167,10 +167,9 @@ export default {
 				let para = {
 					missionId: this.$route.params.id,
 					page: this.page,
-					pageSize: this.pagesize,
-				
+					pageSize: this.pagesize,				
 				};
-				this.listLoading = true;
+				// this.listLoading = true;
 				//NProgress.start();
 				getcmshistory(para).then((res) => {
 					let data=res.data.result
@@ -180,7 +179,7 @@ export default {
 					// this.lists.forEach(element => {
 					// 	console.log(element[0])
 					// });
-					this.listLoading = false;
+					// this.listLoading = false;
 					//NProgress.done();
 				});
 			},

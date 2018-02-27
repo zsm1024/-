@@ -67,7 +67,7 @@
         
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize" :total="total" :page-sizes='[50,100,200,500]' style="float:right;">
+			<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize" :total="total" :page-sizes='[200,500,800,1000]' style="float:right;">
 			</el-pagination>
 		</el-col>
     </section>
@@ -124,7 +124,7 @@
 					],
 				total: 0,
 				page: 1,
-				pagesize:200,
+				pagesize:1000,
 				currentPage:1,
 				SelectOption:"",
 				listLoading: true,

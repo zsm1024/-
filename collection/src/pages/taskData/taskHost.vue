@@ -208,7 +208,8 @@ export default {
         let para={
             escrowUser:this.itemsId,
             missionIds:this.addlists,
-            escrowTime: this.times
+            escrowTime: this.times,
+            status:"1",
         }
         if(this.items==""|| this.addlists.length==0){          
              this.$alert('请选择用户ID或代管案件！','提示',{
