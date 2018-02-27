@@ -530,6 +530,7 @@ export default{
 	  this.restaurants=this.userList;
 	  this.restaurants1=this.getname;
 	  this.restaurants2=this.getfangshi;
+	  
     }
 }
 </script>
