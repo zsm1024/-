@@ -175,13 +175,13 @@
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注" style="position:relative">			
                      <el-button type="primary" size="mini" v-on:click="remarkopen = true" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
-				<p>{{remarkform.remarks}}</p>											
+				<p style="word-break:break-all">{{remarkform.remarks}}</p>											
 			</el-collapse-item>							
 		</el-collapse>		
-		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false'>
+		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false' id="remarkopen">
 			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
-					<el-input type="textarea" v-model="remarkform.remarks"></el-input>
+					<el-input type="textarea" v-model="remarkform.remarks" :maxlength="1000"></el-input>
 					<span>(不超过1000字)</span>
 				</el-form-item>				
 			</el-form>
@@ -547,13 +547,14 @@ export default {
 				afpId: this.$route.params.id,
 			};
             this.$refs[AddWorkForm].validate((valid) => {
+				
                 if(valid){
                     addAddress(para).then(res =>{
                         if(res.data.success){
                             this.$message({
                                 type: 'success',
                                 message: '添加成功！'
-                            })
+							})
                             this.items.customerAddresses.unshift(
 							{"roleName":this.$refs['AddWorkForm'].model.roleName,
 							"name":this.$refs['AddWorkForm'].model.name,
@@ -563,9 +564,9 @@ export default {
                             "address":this.$refs['AddWorkForm'].model.address,
 							"addressType":this.$refs['AddWorkForm'].model.addressType, 
 							"propertyType":this.$refs['AddWorkForm'].model.propertyType,                                          
-							"infoSource":"ICS","effectiveness":"Y","edit":false
+							"infoSource":"ICS","effectiveness":"Y","edit":false,"id":res.data.result
 							},	                          
-                            );
+							);
                         this.addWorkInfos=false;
                         this.$refs['AddWorkForm'].resetFields();
                         }else{
@@ -691,6 +692,7 @@ export default {
 		},	
 		phoneEdit(row){
 			let para = row
+			
 			if(row.edit=!row.edit){
 			
 			}else{
@@ -866,6 +868,13 @@ export default {
 		// console.log(row.relationship.replace(reg," ").trim());
 		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
+	c(s){
+		console.log(s.value.length)
+    // if(s.value.length > 3){
+    //     return s.value = s.value.substr(0, 3), alert('最大字符数为3');
+    // }
+    // return !0;
+}
   },
   components:{
 	  formMessage

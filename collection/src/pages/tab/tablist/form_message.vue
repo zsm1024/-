@@ -48,7 +48,7 @@
 		<el-col id="bzt">			
 			<el-form-item label="备注" prop="afpRecord" style="justify-content: space-around;display:flex">
 				<span class="tips">(不超过1000字)</span>
-				<el-input type="textarea" v-model="mainform.afpRecord" inline></el-input>
+				<el-input type="textarea" v-model="mainform.afpRecord" inline :maxlength="1000"></el-input>
 				<el-button type="primary" @click="onSubmit('mainform')" :disabled="disabledto" >{{tosubtext}}</el-button>
 				<el-button @click="onSubmitnext('mainform')" :disabled="disabledNex">确认&处理下一条</el-button>
 				<el-button type="primary" @click="CJStore">催记暂存</el-button>
@@ -579,8 +579,8 @@ export default{
 	#tables{display: flex;justify-content: space-between;min-height: 100px}
 	 #tables .el-input{height: 24px}
 	#FixForm .el-form-item{margin: 5px 5px 13px;}
-	#bzt {width: 37%}
-	#lists{width:60%;font-size: 13px;margin-left: 10px}
+	#bzt {width: 53%}
+	#lists{width:45%;font-size: 13px;margin-left: 10px}
 	#lists .el-form-item__label{font-size: 13px!important}
 	#FixForm .el-form-item__content{width:150px!important }
 	#bzt .el-form-item__content{width: 98%!important} 
@@ -593,4 +593,5 @@ export default{
 	#FixForm .el-form-item{margin-bottom: 13px!important}
 	#MsgDialog .el-form-item{margin-bottom: 15px!important}
 	.tips{font-size: 12px;color: red}
+
 </style>
