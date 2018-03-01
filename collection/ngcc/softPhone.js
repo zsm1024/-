@@ -380,12 +380,15 @@ function  fOnRingingEvent(calling,called,callid1,UserData,CorrelateData,param){
 	currentCallId="";
 	var callFlowId = UserData.substring(UserData.indexOf("IDNO")+5,UserData.indexOf(";CLD"));//呼叫流水CTI生成
 	currentCallId=callid1;//当前呼叫ID由CTI生成
+	
+	// console.log(called)
 	console.log("------------fOnRingingEvent-----------------");
 	console.log(UserData);
 	console.log("currentCallId->"+currentCallId);//当前呼叫ID
 	console.log("CorrelateData->"+CorrelateData);
 	if(calling.length>called.length){
 		called=ctiNum;
+		$("#softPhoneNumber").val(calling);
 		direct = "CX_BAS_CHANNEL_DIR_INBOUND";//呼叫方向呼入
 		$(".advert ").animate({ "width": "230px" }, 200);
 		$(".TipMes span").animate({ "width": "23px" }, 200);
@@ -393,7 +396,7 @@ function  fOnRingingEvent(calling,called,callid1,UserData,CorrelateData,param){
 		$(this).removeClass("Mes");
 		$(".LMsg ").css("left", "-22px");
 		$(".advert ").find(".LMsg i").removeClass(" fa fa-angle-double-left").addClass("fa fa-angle-double-right"); phoneMsgInfo(calling);
-
+		
 	}else{
 		calling=ctiNum;
 		direct="CX_BAS_CHANNEL_DIR_OUTBOUND";//呼叫方向呼出

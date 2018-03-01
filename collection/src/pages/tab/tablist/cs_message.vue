@@ -55,7 +55,7 @@
 					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width"  >
 						<template slot-scope="scope">
 							<!-- v-if="cols1.field!='effectiveness' &&scope.row.infoSource!='CMS'&& cols1.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='addressType'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
+							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
 							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span>
 							<!-- <span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span> -->
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
@@ -305,6 +305,7 @@ export default {
 			dealerName:"",
 			JRZY:"",
 			ET:'',
+			dealerName:"",
 			cols:[
 				{title:'角色',field:'roleName',width:"70"},
             	{title:'姓名',field:'name',width:"80"}, 
@@ -865,7 +866,6 @@ export default {
 		// console.log(row.relationship.replace(reg," ").trim());
 		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
-	
   },
   components:{
 	  formMessage
@@ -887,10 +887,11 @@ export default {
 	.useraddress{width: 150px;}
 	.el-collapse-item__header{font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
 	.abc{height: 500px!important; }
-	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2{cursor: pointer; color: #20a0ff;margin-left: 5px;}
+	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2,.el-col .el-icon-time{cursor: pointer; color: #20a0ff;margin-left: 5px;}
 	.el-col .el-icon-upload2:hover{color: #4db3ff;}
 	.el-col .el-icon-edit:hover{color: #4db3ff;}
 	.el-col .el-icon-message:hover{color:#4db3ff}
+	.el-col .el-icon-time:hover{color:#4db3ff}
 	.changecolor{color: red;}
 	.el-tabs--border-card>.el-tabs__content{padding: 0!important}
 	.el-collapse-item__content{padding:5px!important}

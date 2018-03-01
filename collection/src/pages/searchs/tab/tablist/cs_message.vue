@@ -37,6 +37,32 @@
 					</el-table-column>			
 				</el-table>				
 			</el-collapse-item>	
+			<el-collapse-item name="11" title="经销商基本信息">
+				<table style="border-collapse:collapse" id="jxs">
+					<tr id="titleTr">
+						<td>{{JRZY}}</td>
+						<td style="background:#eef1f6">{{JXSNAME}}</td>
+						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
+						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6" >{{address.name}} </td>					
+					</tr>
+					<tr>
+						<td>{{dealerName}}</td>
+						<td>{{jxsName}}</td>
+						<td v-for="phone in phoneList" :key="phone.index">{{phone.phone}} </td>
+						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>	
+					</tr>
+				</table>
+				<!-- <label v-for="phone in phoneList" :key="phone.index">
+					<span>电话</span>
+					<span>{{phone}}</span>	
+				</label>		 -->
+				<!-- <template slot-scope="title" >
+                    <el-table :data="items.customerSimpleList" border stripe > 			
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
+						</el-table-column>			
+					</el-table>
+                </template> -->
+			</el-collapse-item>	
             <el-collapse-item name="8" title="备注">			
 				<p>
                      <el-button type="primary" size="mini" v-show="items.overdueDays>0" style="margin: 0 0 10px 10px;" v-on:click="remarkopen = true" >编辑</el-button>
@@ -126,7 +152,7 @@
 			</el-collapse-item>	
 									
 		</el-collapse>
-		</div>
+
 		
 		<el-dialog title="备注" :visible.sync="remarkopen" :show-close="false">
 			<el-form :model="remarkform">
@@ -146,8 +172,8 @@
 </template>
 
 <script>
-import { getlistAfpRest } from "@/api/collmanage";
-
+import { getlistAfpRest,jxsInfo,findByContractId } from "@/api/collmanage";
+// import{getdeal}from "@/api/tablist";
 export default {
   data() {
 	 
@@ -160,7 +186,7 @@ export default {
 				active: true,
 				'text-danger': false
 			},
-			activeNames:["1","2","3","4","5","6",'7',"8","9","10"],
+			activeNames:["1","2","3","4","5","6",'7',"8","9","10","11"],
 			items: [],
 			height:"",
 			cols:[
@@ -208,6 +234,15 @@ export default {
 			remarkform: {
 				remarks:'',
 			},
+			jxsName:"",	
+			JXSNAME:"",
+			dealerName:"",
+			JRZY:"",
+			ET:'',
+			dealerName:"",
+			phoneList:[],
+			addressList:[],	
+			PhoneCodeList:[],
     };
   },
   methods: {
@@ -222,7 +257,7 @@ export default {
 		getlist() {
 			let para = {
 				contractId: this.id
-            };           
+			};          
 			getlistAfpRest(para).then(res => {				
                 let data = res.data.result;		                
 				this.items = data;							
@@ -231,6 +266,13 @@ export default {
                 // this.cols1=data.cols1; 
 				       
 			});
+			// let params ={
+			// 	missionId:this.id
+			// }
+			findByContractId(para).then(res => {
+				 let data=res.data.result;
+				 this.ET=data.et				
+				});
    },
    TableRowClassNames(row,rowIndex){
 	   row.documentType= row.documentType.split(" ").shift(" ").trim();
@@ -243,9 +285,33 @@ export default {
 		let rows=row.addressType.split(":").shift(":").trim()
 	   row.addressType= row.addressType.split(" ").shift(" ").trim();
    },
+   	//经销商信息
+	getJxsInfo(){
+		let para = {
+			contractId: this.id
+		};
+			jxsInfo(para).then(res =>{
+				if(res.data.success){
+				let data =res.data.result;
+				this.JRZY="金融专员";
+				this.jxsName=data.name;
+				this.dealerName=data.dealerName;
+				this.JXSNAME="名称"
+				data.phone.forEach(element => {
+					this.phoneList.push({"phone":element.phone,"name":"电话"})
+				});
+				data.address.forEach(element => {					
+					 this.addressList.push({"address":element,"name":"地址"})
+				});
+				}
+				
+				// console.log(data.address)
+			})
+	},
   },
   mounted() {
-    this.getlist();
+	this.getlist();
+	this.getJxsInfo()
     
   }
 };
@@ -259,10 +325,11 @@ export default {
 	.useraddress{width: 150px;}
 	.el-collapse-item__header{font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
 	.abc{height: 500px!important; }
-	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2{cursor: pointer; color: #20a0ff;margin-left: 5px;}
+	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2,.el-col .el-icon-time{cursor: pointer; color: #20a0ff;margin-left: 5px;}
 	.el-col .el-icon-upload2:hover{color: #4db3ff;}
 	.el-col .el-icon-edit:hover{color: #4db3ff;}
 	.el-col .el-icon-message:hover{color:#4db3ff}
+	.el-col .el-icon-time:hover{color:#4db3ff}
 	.changecolor{color: red;}
 	.el-collapse-item__content{padding:5px!important;}
 	.el-form-item__label{padding: 5px 0!important}

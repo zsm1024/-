@@ -116,3 +116,10 @@ export function colHistory_code(params) {
         params: params 
     })
 }
+export function jxsInfo(params){
+    return fetch({
+      url: '/customerBasics/findDealerByContractId/'+params.contractId,
+      method: 'get',
+      params:params
+    })
+  }

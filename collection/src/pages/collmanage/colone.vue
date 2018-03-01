@@ -46,7 +46,7 @@
 		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName"  id="ClOne" @current-change="handleCurrentChanges" ref="singleTable" border>
 			<el-table-column label="操作" width="60" fixed="left"  align="center" >
 				<template slot-scope="scope">
-					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index)">处理</span></router-link>
+					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
 				</template>
 				
 			</el-table-column>
@@ -139,11 +139,12 @@
 			pageSize:"changeSize"
 		},
 		methods: {
-			setCurrent(row) {
+			setCurrent(row,id) {
 				this.$refs.singleTable.setCurrentRow(row);
 				localStorage.setItem("nextNum","0");
 				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
-				localStorage.setItem("total",this.total)				
+				localStorage.setItem("total",this.total);
+				sessionStorage.setItem(id,id)				
 			  },
 			handleCurrentChanges(val) {
 				// console.log(val)

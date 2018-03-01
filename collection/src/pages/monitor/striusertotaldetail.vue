@@ -35,7 +35,7 @@
 			</el-table-column>
 			<el-table-column fixed label="操作"  align="center">
 				<template slot-scope="scope">
-					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index)">处理</span></router-link>
+					<router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
 				</template>
 			</el-table-column>
 			
@@ -107,11 +107,12 @@ export default {
   },
 
   methods: {
-    setCurrent(row) {
+    setCurrent(row,id) {
 				this.$refs.singleTable2.setCurrentRow(row);
 			  localStorage.setItem("nextNum","0");
 				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
-				localStorage.setItem("total",this.total)				
+        localStorage.setItem("total",this.total)
+        sessionStorage.setItem(id,id)				
 			  },
 			handleCurrentChanges(val) {
 				// console.log(val)

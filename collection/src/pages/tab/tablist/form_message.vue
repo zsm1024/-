@@ -2,8 +2,7 @@
 <section>
 	<el-row>
 		<el-col :span="24" id="el-icons">	
-			<i class="el-icon-message" @click="messageOpen">短信</i>
-			<!-- <i class="el-icon-upload2">{{callback.roleName}}</i>  -->
+			<i class="el-icon-message" @click="messageOpen">短信</i>			 
 		</el-col>
 	</el-row>
 	<!-- <div>{{callback.roleName}}</div> -->
@@ -52,6 +51,7 @@
 				<el-input type="textarea" v-model="mainform.afpRecord" inline></el-input>
 				<el-button type="primary" @click="onSubmit('mainform')" :disabled="disabledto" >{{tosubtext}}</el-button>
 				<el-button @click="onSubmitnext('mainform')" :disabled="disabledNex">确认&处理下一条</el-button>
+				<el-button type="primary" @click="CJStore">催记暂存</el-button>
 			</el-form-item>
 		</el-col>  
 		</el-form>							
@@ -164,7 +164,7 @@ export default{
                         { required: true, message: '请填写联系方式', trigger: 'blur' }
                     ],	
                     appointmentTime:[
-                        { required: true,  message: '请选择约会日期', trigger: 'blur',type:'date'}
+                        { required: true,  message: '请选择约会日期'}
                     ],
                     afpRecord:[
                         { required: true, message: '请填写备注', trigger: 'blur' }
@@ -200,12 +200,12 @@ export default{
     //   },
 		 dataChange(val){			
 		   this.times=val;
+
 	  },
 	   dataChange1(val){			
 		   this.allDate=val;
 	  },
 		onSubmit(mainform) {
-		
             // var self = this;
             // var num = 10;
             // var timer = setInterval(function() {
@@ -230,11 +230,12 @@ export default{
 				userId: localStorage.getItem("UserId")				
 			};
 			this.$refs[mainform].validate((valid) => {
-				
+					
 				if (valid) {	
 					this.disabledto=true;
 					recordAdd(para).then(res =>{
 				// console.log(res)
+			
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
 							this.$message({
@@ -262,6 +263,7 @@ export default{
 				}
 			});
 			localStorage.removeItem("CJPhone");
+			sessionStorage.removeItem("REefresh")
 		},
 	
         getlists(){	
@@ -346,6 +348,7 @@ export default{
 				}
 			});
 			localStorage.removeItem("CJPhone");
+			sessionStorage.removeItem("REefresh")
         },
 			callParent(){
 				let para = {
@@ -522,7 +525,44 @@ export default{
 		PhoneCtr(){
 			let nums=localStorage.getItem("CJPhone");
 			this.mainform.afpRecord+=nums;
+		},
+		//催记不刷新
+	CJStore(){
+		let REefresh={
+			actSign:this.mainform.actSign,
+			allowance:this.mainform.allowance,
+			allDate:this.allDate,
+			linkman:this.mainform.linkman,
+			linkInfomation:this.mainform.linkInfomation,
+			appointmentTime:this.times,
+			afpRecord:this.mainform.afpRecord,
+			RowId:this.$route.params.id,
+		}			
+		sessionStorage.setItem("REefresh",JSON.stringify(REefresh))
+		this.$message({
+            type:'success',
+            message:'暂存成功！',
+        });
+	},
+
+	NoRefresh(){
+	let RowId=sessionStorage.getItem(this.$route.params.id)
+		if(sessionStorage.getItem("REefresh")){
+			let FreshList=JSON.parse(sessionStorage.getItem("REefresh"));
+			if(RowId==FreshList.RowId){
+				this.mainform.actSign=FreshList.actSign,
+				this.mainform.allowance=FreshList.allowance,
+				this.mainform.allDate=FreshList.allDate,
+				this.mainform.linkman=FreshList.linkman,
+				this.mainform.linkInfomation=FreshList.linkInfomation,
+				this.mainform.appointmentTime=FreshList.appointmentTime,
+				this.mainform.afpRecord=FreshList.afpRecord
+			// console.log(typeof(this.mainform.appointmentTime))						
+			}else{
+				return
+			}
 		}
+	}
 	},
 	mounted() {
 	  this.getlists();
@@ -530,7 +570,8 @@ export default{
 	  this.restaurants=this.userList;
 	  this.restaurants1=this.getname;
 	  this.restaurants2=this.getfangshi;
-	  
+	 this.NoRefresh()
+
     }
 }
 </script>
