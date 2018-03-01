@@ -234,6 +234,7 @@ export default {
 			remarkform: {
 				remarks:'',
 			},
+			
 			jxsName:"",	
 			JXSNAME:"",
 			dealerName:"",
