@@ -181,8 +181,8 @@
 		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false' id="remarkopen">
 			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
-					<el-input type="textarea" v-model="remarkform.remarks" :maxlength="1000"></el-input>
-					<span>(不超过1000字)</span>
+					<el-input type="textarea" v-model="remarkform.remarks" :maxlength="2000"></el-input>
+					<span>(不超过2000字)</span>
 				</el-form-item>				
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -424,10 +424,6 @@ export default {
                 ],
                
             }
-
-
-     
-     
     };
   },
   methods: {
@@ -493,6 +489,7 @@ export default {
 				this.$refs[remarkform].validate((valid) => {
                 if(valid){
                     addMessage(para).then(res =>{
+						
                         if(res.data.success){
                             this.$message({
                                 type: 'success',

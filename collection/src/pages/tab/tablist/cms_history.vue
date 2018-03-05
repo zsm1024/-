@@ -94,7 +94,7 @@ export default {
                     {title:'代购标识',field:'purchasingLabel',width:"70"},
                     {title:'代购人姓名',field:'nameAgent',width:"70"},
                     {title:'代购人身份证',field:'purchasingId',width:"90"},
-                    {title:'催收备注',field:'afpRecord',width:"220"},
+                    // {title:'催收备注',field:'afpRecord',width:"220"},
                     //  {title:'特殊备注',field:'spRecord',width:"70"},
                 
                 ],

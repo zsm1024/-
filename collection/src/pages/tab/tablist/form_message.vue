@@ -47,8 +47,8 @@
 		<!--  -->
 		<el-col id="bzt">			
 			<el-form-item label="备注" prop="afpRecord" style="justify-content: space-around;display:flex">
-				<span class="tips">(不超过1000字)</span>
-				<el-input type="textarea" v-model="mainform.afpRecord" inline :maxlength="1000"></el-input>
+				<span class="tips">(不超过2000字)</span>
+				<el-input type="textarea" v-model="mainform.afpRecord" inline :maxlength="2000"></el-input>
 				<el-button type="primary" @click="onSubmit('mainform')" :disabled="disabledto" >{{tosubtext}}</el-button>
 				<el-button @click="onSubmitnext('mainform')" :disabled="disabledNex">确认&处理下一条</el-button>
 				<el-button type="primary" @click="CJStore">催记暂存</el-button>

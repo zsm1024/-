@@ -42,8 +42,9 @@ export default {
 				heights:0,
 				activeNames: ['1','2'],
 				lists: [],
+				// ,fixed:"left",fixed:"right"
 				cols: [
-			{title:'还款期数',field:'repaymentPeriod',width:"80",fixed:"left"},
+			{title:'还款期数',field:'repaymentPeriod',width:"80"},
             {title:'到期日',field:'dueDate',width:"90"},
             {title:'月应还本金',field:'monthRepay',width:"90"},
             {title:'利息额',field:'interestAmount',width:"80"},
@@ -54,7 +55,7 @@ export default {
             {title:'未结清本金',field:'outstandingAmoimt',width:"100"},
             {title:'调整身份',field:'adjustIdentity',width:"80"},
             {title:'实际还款日',field:'actualDay',width:"100"},
-            {title:'逾期天数',field:'overdueDays',width:"80",fixed:"right"},
+            {title:'逾期天数',field:'overdueDays',width:"80"},
 				],
 				total: 0,
 				pagesize: 20,
