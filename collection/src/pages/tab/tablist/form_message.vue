@@ -424,9 +424,8 @@ export default{
 			 let pList=[];
 			//   this.userList=[];
 			 this.phoneListNums.forEach(e =>{
-				 if(e.infoSource=="CMS"
-				//  &&e.roleName=="主借人"
-				 &&e.effectiveness=="Y"){
+				 if(//e.infoSource=="CMS"&&e.roleName=="主借人"&&
+				 e.effectiveness=="Y"){
 					 e.phone=e.phone.replace(/\s+/g,"");
 					 this.userList.push({"value":e.phone+'-'+e.roleName})
 					 pList.push(e.phone)
