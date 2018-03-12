@@ -150,19 +150,28 @@ export function getcmshistory(params) {
 
 export function repairlist(params) {
     return fetch({
-      url: '/maintenanceRecords/list',
+      url: '/maintenanceRecords/listAll',
       method: 'get',
       params: params
     })
 }
-
+//合同查询
 export function repair(params) {
+ 
     return fetch({
-      url: '/maintenanceRecords/find',
+      url: '/maintenanceRecords/listAllByContractId',
       method: 'get',
       params: params
     })
 }
+export function repairDetial(params) {
+ 
+     return fetch({
+       url: '/maintenanceRecords/findD',
+       method: 'get',
+       params: params
+     })
+ }
 export function colHistory_msg(params) {
   return fetch({
     url: '/afpRecords/listAfpSimplesRest',

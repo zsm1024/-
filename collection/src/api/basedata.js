@@ -234,3 +234,88 @@ export function PhoneCodeInsert(params) {
     data
   })
 }
+//区域代码维护
+export function areaInfo(params){
+  return fetch({
+    url: '/areaInfo/list',
+    method: 'get',
+    params: params
+  });
+}
+export function addAreaInfo(params) {
+  const data = params;
+  return fetch({
+    url: '/areaInfo/insert',
+    method: 'post',
+    data
+  })
+}
+export function updateAreaInfo(params){
+const data = params;
+return fetch({
+  url: '/areaInfo/update',
+  method: 'put',
+  data
+})
+}
+
+export function delAreaInfo(params){
+return fetch({
+  url: '/areaInfo/delete/'+params.id,
+  method: 'delete',
+  params: params
+})
+}
+export function addAre_info(params) {
+  const data = params;
+  return fetch({
+    url: '/areaInfo/insert',
+    method: 'post',
+    data
+  })
+}
+//区域省市代码维护
+export function areaStateInfo(params){
+  return fetch({
+    url: '/areaState/list',
+    method: 'get',
+    params: params
+  });
+}
+export function listAllState(params){
+  return fetch({
+    url: '/areaState/listAllState',
+    method: 'get',
+    params: params
+  });
+}
+export function listAll(params){
+  return fetch({
+    url: '/areaInfo/listAll',
+    method: 'get',
+    params: params
+  });
+}
+export function addAre_infoState(params) {
+  const data = params;
+  return fetch({
+    url: '/areaState/insert',
+    method: 'post',
+    data
+  })
+}
+export function updateAreaState(params){
+  const data = params;
+  return fetch({
+    url: '/areaState/update',
+    method: 'put',
+    data
+  })
+  }
+  export function delcodeState(params){
+    return fetch({
+      url: '/areaState/delete/'+params.id,
+      method: 'delete',
+      params: params
+    })
+  }

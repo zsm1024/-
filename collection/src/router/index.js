@@ -90,8 +90,8 @@ export const constantRouterMap = [{
           component: _import('tab/tablist/cs_history')
         },
         {
-          path: '/tab/tabView/wb_message/:id',
-          component: _import('tab/tablist/wb_message')
+          path: '/tab/tabView/showlist/:id',
+          component: _import('tab/tablist/showlist')
         },
         {
           path: '/tab/tabView/hk_plan/:id',
@@ -132,8 +132,12 @@ export const constantRouterMap = [{
           component: _import('searchs/tab/tablist/cs_history')
         },
         {
-          path: '/searchs/colsearchdetail/wb_message/:id',
-          component: _import('searchs/tab/tablist/wb_message')
+          path: '/searchs/colsearchdetail/showlist/:id',
+          component: _import('searchs/tab/tablist/showlist'),
+          // children:[{
+          //   path:"/searchs/tab/tablist/showlist/showlistdetial",
+          //   component: _import('searchs/tab/tablist/showlist/showlistdetial')
+          // }]
         },
         {
           path: '/searchs/colsearchdetail/hk_plan/:id',
@@ -150,8 +154,15 @@ export const constantRouterMap = [{
       ]
     }, ]
   },
-
-
+// {
+//    path: '/searchs/colsearchdetail/showlist/:id',
+//    component: _import('searchs/tab/tablist/showlist'),
+//    children:[{
+//      path:"/searchs/tab/tablist/showlist/showlistdetial",
+//      component: _import('searchs/tab/tablist/showlist/showlistdetial')
+//    }]
+// }
+ 
 
 
 ]

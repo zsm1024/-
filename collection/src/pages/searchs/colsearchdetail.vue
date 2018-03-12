@@ -44,7 +44,7 @@ export default {
 					{'names':"催收信息",path:'/searchs/colsearchdetail/cs_message'},
 					{'names':"合同信息",path:'/searchs/colsearchdetail/ht_message'},
 					{'names':"催收历史",path:'/searchs/colsearchdetail/cs_history'},
-					{'names':"维保记录",path:'/searchs/colsearchdetail/wb_message'},
+					{'names':"维保记录",path:'/searchs/colsearchdetail/showlist'},
 					{'names':"还款计划",path:'/searchs/colsearchdetail/hk_plan'},
 					{'names':"扣款流水",path:'/searchs/colsearchdetail/kk_list'},
 					{'names':"CMS历史",path:'/searchs/colsearchdetail/cms_history'},

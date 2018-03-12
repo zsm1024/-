@@ -40,13 +40,14 @@ export default {
 		carInfo:[],
 		repairPerson:[],
 		repairInfo:[],
-		userInfo:[]
+		userInfo:[],
+		id:this.$route.params.id,
       }
   },
   methods:{
       	getlist() {                
 			let para = {
-				id: this.id
+				icsId: this.id
 			};
 			repair(para).then(res => {
                 //  let data = res.data.data

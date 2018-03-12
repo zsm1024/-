@@ -40,22 +40,25 @@ export default {
 		carInfo:[],
 		repairPerson:[],
 		repairInfo:[],
-		userInfo:[]
+		userInfo:[],
+		id:this.$route.params.id,
       }
   },
   methods:{
-      	getlist() {                
-			let para = {
-				id: this.id
-			};
-			repair(para).then(res => {
-                //  let data = res.data.data
-				//  this.items=data;
-				//  this.carInfo=data.carInfo;
-				//  this.repairPerson=data.repairPerson;
-				//  this.repairInfo=data.repairInfo;
-				//  this.userInfo=data.userInfo;			     
-			});
+      	getlist() {        
+			// let para = {
+			// 	icsId: this.id
+			// };
+
+			// repair(para).then(res => {
+			// 	console.log(res)
+            //     //  let data = res.data.data
+			// 	//  this.items=data;
+			// 	//  this.carInfo=data.carInfo;
+			// 	//  this.repairPerson=data.repairPerson;
+			// 	//  this.repairInfo=data.repairInfo;
+			// 	//  this.userInfo=data.userInfo;			     
+			// });
    },
   },
   mounted(){
