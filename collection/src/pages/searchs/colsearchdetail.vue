@@ -56,16 +56,6 @@ export default {
 		// let h=(window.innerHeight);
 		// this.$refs.cs.style.height= (h-290)+"px";
  },
-//   components:{
-//   	csMessage,
-//   	htMessage,
-//   	 csHistory,
-//   	maintenance,
-//   	 hkPlan,
-//   	kkList,
-// 	cmsHistory,
-// 	formMessage
-// 	}
 }
 
 </script>
