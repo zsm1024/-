@@ -53,8 +53,6 @@ export default {
         }
 	},
 		mounted(){
-		// let h=(window.innerHeight);
-		// this.$refs.cs.style.height= (h-290)+"px";
  },
 }
 
