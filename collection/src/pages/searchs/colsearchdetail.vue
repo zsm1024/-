@@ -28,14 +28,6 @@
   <!-- </div> -->
 </template>
 <script>
-	// import csMessage from "../tab/tablist/cs_message.vue";
-	// import formMessage from "../tab/tablist/cs_message.vue";
-	// import htMessage from "../tab/tablist/cs_message.vue";
-	// import csHistory from "../tab/tablist/cs_message.vue";
-	// import maintenance from "../tab/tablist/cs_message.vuee";
-	// import hkPlan from "../tab/tablist/cs_message.vue";
-	// import kkList from "../tab/tablist/cs_message.vue";
-	// import cmsHistory from "../tab/tablist/cs_message.vue";
 export default {
   data(){		
      return{
@@ -53,8 +45,6 @@ export default {
         }
 	},
 		mounted(){
-		// let h=(window.innerHeight);
-		// this.$refs.cs.style.height= (h-290)+"px";
  },
 }
 
