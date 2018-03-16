@@ -28,6 +28,14 @@
   <!-- </div> -->
 </template>
 <script>
+<<<<<<< HEAD
+=======
+	// import csMessage from "../tab/tablist/cs_message.vue";
+	// import formMessage from "../tab/tablist/cs_message.vue";
+	// import htMessage from "../tab/tablist/cs_message.vue";
+	// import csHistory from "../tab/tablist/cs_message.vue";
+	// import maintenance from "../tab/tablist/cs_message.vuee";
+>>>>>>> zsm
 export default {
   data(){		
      return{
