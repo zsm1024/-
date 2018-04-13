@@ -38,7 +38,7 @@
                     </el-select>
 				</el-form-item> -->
 				<el-form-item>
-					<el-button type="primary" @click="getUsers" size="mini">查询</el-button>
+					<el-button type="primary" @click="getUsers" size="mini" style="padding:10px 15px">查询</el-button>
 				</el-form-item>				
 			</el-form>  
         </el-col>  
@@ -75,7 +75,7 @@
 <script>
 
 	//import NProgress from 'nprogress'
-	import $ from "jquery";
+	//import $ from "jquery";
 	import { getcolone} from '@/api/collmanage';
 	export default {
 
@@ -144,7 +144,7 @@
 				localStorage.setItem("nextNum","0");
 				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
 				localStorage.setItem("total",this.total);
-				sessionStorage.setItem(id,id)				
+				localStorage.setItem(id,id)				
 			  },
 			handleCurrentChanges(val) {
 				// console.log(val)

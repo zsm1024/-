@@ -108,7 +108,14 @@ export function updateInfo(params){
     data
   })
 }
-
+export function queueInfos(params){
+  const data = params;
+  return fetch({
+    url: '/queueInfos/update',
+    method: 'put',
+    data
+  })
+}
 export function delInfo(params){
   return fetch({
     url: '/queueDistributions/delete/'+params.id,
@@ -319,3 +326,134 @@ export function updateAreaState(params){
       params: params
     })
   }
+  //区域人员管理
+  export function CityList(params){
+    return fetch({
+      url: '/userCity/listCity',
+      method: 'get',
+      params: params
+    });
+  }
+  //区域下的人员
+  export function personList(params){
+    return fetch({
+      url: '/userCity/list',
+      method: 'get',
+      params: params
+    });
+  }
+  export function userCityUpdate(params){
+    const data = params;
+    return fetch({
+      url: '/userCity/update',
+      method: 'put',
+      data
+    })
+    }
+    export function userCityInsert(params) {
+      const data = params;
+      return fetch({
+        url: '/userCity/insert',
+        method: 'post',
+        data
+      })
+    }
+    export function deluserCity(params){
+      return fetch({
+        url: '/userCity/delete/'+params.id,
+        method: 'delete',
+        params: params
+      })
+    }
+  //获取人员信息
+  export function personListAll(params){
+    return fetch({
+      url: '/userCity/listAllUser',
+      method: 'get',
+      params: params
+    })
+  }
+  //获取区域人员信息
+  export function personLists(params){
+    return fetch({
+      url: '/userCity/list',
+      method: 'get',
+      params: params
+    })
+  }
+  //获取实地下的所有人
+  export function listOnTheSpot(params){
+    return fetch({
+      url: '/queueInfos/listOnTheSpot',
+      method: 'get',
+      params: params
+    })
+  }
+  //字典表
+  export function dictslist(params) {
+    return fetch({
+      url: '/dicts/list',
+      method: 'get',
+      params: params
+    })
+  }
+  export function dictsdelete(params){
+    return fetch({
+      url: '/dicts/delete/'+params.id,
+      method: 'delete',
+    })
+  }
+  export function dictsupdate(params){
+    const data = params;
+    return fetch({
+      url: '/dicts/update',
+      method: 'put',
+      data
+    })
+  }
+  export function dictsinsert(params) {
+    const data = params;
+    return fetch({
+      url: '/dicts/insert',
+      method: 'post',
+      data
+    })
+  }
+  export function findByType(params) {
+    return fetch({
+      url: '/dicts/findByType',
+      method: 'get',
+      params: params
+    })
+  }
+  export function AddresssfindByType(params) {
+    return fetch({
+      url: '/customerAddresss/findType',
+      method: 'get',
+      params: params
+    })
+  }
+  export function AddresssfindAddress(params) {
+    return fetch({
+      url: '/customerAddresss/findAddress',
+      method: 'get',
+      params: params
+    })
+  }
+  export function VisitRecords(params) {
+    const data = params;
+    return fetch({
+      url: '/foreuignVisitRecords/insert',
+      method: 'post',
+      data
+    })
+  }
+  // foreuignVisitRecords\insert  
+  // customerAddresss\findType?missionId
+  // export function messageDialog(params){
+  //   return fetch({
+  //     url: '/messageTemplate/listAll',
+  //     method: 'get',
+  //     params:params
+  //   })
+  // }

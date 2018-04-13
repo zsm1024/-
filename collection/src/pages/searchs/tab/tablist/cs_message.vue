@@ -4,7 +4,6 @@
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
                     <el-table :data="items.customerSimpleList" border stripe :row-class-name="TableRowClassNames"> 
-						<!-- width="60" -->
 						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center">
 						</el-table-column>			
 					</el-table>
@@ -63,12 +62,16 @@
 					</el-table>
                 </template> -->
 			</el-collapse-item>	
-            <el-collapse-item name="8" title="备注">			
-				<p>
-                     <el-button type="primary" size="mini" v-show="items.overdueDays>0" style="margin: 0 0 10px 10px;" v-on:click="remarkopen = true" >编辑</el-button>
-                    {{remarkform.remarks}}
-                </p>
-			</el-collapse-item>					
+			<el-collapse-item name="8" title="备注" style="position:relative">			
+                     <el-button type="primary" size="mini" v-on:click="remarkopenList" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
+				<p style="word-break:break-all">{{marks}}</p>											
+			</el-collapse-item>	
+            <!-- <el-collapse-item name="8" title="备注">							
+				<p> -->
+                     <!-- <el-button type="primary" size="mini" v-show="items.overdueDays>0" style="margin: 0 0 10px 10px;" v-on:click="remarkopen = true" >编辑</el-button> -->
+                    <!-- {{marks}} -->
+                <!-- </p>
+			</el-collapse-item>					 -->
 			<el-collapse-item name="5" title="合同基本信息">
 				<el-form :data="items" inline class="table-expand">
 					
@@ -153,8 +156,20 @@
 									
 		</el-collapse>
 
-		
-		<el-dialog title="备注" :visible.sync="remarkopen" :show-close="false">
+		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false' id="remarkopen">
+			<el-form :model="remarkform" ref='remarkform'>
+				<el-form-item label="备注内容" :label-width="formLabelWidth">
+					<el-input type="textarea" :maxlength="2000"  :value="marks" v-model="remarkform.remarks" 
+					></el-input>				
+					<span>(不超过2000字)</span>
+				</el-form-item>				
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button type="primary" @click.native.prevent="confirmremarkopen('remarkform')">确 定</el-button>
+			</div>
+		</el-dialog>
+	
+		<!-- <el-dialog title="备注" :visible.sync="remarkopen" :show-close="false">
 			<el-form :model="remarkform">
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
 					<el-input type="textarea" v-model="remarkform.remarks"></el-input>
@@ -165,18 +180,18 @@
 				<el-button type="primary" @click="confirmremarkopen">确 定</el-button>
 			</div>
 		</el-dialog>
-	
+	 -->
 
 
 	</section>
 </template>
 
 <script>
-import { getlistAfpRest,jxsInfo,findByContractId } from "@/api/collmanage";
+import { getlistAfpRest,jxsInfo,findByContractId,colHistory_note } from "@/api/collmanage";
+import{addMessage} from "@/api/tablist"
 // import{getdeal}from "@/api/tablist";
 export default {
-  data() {
-	 
+  data() {	 
     	return {
 			floatForm:{
 				 background:"#fff",
@@ -188,6 +203,7 @@ export default {
 			},
 			activeNames:["1","2","3","4","5","6",'7',"8","9","10","11"],
 			items: [],
+			marks:"",
 			height:"",
 			cols:[
 				{title:'角色',field:'roleName',width:"60"},
@@ -216,7 +232,7 @@ export default {
 			baseinfo:[
 				{ title: '角色名', field: 'roleName', width: "60" },
 				{ title: '姓名', field: 'name', width: "60" },
-				// { title: '拼音', field: 'pinyin', width: "80" },
+				//{ title: '拼音', field: 'pinyin', width: "80" },
 				{ title: '职业', field: 'occupation', width: "80" },
 				{ title: '单位名称', field: 'unitName', width: "110" },
 				{ title: '性别', field: 'sex', width: "45" },
@@ -248,12 +264,66 @@ export default {
   },
   methods: {
 		//备注方法
-		confirmremarkopen() {
+		// confirmremarkopen() {
+		// 		this.remarkopen=false;
+		// 		this.$message({
+		// 			type:'success',
+		// 			message:'保存成功',
+		// 		});
+		// },
+		confirmremarkopen(remarkform) {
+			this.getmessage_note()
 				this.remarkopen=false;
+				let para ={
+					remarks:this.remarkform.remarks,
+					id:this.$route.params.id
+				}
+				console.log(para)
+				this.$refs[remarkform].validate((valid) => {
+                if(valid){
+                    addMessage(para).then(res =>{
+					
+						console.log(para)
+						console.log(res)
+                        if(res.data.success){
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功！'
+                            })
+                            // this.items.customerAddresses.unshift(
+                            // {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
+                            // "address":this.$refs['AddWorkForm'].model.address,
+                            // "addressType":this.$refs['AddWorkForm'].model.addressType,                  
+                            // "infoSource":"WCMS","effectiveness":"Y","edit":false},	
+                            
+                            // );
+						this.remarkopen=false;
+						
+						// this.$refs['remarkform'].resetFields();
+						this.getmessage_note()
+                        }else{
+                            this.$message({
+                            type: 'error',
+                            message: '添加失败，请联系管理员'
+                            })
+                        }   		   		
+                    })
+                }else{   		
+                    this.remarkopen=true;
+                    this.$refs.remarkform.validate((valid) => {
+                        if (valid) {                       
+                        alert('submit!');
+                        } else {
+                            return false;
+                        }
+                    });
+                } 
+            }); 
 				this.$message({
 					type:'success',
 					message:'保存成功',
 				});
+
 		},
 		getlist() {
 			let para = {
@@ -261,8 +331,8 @@ export default {
 			};          
 			getlistAfpRest(para).then(res => {				
                 let data = res.data.result;		                
-				this.items = data;							
-				this.remarkform.remarks = this.items.remarks;
+				this.items = data;						
+				// this.remarkform.remarks = this.items.remarks;
 				// this.cols=data.cols;
                 // this.cols1=data.cols1; 
 				       
@@ -272,9 +342,31 @@ export default {
 			// }
 			findByContractId(para).then(res => {
 				 let data=res.data.result;
-				 this.ET=data.et				
+				 this.ET=data.et;				
 				});
    },
+   getmessage_note() {
+			let paras = {
+				contractId:this.$route.params.id,					
+			};
+
+     		colHistory_note(paras).then(res => {			 
+				let data = res.data.result;
+				console.log(data)
+				if(data==null){
+					return false;
+				}else{
+					this.marks=data.remarks;
+					console.log(this.marks)	
+				}					
+					// this.item.push(data);			
+      		});
+	},
+	remarkopenList(){
+		this.getmessage_note()
+		this.remarkopen=true;
+		this.remarkform.remarks=this.marks
+	},
    TableRowClassNames(row,rowIndex){
 	   row.documentType= row.documentType.split(" ").shift(" ").trim();
 	   row.sex=row.sex.split("(").shift("(").trim();
@@ -312,7 +404,8 @@ export default {
   },
   mounted() {
 	this.getlist();
-	this.getJxsInfo()
+	this.getJxsInfo();
+	this.getmessage_note();
     
   }
 };

@@ -28,6 +28,14 @@
   <!-- </div> -->
 </template>
 <script>
+	// import csMessage from "./tablist/cs_message";
+	// import formMessage from "./tablist/form_message";
+	// import htMessage from "./tablist/ht_message";
+	// import csHistory from "./tablist/cs_history";
+	// import maintenance from "./tablist/maintenance";
+	// import hkPlan from "./tablist/hk_plan";
+	// import kkList from "./tablist/kk_list";
+	// import cmsHistory from "./tablist/cms_history";
 export default {
   data(){		
      return{

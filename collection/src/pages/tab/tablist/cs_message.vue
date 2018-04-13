@@ -174,14 +174,15 @@
 				</el-form>				
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注" style="position:relative">			
-                     <el-button type="primary" size="mini" v-on:click="remarkopen = true" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
-				<p style="word-break:break-all">{{remarkform.remarks}}</p>											
+                     <el-button type="primary" size="mini" v-on:click="remarkopenList" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
+				<p style="word-break:break-all">{{marks}}</p>											
 			</el-collapse-item>							
 		</el-collapse>		
 		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false' id="remarkopen">
 			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
-					<el-input type="textarea" v-model="remarkform.remarks" :maxlength="2000"></el-input>
+					<el-input type="textarea" :maxlength="2000"  :value="marks" v-model="remarkform.remarks" 
+					></el-input>				
 					<span>(不超过2000字)</span>
 				</el-form-item>				
 			</el-form>
@@ -276,16 +277,15 @@
 </template>
 
 <script>
-import $ from 'jquery'
-import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo,getdeal} from "@/api/tablist";
+//import $ from 'jquery'
+import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo,getdeal,colHistory_note} from "@/api/tablist";
 import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
 import formMessage from '../tablist/form_message';
 import {clickCallOut,initParam} from '../../../../ngcc/softPhone';
 import {PhoneCodeListAll} from "@/api/basedata";
 // import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx} from "../../../../ngcc/softPhone"
 export default {
-  data() {
-	 
+  data() {	 
     	return {
 			floatForm:{
 				 background:"#fff",
@@ -297,6 +297,7 @@ export default {
 			},
 			activeNames:["1","2","3","4","5","6",'7',"8","9","10",'11'],
 			items: [],
+			marks:"",
 			phoneList:[],
 			addressList:[],	
 			PhoneCodeList:[],
@@ -480,7 +481,28 @@ export default {
             });  	
 		},
 		//备注方法
+		getmessage_note() {
+				let paras = {
+					missionId:this.$route.params.id,					
+				};
+
+     		colHistory_note(paras).then(res => {			 
+				let data = res.data.result;
+				if(data==null){
+					return false;
+				}else{
+					this.marks=data.remarks;	
+				}					
+					// this.item.push(data);			
+      		});
+		},
+		remarkopenList(){
+			this.getmessage_note()
+			this.remarkopen=true;
+			this.remarkform.remarks=this.marks
+		},
 		confirmremarkopen(remarkform) {
+			this.getmessage_note()
 				this.remarkopen=false;
 				let para ={
 					remarks:this.remarkform.remarks,
@@ -502,8 +524,10 @@ export default {
                             // "infoSource":"WCMS","effectiveness":"Y","edit":false},	
                             
                             // );
-                        this.remarkopen=false;
-                        this.$refs['remarkform'].resetFields();
+						this.remarkopen=false;
+						
+						// this.$refs['remarkform'].resetFields();
+						this.getmessage_note()
                         }else{
                             this.$message({
                             type: 'error',
@@ -865,13 +889,13 @@ export default {
 		// console.log(row.relationship.replace(reg," ").trim());
 		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
-	c(s){
-		console.log(s.value.length)
-    // if(s.value.length > 3){
-    //     return s.value = s.value.substr(0, 3), alert('最大字符数为3');
-    // }
-    // return !0;
-}
+// 	c(s){
+// 		console.log(s.value.length)
+//     // if(s.value.length > 3){
+//     //     return s.value = s.value.substr(0, 3), alert('最大字符数为3');
+//     // }
+//     // return !0;
+// }
   },
   components:{
 	  formMessage
@@ -880,6 +904,7 @@ export default {
 	this.getlist();
 	this.getJxsInfo()
 	this.getPhoneCode();
+	this.getmessage_note();
     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
    	this.$refs.abc.style.height= h+"px";
   }

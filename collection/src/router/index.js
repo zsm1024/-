@@ -64,6 +64,18 @@ export const constantRouterMap = [{
         component: _import('searchs/colsearchdetail'),
         redirect:'/searchs/colsearchdetail/cs_message/:id'
       },
+      {
+        path: 'realdata/realspot/:id',
+        name: '实地队列分布监控',
+        hidden: true,
+        component: _import('realdata/realspot')
+      },
+      {
+        path: 'realdata/realdetial/:id',
+        name: '实地队列分布监控详情',
+        hidden: true,
+        component: _import('realdata/realdetial')
+      },
     ]
   },
   {
@@ -107,6 +119,48 @@ export const constantRouterMap = [{
         },
       ]
     }, ]
+  },
+  {
+    path: '/epiboly/eptab',
+    component: Layout,
+   
+    hidden: true,
+    children:[{
+      path: 'tabviews/:id',
+      name: '处理详情页',
+      redirect: '/epiboly/eptab/tabViews/cs_message/:id',
+      component: _import('epiboly/eptab/tabViews'),
+      children:[{
+        path: '/epiboly/eptab/tabViews/cs_message/:id',
+        name: '处理详情页',
+        component: _import('epiboly/eptab/eplist/cs_message')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/ht_message/:id',
+        component: _import('tab/tablist/ht_message')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/cs_history/:id',
+        component: _import('epiboly/eptab/eplist/cs_history')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/showlist/:id',
+        component: _import('epiboly/eptab/eplist/showlist')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/hk_plan/:id',
+        component: _import('epiboly/eptab/eplist/hk_plan')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/kk_list/:id',
+        component: _import('epiboly/eptab/eplist/kk_list')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/cms_history/:id',
+        component: _import('epiboly/eptab/eplist/cms_history')
+      },
+    ]
+    }]
   },
   {
     path: '/searchs',
@@ -154,17 +208,57 @@ export const constantRouterMap = [{
       ]
     }, ]
   },
-// {
-//    path: '/searchs/colsearchdetail/showlist/:id',
-//    component: _import('searchs/tab/tablist/showlist'),
-//    children:[{
-//      path:"/searchs/tab/tablist/showlist/showlistdetial",
-//      component: _import('searchs/tab/tablist/showlist/showlistdetial')
-//    }]
-// }
- 
+  
+  //审批页面
+  {
+    path: '/spdata',
+    component: Layout,
+    redirect: 'noredirect',
+    hidden: true,
+    children:[
+      {
+        path:'/spdata/splist/listRemarks/:id',
+        name:"审批列表",
+        component:_import('spdata/listRemarks'),
+      }, 
+      {
+        path:'/spdata/splist/applyRemarks/:id',
+        name:"我的申请",
+        component:_import('spdata/applyRemarks'),
+      },
+      {
+        path:'/spdata/splist/historyList/:id',
+        name:"审批历史",
+        component:_import('spdata/historyList'),
+      },  
+      // {
+      //   path:'/spdata/splist/listRemarks/remarksDetail',
+      //   name:"审批详情",
+      //   component:_import('spdata/remarksDetail')
+      // },
+      // {
+      //   path:'/spdata/splist/112',
+      //   name:"审批列表",
+      //   component:_import('spdata/splist')
+      // }
+    ]
 
-
+  },
+  //外包模块
+  {
+    path: '/outerdata',
+    component: Layout,
+    redirect: 'noredirect',
+    hidden: true,
+    children:[
+      {
+        path:'/outerdata/listin',
+        name:"文件导入",
+        component:_import('outerdata/listin'),
+      }
+    ]
+  },
+  
 ]
 
 export default new Router({
@@ -176,63 +270,6 @@ export default new Router({
   linkActiveClass: 'active'
 })
 
-export const asyncRouterMap = [
-  // {
-  //     path: '/collmanage',
-  //     component: Layout,
-  //     redirect: 'noredirect',
-  //     name: '任务管理',
-  //     icon: 'fa fa-list',
-
-  //     children: [
-  //         { path: 'colone/:id', name: '前期电催队列(2-5天)', meta: {role: ['colone']}, icon: 'fa fa-indent', component: _import('collmanage/colone') },
-  //         { path: 'coltwo', name: '前期电催队列(6-30天)', meta: {role: ['coltwo']}, icon: 'fa fa-th-list', component: _import('collmanage/coltwo') },
-
-
-
-  //     ]
-  // },
-  // {
-  //     path: '/tab',
-  //     component: Layout,
-  //     redirect: 'noredirect',
-  //     name: '处理页',
-
-  //     hidden: true,
-  //     children: [{ path: 'tabview/:id', name: '处理详情页', component: _import('tab/tabView') }]
-  // },
-  // {
-  //     path: '/monitor',
-  //     component: Layout,
-  //     redirect: 'noredirect',
-
-  //     name: '作业监控',
-  //     icon: 'fa fa-indent',
-  //     children: [
-
-  //         { path: 'queuetask', name: '队列任务监控',icon: 'fa fa-th-list', component: _import('monitor/queuetask') },
-  //         { path: 'userstask', name: '用户任务监控', icon: 'fa fa-list-ul', component: _import('monitor/userstask') },
-  //         {
-  //             path: 'timedistribution/:id',
-  //             name: '队列任务实时分布监控',
-
-  //             hidden: true,
-  //             component: _import('monitor/timedistribution')
-  //         },
-  //         {
-  //             path: 'userdistribution/:id',
-  //             name: '用户任务实时分布监控',
-
-  //             hidden: true,
-  //             component: _import('monitor/userdistribution')
-  //         },
-  //         {
-  //             path: 'stributotaldetail/:id',
-  //             name: '实时分布监控任务详情',               
-  //             hidden: true,
-  //             component: _import('monitor/stributotaldetail')
-  //         }
-
-  //     ]
-  // },
-]
+// export const asyncRouterMap = [
+  
+// ]

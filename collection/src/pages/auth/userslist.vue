@@ -28,7 +28,7 @@
 			</el-pagination>
 		</el-col>
 
-	<el-dialog :before-close="handleClose" :title="title" :visible.sync="dialogFormVisible">	
+	<el-dialog :before-close="handleClose" :title="title" :visible.sync="dialogFormVisible" id="userAdd">	
         <el-form  :model="addUser" ref="addUser" :rules="addUser">
             <el-form-item label="登录名：" prop="username" :label-width="formLabelWidth" >
                 <el-input v-model="addUser.username" style="width:300px"></el-input>
@@ -55,8 +55,8 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item  label="岗位：" prop="positionId" :label-width="formLabelWidth">
-               <el-select v-model="addUser.positionId" placeholder="请选择" style="width:300px">
+            <el-form-item  label="岗位：" :label-width="formLabelWidth">
+               <el-select v-model="addUser.positionId" placeholder="请选择" style="width:300px" multiple   >
                     <el-option 
                         v-for="item in treedata"
                         :key="item.id"
@@ -112,14 +112,14 @@ export default {
             password:'',
             phone:'',
             roleIds:[],
-            positionId:'',
+            positionId:[],
         }
     };
   },
 
   methods: {
     handleClose(done){
-        this.$refs['addUser'].resetFields();
+        this.$['addUser'].resetFields();
         done();
     },
     getRolesMethod(){
@@ -131,6 +131,7 @@ export default {
        
         sysPositionslistAll().then(res => {
             this.treedata = res.data.result;
+            console.log(this.treedata)
         })
     },
 
@@ -145,30 +146,30 @@ export default {
             password:this.addUser.password,
             phone:this.addUser.phone,
             roleIds:arrrole,
-            positionId:this.addUser.positionId,
+            positionIds:this.addUser.positionId,
             id:this.id
         }
-        
+        console.log(para)
        
         if(this.toEdit){
-            toEditUser(para).then(res =>{
-                if(res.data.success){
-                    this.$message({
-                        type: 'success',
-                        message: '编辑成功！'
-                    });
-                    this.dialogFormVisible=false;
-                     this.$refs['addUser'].resetFields();
-                    this.getlists();
-                }else{
-                    this.$message({
-                        type: 'error',
-                        message: '编辑失败，请联系管理员'
-                    })
+            // toEditUser(para).then(res =>{
+            //     if(res.data.success){
+            //         this.$message({
+            //             type: 'success',
+            //             message: '编辑成功！'
+            //         });
+            //         this.dialogFormVisible=false;
+            //          this.$['addUser'].resetFields();
+            //         this.getlists();
+            //     }else{
+            //         this.$message({
+            //             type: 'error',
+            //             message: '编辑失败，请联系管理员'
+            //         })
                     
-                }
+            //     }
                 
-            })
+            // })
         }else{
             toAddUser(para).then(res =>{
                 if(res.data.success){
@@ -177,7 +178,7 @@ export default {
                         message: '添加成功！'
                     });
                     this.dialogFormVisible=false;
-                     this.$refs['addUser'].resetFields();
+                     this.$['addUser'].resetFields();
                     this.getlists();
                 }else{
                     this.$message({
@@ -193,7 +194,7 @@ export default {
     },
     cancelBtn(addUser){
         this.dialogFormVisible=false;
-        this.$refs['addUser'].resetFields();
+        this.$['addUser'].resetFields();
     },
     addUserBtn(){
         this.title='添加用户'
@@ -215,14 +216,17 @@ export default {
         }
         
         findUser(para).then(res =>{
-            
+            console.log(res)
+            let aa=[]
+            aa.push(res.data.result.positionId)
             this.addUser.username =res.data.result.username
             this.addUser.nickname =res.data.result.nickname
             
             this.addUser.phone =res.data.result.phone
-            this.addUser.positionId=res.data.result.positionId
+            this.addUser.positionIds=aa
             
             this.addUser.roleIds =res.data.result.roleIds[0]
+            console.log(this.addUser.positionId)
         })
     },
     delUserBtn(id,data){
@@ -293,7 +297,3 @@ export default {
   }
 };
 </script>
-
-<style >
-
-</style>

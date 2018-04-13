@@ -122,7 +122,7 @@
     }
    	.el-input {
       display: inline-block;
-      height: 36px;
+      min-height: 35px;
       width: 85%;
       border-radius: 3px;
     }

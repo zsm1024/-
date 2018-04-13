@@ -213,7 +213,6 @@ export default {
       repairDetial(para).then(res => {
         let data = res.data.result;
         this.wbInfo = data;
-				console.log(data)
       });
       // 	var indexlink = "showdetail";
       // 	var label = '维保信息详情';

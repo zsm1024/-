@@ -11,8 +11,12 @@
 				</el-table-column>
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" >
 					<template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>
+							<el-input  v-show="scope.row.edit" size="small" v-if="col.field!='areaId'" v-model="scope.row[col.field]"></el-input>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
+							<span v-show="scope.row.edit"  v-if="col.field!='areaId'">{{ scope.row[col.field] }}</span>
+							<el-select v-show="scope.row.edit" v-if="col.field=='areaId'" v-model="scope.row[col.field]" placeholder="请选择"  @change="getMessages2(scope.row)">
+								<el-option v-for="item in options1" :key="item.value" :label="item.areaId" :value="item.id"></el-option>
+							</el-select>
 						</template>
 				</el-table-column>
 			</el-table>
@@ -37,6 +41,11 @@
 				<el-form-item label="最大值：" prop="endDate" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.endDate" ></el-input>
 				</el-form-item>
+				<el-form-item label="区域代码:" prop="stateCode" :label-width="formLabelWidth">
+					<el-select v-model="AdduserForm.stateCode" placeholder="请选择" @change="getMessages" >
+						<el-option v-for="item in options1" :key="item.value" :label="item.areaName" :value="item.id"></el-option>
+					</el-select>
+		    	</el-form-item>
 				<el-form-item label="类型：" prop="type" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.type"></el-input>
 				</el-form-item>
@@ -54,184 +63,219 @@
     </section>
 </template>
 <script>
-    import { base_data,delInfo,updateInfo,addInfo } from "@/api/basedata";
-    export default{
-        data(){
-            return{
-				total: 0,
-				heights:0,
-				pagesize:10,
-				page: 1,
-                listLoading: false,	                
-				lists:[],
-				addUserInfos:false,
-				 formLabelWidth: '120px',
-                cols:[
-                    {title:'规则名称',field:'name',width:"180"},
-                    {title:'规则描述',field:'describes',width:"190"},
-                    {title:'最小值',field:'startDate',width:"90"},
-                    {title:'最大值',field:'endDate',width:"80"},
-                    {title:'类型',field:'type',width:"70"},
-                    {title:'版本',field:'vision',width:"70"},
-				],
-				AdduserForm:{					
-					name:"",
-					describes:"",
-					endDate:"",
-					startDate:"",
-					type:"",
-					vision:"",			
-			},
+import {
+  base_data,
+  delInfo,
+  updateInfo,
+  addInfo,
+  listAll
+} from "@/api/basedata";
+export default {
+  data() {
+    return {
+      total: 0,
+      heights: 0,
+      pagesize: 10,
+      page: 1,
+      listLoading: false,
+      lists: [],
+      addUserInfos: false,
+      formLabelWidth: "120px",
+      options1: [],
+	  stateCode: "",
+	  areaEditId:"",
+      cols: [
+        { title: "规则名称", field: "name", width: "180" },
+        { title: "规则描述", field: "describes", width: "190" },
+        { title: "最小值", field: "startDate", width: "90" },
+        { title: "最大值", field: "endDate", width: "80" },
+        { title: "区域", field: "areaId", width: "80" },
+        { title: "类型", field: "type", width: "70" },
+        { title: "版本", field: "vision", width: "70" }
+      ],
+      AdduserForm: {
+        name: "",
+        describes: "",
+        endDate: "",
+        startDate: "",
+        type: "",
+        vision: "",
+        stateCode: ""
+      }
+    };
+  },
+  methods: {
+    handleSizeChange(val) {
+      this.pagesize = val;
+      this.getlists();
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getlists();
+    },
+    getMessages(val) {
+      this.AdduserForm.stateCode = val;
+    },
+    getMessages2(val) {
+      let b = val.areaId;
+      this.areaEditId = b;
+    },
+    getlists() {
+      let h =
+        (window.innerHeight ||
+          document.documentElement.clientHeight ||
+          document.body.clientHeight) - 240;
+      this.heights = h;
+      let para = {
+        page: this.page,
+        pageSize: this.pagesize
+      };
+      this.listLoading = true;
+      base_data(para).then(res => {
+        //  console.log(res.data.result.fixed)
+        let data = res.data.result;
+        this.lists = data.data;
+        console.log(res);
+        this.lists = this.lists.map(v => {
+          this.$set(v, "edit", false);
+          return v;
+        });
+        this.total = data.recordsTotal;
+        this.listLoading = false;
+      });
+      this.getAreaCode();
+    },
+    deleteRow(index, rows, datas) {
+      let para = {
+        id: rows.id
+      };
+      this.$confirm("确定删除信息吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delInfo(para).then(res => {
+            if (res.data.success) {
+              datas.splice(index, 1);
+              this.$message({
+                type: "success",
+                message: "删除成功！"
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败，请联系管理员！"
+              });
             }
-        },
-        methods:{
-            handleSizeChange(val) {
-				this.pagesize = val;
-				this.getlists();
-			},
-            handleCurrentChange(val) {
-				this.page = val;
-				this.getlists();
-			},
-            getlists() {
-				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-240;
-        		this.heights=h;
-				let para = {
-					page: this.page,
-					pageSize: this.pagesize
-				};
-				this.listLoading = true;
-				base_data(para).then((res) => {
-					
-					//  console.log(res.data.result.fixed)
-                    let data=res.data.result;
-					this.lists=data.data;
-					this.lists = this.lists.map(v => {
-					this.$set(v, 'edit', false)
-					return v;
-					
-				});
-                    this.total=data.recordsTotal;				
-					this.listLoading = false;
-				});
-            },
-            deleteRow(index, rows, datas) {
-			    let para ={
-				    id:rows.id,
-			    }
-			    this.$confirm('确定删除信息吗？','提示',{
-				    confirmButtonText: "确定",
-				    cancelButtonText: "取消",
-				    type:'warning'
-			    }).then(() => {
-				    delInfo(para).then(res =>{
-			
-					    if(res.data.success){
-						    datas.splice(index, 1);
-						    this.$message({
-							    type: 'success',
-							    message: '删除成功！'
-						    })
-					    }else{
-						    this.$message({
-							    type: 'error',
-							    message: '删除失败，请联系管理员！'
-						    })
-					    }
-				    });
-				
-			    }).catch(() =>{
-				    this.$message({
-					    type: 'info',
-					    message: '已取消删除'
-				    });
-			});			
-        },
-        Edit(row){
-			let para = row;
-			if(row.edit=!row.edit){
-                return;
-			}else{
-				updateInfo(para).then(res =>{
-						if(res.data.success){
-							this.$message({
-								type: 'success',
-								message: '编辑成功！'
-							})
-						}else{
-							this.$message({
-								type: 'error',
-								message: '编辑失败，请联系管理员！'
-							})
-						}
-				});
-				
-				
-			}
-			//row.edit=!row.edit;		
-		},
-		addUserInfo(){
-			this.addUserInfos=false;
-			this.$refs['AdduserForm'].resetFields();
-		},
-		choice(AdduserForm){			
- 			let para ={
-				name:this.AdduserForm.name,
-				decribes:this.AdduserForm.decribes,
-				startDate:this.AdduserForm.startDate,
-				type:this.AdduserForm.type,
-				endDate:this.AdduserForm.endDate,
-				vision:this.AdduserForm.vision,				
-            };
-            this.$refs[AdduserForm].validate((valid) => {
-                if(valid){
-                   addInfo(para).then(res =>{
-
-                    if(res.data.success){
-                        this.$message({
-                            type: 'success',
-                            message: '添加成功！'
-                        })
-                        this.lists.unshift(
-                        {
-							"name":this.$refs['AdduserForm'].model.name,
-							"describes":this.$refs['AdduserForm'].model.describes,
-                        	"startDate":this.$refs['AdduserForm'].model.startDate,
-							"endDate":this.$refs['AdduserForm'].model.endDate,
-							"type":this.$refs['AdduserForm'].model.type, 
-							"vision":this.$refs['AdduserForm'].model.vision,                             
-						},	
-                        
-                    );
-                    this.addUserInfos=false;
-                    this.$refs['AdduserForm'].resetFields();
-                    }else{
-                        this.$message({
-                            type: 'error',
-                            message: '添加失败，请联系管理员'
-                        })
-                        
-                    }   		   		
-                    })
-                }else{   		
-                    this.addUserInfos=true;
-                    this.$refs.AdduserForm.validate((valid) => {
-                        if (valid) {				
-                        alert('submit!');
-                        } else {
-                            return false;
-                        }
-                    });
-                } 
-            });  	
-		},
-        },
-        mounted() {
-            this.getlists();
-			let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
-   			this.$refs.abc.style.height= h+"px"
-		}
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    Edit(row) {
+	  let para = row;
+	  console.log(para)
+      if ((row.edit = !row.edit)) {
+        return;
+      } else {
+        updateInfo(para).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "编辑成功！"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "编辑失败，请联系管理员！"
+            });
+          }
+		});
+		this.getlists();
+      }
+      //row.edit=!row.edit;
+    },
+    addUserInfo() {
+      this.addUserInfos = false;
+      this.$refs["AdduserForm"].resetFields();
+    },
+    choice(AdduserForm) {
+      let para = {
+        name: this.AdduserForm.name,
+        decribes: this.AdduserForm.decribes,
+        startDate: this.AdduserForm.startDate,
+        type: this.AdduserForm.type,
+        endDate: this.AdduserForm.endDate,
+        vision: this.AdduserForm.vision,
+        areaId: this.AdduserForm.stateCode
+      };
+      console.log(para);
+      this.$refs[AdduserForm].validate(valid => {
+        if (valid) {
+          addInfo(para).then(res => {
+            if (res.data.success) {
+              this.$message({
+                type: "success",
+                message: "添加成功！"
+              });
+              this.lists.unshift({
+                name: this.$refs["AdduserForm"].model.name,
+                describes: this.$refs["AdduserForm"].model.describes,
+                startDate: this.$refs["AdduserForm"].model.startDate,
+                endDate: this.$refs["AdduserForm"].model.endDate,
+                type: this.$refs["AdduserForm"].model.type,
+                vision: this.$refs["AdduserForm"].model.vision,
+                areaId: this.$refs["AdduserForm"].model.stateCode,
+                areaName: this.$refs["AdduserForm"].model.stateCode
+              });
+              this.addUserInfos = false;
+              this.$refs["AdduserForm"].resetFields();
+            } else {
+              this.$message({
+                type: "error",
+                message: "添加失败，请联系管理员"
+              });
+            }
+          });
+        } else {
+          this.addUserInfos = true;
+          this.$refs.AdduserForm.validate(valid => {
+            if (valid) {
+              alert("submit!");
+            } else {
+              return false;
+            }
+          });
+        }
+      });
+    },
+    //获取区域和省市代码
+    getAreaCode() {
+      // 	listAllState().then(res => {
+      //     let data = res.data.result;
+      // 	this.options = data;
+      //   });
+      listAll().then(res => {
+        let data = res.data.result;
+        this.options1 = data;
+        console.log(data);
+      });
     }
+  },
+  mounted() {
+    this.getlists();
+    let h =
+      (window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight) - 155;
+    this.$refs.abc.style.height = h + "px";
+  }
+};
 </script>
 <style>
 

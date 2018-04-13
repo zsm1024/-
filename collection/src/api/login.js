@@ -10,8 +10,12 @@ export function loginByUsername(username, password) {
     method: 'post',
     data
     })
+    //  return fetch({
+    // url: '/sys/login/restful',
+    // method: 'post',
+    // data
+    // })
 }
-
 export function logout() {
     return fetch({
     url: '/logout',
