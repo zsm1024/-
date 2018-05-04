@@ -50,7 +50,8 @@
 				lists: [],
 				cols: [
                     {title:'队列名称',field:'queueName'},
-                    {title:'数量',field:'count'},
+					{title:'数量',field:'count'},
+					{title:'日数量',field:'countDate'},
                     {title:'逾期应收款总计',field:'overdueTotal'},
                     {title:'承诺还款案件数',field:'promiseNum'},
                     {title:'未偿总金额',field:'residueTotal'},
@@ -95,7 +96,6 @@
 				getOnTheSpotQueueMissionList(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
-					console.log(res)
 					// this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();

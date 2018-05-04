@@ -3,14 +3,16 @@
 		<el-collapse v-model="activeNames">	
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
-                    <el-table :data="items.customerSimpleList" border stripe :row-class-name="TableRowClassNames"> 
+					<!-- :row-class-name="TableRowClassNames" -->
+                    <el-table :data="items.customerSimpleList" border stripe > 
 						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center">
 						</el-table-column>			
 					</el-table>
                 </template>
 			</el-collapse-item>
+			<!-- :row-class-name="TableRowClassCustom"  -->
 			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
-				<el-table :data="items.customerPhones" border stripe :row-class-name="TableRowClassCustom" >
+				<el-table :data="items.customerPhones" border stripe >
 					
 					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center"  >
 						<template slot-scope="scope">
@@ -22,8 +24,8 @@
 				</el-table>							
 			</el-collapse-item>	
 			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
-							
-				<el-table :data="items.customerAddresses" border stripe :row-class-name="TableRowClassAddress" >
+					<!-- :row-class-name="TableRowClassAddress" 		 -->
+				<el-table :data="items.customerAddresses" border stripe >
 					
 					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center"  >
 						<template slot-scope="scope">							

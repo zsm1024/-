@@ -35,7 +35,7 @@
 			</el-table-column>
 			<el-table-column fixed label="操作"  align="center" width="90">
 				<template slot-scope="scope">
-					<router-link class="a-href" :to="{path:'/spdata/splist/historyList/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
+					<router-link class="a-href" :to="{path:'/spdata/splist/historyList/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">查看</span></router-link>
 				</template>
 			</el-table-column>
 			

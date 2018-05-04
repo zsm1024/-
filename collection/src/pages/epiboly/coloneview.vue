@@ -43,7 +43,8 @@
 			</el-form>  
         </el-col>  
     <!--列表-->
-		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"  :row-class-name="tableRowClassName"  id="ClOne" @current-change="handleCurrentChanges" ref="singleTable" border>
+	<!-- :row-class-name="tableRowClassName"  -->
+		<el-table :data="datas" :max-height="heights" highlight-current-row  v-loading="listLoading"  style="width: 100%;"   id="ClOne" @current-change="handleCurrentChanges" ref="singleTable" border>
 			<el-table-column label="操作" width="60" fixed="left"  align="center" >
 				<template slot-scope="scope">
 					 <router-link class="a-href" :to="{path:'/epiboly/eptab/tabviews/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
@@ -60,7 +61,7 @@
 			</el-table-column> --> 
 			<!-- <el-table-column type="index" width="30" fixed="left" align="center"> 
 			</el-table-column> -->
-			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
+			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width" show-overflow-tooltip v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
 		 
 		</el-table>
@@ -77,6 +78,7 @@
 	//import NProgress from 'nprogress'
 	//import $ from "jquery";
 	import { getcolone} from '@/api/collmanage';
+	import { SendList} from '@/api/outerlist';
 	export default {
 
 		
@@ -105,8 +107,11 @@
 				cols: [
 					{ title: '姓名', field: 'name', width: "60" },
 					{ title: '合同号', field: 'applicationNumber', width: "80" },
-					{ title: '逾期天数', field: 'overdueDays', width: "75" },
-					{ title: '逾期金额', field: 'overdueTotal', width: "80" },  
+					{ title: '用户ID', field: 'processer', width: "130" },
+					{ title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "130" },
+                    { title: '委托金额', field: 'entrustMoney', width: "130" },
+					{ title: '委托逾期天数', field: 'entrustOverDueDays', width: "100" },
+					 { title: '委托逾期金额', field: 'overdueReceivables', width: "100" }, 
 					{ title: '约会日期', field: 'appointmentTime', width: "80" },
 					{ title: '最近行动代码', field: 'actSign', width: "120" },
 					{ title: '最近行动时间', field: 'inputTime', width: "150" },					
@@ -190,7 +195,8 @@
 					page: this.page,
 					pageSize:this.pagesize,
 					userId:this.userid,
-					queueId:this.$route.path.split('/').pop(),
+					// queueId:this.$route.path.split('/').pop(),
+					queueId:"119",
 					name:this.filters.name,
 					applicationNumber:this.filters.applicationNumber,
 					overdueDays:this.filters.overdueDays,
@@ -198,8 +204,9 @@
 					endTime:this.times2
 				};
 				this.listLoading = true;				//NProgress.start();
-				getcolone(para).then((res) => {
-					let data=res.data.result;					
+				SendList(para).then((res) => {
+					let data=res.data.result;
+					console.log(res)					
 					 this.datas=data.data;					 
 					 this.total=data.recordsTotal;
 					//  console.log(this.datas);

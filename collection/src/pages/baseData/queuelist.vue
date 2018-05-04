@@ -37,6 +37,11 @@
 						<!-- <el-option label="N" value="N"></el-option> -->
 					</el-select>
 				</el-form-item>
+				<!-- <el-form-item label="主管：" prop="director" :label-width="formLabelWidth">
+					<el-select  v-model="AdduserForm.director" placeholder="请选择" style="width:300px" @change="getMessage">
+						<el-option v-for="rule in userList" :key="rule.id" :label="rule.value" :value="rule.id"></el-option>
+					</el-select>
+				</el-form-item> -->
 				<el-form-item label="暂挂标识：" prop="pendingSign" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.pendingSign" style="width:300px"></el-input>
 				</el-form-item>
@@ -44,7 +49,7 @@
 					<el-input v-model="AdduserForm.queueType" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.state"style="width:300px" ></el-input>
+					<el-input v-model="AdduserForm.state" style="width:300px" ></el-input>
 				</el-form-item>
 				<el-form-item label="分配规则：" prop="distributionId" :label-width="formLabelWidth">
 					<el-select  v-model="AdduserForm.distributionId" placeholder="请选择" style="width:300px">
@@ -82,6 +87,7 @@
                 cols:[
 					{title:'队列名称',field:'queueName',width:"180"},
 					{title:'负责人',field:'personChargeName',width:"70"},
+					{title:'主管',field:'directorName',width:"70"},
                     {title:'暂挂标识',field:'pendingSign',width:"90"},
                     {title:'类型',field:'queueType',width:"70"},
                     {title:'状态',field:'state',width:"70"},
@@ -91,6 +97,7 @@
 					queueName:"", 
 					pendingSign:"",
 					personChargeName:"",
+					// director:"",
 					queueType:"",
 					startDate:"",
 					state:"",
@@ -126,6 +133,7 @@
 				base_menue(para).then((res) => {
                     let data=res.data.result;
 					this.lists=data.data;
+					console.log(data)
 					this.lists = this.lists.map(v => {
 					this.$set(v, 'edit', false)
 					return v;
@@ -258,6 +266,7 @@
 				queueName:this.AdduserForm.queueName,
 				personCharge:this.AdduserForm.personChargeName,
 				pendingSign:this.AdduserForm.pendingSign,
+				director:this.AdduserForm.director,
 				queueNum:'',
 				queueType:this.AdduserForm.queueType,
 				state:this.AdduserForm.state,

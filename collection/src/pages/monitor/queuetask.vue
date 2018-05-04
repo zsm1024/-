@@ -19,7 +19,7 @@
             
             <el-table-column label="操作"  align="center" >
                 <template  slot-scope="scope">
-                    <router-link class="a-href" :to="{path:'/monitor/timedistribution/'+scope.row.id}">详情</router-link>
+                    <router-link class="a-href" :to="{path:'/monitor/timedistribution/'+scope.row.id}"><span  @click="detiallist(scope.row.id)">详情</span></router-link>
                     
                 </template>
             </el-table-column>

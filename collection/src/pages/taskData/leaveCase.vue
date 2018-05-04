@@ -84,6 +84,7 @@ export default {
           itemsId:0,
           addlists:[],
           userList:[],
+          b:[],
           multipleSelection:[],   
           cols: [   { title: '用户ID', field: 'processer', width: "60" },
                     { title: '留案到期日', field: 'leaveTime', width: "60" },
@@ -164,16 +165,18 @@ export default {
         },
     hostList(){
         this.addlists=[];
-         let b=[]
+         this.b=[]
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);           
-            });            
+            });          
             for(let i=0;i< this.multipleSelection.length;i++){
-                if( this.multipleSelection[i].lockFlag!=null){
-                    b.push(this.multipleSelection[i].lockFlag)                  
+                if( this.multipleSelection[i].lockFlag!="null"||this.multipleSelection[i].lockFlag=="Y"){                   
+                   this.b.push(this.multipleSelection[i].lockFlag)                  
                 }
             }
-              if(b.length==0){
+            console.log(this.b)
+            console.log(this.b.indexOf("N",0)==1)
+              if(this.b.indexOf("N",0)==-1){
                       let para={
             // userId:this.itemsId,
                         missionIds:this.addlists,
@@ -188,7 +191,9 @@ export default {
                         })
                     }else{
                         leaveTheCaseApp(para).then( res=>{
+
                             this.listShow()
+                           this.escrowTime="";
                         }) 
                     }
                }else{

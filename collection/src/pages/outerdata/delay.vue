@@ -55,7 +55,7 @@
       <!--       -->
    <el-table :data="datas"  style="width:100% ;margin-top:5px;" highlight-current-row border :max-height="this.heights"  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" :key="index" align="center" >
+       <el-table-column  :prop="cols.field" :label="cols.title"  v-for="(cols, index) in cols" :key="index" align="center" show-overflow-tooltip>
 		</el-table-column>
         
    </el-table>
@@ -67,7 +67,7 @@
 </section>
 </template>
 <script >
-import {delayList} from '@/api/outerlist';  
+import {delayList,delayTheCaseApp} from '@/api/outerlist';  
 import {getTaskHostUser,leaveTheCaseApp} from '@/api/task';
 export default {
   data(){
@@ -86,13 +86,16 @@ export default {
           userList:[],
           multipleSelection:[],   
           cols: [   { title: '用户ID', field: 'processer', width: "60" },
-                    { title: '延案到期日', field: 'delayTime', width: "60" },
-                    { title: '延案状态', field: 'leaveStatus', width: "60" },
+                    { title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "60" },
 					{ title: '姓名', field: 'name', width: "60" },
             		{ title: '合同号', field: 'applicationNumber', width: "80" },
-           			{ title: '职业', field: 'occupation', width: "90" },
+                    { title: '职业', field: 'occupation', width: "90" },
+                    // { title: '延案到期日', field: 'deadTimeOfTheSendCase', width: "150" },
            			{ title: '逾期天数', field: 'overdueDays', width: "75" },
-					{ title: '逾期金额', field: 'overdueTotal', width: "80" },
+                    { title: '逾期金额', field: 'overdueTotal', width: "80" },
+                    { title: '委托逾期天数', field: 'entrustOverDueDays', width: "60" },
+                     { title: '委托金额', field: 'entrustMoney', width: "60" }, 
+                    { title: '委托逾期金额', field: 'overdueReceivables', width: "60" },
 					{ title: '贷款产品', field: 'loanProducts', width: "180" },
 					{ title: '贷款车型', field: 'car', width: "180" },
 					{ title: '约会日期', field: 'appointmentTime', width: "150" },
@@ -168,39 +171,45 @@ export default {
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);           
             });            
-            for(let i=0;i< this.multipleSelection.length;i++){
-                if( this.multipleSelection[i].lockFlag!=null){
-                    b.push(this.multipleSelection[i].lockFlag)                  
-                }
-            }
-              if(b.length==0){
+            // for(let i=0;i< this.multipleSelection.length;i++){
+            //     if( this.multipleSelection[i].lockFlag!=null){
+            //         b.push(this.multipleSelection[i].lockFlag)                  
+            //     }
+            // }
+            // console.log(b)
+            //   if(b.length==0){
                       let para={
             // userId:this.itemsId,
                         missionIds:this.addlists,
                         // status:"2",
-                        leaveTime: this.times
+                        delayTime: this.times
                     }
                     if(this.escrowTime==""|| this.addlists.length==0){          
-                        this.$alert('请选择留案日期或待留案案件！','提示',{
+                        this.$alert('请选择延案日期或待延案案件！','提示',{
                                 confirmButtonText:'确定',
                                 type:'warning',
                                 center:'true'
                         })
                     }else{
-                        // leaveTheCaseApp(para).then( res=>{
-                        //     this.listShow()
-                        // }) 
-                    }
-               }else{
-                   this.$alert('请选未申请的案件！','提示',{
+                        delayTheCaseApp(para).then( res=>{
+                            this.listShow()
+                            this.$alert('延案申请成功！','提示',{
                                 confirmButtonText:'确定',
-                                type:'warning',
+                                type:'success',
                                 center:'true'
-                        })
-               }
-                   
-     
-         
+                            })
+                            this.times="";
+                            this.escrowTime=""
+                            this.addlists=[];
+                        }) 
+                    }
+            //    }else{
+            //        this.$alert('请选未申请的案件！','提示',{
+            //                     confirmButtonText:'确定',
+            //                     type:'warning',
+            //                     center:'true'
+            //             })
+            //    }   
     },
     handleCurrentChange(val) {
         this.pages = val;

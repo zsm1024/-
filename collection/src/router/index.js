@@ -6,6 +6,7 @@ const _import = file => () =>
 /* layout */
 import Layout from '../pages/layout/Layout';
 import tabView from '../pages/tab/tabview';
+// import tabViews from '../pages/epiboly/eptab'
 Vue.use(Router);
 
 export const constantRouterMap = [{
@@ -22,6 +23,48 @@ export const constantRouterMap = [{
     path: '/401',
     component: _import('errorPage/401'),
     hidden: true
+  },
+  {
+    path: '/epiboly/eptab',
+    component: Layout,
+    redirect: 'noredirect',
+    hidden: true,
+    children:[{
+      path: 'tabviews/:id',
+      name: '外包处理详情页',
+      redirect: '/epiboly/eptab/tabViews/cs_message/:id',
+      component: _import('epiboly/eptab/tabViews'),
+      children:[{
+        path: '/epiboly/eptab/tabViews/cs_message/:id',
+        name: '外包处理详情页',
+        component: _import('epiboly/eptab/eplist/cs_message')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/ht_message/:id',
+        component: _import('epiboly/eptab/eplist/ht_message')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/cs_history/:id',
+        component: _import('epiboly/eptab/eplist/cs_history')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/showlist/:id',
+        component: _import('epiboly/eptab/eplist/showlist')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/hk_plan/:id',
+        component: _import('epiboly/eptab/eplist/hk_plan')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/kk_list/:id',
+        component: _import('epiboly/eptab/eplist/kk_list')
+      },
+      {
+        path: '/epiboly/eptab/tabViews/cms_history/:id',
+        component: _import('epiboly/eptab/eplist/cms_history')
+      },
+    ]
+    }]
   },
   {
     path: '/',
@@ -120,48 +163,7 @@ export const constantRouterMap = [{
       ]
     }, ]
   },
-  {
-    path: '/epiboly/eptab',
-    component: Layout,
-   
-    hidden: true,
-    children:[{
-      path: 'tabviews/:id',
-      name: '处理详情页',
-      redirect: '/epiboly/eptab/tabViews/cs_message/:id',
-      component: _import('epiboly/eptab/tabViews'),
-      children:[{
-        path: '/epiboly/eptab/tabViews/cs_message/:id',
-        name: '处理详情页',
-        component: _import('epiboly/eptab/eplist/cs_message')
-      },
-      {
-        path: '/epiboly/eptab/tabViews/ht_message/:id',
-        component: _import('tab/tablist/ht_message')
-      },
-      {
-        path: '/epiboly/eptab/tabViews/cs_history/:id',
-        component: _import('epiboly/eptab/eplist/cs_history')
-      },
-      {
-        path: '/epiboly/eptab/tabViews/showlist/:id',
-        component: _import('epiboly/eptab/eplist/showlist')
-      },
-      {
-        path: '/epiboly/eptab/tabViews/hk_plan/:id',
-        component: _import('epiboly/eptab/eplist/hk_plan')
-      },
-      {
-        path: '/epiboly/eptab/tabViews/kk_list/:id',
-        component: _import('epiboly/eptab/eplist/kk_list')
-      },
-      {
-        path: '/epiboly/eptab/tabViews/cms_history/:id',
-        component: _import('epiboly/eptab/eplist/cms_history')
-      },
-    ]
-    }]
-  },
+  
   {
     path: '/searchs',
     component: Layout,
@@ -255,6 +257,11 @@ export const constantRouterMap = [{
         path:'/outerdata/listin',
         name:"文件导入",
         component:_import('outerdata/listin'),
+      },
+      {
+        path:'/outerdata/listdetial',
+        name:"外包案件详情",
+        component:_import('outerdata/listdetial'),
       }
     ]
   },
@@ -262,7 +269,7 @@ export const constantRouterMap = [{
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  //mode: 'history', //后端支持可开
   scrollBehavior: () => ({
     y: 0
   }),

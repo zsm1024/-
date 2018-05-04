@@ -56,7 +56,7 @@
 						</tr>
 					</table>
 				</div>
-			
+				
 			</el-collapse-item>
 			<el-collapse-item title="还款账号列表" name="2">
 				<div>
@@ -66,7 +66,7 @@
 
 					</el-table>
 				</div>
-			</el-collapse-item>
+			</el-collapse-item>			
 		</el-collapse>
 	</section>
 </template>
@@ -103,10 +103,8 @@ import { getdeal } from "@/api/tablist";
 					this.listLoading = true;
 					//NProgress.start();
 					getdeal(para).then(res => {
-
 						let data=res.data.result;				
-						  this.lists =data.contractBanks;
-						
+						  this.lists =data.contractBanks;						
 						// this.cols = res.data.cols;
 						 this.details = data;
 						this.listLoading = false;

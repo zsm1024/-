@@ -35,7 +35,7 @@
 					<el-input v-model="AdduserForm.areaName" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.state"style="width:300px" ></el-input>
+					<el-input v-model="AdduserForm.state" style="width:300px" ></el-input>
 				</el-form-item>
 				<!-- <el-form-item label="分配规则：" prop="distributionId" :label-width="formLabelWidth">
 					<el-select  v-model="AdduserForm.distributionId" placeholder="请选择" style="width:300px">

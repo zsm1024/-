@@ -1,12 +1,12 @@
 <template>
 <section>
-	<!-- <el-row>
+ <el-row>
 		<el-col :span="24" id="el-icons">	
-			<i class="el-icon-message" @click="messageOpen">短信</i>
-			<i class="el-icon-upload2" @click="encloOpen">附件</i>
+			<!-- <i class="el-icon-message" @click="messageOpen">短信</i>
+			<i class="el-icon-upload2" @click="encloOpen">附件</i> -->
 			<i class="el-icon-edit" @click="visitList">外访记录</i>			 
 		</el-col>
-	</el-row> -->
+	</el-row>
 	<!-- <div>{{callback.roleName}}</div> -->
 	<div id="tables">    
 		<el-form ref="mainform" :rules="rules" :model="mainform" label-width="65px"   id="FixForm" inline >		
@@ -93,6 +93,13 @@
 					</el-select>
 				</el-form-item>
 			</el-form> -->
+			<el-form :model="fileList">
+			<el-form-item label="附件类型">
+					<el-select v-model="fileList.fileListTypes"  placeholder="请选择"   id="selectMess" @change="fileListTypesChange">
+						<el-option  v-for="(item,index) in fileListType" :key="index" :label="item.val" :value="item.val"></el-option>
+					</el-select>
+				</el-form-item>
+			<el-form-item >
 			<el-upload
 				class='ensure ensureButt'
 				ref="upload"
@@ -116,6 +123,8 @@
 				<el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
 				<!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
 				</el-upload>
+				</el-form-item>
+				</el-form>		
 				<h4 style="padding:10px 5px;margin-top:10px">附件列表</h4>
 				<el-table :data="datas"  highlight-current-row  style="width: 100%;" id="uploadFile"  border>
 					<el-table-column label="操作"  fixed="left"  align="center" width="140" >
@@ -137,8 +146,9 @@
                :beforeUpload="beforeAvatarUpload"-->
 		</el-dialog>
 <!-- 外访记录 -->
-		<!-- <el-dialog :visible.sync="visitListDetial" :modal="true" :modal-append-to-body="false" :show-close='true' title="外访纪录" id="outerdialog">
-			<el-form ref="mainformvisit"  :model="mainformvisit"   inline >	
+		<el-dialog :visible.sync="visitListDetial" :modal="true" :modal-append-to-body="false" :show-close='true' title="外访纪录" id="outerdialog">
+			<!-- <visitList></visitList> -->
+	<el-form ref="mainformvisit"  :model="mainformvisit"   inline >	
 
       <el-form-item label="外访日期" prop="appointmentTime" label-width="95px" >
          <i style="color:red">*</i> 
@@ -158,14 +168,14 @@
 				</el-form-item>
         <el-form-item label="地址是否存在 " label-width="95px" prop="istrue" >
           <i style="color:red">*</i> 
-					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.istrue"  >
+					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.istrue"  @change="isaddress" >
 						<el-option v-for="(item,index) in IsTrue" :key="index" :label="item.label" :value="item.value"></el-option>
-					</el-select> -->
+					</el-select>
           <!-- v-model="messageform.selectTitle" placeholder="请选择" @change="getMessage" -->			
-				<!-- </el-form-item>	
-        <el-form-item label="备注 " label-width="95px" prop="addressName"  v-if="mainformvisit.istrue=='Y'">
+				</el-form-item>	
+        <el-form-item label="备注 " label-width="95px" prop="addressName"  v-if="mainformvisit.istrue=='N'">
           <i style="color:red">*</i> 
-					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.addressName" >
+					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.addressName" @change="addressNames" >
 						<el-option v-for="(item,index) in addressName" :key="index" :label="item.val" :value="item.val"></el-option>
 					</el-select>	
 				</el-form-item>	
@@ -189,60 +199,73 @@
 					</el-select>	
 				</el-form-item>       
         </span> 
-        <el-form-item label="地址情况 " label-width="95px" prop="addressStn"  >  
+        <el-form-item label="地址情况 " label-width="95px" prop="addressStn" v-if="mainformvisit.istrue=='Y'">  
            <i style="color:red">*</i>           
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.addressStn" >
+					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.addressStn" @change="changesub">
 						<el-option v-for="(item,index) in addressStn" :key="index" :label="item.val" :value="item.val"></el-option>
 					</el-select>	
 				</el-form-item>
-        <el-form-item label="房屋所有人 " label-width="95px" prop="houseStn"  >  
+        <el-form-item label="房屋所有人 " label-width="95px" prop="houseStn"  v-if="mainformvisit.istrue=='Y'">  
            <i style="color:red">*</i>           
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.houseStn" >
+					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.houseStn" @change="changesub" >
 						<el-option v-for="(item,index) in houseStn" :key="index" :label="item.val" :value="item.val"></el-option>
 					</el-select>	
 				</el-form-item>
-        <el-form-item label="工作情况 " label-width="95px" prop="workStn"  > 
+        <el-form-item label="工作情况 " label-width="95px" prop="workStn" v-if="mainformvisit.istrue=='Y'"> 
           <i style="color:red">*</i>        
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.workStn" >
+					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.workStn"  @change="changesub">
 						<el-option v-for="(item,index) in workStn" :key="index" :label="item.val" :value="item.val"></el-option>
 					</el-select>	
 				</el-form-item>
-        <el-form-item label="控制车辆人 " label-width="95px" prop="carStn"  >  
+        <el-form-item label="控制车辆人 " label-width="95px" prop="carStn" v-if="mainformvisit.istrue=='Y'" >  
            <i style="color:red">*</i>           
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.carStn" >
+					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.carStn" @change="changesub" >
 						<el-option v-for="(item,index) in carStn" :key="index" :label="item.val" :value="item.val"></el-option>
 					</el-select>	
 		</el-form-item>
 			<el-form-item label="">
 			 	<el-button style="padding:10px" type="primary" @click="canclevisit">取 消</el-button>
-				<el-button type="primary"  style="padding:10px" @click="submitMsg">确 定</el-button>
+				<el-button type="primary"  style="padding:10px" @click="submitMsg" :disabled="disablelist">确 定</el-button>
 			</el-form-item>      
     </el-form>
-    <div slot="footer" class="dialog-footer" style="text-align:end"> -->
+    		<h4 style="padding:10px 5px;margin-top:10px">外访记录列表</h4>
 				<!-- @click="addWorkInfo" -->
-				
-			<!-- </div>
-		</el-dialog> -->
+				<el-table :data="visitListsRecords"  border highlight-current-row style="width: 100%;" stripe >
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in col" :key="index" align="center" :width="col.width"  :fixed="col.fixed" show-overflow-tooltip>
+				</el-table-column>
+			</el-table>
+			<el-col :span="24" class="toolbar">					
+				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="visithandleCurrentChange" @size-change="visithandleSizeChanges" :page-size="visitpagesize" :page-sizes="[10, 20, 50, 100]"   :total="visittotal"   style="float:right;">
+				</el-pagination>
+			</el-col>
+		</el-dialog>
 </section>  
 </template>
 <script>
 import { tab_view,recordAdd,getCodeAll,getNextMissonId,messageDialog,messageTemplate,messageSend,ListFilses,role,delet } from "@/api/tablist";
-import {RecordsFind} from "@/api/visit"
+import {RecordsFind,RecordsFindlist} from "@/api/visit"
+import {path} from '@/config'
+//  import{Path} from "@/utils/path"
 // import visitList from "../tablist/visit_list"
 // import{tab_view} from "@/api/tablist"
-import{findByType,AddresssfindByType,AddresssfindAddress,VisitRecords} from "@/api/basedata"
+import{findByType,AddresssfindByType,AddresssfindAddress,VisitRecords,getFileType} from "@/api/basedata"
 export default{
 	props:['callback'],	
 	data(){				
 		return{
+			// fileListType:'',
 			disable:false,
 			total: 0,
+			visittotal:0,
 			page: 1,
+			visitpages:1,
+			visitpagesize:20,
 			pagesize:200,			
 			fileListStatue:true,
             tosubtext:'确认',
 			disabledto: false,
 			disabledNex:false,
+			disablelist:true,
 			items: [],
 			phoneListNums:[],
 			messageModel:[],
@@ -255,6 +278,12 @@ export default{
 			userList2:[],
 			UserArr:[],
 			TypeArr:[],
+			fileListType:[
+				// {title:'外访记录照片',field:'type',width:"70"},
+				// {title:'客户面催照片',field:'createUser',width:"70"},				
+				// {title:'外访信函', field: 'createTime', wdth: "50" }, 
+				// {title:'其他',field:'name',width:"60"},	
+			],
 			addressType:[],
 			datas:[],
 			templateId:'',
@@ -264,7 +293,9 @@ export default{
 			state:"",
 			 applicationNumber:'',
 			 sort:"1",
-			//短信弹出层
+			fileList:{
+				fileType:""
+			},
 			messageform: {
 				// contractNum:this.applicationNumber,
 				template:'',
@@ -273,10 +304,23 @@ export default{
 				selectTitle:"",
 			},
 			cols:[
-				{title:'附件类型',field:'type',width:"70"},
+				{title:'附件类型',field:'fileType',width:"70"},
 				{title:'上传用户ID',field:'createUser',width:"70"},				
 				{title:'上传时间', field: 'createTime', width: "50" }, 
 				{title:'附件名称',field:'name',width:"60"},				
+			],
+			col:[
+				{title:'日期',field:'outsideTime',width:"70"},
+				{title:'地址类型',field:'addressType',width:"70"},				
+				{title:'地址', field: 'address', width: "50" }, 
+				{title:'地址是否存在',field:'addressReal',width:"60"},
+				{title:'备注',field:'addressRemarks',width:"70"},
+				{title:'是否有人应门',field:'callReal',width:"70"},				
+				{title:'见到对象', field: 'seeIt', width: "50" }, 
+				{title:'地址情况',field:'cusAddressSituation',width:"60"},
+				{title:'房屋所有人', field: 'ownerHource', width: "50" }, 
+				{title:'工作情况',field:'cusWorkSituation',width:"60"},
+				{title:'控制车辆人',field:'carControl',width:"60"},					
 			],
 			mainform: {
 					actSign: '',
@@ -298,7 +342,8 @@ export default{
 			getname: [],
 			getfangshi:[],
 			getMesTemplate: [],	
-            getMesPhone: [],	
+			getMesPhone: [],
+			visitListsRecords:[],	
             //备注弹出层
 			// remarkform: {
 			// 	remarks:'',
@@ -327,11 +372,14 @@ export default{
                         { required: true, message: '请填写备注', trigger: 'blur' }
                     ],			
 				},
-				importFileUrl:"http://192.168.2.113:8081/files/upload",
+				//importFileUrl:"http://10.50.132.72:18081/ics/files/upload",
+				importFileUrl:"",
+				downLoadPath:"",
 				filelist:[],
 				upLoadData:{
 					icsId:this.$route.params.id,	
-					username:localStorage.getItem("userName")				
+					username:localStorage.getItem("userName"),
+					fileType:""
 				},
 		timesvisit:"",
       IsTrue:"",
@@ -352,7 +400,7 @@ export default{
           addressName:"",
           isanswer:"",
           isperson:"",
-          personmarks:"",
+        //   :"",
           addressStn:"",
           houseStn:"",
           workStn:"",
@@ -364,19 +412,47 @@ export default{
         {"label":"N","value":"N"},
       ],
        IsTrue1:[],
-      addressName:[],
-			}
+		addressName:[],
+		pageEn:10,
+		pageSizeEn:10
+		  
+	}
 			
 	},
 	methods:{
-		// handleCurrentChange(val) {
-        //         this.pages = val;
-		// 		this.encloOpen();
-        //     },
-            // handleSizeChange(val) {
-			// this.pagesize = val  
+		PathList(){
+		// let obj=new	Path();
+		this.importFileUrl=path.uploadPath;
+		this.downLoadPath=path.downLoadPath;
+		// console.log(obj.uploadPath)
+		},
+		fileListTypesChange(val){
+			this.upLoadData.fileType=val;
+			console.log(this.upLoadData.fileType)
+		},
+		changesub(){
+			if(this. mainformvisit.addressStn==""||this. mainformvisit.houseStn==""||this. mainformvisit.workStn==""||this. mainformvisit.carStn==""){
+				this.disablelist=true;
+			}else{
+			this.disablelist=false;
+			}
+		},
+		handleCurrentChange(val) {
+                this.pages = val;
+				this.encloOpen();
+			},
+			visithandleCurrentChange(val) {
+                this.visitpage = val;
+				// this.encloOpen();
+            },
+            handleSizeChange(val) {
+			this.pagesize = val  
 			// this.encloOpen();     
-			// },
+			},
+			 visithandleSizeChanges(val) {
+			this.visitpagesizes = val  
+			// this.encloOpen();     
+			},
 		querySearch(querySt,cb){
 		  let data =this.restaurants;
 		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
@@ -441,18 +517,20 @@ export default{
 				// console.log(res)			
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
-							this.$message({
+							this.$notify({
                                 type:'success',
-                                message:'提交成功',
+								message:'提交成功',
+								duration:1000,
 							});							
 							setTimeout(()=>{
 								this.disabledto=false;
 							},1000)                            
 						}else{
 							this.$refs['mainform'].resetFields();
-							this.$message({
+							this.$notify({
 								type: 'error',
-								message: '提交失败，请联系管理员！'
+								message: '提交失败，请联系管理员！',
+								duration:1000,
 							});
 							setTimeout(()=>{
 								this.disabledto=false;
@@ -523,9 +601,10 @@ export default{
 						// console.log(res)				
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
-							this.$message({
+							this.$notify({
                                 type:'success',
-                                message:'提交成功',
+								message:'提交成功',
+								duration:1000,
 							});							
                             setTimeout(()=>{
 								this.disabledNex=false;
@@ -534,9 +613,10 @@ export default{
 							localStorage.removeItem(nextId,nextId)
 						}else{
 							this.$refs['mainform'].resetFields();
-							this.$message({
+							this.$notify({
 								type: 'error',
-								message: '提交失败，请联系管理员！'
+								message: '提交失败，请联系管理员！',
+								duration:1000,
 							});
 							 setTimeout(()=>{
 								this.disabledNex=false;
@@ -567,8 +647,7 @@ export default{
 					this.TypeArr.splice(0,this.TypeArr.length)
 					this.phoneListNums.forEach(el =>{
 					this.UserArr.push(el.roleName)
-					});
-					
+					});					
 					data.customerAddresses.forEach(el =>{
 						this.addressType.push(el.addressType.split(" ").shift())
 					});
@@ -622,48 +701,58 @@ export default{
 			this.messageform.selectTitle=a;
 			this.userList=[];
 		},
-		//  messageOpen(){
-		// 	this.messageopen=true;  
-		// 	 this.callParent();
-		// 	 let pList=[];
-		// 	//   this.userList=[];
-		// 	 this.phoneListNums.forEach(e =>{
-		// 		 if(//e.infoSource=="CMS"&&e.roleName=="主借人"&&
-		// 		 e.effectiveness=="Y"){
-		// 			 e.phone=e.phone.replace(/\s+/g,"");
-		// 			 this.userList.push({"value":e.phone+'-'+e.roleName})
-		// 			 pList.push(e.phone)
-		// 		 }else{
-		// 			 return;
-		// 		 }				
-		// 	 })
-		// 	  this.messageform.phone=pList[0]+"-主借人"
-		// 	  this.messageform.messagedesc="";
-		// 	 messageDialog().then( res =>{				
-		// 		let data =res.data.result;
-		// 		 this.messageModel.splice(0,this.messageModel.length)
-		// 		 data.forEach(e =>{
-		// 			this.messageModel.push({"lable":e.id,"value":e.title})
-		// 			this.messageTemplate.push({"lable":e.id,"value":e.title});					
-		// 		 });	
-		// 	});
-		// 	// this.messageform.selectTitle="";
+		 messageOpen(){
+			this.messageopen=true;  
+			 this.callParent();
+			 let pList=[];
+			//   this.userList=[];
+			 this.phoneListNums.forEach(e =>{
+				 if(//e.infoSource=="CMS"&&e.roleName=="主借人"&&
+				 e.effectiveness=="Y"){
+					 e.phone=e.phone.replace(/\s+/g,"");
+					 this.userList.push({"value":e.phone+'-'+e.roleName})
+					 pList.push(e.phone)
+				 }else{
+					 return;
+				 }				
+			 })
+			  this.messageform.phone=pList[0]+"-主借人"
+			  this.messageform.messagedesc="";
+			 messageDialog().then( res =>{				
+				let data =res.data.result;
+				 this.messageModel.splice(0,this.messageModel.length)
+				 data.forEach(e =>{
+					this.messageModel.push({"lable":e.id,"value":e.title})
+					this.messageTemplate.push({"lable":e.id,"value":e.title});					
+				 });	
+			});
+			// this.messageform.selectTitle="";
 			
-		//  },
-		// encloOpen(){
+		 },
+		encloOpen(){
 			// let paras={
 			// 	username:localStorage.getItem("userName")
 			// }
 			// role(paras).then(res=>{
 			// 	console.log(res)
 			// });
-				// this.encloopen=true;
-				// this.listrefresh()
+				this.encloopen=true;
+				this.listrefresh();
+				let para={
+					icsId:this.$route.params.id,
+					page:this.pageEn,
+					pageSize:this.pageSizeEn
+				}
+				getFileType(para).then(res=>{
+					let data=res.data.result
+					this.fileListType=data
+				})
 				
-		// },
+		},
 		listrefresh(){
 			this.fileListStatue=true;
 			let para={
+					icsId:this.$route.params.id,
 					page:this.page,
 					pageSize:this.pagesize
 				}
@@ -771,6 +860,17 @@ export default{
 	},
 
 	NoRefresh(){
+		let REefresh={
+			actSign:this.mainform.actSign,
+			allowance:this.mainform.allowance,
+			allDate:this.allDate,
+			linkman:this.mainform.linkman,
+			linkInfomation:this.mainform.linkInfomation,
+			appointmentTime:this.times,
+			afpRecord:this.mainform.afpRecord,
+			RowId:this.$route.params.id,
+		}			
+		localStorage.setItem("REefresh",JSON.stringify(REefresh))
 	let RowIds=localStorage.getItem(this.$route.params.id);
 		if(localStorage.getItem("REefresh")!=""){
 			let FreshList=JSON.parse(localStorage.getItem("REefresh"));
@@ -794,7 +894,18 @@ export default{
 	},
 		 // 上传成功后的回调
 		submitUpload() {
-			this.$refs.upload.submit();			
+			// this.$refs.upload.submit();	
+			if(this.fileList.fileListType==""){
+				this.$message({
+                    type:'error',
+                    message:'请选择附件类型！',
+				});
+			}else{
+				this.upLoadData.fileType=this.fileList.fileListType;
+				// console.log(this.upLoadData.fileListType)
+				this.$refs.upload.submit();
+				this.fileList.fileListType==""
+			}		
 			// console.log(this.$refs.upload);
 		  },
 		handleRemove(file,fileList){
@@ -821,7 +932,7 @@ export default{
 			console.log('上传失败，请重试！')
 		},
 		uploadSuccess (response, file, fileList) {
-			// 
+			
 			console.log('上传文件', response)
 			if(response.success==true){
 				this.$message({
@@ -841,7 +952,8 @@ export default{
 		},
 		downLoad(item){
 			// console.log(item)
-			window.open("http://192.168.2.94/"+item.path);
+			// window.open("http://10.50.24.81/"+item.path);//文件中心
+			window.open(downLoadPath+item.path);//文件中心地址
 			this.listrefresh()
 		},
 		deleteList(item){
@@ -875,8 +987,22 @@ export default{
 			}
 			RecordsFind(para).then(res=>{
 				console.log(res)
+			});
+			this.getvisitlist();
+		},
+		getvisitlist(){
+			let paras={
+				missionId:this.$route.params.id,
+				page:this.visitpages,
+				pageSize:this.visitpagesize
+			}
+			RecordsFindlist(paras).then(res=>{
+				let data=res.data.result.data
+				this.visittotal=this.recordsTotal;
+				this.visitListsRecords=data;
 			})
 		},
+		
 //外访记录
 	dataChangevisit(val){			
 		this.timesvisit=val;
@@ -888,7 +1014,18 @@ export default{
       if(val=="N"){
         this.mainformvisit.isperson=""
       }
-    },
+	},
+	isaddress(val){
+		if(val=="Y"){
+			this.mainformvisit.addressName=""
+		}
+	},
+	addressNames(val){
+		if(val!=""&&this.mainformvisit.istrue=="N"){
+			this.disablelist=false;
+		}
+	},
+
 //     getlistvisit() {
 // 			let para = {
 // 				missionId: this.$route.params.id
@@ -972,67 +1109,115 @@ export default{
    },
    canclevisit(){  
 	   this.visitListDetial=false;
-    //  this.$refs.mainforms.resetFields();
+     this.$refs.mainformvisit.resetFields();
    },
    submitMsg(){
-     let para={
-          missionId: this.$route.params.id,
-          outsideTime:this.timesvisit,
-          addressType:this.mainformvisit.addressType,
-          address:this.mainformvisit.address,
-          addressReal:this.mainformvisit.istrue,
-          addressRemarks:this.mainformvisit.addressName,
-          callReal:this.mainformvisit.isanswer,
-          seeIt:this.mainformvisit.isperson,
-          // seeItS:this.mainformvisit.ispersons,
-          personmarks:this.mainformvisit.personmarks,
-          cusAddressSituation:this.mainformvisit.addressStn,
-          ownerHource:this.mainformvisit.houseStn,
-          cusWorkSituation:this.mainformvisit.workStn,
-          carControl:this.mainformvisit.carStn
-      }
-      VisitRecords(para).then(res=>{
-        console.log(res)
-      })
-   }
-
-
-	// 	// 上传错误
-	// 	uploadError (response, file, fileList) {
-	// 		console.log(response)
-	// 		console.log(file)
-	// 		console.log(fileList)
-	// 	console.log('上传失败，请重试！')
-	// 	},
-	// 	// 上传前对文件的大小的判断
-	// 	beforeAvatarUpload (file) {
-	// 	const extension = file.name.split('.')[1] === 'xls'
-	// 	const extension2 = file.name.split('.')[1] === 'xlsx'
-	// 	const extension3 = file.name.split('.')[1] === 'doc'
-	// 	const extension4 = file.name.split('.')[1] === 'docx'
-	// 	const isLt2M = file.size / 1024 / 1024 < 10
-	// 	if (!extension && !extension2 && !extension3 && !extension4) {
-	// 		alert('上传模板只能是 xls、xlsx、doc、docx 格式!')
-	// 	}
-	// 	if (!isLt2M) {
-	// 		alert('上传模板大小不能超过 10MB!')
-	// 	}
-	// 	return extension || extension2 || extension3 || extension4 && isLt2M
-	// 	},
-	// 	submitUpload() {
-    //     this.$refs.upload.submit();
-    //   },
+	   if(this.mainformvisit.istrue=="N"){
+			let para={
+				missionId: this.$route.params.id,
+				outsideTime:this.timesvisit,
+				addressType:this.mainformvisit.addressType,
+				address:this.mainformvisit.address,
+				addressReal:this.mainformvisit.istrue,
+				addressRemarks:this.mainformvisit.addressName,
+				// callReal:this.mainformvisit.isanswer,
+				// seeIt:this.mainformvisit.isperson,
+				// seeItS:this.mainformvisit.ispersons,
+				// :this.mainformvisit.,
+				// cusAddressSituation:this.mainformvisit.addressStn,
+				// ownerHource:this.mainformvisit.houseStn,
+				// cusWorkSituation:this.mainformvisit.workStn,
+				// carControl:this.mainformvisit.carStn
+			  } 			 
+			//   ||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.addressName==""
+			  if(this.timesvisit==""||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.addressName==""){
+				  this.$notify({
+					title:"提示:",
+                    type:'warning',
+					message:'请将内容填写完整！',
+					position:"top-left"
+				});
+			  }else{
+				  this.disablelist=false;
+				  VisitRecords(para).then(res=>{
+					  this.getvisitlist()
+					  this.$refs.mainformvisit.resetFields();
+				    // console.log(res)
+				  })				
+			  }
+	   }else{
+		   if(this.mainformvisit.isanswer=="N"){
+			   let para={
+				missionId: this.$route.params.id,
+				outsideTime:this.timesvisit,
+				addressType:this.mainformvisit.addressType,
+				address:this.mainformvisit.address,
+				addressReal:this.mainformvisit.istrue,
+				// addressRemarks:this.mainformvisit.addressName,
+				callReal:this.mainformvisit.isanswer,
+				seeIt:"",
+				// seeItS:this.mainformvisit.ispersons,
+				// :this.mainformvisit.,
+				cusAddressSituation:this.mainformvisit.addressStn,
+				ownerHource:this.mainformvisit.houseStn,
+				cusWorkSituation:this.mainformvisit.workStn,
+				carControl:this.mainformvisit.carStn
+			  }  
+			   if(this.timesvisit==""||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.isanswer==""||this.mainformvisit.addressStn==""||this.mainformvisit.houseStn==""||this.mainformvisit.workStn==""||this.mainformvisit.carStn==""){
+				  this.$message({
+                    type:'danger',
+                    message:'请将内容填写完整！',
+				});
+			  }else{
+				  this.disablelist=false;
+				  VisitRecords(para).then(res=>{
+					  this.getvisitlist()
+					  this.$refs.mainformvisit.resetFields();
+				    // console.log(res)
+				  })				
+			  }
+		   }else{
+			   let para={
+				missionId: this.$route.params.id,
+				outsideTime:this.timesvisit,
+				addressType:this.mainformvisit.addressType,
+				address:this.mainformvisit.address,
+				addressReal:this.mainformvisit.istrue,
+				// addressRemarks:this.mainformvisit.addressName,
+				callReal:this.mainformvisit.isanswer,
+				seeIt:this.mainformvisit.isperson,
+				// seeItS:this.mainformvisit.ispersons,
+				// :this.mainformvisit.,
+				cusAddressSituation:this.mainformvisit.addressStn,
+				ownerHource:this.mainformvisit.houseStn,
+				cusWorkSituation:this.mainformvisit.workStn,
+				carControl:this.mainformvisit.carStn
+			  } 
+			  if(this.timesvisit==""||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.isanswer==""||this.mainformvisit.isperson==""||this.mainformvisit.addressStn==""||this.mainformvisit.houseStn==""||this.mainformvisit.workStn==""||this.mainformvisit.carStn==""){
+				  this.$message({
+                    type:'danger',
+                    message:'请将内容填写完整！',
+				});
+			  }else{
+				  this.disablelist=false;
+				  VisitRecords(para).then(res=>{
+					  this.getvisitlist()
+					  this.$refs.mainformvisit.resetFields();
+				    // console.log(res)
+				  })
+				
+			  }
+		   }
+		   	
+			  
+	   }
+	  
+}
 	},
-// 	components:{
-// 	  visitList
-//   },
-  beforeMount(){
-	  	
-		
-  },
 	mounted() {
 	this.getlists();
 	this.callParent();
+	this.PathList();
 	this.restaurants=this.userList;
 	this.restaurants1=this.getname;
 	this.restaurants2=this.getfangshi;
@@ -1066,7 +1251,7 @@ export default{
 	#uploadFile .el-button{padding: 2px!important;font-size: 13px!important}
 	#outerdialog .el-dialog--small{width:97%!important;max-height:700px;overflow: auto!important;top:2%!important}
 	#outerdialog .el-form-item__content{width:165px!important }
-	#outerdialog .el-input__inner{height: 30px!important}
+	#outerdialog .el-input__inner,#selectMess .el-input__inner{height: 30px!important}
 	@media screen and (max-width:1250px) {
 	/* #FixForm{display:flex} */
 		#bzt {width: 45%}

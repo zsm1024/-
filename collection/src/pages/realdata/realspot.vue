@@ -53,7 +53,7 @@
 				cols: [
                     {title:'队列名称',field:'queueName'},
                     {title:'逾期天数',field:'overdueDays'},
-                    {title:'数量',field:'count'},
+                    {title:'日数量',field:'count'},
                     {title:'承诺还款案件数',field:'promiseNum'},
                     {title:'逾期应收款总计',field:'overdueTotal'},
                     {title:'未偿总金额',field:'residueTotal'},

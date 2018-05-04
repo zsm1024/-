@@ -23,25 +23,26 @@
       <el-button type="primary" size="small" :disabled="disable" @click="approve">批准</el-button>
       <el-button type="primary" size="small" :disabled="disable" @click="refuse">拒绝</el-button>
       <el-button type="primary" size="small" :disabled="disable" @click="close">关闭</el-button>
-      <el-button type="primary"size="small" style="margin-left:10px"  @click="goback">返回</el-button>
+      <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
+  
   <!-- 留案 -->
     <el-form :data="lists" v-else-if="lists.station=='留案'">
-    <el-form-item label="案件ID:"label-width="120px">
+    <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
     </el-form-item>
-    <el-form-item label="当前催收队列:"label-width="120px">
+    <el-form-item label="当前催收队列:" label-width="120px">
       <span>{{lists.nowQueue}}</span>
     </el-form-item>
-    <el-form-item label="催收员:"label-width="120px">
+    <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item label="留案到期日:" label-width="120px">
       <span>{{lists.leaveTime}}</span>
     </el-form-item>
     <el-form-item label="审批备注:(不超过2000字)">
-     <el-input  inline type="textarea"  inline :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
+     <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">
       <el-button type="primary" size="small" :disabled="disable" @click="approve">批准</el-button>
@@ -50,6 +51,31 @@
       <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
+  <!-- 退案 -->
+ <el-form :data="lists" v-else-if="lists.station=='退案'">
+    <el-form-item label="案件ID:" label-width="120px">
+     <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
+    </el-form-item>
+    <el-form-item label="当前催收队列:" label-width="120px">
+      <span>{{lists.nowQueue}}</span>
+    </el-form-item>
+    <el-form-item label="催收员:" label-width="120px">
+      <span>{{lists.nowCollector}}</span>
+    </el-form-item>
+    <el-form-item label="留案到期日:" label-width="120px">
+      <span>{{lists.leaveTime}}</span>
+    </el-form-item>
+    <el-form-item label="审批备注:(不超过2000字)">
+     <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
+    </el-form-item> 
+    <el-form-item style="padding:10px">
+      <el-button type="primary" size="small" :disabled="disable" @click="approve">批准</el-button>
+      <el-button type="primary" size="small" :disabled="disable" @click="close">关闭</el-button>
+      <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
+    </el-form-item>      
+  </el-form>
+
+
   <!-- 转队列 -->
     <el-form :data="lists" v-else>
     <el-form-item label="案件ID:" label-width="120px">
@@ -108,6 +134,9 @@ export default {
       Approvalfind(para).then(res=>{
         let data=res.data.result;
         this.lists=data;
+        console.log(res)
+         console.log(this.lists)
+        console.log(this.lists.station)
         this.listPage=data.applyListDtos;
    
         if(data.isShow!="Y"){
@@ -137,6 +166,7 @@ export default {
                   message: '审批完成！'
                 })
               this.getLists();
+              window.history.back()
             }else{
             this.$alert(' 审批失败！','提示',{
                     confirmButtonText:'确定',

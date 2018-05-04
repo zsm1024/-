@@ -10,14 +10,16 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/main.js',
+    //path:'./static/js/path.js'
   },
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].js',
+    filename: '[name]-[hash].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      : config.dev.assetsPublicPath,
+      chunkFilename:'js/[chunkhash].js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

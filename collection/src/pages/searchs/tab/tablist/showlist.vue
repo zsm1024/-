@@ -33,7 +33,7 @@
 								</tr>	
 								<tr>
 									<td class="tds">首次到店</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.cl_scdd}}</td>
-									<td class="tds">最近到店</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.cl_sbrq}}</td>
+									<td class="tds">最近到店</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.cl_zjdd}}</td>
 									<td class="tds">最近修理日期</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.cl_zjxlrq}}</td>
 									
 								</tr>
@@ -78,7 +78,7 @@
 							</tr>
 							<tr>
 								<td class="tds">地址</td><td colspan="2" style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_dz}}</td>
-								<td class="tds">客户公司名称</td><td colspan="2" style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_dygsmc}}</td><td class="tds">学历</td><td>{{wbInfo.education}}</td>	
+								<td class="tds">客户公司名称</td><td colspan="2" style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_dygsmc}}</td><td class="tds">学历</td><td>{{wbInfo.kh_xl}}</td>	
 								  
 							</tr>	
 							<tr>			
@@ -122,7 +122,6 @@
 								<tr><td class="tds">初步诊断</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_cbzd}}</td></tr>
 								
 									<!-- <td class="tds">地址</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_dz}}</td> -->
-								</tr>
 								<tr>
 									<td class="tds">修理类别</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_xllb}}</td>
 									<td class="tds">状态</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_zt}}</td>

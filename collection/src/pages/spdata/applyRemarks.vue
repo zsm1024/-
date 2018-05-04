@@ -1,13 +1,13 @@
 <template>
 <section>
   <el-form :data="lists" v-if="lists.station=='协办'" :model="mainform">
-    <el-form-item label="案件ID:"label-width="120px">
+    <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
     </el-form-item>
-    <el-form-item label="当前催收队列:"label-width="120px">
+    <el-form-item label="当前催收队列:" label-width="120px">
       <span>{{lists.nowQueue}}</span>
     </el-form-item>
-    <el-form-item label="催收员:"label-width="120px">
+    <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item label="协办队列:" label-width="120px" prop="queueName">
@@ -29,50 +29,50 @@
      <el-date-picker v-else placeholder="请选择" type="date" v-model="mainform.coTime" style="width:150px" ></el-date-picker>
     </el-form-item>
     <el-form-item label="审批备注:(不超过2000字)">
-     <el-input  inline type="textarea"  inline :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
+     <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">
       <el-button type="primary" size="small" :disabled="disable" @click="approve">提交</el-button>
       <!-- <el-button type="primary" size="small" :disabled="disable" @click="refuse">拒绝</el-button>
       <el-button type="primary" size="small" :disabled="disable" @click="close">关闭</el-button> -->
-      <el-button type="primary"size="small" style="margin-left:10px"  @click="goback">返回</el-button>
+      <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
   <!-- 留案 -->
     <el-form :data="lists" v-else-if="lists.station=='留案'">
-    <el-form-item label="案件ID:"label-width="120px">
+    <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
     </el-form-item>
-    <el-form-item label="当前催收队列:"label-width="120px">
+    <el-form-item label="当前催收队列:" label-width="120px">
       <span>{{lists.nowQueue}}</span>
     </el-form-item>
-    <el-form-item label="催收员:"label-width="120px">
+    <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item label="留案到期日:" label-width="120px">
       <!-- <span >{{lists.leaveTime}}</span> -->
        <input  v-if="lists.isShow=='N'" :value="lists.leaveTime" disabled/>
-       <el-date-picker  v-else type="date" :placeholder="lists.leaveTime"  ></el-date-picker>
+       <el-date-picker  v-else type="date" :placeholder="lists.leaveTime" v-model="lists.leaveTime" ></el-date-picker>
     </el-form-item>
     <el-form-item label="审批备注:(不超过2000字)">
-     <el-input  inline type="textarea"  inline :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
+     <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">
       <el-button type="primary" size="small" :disabled="disable" @click="approve">提交</el-button>
       <!-- <el-button type="primary" size="small" :disabled="disable" @click="refuse">拒绝</el-button>
       <el-button type="primary" size="small" :disabled="disable" @click="close">关闭</el-button> -->
-      <el-button type="primary"size="small" style="margin-left:10px"  @click="goback">返回</el-button>
+      <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
   <!-- 转队列 -->
     <el-form :data="lists" v-else>
-    <el-form-item label="案件ID:"label-width="120px">
+    <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
     </el-form-item>
-    <el-form-item label="当前催收队列:"label-width="120px">
+    <el-form-item label="当前催收队列:" label-width="120px">
       <span>{{lists.nowQueue}}</span>
     </el-form-item>
-    <el-form-item label="催收员:"label-width="120px">
+    <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item label="目标队列:" label-width="120px">
@@ -152,30 +152,30 @@ export default {
       this.lists.goalCollector=this.mainform.goalCollector;
       let para=this.lists;  
          
-      // if(this.lists.remarks==" "){
-      //   this.$alert('请填写备注！','提示',{
-      //               confirmButtonText:'确定',
-      //               type:'warning',
-      //               center:'true'
-      //         })
-      //   }else{
-      //     Approvalapply(para).then(res=>{ 
-      //      if(res.data.success==true){
-      //          this.$message({
-      //             type: 'success',
-      //             message: '提交完成！'
-      //           })
-      //         this.getLists();
-      //       }else{
-      //       this.$alert(' 提交失败！','提示',{
-      //               confirmButtonText:'确定',
-      //               type:'warning',
-      //               center:'true'
-      //         })
-      //       }
+      if(this.lists.remarks==" "){
+        this.$alert('请填写备注！','提示',{
+                    confirmButtonText:'确定',
+                    type:'warning',
+                    center:'true'
+              })
+        }else{
+          Approvalapply(para).then(res=>{ 
+           if(res.data.success==true){
+               this.$message({
+                  type: 'success',
+                  message: '提交完成！'
+                })
+              this.getLists();
+            }else{
+            this.$alert(' 提交失败！','提示',{
+                    confirmButtonText:'确定',
+                    type:'warning',
+                    center:'true'
+              })
+            }
          
-          //});
-       // }
+          });
+       }
     },
      getLeftTree() {
       this.listLoading = true;

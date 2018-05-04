@@ -1,6 +1,6 @@
 <template>
 <section ref="abc" style="height:100%;overflow:hidden">
-    <el-form :model="filters" inline>
+    <!-- <el-form :model="filters" inline>
         <el-form-item>
 			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:120px"></el-input>
 	  </el-form-item>
@@ -8,8 +8,8 @@
 			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:120px"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-input v-model="filters.startDueDays" placeholder="逾期天数"  clearable style="width:80px"></el-input>至
-            <el-input v-model="filters.endDueDays" placeholder="逾期天数"  clearable style="width:80px"></el-input>
+			<el-input v-model="filters.dueStart" placeholder="逾期天数"  clearable style="width:50px"></el-input>至
+            <el-input v-model="filters.dueEnd" placeholder="逾期天数"  clearable style="width:50px"></el-input>
 		</el-form-item>
           <el-form-item>
             <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:120px"></el-input>           
@@ -21,18 +21,18 @@
 					placeholder="请选择约会时间区域" 				
 					@change="dataChange"
 					>
-					</el-date-picker>
+					</el-date-picker> -->
             <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
-        </el-form-item>
+        <!-- </el-form-item>
         <el-form-item>
             <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
         </el-form-item>
-    </el-form>
+    </el-form> -->
     
     <!-- @selection-change="handleSelectionChange" -->
     <el-form inline >        
         <el-form-item label="预派案公司">
-           <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入派案公司"  @select="handleSelect" class="autoInput" style="width:150px">
+           <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入派案公司"  @select="handleSelect" class="autoInput" style="width:150px" clearable >
             </el-autocomplete>
       </el-form-item>
        <el-form-item label="预派案到期日">
@@ -40,12 +40,12 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">派案</el-button>
-        <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">退案</el-button>
+        <!-- <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">退案</el-button> -->
        </el-form-item>
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中..." >
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" >
+       <el-table-column  :prop="cols.field" :label="cols.title" show-overflow-tooltip  v-for="(cols, index) in cols" :key="index" align="center" >
 		</el-table-column>     
    </el-table>
    <!--工具条-->
@@ -76,7 +76,7 @@
 </section>
 </template>
 <script >
-import {SendList,sendTheCaseApp,getTaskHostUser,backCaseApp} from '@/api/outerlist';     
+import {SendListdetail,changeTheSendCaseApp,getTaskHostUser,} from '@/api/outerlist';     
 import { getTaskHostList,addhostList,cancelEscrow,getTaskHostUser1} from '@/api/task';
 export default {
   data(){
@@ -94,24 +94,19 @@ export default {
           state1:"",
           items:"",
           a:[],
-          b:[],
-          k:[],
+          willSendCompany:"",
           itemsId:"",
           addlists:[],
-          backlists:[],
           userList:[],
           userLists:[],
           cancelhost:false,
-          multipleSelection:[],  
-          cols: [   
-                    { title: '用户ID', field: 'processer', width: "60" },
+          multipleSelection:[],   
+          cols: [   { title: '用户ID', field: 'processer', width: "60" },
                     { title: '预派案公司', field: 'willSendCompany', width: "60" },
                     { title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "60" },
-                    { title: '派案状态', field: 'sendApproveStatus', width: "60" },
-                    { title: '退案状态', field: 'backCaseStatus', width: "60" },
+                    { title: '委托金额', field: 'entrustMoney', width: "60" },
                     { title: '委托逾期天数', field: 'entrustOverDueDays', width: "60" },
-                    { title: '委托金额', field: 'entrustMoney', width: "60" }, 
-                    { title: '委托逾期金额', field: 'overdueReceivables', width: "60" },
+                     { title: '委托逾期金额', field: 'overdueReceivables', width: "60" },
 					{ title: '姓名', field: 'name', width: "60" },
             		{ title: '合同号', field: 'applicationNumber', width: "80" },
            			{ title: '职业', field: 'occupation', width: "90" },
@@ -138,8 +133,7 @@ export default {
                 filters: {					
 					name: '',
 					applicationNumber:"",
-                    startDueDays:"",
-                    endDueDays:"",
+					overdueDays:"",
 					appointmentTime:"",
 					processer:"",
 					startTime:"",
@@ -215,48 +209,34 @@ export default {
         this.addlists=[];
         this.multipleSelection.forEach(f =>{
                this.addlists.push({"id":f.id,"entrustMoney":f.entrustMoney,"entrustOverDueDays":f.entrustOverDueDays});
-            });   
-            for(let i=0;i< this.multipleSelection.length;i++){
-                if( this.multipleSelection[i].sendApproveStatus!=null||this.multipleSelection[i].sendApproveStatus!="派案审批未通过"){
-                    this.b.push(this.multipleSelection[i].sendApproveStatus)                  
-                }
-            } 
-            if(this.b.indexOf("派案审批未通过",0)==0||this.b.indexOf("null",0)==-1){
-                this.b=[]
-            }
-         if(this.b.length==0){
-            let para={
+            });          
+        let para={
             // missionInfos:[],
-            willSendCompany:this.itemsId.toString(),
+            willSendCompany:this.itemsId,
             //  ids:this.addlists,
             missionInfos:this.multipleSelection,
             deadTimeOfTheSendCase: this.times,
             // status:"1",
-            }
-
-            if(this.itemsId==""|| this.addlists.length==0){          
-                this.$alert('请选择派案公司、到期日和或外派案件！','提示',{
+        }
+        console.log(para)
+        if(this.items==""|| this.addlists.length==0){          
+             this.$alert('请选择派案公司、到期日和或外派案件！','提示',{
                     confirmButtonText:'确定',
                     type:'warning',
-                     center:'true'
-                })
-            }else{
-                 sendTheCaseApp(para).then( res=>{
-                    this.listShow()
-                    this.itemsId="";
+                    center:'true'
+              })
+        }else{
+             changeTheSendCaseApp(para).then( res=>{
+                 this.listShow()
+                 this.itemsId="";
                     this.state="";
                     this.escrowTime="";
-                    this.times="";                   
-                    }) 
-                }
-         }else{
-            this.$alert('请选未申请的案件！','提示',{
-            confirmButtonText:'确定',
-            type:'warning',
-            center:'true'
-            }) 
-         }       
-        
+                    this.times="";    
+                // this.itemsId="";
+                // this.times="";
+                
+             }) 
+        }
     },
     handleCurrentChange(val) {
         this.pages = val;
@@ -268,27 +248,27 @@ export default {
 	},    
     listShow(){       
         let para = {
+            willSendCompany:localStorage.getItem("willSendCompany"),
 			page: this.page,
             pageSize:this.pagesize,
-            name:this.filters.name,
-			applicationNumber:this.filters.applicationNumber,
-            startDueDays:this.filters.startDueDays,
-            endDueDays:this.filters.endDueDays,
-			appointmentTime:this.filters.appointmentTime,
-			startTime:this.times1,
-            endTime:this.times2	,
-            username:this.filters.processer,													
+            // name:this.filters.name,
+			// applicationNumber:this.filters.applicationNumber,
+			// overdueDays:this.filters.overdueDays,
+			// appointmentTime:this.filters.appointmentTime,
+			// startTime:this.times1,
+            // endTime:this.times2	,
+            // username:this.filters.processer,													
         };
         this.listLoading = true;
-        SendList(para).then((res) => {
+        SendListdetail(para).then((res) => {
             let data =res.data.result;           
             this.datas=data.data;
-            console.log(res)
             this.total=data.recordsTotal;
             this.listLoading = false;
         });
-         
+        //  let paras={
         //     isOs:"1"
+        //  }
          getTaskHostUser().then((res) => {
              this.userList=[];
              let data =res.data.result;
@@ -304,80 +284,14 @@ export default {
     },
     handleSelect(item){
        this.items=item.value;
+       console.log(item)
        this.itemsId=item.username;
 
 
     },
     cancelhostList(){
-        this.backlists=[];
-        this.multipleSelection.forEach(f =>{
-            this.backlists.push(f.id);
-        }); 
-        this.k=[]
-        console.log(this.multipleSelection)
-        for(let i=0;i< this.multipleSelection.length;i++){
-                if( this.multipleSelection[i].sendApproveStatus!="派案完成"&&(this.multipleSelection[i].backCaseStatus=="申请中"||this.multipleSelection[i].backCaseStatus!=null)){                   
-                   this.k.push(this.multipleSelection[i].willSendCompany)                  
-                }
-            }       
-                if(this.k.length==0){
-                      let para={
-                        missionIds:this.backlists,                      
-                    }
-                    if(this.backlists.length==0){          
-                        this.$alert('请选择待退回的案件！','提示',{
-                                confirmButtonText:'确定',
-                                type:'warning',
-                                center:'true'
-                        })
-                    }else{
-                        backCaseApp(para).then( res=>{
-                            this.listShow()
-                        }) 
-                    }
-               }else{
-                   this.$alert('请选择有派案公司的案件！','提示',{
-                                confirmButtonText:'确定',
-                                type:'warning',
-                                center:'true'
-                        })
-               }
-        // ""||this.multipleSelection[i].backCaseStatus!="拒绝退案"
-        // for(let i=0;i< this.multipleSelection.length;i++){
-        //     if(this.multipleSelection[i].backCaseStatus=="审批中"){
-        //         this.k.push(this.multipleSelection[i].backCaseStatus)     
-        //     }
-        // } 
-        //   if(this.k.length==0){
-        //     let para={
-        //      ids:this.backlists.toString(),
-        //     }
-        //     if(this.backlists.length==0){          
-        //         this.$alert('请选择退案案件！','提示',{
-        //             confirmButtonText:'确定',
-        //             type:'warning',
-        //              center:'true'
-        //         })
-        //     }else{
-                        //  backCaseApp(para).then( res=>{
-                        //     this.itemsId="";
-                        //     this.state="";
-                        //     this.escrowTime="";
-                        //     this.times="";
-                        //     this.listShow()
-                        //  }) 
-        //             }
-        //  }else{
-        //     this.$alert('请选择未在退案申请中的案件！','提示',{
-        //     confirmButtonText:'确定',
-        //     type:'warning',
-        //     center:'true'
-        //     }) 
-        //  }       
-        
-
-        // this.cancelhost=true;
-        // this.getTaskUser1();
+        this.cancelhost=true;
+        this.getTaskUser1();
     },
      toggleSelection(){
         this.cancelhost=false;
@@ -395,6 +309,7 @@ export default {
 },
   mounted () {
     this.listShow();
+    this.willSendCompany=localStorage.getItem("willSendCompany")
     // this.getTaskUser1();
    
     // this.getTaskUser();

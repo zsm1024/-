@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
@@ -14,11 +14,16 @@ const webpackConfig = require('./webpack.prod.conf')
 const spinner = ora('building for production...')
 spinner.start()
 
+var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory)
+
+//  rm('-rf', assetsPath) /* 删除这个文件夹 （递归删除） */
+//  mkdir('-p', assetsPath) /* 创建此文件夹 */ 
+//  cp('-R', 'static/*', assetsPath) /* 复制 static 文件夹到我们的编译输出目录 */
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
   webpack(webpackConfig, function (err, stats) {
-    spinner.stop()
-    if (err) throw err
+    spinner.stop();
+    if (err) throw err;
     process.stdout.write(stats.toString({
       colors: true,
       modules: false,
@@ -31,7 +36,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       console.log(chalk.red('  Build failed with errors.\n'))
       process.exit(1)
     }
-
+console.log(assetsPath)
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
       '  Tip: built files are meant to be served over an HTTP server.\n' +

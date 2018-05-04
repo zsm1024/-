@@ -104,6 +104,7 @@ export default {
           state1:"",
           items:"",
           a:[],
+          b:[],
           itemsId:0,
           addlists:[],
         //   userList:[],
@@ -254,18 +255,16 @@ export default {
         },
     hostList(){
         this.addlists=[];
-        console.log( this.addlists)
-        console.log(this.multipleSelection)
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);             
         });
-            let b=[]
+            this.b=[]
             for(let i=0;i< this.multipleSelection.length;i++){
-                if( this.multipleSelection[i].lockFlag!=null){
-                    b.push(this.multipleSelection[i].lockFlag)                  
+                if( this.multipleSelection[i].lockFlag!="null"||this.multipleSelection[i].lockFlag=="Y"){
+                   this.b.push(this.multipleSelection[i].lockFlag)                  
                 }
             } 
-             if(b.length==0){
+             if(this.b.indexOf("N",0)==-1){
                     let para={
                         turnUser:this.AdduserForms.stateCode,
                         missionIds:this.addlists,

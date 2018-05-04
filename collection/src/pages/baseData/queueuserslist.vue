@@ -14,7 +14,7 @@
                 <el-table :data="lists"   ref="tables" highlight-current-row v-loading="listLoading"  stripe border :height="heights" >
                     <el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
                         <template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-if="col.field=='weight'" v-model="scope.row[col.field]"></el-input>
+							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field=='weight'||col.field=='maxNum'||col.field=='monthNum'||col.field=='sort')" v-model="scope.row[col.field]"></el-input>
                             <span  v-show="scope.row.edit" size="small" v-if="col.field!='weight'">{{ scope.row[col.field] }}</span>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
 						</template>
@@ -27,7 +27,6 @@
 					</el-table-column>
                 </el-table>                
                 </el-col>
-            </el-col>
       </el-row>
          
  
@@ -72,6 +71,8 @@ export default {
         { title: "用户名", field: "nickname" },
         { title: "电话", field: "phone" },
         { title: "权重(0<=x<=10)", field: "weight" },
+        { title: "月最大值", field: "maxNum" },
+        { title: "月累计值", field: "monthNum" },
         { title: "排序", field: "sort" }
       ],
       cols1: [
@@ -121,6 +122,7 @@ export default {
     },
     Edit(row) {
       let para = row;
+      console.log(para)
       if ((row.edit = !row.edit)) {
         return;
       } else {

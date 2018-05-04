@@ -448,6 +448,18 @@ export function updateAreaState(params){
       data
     })
   }
+  //附件类型
+  export function getFileType(params) {
+    return fetch({
+      url: '/files/getFileType',
+      method: 'get',
+      params: params
+    })
+  }
+
+
+
+
   // foreuignVisitRecords\insert  
   // customerAddresss\findType?missionId
   // export function messageDialog(params){

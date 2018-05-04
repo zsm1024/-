@@ -99,8 +99,8 @@ export default {
         { title: "代码", field: "stateCde" },
         { title: "名称", field: "stateName" },
         { title: "区域名称", field: "areaName" },
-        { title: "更新人", field: "updateTime" },
-        { title: "更新时间", field: "updateUser" }
+        { title: "更新人", field: "updateUser" },
+        { title: "更新时间", field: "updateTime" }
       ],
       AdduserForm: {
         areaCode: "",

@@ -50,7 +50,8 @@
 				lists: [],
 				cols: [
                     {title:'用户名称',field:'username'},
-                    {title:'数量',field:'countAll'},
+					{title:'数量',field:'countAll'},
+					{title:'日数量',field:'countDate'},
                     {title:'承诺还款案件数',field:'allowanceConut'},
                     {title:'逾期应收款总计',field:'receivables'},
                     {title:'未偿总金额',field:'loanAmountAll'},

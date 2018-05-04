@@ -28,7 +28,7 @@
 			</el-pagination>
 		</el-col>
 <!-- :before-close="handleClose" -->
-	<el-dialog  :title="title" :visible.sync="dialogFormVisible" id="userAdd" show-close="false">	
+	<el-dialog  :title="title" :visible.sync="dialogFormVisible" id="userAdd" :show-close="false">	
         <el-form  :model="addUser" ref="addUser" :rules="addUser">
             <el-form-item label="登录名：" prop="username" :label-width="formLabelWidth" >
                 <el-input v-model="addUser.username" style="width:300px"></el-input>
@@ -69,7 +69,7 @@
             </el-form-item>
             <el-form-item> 
                 <el-row :span="4" style="margin-left:200px">
-                    <el-button @click="cancelBtn('addUser')">取消</el-button>
+                    <el-button @click="cancelBtn('addUser')">返回</el-button>
                     <el-button type="primary" @click="addBtn('addUser')">确 定</el-button>
                 </el-row>   	
                 
@@ -148,10 +148,9 @@ export default {
             positionIds:this.addUser.positionId,
             id:this.id
         }
-       console.log(para)
+       
         if(this.toEdit){
             toEditUser(para).then(res =>{
-                console.log(para)
                 if(res.data.success){
                     this.$message({
                         type: 'success',

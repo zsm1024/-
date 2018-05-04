@@ -62,7 +62,7 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-        <el-button @click="addUserInfo">取 消</el-button>
+        <el-button @click="cancleaddUserInfo">取 消</el-button>
  <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
         <el-button  type="primary" @click.native.prevent="choice('AdduserForm')">确 定</el-button>
       </div>			
@@ -173,7 +173,11 @@ export default {
          
         this.getCityList();
 		this.$refs['AdduserForm'].resetFields();
-	},
+    },
+    cancleaddUserInfo(){
+        this.addUserInfos=false;
+        this.$refs['AdduserForm'].resetFields();
+    },
     codeInfos(){
         if(this.filters.stateCode==""&&this.filters.cityCde==""){
             this.$message({

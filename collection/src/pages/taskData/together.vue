@@ -104,6 +104,7 @@ export default {
           state1:"",
           items:"",
           a:[],
+          b:[],
           itemsId:0,
           addlists:[],
         //   userList:[],
@@ -115,7 +116,7 @@ export default {
           cancelhost:false,
           multipleSelection:[],   
           cols: [   { title: '用户ID', field: 'processer', width: "60" },
-                    { title: '目标催收员', field: 'coUser', width: "60" },
+                    { title: '协办催收员', field: 'coUser', width: "60" },
                     { title: '协办到期日', field: 'coTime', width: "60" },
                     { title: '案件状态', field: 'coStatus', width: "60" },
 					{ title: '姓名', field: 'name', width: "60" },
@@ -257,14 +258,14 @@ export default {
         this.addlists=[]; 
         this.multipleSelection.forEach((f,i) =>{
                this.addlists.push(f.id);                              
-            }); 
-            let b=[]
+            });  
+            this.b=[];
             for(let i=0;i< this.multipleSelection.length;i++){
-                if( this.multipleSelection[i].lockFlag!=null){
-                    b.push(this.multipleSelection[i].lockFlag)                  
+                if( this.multipleSelection[i].lockFlag!="null"||this.multipleSelection[i].lockFlag=="Y"){                  
+                   this.b.push(this.multipleSelection[i].lockFlag);               
                 }
             }
-           if(b.length==0){
+           if(this.b.indexOf("N",0)==-1){
                 let para={
                             coUser:this.AdduserForms.stateCode,
                             missionIds:this.addlists,
@@ -279,8 +280,14 @@ export default {
                                     center:'true'
                             })
                         }else{
-                            coMissionApp(para).then( res=>{
-                                this.listShow()
+                            coMissionApp(para).then( res=>{                              
+                                this.AdduserForms.stateCode="";
+                                this.AdduserForms.areaList="";
+                                this.times="";
+                                 this.coTime="";
+                                this.addlists=[]
+                                this.listShow();
+                               
                             }) 
                         }
            }else{
