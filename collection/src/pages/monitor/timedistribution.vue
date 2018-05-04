@@ -91,7 +91,8 @@
                     page: this.page,
                     queueId: this.id,
 					overdueDays: this.filters.overdueDays,
-					pageSize: this.pagesize
+					pageSize: this.pagesize,
+					id:this.id
                 };
 				this.listLoading = true;
 				//NProgress.start();

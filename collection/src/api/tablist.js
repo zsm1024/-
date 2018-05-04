@@ -248,3 +248,25 @@ export function messageSend(params){
     data
   })
 }
+//文件上传
+export function ListFilses(params){
+  return fetch({
+    url: '/files/listFiles',
+    method: 'get',
+    params:params
+  })
+}
+export function role(params){
+  return fetch({
+    url: '/files/role/'+params.username,
+    method: 'get',
+    // params:params
+  })
+}
+export function delet(params){
+  return fetch({
+    url: '/files/delete/'+params.id,
+    method: 'get',
+    // params:params
+  })
+}

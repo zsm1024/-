@@ -2,18 +2,20 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-
+// import {path} from '../'
+// export {Module} from '../../static/js/path'
 // 创建axios实例
 const service = axios.create({
+  // baseURL:Module,
   baseURL: process.env.BASE_API, // api的base_url
   timeout: 1800000                  // 请求超时时间
 })
-
+// console.log(Module)
 // request拦截器
 service.interceptors.request.use(config => {
   // Do something before request is sent
   if (store.getters.token) {
-    config.headers['login-Token'] = getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
+    config.headers['login-token'] = getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
   }
   return config
 }, error => {

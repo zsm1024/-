@@ -71,7 +71,7 @@
               	{title:'联系方式',field:'linkInfomation',width:"60"},
               	{title:'联系人',field:'linkman',width:"60"},
               	{title:'催收代码',field:'actSign',width:"60"},
-             	{title:'代码名称',field:'actNotes',width:"130"},
+             	// {title:'代码名称',field:'actNotes',width:"130"},
               	{title:'约会日期',field:'appointmentTime',width:"190"},
               	{title:'承诺金额',field:'allowance',width:"60"},
               	{title:'承诺日期',field:'allDate',width:"190"},

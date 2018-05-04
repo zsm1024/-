@@ -11,8 +11,11 @@
 				</el-table-column>
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" >
 					<template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>
+							<el-input  v-show="scope.row.edit" size="small" v-if="col.field!='personChargeName'" v-model="scope.row[col.field]"></el-input>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
+							<el-select v-show="scope.row.edit" v-if="col.field=='personChargeName'" v-model="scope.row[col.field]" placeholder="请选择"  @change="getMessages2(scope.row)">
+								<el-option v-for="item in userList" :key="item.value" :label="item.value" :value="item.id"></el-option>
+							</el-select>
 						</template>
 				</el-table-column>
 			</el-table>
@@ -28,6 +31,17 @@
 				<el-form-item label="队列名称：" prop="queueName" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.queueName" style="width:300px"></el-input>
 				</el-form-item>
+				<el-form-item label="负责人：" prop="personChargeName" :label-width="formLabelWidth">
+					<el-select  v-model="AdduserForm.personChargeName" placeholder="请选择" style="width:300px" @change="getMessage">
+						<el-option v-for="rule in userList" :key="rule.id" :label="rule.value" :value="rule.id"></el-option>
+						<!-- <el-option label="N" value="N"></el-option> -->
+					</el-select>
+				</el-form-item>
+				<!-- <el-form-item label="主管：" prop="director" :label-width="formLabelWidth">
+					<el-select  v-model="AdduserForm.director" placeholder="请选择" style="width:300px" @change="getMessage">
+						<el-option v-for="rule in userList" :key="rule.id" :label="rule.value" :value="rule.id"></el-option>
+					</el-select>
+				</el-form-item> -->
 				<el-form-item label="暂挂标识：" prop="pendingSign" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.pendingSign" style="width:300px"></el-input>
 				</el-form-item>
@@ -35,7 +49,7 @@
 					<el-input v-model="AdduserForm.queueType" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.state"style="width:300px" ></el-input>
+					<el-input v-model="AdduserForm.state" style="width:300px" ></el-input>
 				</el-form-item>
 				<el-form-item label="分配规则：" prop="distributionId" :label-width="formLabelWidth">
 					<el-select  v-model="AdduserForm.distributionId" placeholder="请选择" style="width:300px">
@@ -55,7 +69,8 @@
     </section>
 </template>
 <script>
-    import { base_menue,delInfo,updateInfo,add_info,getRules } from "@/api/basedata";
+	import { base_menue,delInfo,updateInfo,add_info,getRules,queueInfos } from "@/api/basedata";
+	import{getTaskHostUser} from "@/api/task"
     export default{
         data(){
             return{
@@ -66,10 +81,13 @@
                 listLoading: false,	                
 				lists:[],
 				rules:[],
+				userList:[],
 				addUserInfos:false,
 				formLabelWidth: '120px',
                 cols:[
-                    {title:'队列名称',field:'queueName',width:"180"},
+					{title:'队列名称',field:'queueName',width:"180"},
+					{title:'负责人',field:'personChargeName',width:"70"},
+					{title:'主管',field:'directorName',width:"70"},
                     {title:'暂挂标识',field:'pendingSign',width:"90"},
                     {title:'类型',field:'queueType',width:"70"},
                     {title:'状态',field:'state',width:"70"},
@@ -78,11 +96,15 @@
 				AdduserForm:{					
 					queueName:"", 
 					pendingSign:"",
+					personChargeName:"",
+					// director:"",
 					queueType:"",
 					startDate:"",
 					state:"",
 					distributionId:"",			
 			},
+			stateCode:"",
+			 areaEditId:""
             }
         },
         methods:{
@@ -94,6 +116,12 @@
 				this.page = val;
 				this.getlists();
 			},
+			getMessages2(val) {
+				let a=val.personChargeName;
+				this.stateCode=a
+				// let b=val.areaId
+				// this.areaEditId=b
+    		},
             getlists() {
 				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-120;
         		this.heights=h;
@@ -105,6 +133,7 @@
 				base_menue(para).then((res) => {
                     let data=res.data.result;
 					this.lists=data.data;
+					console.log(data)
 					this.lists = this.lists.map(v => {
 					this.$set(v, 'edit', false)
 					return v;
@@ -148,11 +177,13 @@
 			});			
         },
         Edit(row){
-			let para = row;
+			
 			if(row.edit=!row.edit){
                 return;
 			}else{
-				updateInfo(para).then(res =>{
+				if(this.stateCode==" "){
+					let para = row;
+					queueInfos(para).then(res =>{
 						if(res.data.success){
 							this.$message({
 								type: 'success',
@@ -164,7 +195,30 @@
 								message: '编辑失败，请联系管理员！'
 							})
 						}
+						this.getlists();
 				});
+				}else{
+					row.personCharge=this.stateCode;
+					let para=row;
+						queueInfos(para).then(res =>{
+						if(res.data.success){
+							this.$message({
+								type: 'success',
+								message: '编辑成功！'
+							})
+						}else{
+							this.$message({
+								type: 'error',
+								message: '编辑失败，请联系管理员！'
+							})
+						}
+						this.getlists();
+				});
+					
+					
+
+				}
+				
 				
 				
 			}
@@ -190,17 +244,35 @@
 				});
 				
 		},
+		getMessage(val) {
+      		this.AdduserForm.personChargeName = val;
+    //  this.getUser();
+    //  this.getAllList()
+    	},
+		 getTaskUser(){
+         	getTaskHostUser().then((res) => {
+			 let data =res.data.result;
+
+            
+             data.forEach(el => {
+                 this.userList.push({"value":el.nickname,"id":el.id})
+			 });
+            //  this.datas=data.data;
+            // this.total=data.recordsTotal;
+        })
+    },
 		choice(AdduserForm){			
  			let para ={
 				queueName:this.AdduserForm.queueName,
+				personCharge:this.AdduserForm.personChargeName,
 				pendingSign:this.AdduserForm.pendingSign,
+				director:this.AdduserForm.director,
 				queueNum:'',
 				queueType:this.AdduserForm.queueType,
 				state:this.AdduserForm.state,
 				distributionId:this.AdduserForm.distributionId,	
 				sysSign:'',		
 			};
-
             this.$refs[AdduserForm].validate((valid) => {			
                 if(valid){					
                   add_info(para).then(res =>{
@@ -212,13 +284,15 @@
                         this.lists.unshift(
                         {
 						"queueName":this.$refs['AdduserForm'].model.queueName,
+						"personCharge":this.$refs['AdduserForm'].model.personChargeName,
 						"pendingSign":this.$refs['AdduserForm'].model.pendingSign,
                         "queueType":this.$refs['AdduserForm'].model.queueType,
 						"state":this.$refs['AdduserForm'].model.state,
 						"distributionId":this.$refs['AdduserForm'].model.distributionId, 						                         
 						},	
                         
-                    );
+					);
+					this.getlists();
                      this.addUserInfos=false;
                     this.$refs['AdduserForm'].resetFields();
                     }else{
@@ -243,7 +317,8 @@
 		},
         },
         mounted() {
-            this.getlists();
+			this.getlists();
+			this.getTaskUser()
 			let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-155;
    			this.$refs.abc.style.height= h+"px"
 		}

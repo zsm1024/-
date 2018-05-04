@@ -1,5 +1,5 @@
 <template>
-<section ref="abc" style="height:100%;overflow:auto">
+<section ref="abcd" style="height:100%;overflow:auto">
     <el-form :model="filters" inline>
         <el-form-item>
 			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:150px"></el-input>
@@ -291,14 +291,14 @@ export default {
     // this.getTaskUser1();
    
     // this.getTaskUser();
-    // let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-85;
-    // this.heights=h;
+     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
+     this.heights=h;
     // console.log(this.heights)
-    // this.$refs.abc.style.height= h+"px";
+    // this.$refs.abcd.style.height= h+"px";
   }
 }
 </script>
-<style>
+<style> 
     table{width: 100%;text-align: center;}
 	tr{width: 100%;}
 	td{border-right: 1px solid #dfe6ec;border-bottom: 1px solid #dfe6ec;height:23px!important;line-height: 23px!important;background: #f0f0f0;}

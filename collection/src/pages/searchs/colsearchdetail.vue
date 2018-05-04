@@ -28,6 +28,23 @@
   <!-- </div> -->
 </template>
 <script>
+<<<<<<< .mine
+
+
+
+
+
+
+
+=======
+<<<<<<< .mine
+	// import hkPlan from "../tab/tablist/cs_message.vue";
+	// import kkList from "../tab/tablist/cs_message.vue";
+=======
+
+
+>>>>>>> .theirs
+>>>>>>> .theirs
 export default {
   data(){		
      return{
@@ -46,6 +63,16 @@ export default {
 	},
 		mounted(){
  },
+//   components:{
+//   	csMessage,
+//   	htMessage,
+//   	 csHistory,
+//   	maintenance,
+//   	 hkPlan,
+//   	kkList,
+// 	cmsHistory,
+// 	formMessage
+// 	}
 }
 
 </script>

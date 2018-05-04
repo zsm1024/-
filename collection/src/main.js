@@ -12,7 +12,6 @@ import vSelect from 'vue-select'
 import 'font-awesome/css/font-awesome.css'
 import Validator from 'vue-validator'
 import './permission' // 权限
-
 if(process.env.NODE_ENV=="development"){
     Mock.bootstrap();
 }

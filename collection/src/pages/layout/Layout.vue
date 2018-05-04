@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import $ from 'jquery'
+//import $ from 'jquery'
 import { mapGetters } from 'vuex'
 import { Navbar, Sidebar, AppMain } from '@/pages/layout'
 import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx,Transfer} from '../../../ngcc/softPhone.js'
@@ -155,7 +155,7 @@ export default {
 			top: 0;
 			bottom: 0;
 			left: 4px;
-			z-index: 1001;
+			// z-index: 1001;
 			overflow-y: auto;
  			&::-webkit-scrollbar {display:none}
 		}
