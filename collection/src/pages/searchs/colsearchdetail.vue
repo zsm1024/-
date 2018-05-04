@@ -28,8 +28,13 @@
   <!-- </div> -->
 </template>
 <script>
+<<<<<<< .mine
 	// import hkPlan from "../tab/tablist/cs_message.vue";
 	// import kkList from "../tab/tablist/cs_message.vue";
+=======
+
+
+>>>>>>> .theirs
 export default {
   data(){		
      return{
