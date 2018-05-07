@@ -64,7 +64,7 @@
 				</template>
 			</el-table-column>
 			
-			<el-table-column sortable align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" :width='col.width' >
+			<el-table-column sortable align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" :width='col.width' show-overflow-tooltip >
 			</el-table-column>
 		</el-table>
 

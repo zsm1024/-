@@ -39,7 +39,7 @@
     </el-form-item>      
   </el-form>
   <!-- 留案 -->
-    <el-form :data="lists" v-else-if="lists.station=='留案'">
+    <el-form :data="lists" v-if="lists.station=='留案'">
     <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
     </el-form-item>
@@ -65,10 +65,10 @@
     </el-form-item>      
   </el-form>
   <!-- 转队列 -->
-    <el-form :data="lists" v-else>
-    <el-form-item label="案件ID:" label-width="120px">
-     <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
-    </el-form-item>
+    <el-form :data="lists" v-else-if="lists.station=='手动转队列'">
+      <el-form-item label="案件ID:" label-width="120px">
+      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
+      </el-form-item>
     <el-form-item label="当前催收队列:" label-width="120px">
       <span>{{lists.nowQueue}}</span>
     </el-form-item>
@@ -131,6 +131,7 @@ export default {
       Approvalfind(para).then(res=>{
         let data=res.data.result;
         this.lists=data;
+        console.log(this.lists)
         this.listPage=data.applyListDtos;
         this.mainform.queueName=data.goalQueue;
         this.mainform.goalCollector=data.goalCollector;

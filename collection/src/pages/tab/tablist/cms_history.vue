@@ -20,6 +20,7 @@
                         :key="index"                      
                         align="center"
 						:width="col.width"
+						show-overflow-tooltip 
                         >
 					</el-table-column>
 				</el-table>

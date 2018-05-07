@@ -5,7 +5,7 @@
 				<template slot-scope="title" >
                     <el-table :data="items.customerSimpleList" border stripe  :row-class-name="tableRowClassNames"> 
 						<!-- width="60" -->
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" show-overflow-tooltip  :width="baseinfo.width">
 						</el-table-column>			
 					</el-table>
                 </template>
@@ -20,7 +20,7 @@
 							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteRow(scope.$index, scope.row,items.customerPhones)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width">
+					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width" show-overflow-tooltip >
 						<template slot-scope="scope">
 							<!-- v-if="cols.field!='effectiveness' &&scope.row.infoSource!='CMS' && cols.field!='infoSource'" -->
 							<el-input  v-show="scope.row.edit" v-if="scope.row.infoSource!='CMS'&&(cols.field=='relationship'||cols.field=='phone')" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
@@ -52,7 +52,7 @@
 							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, scope.row,items.customerAddresses)"> 移除</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width"  >
+					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width" show-overflow-tooltip >
 						<template slot-scope="scope">
 							<!-- v-if="cols1.field!='effectiveness' &&scope.row.infoSource!='CMS'&& cols1.field!='infoSource'" -->
 							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>

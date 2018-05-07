@@ -36,7 +36,7 @@ export default {
 						 {'name':"催收信息",path:'/tab/tabView/cs_message'},
 						 {'name':"合同信息",path:'/tab/tabView/ht_message'},
 						 {'name':"催收历史",path:'/tab/tabView/cs_history'},
-						 {'name':"维保记录",path:'/tab/tabView/showlist'},
+						 {'name':"车辆信息",path:'/tab/tabView/showlist'},
 						 {'name':"还款计划",path:'/tab/tabView/hk_plan'},
 						 {'name':"扣款流水",path:'/tab/tabView/kk_list'},
 						 {'name':"CMS历史",path:'/tab/tabView/cms_history'},

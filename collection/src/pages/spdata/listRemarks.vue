@@ -62,8 +62,8 @@
     <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
-    <el-form-item label="留案到期日:" label-width="120px">
-      <span>{{lists.leaveTime}}</span>
+    <el-form-item label="派案到期日:" label-width="120px">
+      <span>{{lists.deadTimeOfTheSendCase}}</span>
     </el-form-item>
     <el-form-item label="审批备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
@@ -77,7 +77,7 @@
 
 
   <!-- 转队列 -->
-    <el-form :data="lists" v-else>
+    <el-form :data="lists" v-if="lists.station=='手动转队列'">
     <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
     </el-form-item>

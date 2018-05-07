@@ -1,7 +1,7 @@
 <template>
 	<section class="cslist" ref="abc" style="overflow-y: auto;">
 		<el-collapse v-model="activeNames" accordion>
-			<el-collapse-item name="1">
+			<!-- <el-collapse-item name="1">
 				<template slot="title" ><span class="titles">催收信息</span></template>					
 				<el-table :data="items" border :default-expand-all="true">					
 					<el-table-column type="expand" >						
@@ -22,8 +22,8 @@
 					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[5,10, 20, 50, 100]"   :total="total"   style="float:right;">
 					</el-pagination>
 				</el-col>				
-			</el-collapse-item>	
-			 <el-collapse-item name="2">
+			</el-collapse-item>	 -->
+			 <el-collapse-item name="1">
 				<template slot="title" ><span class="titles">案件备注</span></template>	
 				<span style="margin-left:10px">{{marks}}</span>
 				<!-- <el-table :data="item" border >
@@ -31,7 +31,7 @@
 					</el-table-column>			
 				</el-table>				  -->
 			</el-collapse-item>
-			<el-collapse-item name="3">
+			<!-- <el-collapse-item name="3">
 				<template slot="title"><span class="titles">催收轨迹</span></template>	
 				<el-table :data="pathMsg" border>
 					<el-table-column :prop="path.field" :label="path.title"  v-for="(path, index) in path" min-width="60" :key="index" align="center">
@@ -41,8 +41,8 @@
 					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeTrail" @size-change="handleSizeChangeTrail" :page-size="pagesizeTrail" :page-sizes="[5,10, 20, 50, 100]"   :total="totalTrail"   style="float:right;">
 					</el-pagination>
 				</el-col>			
-			</el-collapse-item>
-			<el-collapse-item name="4">
+			</el-collapse-item> -->
+			<!-- <el-collapse-item name="4">
 				<template slot="title" ><span class="titles">行动代码</span></template>	
 				<el-table :data="activeMsg" border>
 					<el-table-column aline="center" type="index" width="30" label="序号">
@@ -54,7 +54,7 @@
 					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeCode" @size-change="handleSizeChangeCode" :page-size="pagesizeCode" :page-sizes="[5,10, 20, 50, 100]"   :total="totalCode"   style="float:right;">
 					</el-pagination>
 				</el-col>			
-			</el-collapse-item> 
+			</el-collapse-item>  -->
 		</el-collapse >
 	</section>
 </template>

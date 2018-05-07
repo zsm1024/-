@@ -10,7 +10,7 @@ import tabView from '../pages/tab/tabview';
 Vue.use(Router);
 
 export const constantRouterMap = [{
-    path: '/login',
+    path: '/IcsPage/login',
     component: _import('login/index'),
     hidden: true
   },
@@ -67,7 +67,7 @@ export const constantRouterMap = [{
     }]
   },
   {
-    path: '/',
+    path: '/IcsPage',
     component: Layout,
     redirect: '/dashboard',
     name: '首页',
@@ -269,7 +269,7 @@ export const constantRouterMap = [{
 ]
 
 export default new Router({
-  //mode: 'history', //后端支持可开
+  mode: 'history', //后端支持可开
   scrollBehavior: () => ({
     y: 0
   }),

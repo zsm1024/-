@@ -221,7 +221,7 @@ export default {
                     this.b.push(this.multipleSelection[i].sendApproveStatus)                  
                 }
             } 
-            if(this.b.indexOf("派案审批未通过",0)==0||this.b.indexOf("null",0)==-1){
+            if(this.b.indexOf("派案审批未通过",0)==0||this.b.indexOf("null",0)==-1||this.b.indexOf("审批中",0)!=0){
                 this.b=[]
             }
          if(this.b.length==0){
@@ -233,8 +233,7 @@ export default {
             deadTimeOfTheSendCase: this.times,
             // status:"1",
             }
-
-            if(this.itemsId==""|| this.addlists.length==0){          
+            if((this.itemsId==""&& this.times=="")|| this.addlists.length==0){          
                 this.$alert('请选择派案公司、到期日和或外派案件！','提示',{
                     confirmButtonText:'确定',
                     type:'warning',

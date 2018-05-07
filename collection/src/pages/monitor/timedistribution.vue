@@ -24,7 +24,7 @@
 					<router-link class="a-href" :to="{path:'/monitor/stributotaldetail/'+scope.row.overdueDays}">详情</router-link>
 				</template>
 			</el-table-column>
-			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" sortable >
+			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" sortable show-overflow-tooltip >
 			</el-table-column>
 		</el-table>
 

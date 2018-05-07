@@ -72,8 +72,7 @@
 						<!-- <span>{{items.RepayTime}}</span> -->
 					</el-form-item>
 					<el-form-item label="还款日:" >
-						<span>{{items.datePayment}}</span>
-						<!-- <span>{{items.loanTime}}</span> -->
+						<span>{{items.datePayment}}</span>					
 					</el-form-item>
 					<el-form-item label="贷款期数:" >
 						<span>{{items.loanNum}}</span>

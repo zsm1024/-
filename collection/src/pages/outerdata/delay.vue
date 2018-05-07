@@ -86,7 +86,7 @@ export default {
           userList:[],
           multipleSelection:[],   
           cols: [   { title: '用户ID', field: 'processer', width: "60" },
-                    { title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "60" },
+                    { title: '延案到期日', field: 'deadTimeOfTheSendCase', width: "60" },
 					{ title: '姓名', field: 'name', width: "60" },
             		{ title: '合同号', field: 'applicationNumber', width: "80" },
                     { title: '职业', field: 'occupation', width: "90" },

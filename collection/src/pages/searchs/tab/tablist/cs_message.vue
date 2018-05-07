@@ -4,7 +4,7 @@
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
                     <el-table :data="items.customerSimpleList" border stripe :row-class-name="TableRowClassNames"> 
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center">
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title" show-overflow-tooltip v-for="(baseinfo, index) in baseinfo" :key="index"   align="center">
 						</el-table-column>			
 					</el-table>
                 </template>
@@ -13,7 +13,7 @@
 				
 				<el-table :data="items.customerPhones" border stripe :row-class-name="TableRowClassCustom" >
 					
-					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center"  >
+					<el-table-column :prop="cols.field"  :label="cols.title" show-overflow-tooltip v-for="(cols, index) in cols" :key="index" align="center"  >
 						<template slot-scope="scope">
 							
 							<span v-show="scope.row.edit" v-if="(cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span>
@@ -27,7 +27,7 @@
 					
 				<el-table :data="items.customerAddresses" border stripe :row-class-name="TableRowClassAddress" >
 					
-					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center"  >
+					<el-table-column :prop="cols1.field" show-overflow-tooltip :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center"  >
 						<template slot-scope="scope">							
 							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span>
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import { getlistAfpRest,jxsInfo,findByContractId,colHistory_note } from "@/api/collmanage";
+import { getlistAfpRest,jxsInfo,findByContractId,colHistory_note,jxsInfosearch } from "@/api/collmanage";
 import{addMessage} from "@/api/tablist"
 // import{getdeal}from "@/api/tablist";
 export default {
@@ -381,9 +381,10 @@ export default {
    	//经销商信息
 	getJxsInfo(){
 		let para = {
-			contractId: this.id
+			contractId:this.id
 		};
-			jxsInfo(para).then(res =>{
+			jxsInfosearch(para).then(res =>{
+				console.log(res)
 				if(res.data.success){
 				let data =res.data.result;
 				this.JRZY="金融专员";

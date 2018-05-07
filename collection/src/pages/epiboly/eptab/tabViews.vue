@@ -14,11 +14,11 @@ export default {
     return {
       id: this.$route.params.id,
       lists: [
-        { name: "催收信息.", path: "/epiboly/eptab/tabViews/cs_message" },
-        { name: "合同信息.", path: "/epiboly/eptab/tabViews/ht_message" },
-        { name: "催收历史.", path: "/epiboly/eptab/tabViews/cs_history" },
-        { name: "维保记录.", path: "/epiboly/eptab/tabViews/showlist" },
-        { name: "还款计划.", path: "/epiboly/eptab/tabViews/hk_plan" },
+       { name: "催收信息", path: "/epiboly/eptab/tabViews/cs_message" },
+        { name: "合同信息", path: "/epiboly/eptab/tabViews/ht_message" },
+        { name: "催收历史", path: "/epiboly/eptab/tabViews/cs_history" },
+        { name: "车辆信息", path: "/epiboly/eptab/tabViews/showlist" },
+        { name: "还款计划", path: "/epiboly/eptab/tabViews/hk_plan" },
         // { name: "扣款流水", path: "/tab/tabView/kk_list" },
         { name: "CMS历史", path: "/epiboly/eptab/tabViews/cms_history" }
       ]

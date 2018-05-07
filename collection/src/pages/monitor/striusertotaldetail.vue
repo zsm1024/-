@@ -39,7 +39,7 @@
 				</template>
 			</el-table-column>
 			
-			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" >
+			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" show-overflow-tooltip>
 			</el-table-column>
 		</el-table>
 

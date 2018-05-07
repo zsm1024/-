@@ -8,8 +8,8 @@
 			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:120px"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-input v-model="filters.startDueDays" placeholder="逾期天数"  clearable style="width:80px"></el-input>至
-            <el-input v-model="filters.endDueDays" placeholder="逾期天数"  clearable style="width:80px"></el-input>
+			<el-input v-model="filters.startDueDays" placeholder="委托逾期天数"  clearable style="width:80px"></el-input>至
+            <el-input v-model="filters.endDueDays" placeholder="委托逾期天数"  clearable style="width:80px"></el-input>
 		</el-form-item>
           <el-form-item>
             <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:120px"></el-input>           
@@ -59,7 +59,7 @@
 </section>
 </template>
 <script >
-import {listApproveOsCase,sendTheCaseApp,approveSendCaseApp,SendList,excelImport} from '@/api/outerlist';     
+import {listApproveOsCase,sendTheCaseApp,approveSendCaseApp,SendList,excelImport,listOutsource,listAllExport} from '@/api/outerlist';     
 import { getTaskHostList,getTaskHostUser,addhostList,cancelEscrow,getTaskHostUser1} from '@/api/task';
 // import{Path} from "@/utils/path";
 import {path} from '@/config'
@@ -79,6 +79,8 @@ export default {
           items:"",
           a:[],
           b:[],
+          idsAllexport:"",
+          idsAll:[],
           itemsId:0,
           addlists:[],
           userLists:[],
@@ -165,16 +167,47 @@ export default {
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);
             }); 
-        var ids =   this.addlists.toString();
+        var ids = this.addlists.toString();
         window.open(this.exportPaths+ids)
     },
-       hostListAll(item){       
-        this.addlists=[];
-        this.multipleSelection.forEach(f =>{
-               this.addlists.push(f.id);
-            }); 
-        var ids =   this.addlists.toString();
-        window.open(this.exportPaths+ids)
+       hostListAll(item){   
+           let para = {		
+            name:this.filters.name,
+			applicationNumber:this.filters.applicationNumber,
+            startDueDays:this.filters.startDueDays,
+            endDueDays:this.filters.endDueDays,
+			appointmentTime:this.filters.appointmentTime,
+			startTime:this.times1,
+            endTime:this.times2	,
+            username:this.filters.processer,	          													
+        };
+        this.listLoading = true;
+        listAllExport(para).then((res) => {         
+            let data =res.data.result; 
+            this.idsAll=[];
+             data.forEach(f=>{
+                 this.idsAll.push(f.id)
+                //  console.log(f.id)
+             }) 
+            //  console.log(this.idsAll)
+            // this.datas=data.data;
+
+            this.idsAllexport=this.idsAll.toString();         
+            this.total=data.recordsTotal;
+            this.listLoading = false; 
+            window.open(this.exportPaths+this.idsAllexport)
+        }); 
+         
+        // this.listShowExport() ; 
+        // 
+       
+        //
+        // this.addlists=[];
+        // this.multipleSelection.forEach(f =>{
+        //        this.addlists.push(f.id);
+        //     }); 
+        // var ids =   this.addlists.toString();
+        // window.open(this.exportPaths+ids)
     },
     handleCurrentChange(val) {
         this.pages = val;
@@ -198,13 +231,14 @@ export default {
             username:this.filters.processer,	          													
         };
         this.listLoading = true;
-        SendList(para).then((res) => {
+        listOutsource(para).then((res) => {        
             let data =res.data.result;           
             this.datas=data.data;
             this.total=data.recordsTotal;
             this.listLoading = false;
         });
     },
+    
     // cancelhostList(){
     //     this.addlists=[];
     //     this.multipleSelection.forEach(f =>{
@@ -224,15 +258,13 @@ export default {
     //          approveSendCaseApp(para).then( res=>{ 
     //             this.listShow()
     //          }) 
-    //     }
-
-
-        
+    //     }       
     // },
 },
   mounted () {
     this.listShow();
     this.PathList();
+    // this.listShowExport();
     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-95;
    this.heights=h;
     this.$refs.abc.style.height= h+"px";
