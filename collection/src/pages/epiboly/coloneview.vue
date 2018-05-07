@@ -78,7 +78,7 @@
 	//import NProgress from 'nprogress'
 	//import $ from "jquery";
 	import { getcolone} from '@/api/collmanage';
-	import { SendList} from '@/api/outerlist';
+	import { SendList,listOutsource} from '@/api/outerlist';
 	export default {
 
 		
@@ -204,7 +204,7 @@
 					endTime:this.times2
 				};
 				this.listLoading = true;				//NProgress.start();
-				SendList(para).then((res) => {
+				listOutsource(para).then((res) => {
 					let data=res.data.result;
 					console.log(res)					
 					 this.datas=data.data;					 

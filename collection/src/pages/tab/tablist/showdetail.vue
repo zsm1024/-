@@ -134,7 +134,7 @@
 		  </tbody>
 	  </table>
   </el-collapse-item>
-  <el-collapse-item name="4" title="维保记录">
+  <el-collapse-item name="4" title="车辆信息">
 	   <table class="ht_table">
 		  <tbody>
 			  <tr>

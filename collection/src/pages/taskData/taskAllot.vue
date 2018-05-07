@@ -135,7 +135,7 @@ export default {
       },
     getlists(){
         this.listShow();
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-500;
+        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
         this.heights=h;
 
     },  

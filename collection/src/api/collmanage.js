@@ -123,3 +123,10 @@ export function jxsInfo(params){
       params:params
     })
   }
+  export function jxsInfosearch(params){
+    return fetch({
+      url: '/customerBasics/findDealerByContractId/'+params.contractId,
+      method: 'get',
+      params:params
+    })
+  }

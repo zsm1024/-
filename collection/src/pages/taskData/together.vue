@@ -1,5 +1,5 @@
 <template>
-<section ref="abc" style="height:100%;overflow:auto">
+<section ref="abc" style="height:100%">
     <el-form :model="filters" inline>
         <el-form-item>
 			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:150px"></el-input>
@@ -139,7 +139,7 @@ export default {
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:1000,
                 currentPage:1,
                 listLoading: false, 
                 filters: {					
@@ -376,8 +376,8 @@ export default {
     // this.getTaskUser1();
    
     // this.getTaskUser();
-    // let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-85;
-    // this.heights=h;
+    let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
+    this.heights=h;
     // console.log(this.heights)
     // this.$refs.abc.style.height= h+"px";
   }

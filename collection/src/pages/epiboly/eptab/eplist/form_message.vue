@@ -157,7 +157,7 @@
       <el-form-item label="地址类型 "  label-width="95px"  prop="addressType">
         <i style="color:red">*</i> 
 					<el-select  style="width:150px" id="selectMes" v-model="mainformvisit.addressType" @change="changeAddressType" >
-						<el-option v-for="(item,index) in addressType" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
+						<el-option v-for="(item,index) in addressTypeserach" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
 					</el-select>
 				</el-form-item>	
       <el-form-item label="地址 " label-width="95px" prop="address">
@@ -285,6 +285,7 @@ export default{
 				// {title:'其他',field:'name',width:"60"},	
 			],
 			addressType:[],
+			addressTypeserach:[],
 			datas:[],
 			templateId:'',
 			phone:'',
@@ -1083,10 +1084,11 @@ export default{
    getaddressType(){
      let para={
        	missionId: this.$route.params.id
-     }
+	 }
      AddresssfindByType(para).then(res=>{
-       let data=res.data.result;
-       this.addressType=data
+	   let data=res.data.result;
+		console.log(res)
+       this.addressTypesearch=data
      })
    },
    changeAddressType(val){
@@ -1221,10 +1223,11 @@ export default{
 	this.restaurants=this.userList;
 	this.restaurants1=this.getname;
 	this.restaurants2=this.getfangshi;
+	this.getaddress();
+    this.getaddressType()
 	this.NoRefresh();
 	// this.getlistvisit();
-    this.getaddress();
-    this.getaddressType()
+    
     }
 }
 </script>

@@ -849,7 +849,6 @@ export default{
 			RowId:this.$route.params.id,
 		}			
 		localStorage.setItem("REefresh",JSON.stringify(REefresh))
-		console.log(REefresh)
 		this.$message({
             type:'success',
             message:'暂存成功！',
@@ -911,8 +910,7 @@ export default{
 			//  console.log(file)
 		},
 		handleChange(file,fileList){			
-			console.log(this.fileListStatue)
-			console.log(file)
+
 		},
 		beforeUpload:function(file){
 			const isLt2M = file.size / 1024 / 1024 < 100
@@ -956,16 +954,21 @@ export default{
 				id:item.id
 			}
 			delet(para).then(res=>{
+				console.log(res.data)
 				if(res.data.success==true){
 					this.$message({
+					showClose: true,
+					message:'删除成功！',	
                     type:'success',
-                    message:'删除成功！',
+                   
 				});
 				this.listrefresh()
 				}else{
 					this.$message({
-                    type:'danger',
-                    message:'删除失败！',
+					showClose: true,
+					message:res.data.message,
+                    type:'error',
+                   
 				});
 					this.listrefresh()
 				}
@@ -981,7 +984,7 @@ export default{
 				id:this.$route.params.id
 			}
 			RecordsFind(para).then(res=>{
-				console.log(res)
+				// console.log(res)
 			});
 			this.getvisitlist();
 		},
@@ -1001,7 +1004,6 @@ export default{
 //外访记录
 	dataChangevisit(val){			
 		this.timesvisit=val;
-		console.log(this.timesvisit)
     },
     getMessagesvisit(val) {
       this.IsTrue=val;
@@ -1079,15 +1081,18 @@ export default{
     });
    },
    getaddressType(){
+// 	   console.log("12333")
      let para={
        	missionId: this.$route.params.id
-     }
+	 } 
      AddresssfindByType(para).then(res=>{
+		 console.log(res)
        let data=res.data.result;
        this.addressType=data
      })
    },
    changeAddressType(val){
+	   console.log("12323")
      this.roleName=val.split("-").shift();
      this.type=val.split("-").pop();
      this.address=[];
@@ -1097,6 +1102,7 @@ export default{
        type:this.type
      }
      AddresssfindAddress(para).then(res=>{
+		 console.log(res)
        let data=res.data.result
        this.address=data;
       for(let a=0;a<this.address.length;a++){
@@ -1278,11 +1284,9 @@ export default{
 	this.restaurants=this.userList;
 	this.restaurants1=this.getname;
 	this.restaurants2=this.getfangshi;
-	this.NoRefresh();
-	// this.getlistvisit();
-    this.getaddress();
-	this.getaddressType()
-	console.log(this.upLoadData)
+	this.getaddress();
+	this.getaddressType();
+	this.NoRefresh();   
     }
 }
 </script>

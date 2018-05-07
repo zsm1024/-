@@ -36,6 +36,21 @@ export function SendList(params) {
     params: params
   })
 }
+//全部导出
+export function listAllExport(params) {
+  return fetch({
+    url: 'os/listOutsourceAll',
+    method: 'get',
+    params: params
+  })
+}
+export function listOutsource(params) {
+  return fetch({
+    url: 'os/listOutsource',
+    method: 'get',
+    params: params
+  })
+}
 export function SendListdetail(params) {
   return fetch({
     url: 'os/sendCaseDetail',

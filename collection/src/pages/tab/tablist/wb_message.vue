@@ -21,7 +21,7 @@
 			</el-form-item>
 	  </el-form>			
   </el-collapse-item>
-  <el-collapse-item name="4" title="维保记录">
+  <el-collapse-item name="4" title="车辆信息">
 	  <el-form  inline class="expand">
 		  	<el-form-item  v-for=" a in repairInfo" :key="a.title" :lable="a.title" style="margin:0">
 				<label style="width:270px;display:inline-block"><span class="titles">{{a.title}}:</span><span class="lable">{{a.field}}</span></label>	

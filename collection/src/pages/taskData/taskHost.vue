@@ -168,7 +168,7 @@ export default {
         // this.restaurants=this.userList;
         // this.file=this.userLists; 
         this.listShow();
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-230;
         this.heights=h;
         // this.getTaskUser();
         // this. getTaskUser1()
@@ -291,7 +291,7 @@ export default {
     // this.getTaskUser1();
    
     // this.getTaskUser();
-     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-210;
+     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-230;
      this.heights=h;
     // console.log(this.heights)
     // this.$refs.abcd.style.height= h+"px";

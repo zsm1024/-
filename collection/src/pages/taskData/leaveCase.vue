@@ -109,7 +109,7 @@ export default {
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:1000,
                 currentPage:1,
                 listLoading: false, 
                 labelWidth:"120px",
@@ -144,7 +144,7 @@ export default {
       },
     getlists(){
         this.listShow();
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-500;
+        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
         this.heights=h;
 
     },  
