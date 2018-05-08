@@ -5,7 +5,7 @@ const _import = file => () =>
 
 /* layout */
 import Layout from '../pages/layout/Layout';
-import tabView from '../pages/tab/tabview';
+import tabView from '../pages/IcsPage/tab/tabview';
 // import tabViews from '../pages/epiboly/eptab'
 Vue.use(Router);
 
@@ -25,140 +25,140 @@ export const constantRouterMap = [{
     hidden: true
   },
   {
-    path: '/epiboly/eptab',
+    path: '/IcsPage/epiboly/eptab',
     component: Layout,
     redirect: 'noredirect',
     hidden: true,
     children:[{
       path: 'tabviews/:id',
       name: '外包处理详情页',
-      redirect: '/epiboly/eptab/tabViews/cs_message/:id',
-      component: _import('epiboly/eptab/tabViews'),
+      redirect: '/IcsPage/epiboly/eptab/tabViews/cs_message/:id',
+      component: _import('IcsPage/epiboly/eptab/tabViews'),
       children:[{
-        path: '/epiboly/eptab/tabViews/cs_message/:id',
+        path: '/IcsPage/epiboly/eptab/tabViews/cs_message/:id',
         name: '外包处理详情页',
-        component: _import('epiboly/eptab/eplist/cs_message')
+        component: _import('IcsPage/epiboly/eptab/eplist/cs_message')
       },
       {
-        path: '/epiboly/eptab/tabViews/ht_message/:id',
-        component: _import('epiboly/eptab/eplist/ht_message')
+        path: '/IcsPage/epiboly/eptab/tabViews/ht_message/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/ht_message')
       },
       {
-        path: '/epiboly/eptab/tabViews/cs_history/:id',
-        component: _import('epiboly/eptab/eplist/cs_history')
+        path: '/IcsPage/epiboly/eptab/tabViews/cs_history/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/cs_history')
       },
       {
-        path: '/epiboly/eptab/tabViews/showlist/:id',
-        component: _import('epiboly/eptab/eplist/showlist')
+        path: '/IcsPage/epiboly/eptab/tabViews/showlist/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/showlist')
       },
       {
-        path: '/epiboly/eptab/tabViews/hk_plan/:id',
-        component: _import('epiboly/eptab/eplist/hk_plan')
+        path: '/IcsPage/epiboly/eptab/tabViews/hk_plan/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/hk_plan')
       },
       {
-        path: '/epiboly/eptab/tabViews/kk_list/:id',
-        component: _import('epiboly/eptab/eplist/kk_list')
+        path: '/IcsPage/epiboly/eptab/tabViews/kk_list/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/kk_list')
       },
       {
-        path: '/epiboly/eptab/tabViews/cms_history/:id',
-        component: _import('epiboly/eptab/eplist/cms_history')
+        path: '/IcsPage/epiboly/eptab/tabViews/cms_history/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/cms_history')
       },
     ]
     }]
   },
   {
-    path: '/IcsPage',
+    path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/IcsPage',
     name: '首页',
     hidden: true,
     children: [{
-        path: 'dashboard',
-        component: _import('dashboard/index')
+        path: 'IcsPage',
+        component: _import('IcsPage/dashboard/index')
       },
       {
-        path: 'monitor/timedistribution/:id',
+        path: 'IcsPage/monitor/timedistribution/:id',
         name: '队列任务实时分布监控',
         hidden: true,
-        component: _import('monitor/timedistribution')
+        component: _import('IcsPage/monitor/timedistribution')
       },
       {
-        path: 'monitor/userdistribution/:id',
+        path: 'IcsPage/monitor/userdistribution/:id',
         name: '用户任务实时分布监控',
         hidden: true,
-        component: _import('monitor/userdistribution')
+        component: _import('IcsPage/monitor/userdistribution')
       },
       {
-        path: 'monitor/stributotaldetail/:id',
+        path: 'IcsPage/monitor/stributotaldetail/:id',
         name: '实时分布监控任务详情',
         hidden: true,
-        component: _import('monitor/stributotaldetail')
+        component: _import('IcsPage/monitor/stributotaldetail')
       },
       {
-        path: 'monitor/striusertotaldetail/:id',
+        path: 'IcsPage/monitor/striusertotaldetail/:id',
         name: '实时分布用户监控任务详情',
         hidden: true,
-        component: _import('monitor/striusertotaldetail')
+        component: _import('IcsPage/monitor/striusertotaldetail')
       },
       {
-        path: 'searchs/colsearchdetail/:id',
+        path: 'IcsPage/searchs/colsearchdetail/:id',
         name: '合同查询详情',
         hidden: true,
         component: _import('searchs/colsearchdetail'),
-        redirect:'/searchs/colsearchdetail/cs_message/:id'
+        redirect:'/IcsPage/searchs/colsearchdetail/cs_message/:id'
       },
       {
-        path: 'realdata/realspot/:id',
+        path: 'IcsPage/realdata/realspot/:id',
         name: '实地队列分布监控',
         hidden: true,
-        component: _import('realdata/realspot')
+        component: _import('IcsPage/realdata/realspot')
       },
       {
-        path: 'realdata/realdetial/:id',
+        path: 'IcsPage/realdata/realdetial/:id',
         name: '实地队列分布监控详情',
         hidden: true,
-        component: _import('realdata/realdetial')
+        component: _import('IcsPage/realdata/realdetial')
       },
     ]
   },
   {
-    path: '/tab',
+    path: '/IcsPage/tab',
     component: Layout,
     redirect: 'noredirect',
     hidden: true,
     children: [{
       path: 'tabview/:id',
       name: '处理详情页',
-      redirect: '/tab/tabView/cs_message/:id',
-      component: _import('tab/tabView'),
+      redirect: '/IcsPage/tab/tabView/cs_message/:id',
+      component: _import('IcsPage/tab/tabView'),
       children: [{
-          path: '/tab/tabView/cs_message/:id',
+          path: '/IcsPage/tab/tabView/cs_message/:id',
           name: '处理详情页',
-          component: _import('tab/tablist/cs_message')
+          component: _import('IcsPage/tab/tablist/cs_message')
         },
         {
-          path: '/tab/tabView/ht_message/:id',
-          component: _import('tab/tablist/ht_message')
+          path: '/IcsPage/tab/tabView/ht_message/:id',
+          component: _import('IcsPage/tab/tablist/ht_message')
         },
         {
-          path: '/tab/tabView/cs_history/:id',
-          component: _import('tab/tablist/cs_history')
+          path: '/IcsPage/tab/tabView/cs_history/:id',
+          component: _import('IcsPage/tab/tablist/cs_history')
         },
         {
-          path: '/tab/tabView/showlist/:id',
-          component: _import('tab/tablist/showlist')
+          path: '/IcsPage/tab/tabView/showlist/:id',
+          component: _import('IcsPage/tab/tablist/showlist')
         },
         {
-          path: '/tab/tabView/hk_plan/:id',
-          component: _import('tab/tablist/hk_plan')
+          path: '/IcsPage/tab/tabView/hk_plan/:id',
+          component: _import('IcsPage/tab/tablist/hk_plan')
         },
         {
-          path: '/tab/tabView/kk_list/:id',
-          component: _import('tab/tablist/kk_list')
+          path: '/IcsPage/tab/tabView/kk_list/:id',
+          component: _import('IcsPage/tab/tablist/kk_list')
         },
         {
-          path: '/tab/tabView/cms_history/:id',
-          component: _import('tab/tablist/cms_history')
+          path: '/IcsPage/tab/tabView/cms_history/:id',
+          component: _import('IcsPage/tab/tablist/cms_history')
         },
       ]
     }, ]
@@ -172,40 +172,40 @@ export const constantRouterMap = [{
     children: [{
       path: 'colsearchdetail/:id',
       name: '合同查询处理详情页',
-      redirect: '/searchs/colsearchdetail/cs_message/:id',
+      redirect: '/IcsPage/searchs/colsearchdetail/cs_message/:id',
       component: _import('searchs/colsearchdetail'),
       children: [{
-          path: '/searchs/colsearchdetail/cs_message/:id',
+          path: '/IcsPage/searchs/colsearchdetail/cs_message/:id',
           name: '合同查询详情页',
-          component: _import('searchs/tab/tablist/cs_message')
+          component: _import('IcsPage/searchs/tab/tablist/cs_message')
         },
         {
-          path: '/searchs/colsearchdetail/ht_message/:id',
-          component: _import('searchs/tab/tablist/ht_message')
+          path: '/IcsPage/searchs/colsearchdetail/ht_message/:id',
+          component: _import('IcsPage/searchs/tab/tablist/ht_message')
         },
         {
-          path: '/searchs/colsearchdetail/cs_history/:id',
-          component: _import('searchs/tab/tablist/cs_history')
+          path: '/IcsPage/searchs/colsearchdetail/cs_history/:id',
+          component: _import('IcsPage/searchs/tab/tablist/cs_history')
         },
         {
-          path: '/searchs/colsearchdetail/showlist/:id',
-          component: _import('searchs/tab/tablist/showlist'),
+          path: '/IcsPage/searchs/colsearchdetail/showlist/:id',
+          component: _import('IcsPage/searchs/tab/tablist/showlist'),
           // children:[{
           //   path:"/searchs/tab/tablist/showlist/showlistdetial",
           //   component: _import('searchs/tab/tablist/showlist/showlistdetial')
           // }]
         },
         {
-          path: '/searchs/colsearchdetail/hk_plan/:id',
-          component: _import('searchs/tab/tablist/hk_plan')
+          path: '/IcsPage/searchs/colsearchdetail/hk_plan/:id',
+          component: _import('IcsPage/searchs/tab/tablist/hk_plan')
         },
         {
-          path: '/searchs/colsearchdetail/kk_list/:id',
-          component: _import('searchs/tab/tablist/kk_list')
+          path: '/IcsPage/searchs/colsearchdetail/kk_list/:id',
+          component: _import('IcsPage/searchs/tab/tablist/kk_list')
         },
         {
-          path: '/searchs/colsearchdetail/cms_history/:id',
-          component: _import('searchs/tab/tablist/cms_history')
+          path: '/IcsPage/searchs/colsearchdetail/cms_history/:id',
+          component: _import('IcsPage/searchs/tab/tablist/cms_history')
         },
       ]
     }, ]
@@ -219,19 +219,19 @@ export const constantRouterMap = [{
     hidden: true,
     children:[
       {
-        path:'/spdata/splist/listRemarks/:id',
+        path:'/IcsPage/spdata/splist/listRemarks/:id',
         name:"审批列表",
-        component:_import('spdata/listRemarks'),
+        component:_import('IcsPage/spdata/listRemarks'),
       }, 
       {
-        path:'/spdata/splist/applyRemarks/:id',
+        path:'/IcsPage/spdata/splist/applyRemarks/:id',
         name:"我的申请",
-        component:_import('spdata/applyRemarks'),
+        component:_import('IcsPage/spdata/applyRemarks'),
       },
       {
-        path:'/spdata/splist/historyList/:id',
+        path:'/IcsPage/spdata/splist/historyList/:id',
         name:"审批历史",
-        component:_import('spdata/historyList'),
+        component:_import('IcsPage/spdata/historyList'),
       },  
       // {
       //   path:'/spdata/splist/listRemarks/remarksDetail',
@@ -254,14 +254,14 @@ export const constantRouterMap = [{
     hidden: true,
     children:[
       {
-        path:'/outerdata/listin',
+        path:'/IcsPage/outerdata/listin',
         name:"文件导入",
-        component:_import('outerdata/listin'),
+        component:_import('IcsPage/outerdata/listin'),
       },
       {
-        path:'/outerdata/listdetial',
+        path:'/IcsPage/outerdata/listdetial',
         name:"外包案件详情",
-        component:_import('outerdata/listdetial'),
+        component:_import('IcsPage/outerdata/listdetial'),
       }
     ]
   },
@@ -269,7 +269,7 @@ export const constantRouterMap = [{
 ]
 
 export default new Router({
-  mode: 'history', //后端支持可开
+ // mode: 'history', //后端支持可开
   scrollBehavior: () => ({
     y: 0
   }),

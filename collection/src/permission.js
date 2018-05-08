@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // 开启Progress
   if (getToken()) { // 判断是否有token
     if (to.path === '/IcsPage/login') {
-      next({ path: '/' })
+      next({ path: '/IcsPage/login' })
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
@@ -58,6 +58,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to }) // hack方法 确保addRoutes已完成
           })
         }).catch(() => {
+          debugger;
           store.dispatch('FedLogOut').then(() => {
             Message.error('验证失败,请重新登录')
             next({ path: '/IcsPage/login'})

@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 
 
-const Home = resolve => require(['@/pages/tab/tablist/showlist'], resolve)
+const Home = resolve => require(['@/pages/IcsPage/tab/tablist/showlist'], resolve)
 
 const state = {
     tabdetailId: "",
