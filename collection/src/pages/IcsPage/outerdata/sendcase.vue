@@ -64,14 +64,6 @@
                 <el-button type="primary" style="padding:10px 15px" @click="cancel()">确 定</el-button> 
             </el-form-item>
          </el-form>
-    <!-- <el-table :data="addList" border height="400" @selection-change="handleSelectionChange" ref="multipleTable">
-      <el-table-column  type="selection" aline="center" ></el-table-column>
-       <el-table-column v-for="(item,index) in cols1" :key="index" :prop="item.field" :label="item.title" aline="center" ></el-table-column>
-    </el-table>
-  <div slot="footer" class="dialog-footer">
-    <el-button style="padding:10px 15px"  >取 消</el-button>
-   <el-button type="primary" style="padding:10px 15px" @click="addChange()">确 定</el-button> 
-  </div> -->
 </el-dialog>  
 </section>
 </template>
@@ -282,7 +274,6 @@ export default {
         SendList(para).then((res) => {
             let data =res.data.result;           
             this.datas=data.data;
-            console.log(res)
             this.total=data.recordsTotal;
             this.listLoading = false;
         });

@@ -9,27 +9,6 @@
 		
 	</div>
 	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="./if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px;bottom:0"></iframe>
-	
-<!-- <div class="phoneList" id="AdButton">
-        <el-button type="primary" size="mini" @click="clickCallOut" style="padding:4px!important"><i class="fa fa-phone"></i></el-button>
-        <input id="softPhoneNumber" type="text" style="width: 125px" v-model="phone" placeholder="请输入呼出号码"/>
-		<input id="btnInit" type="button" value="初始化" @click="initParam()" />
-        <input id="btnSignIn" type="button" value="登录" @click="doSignIn" disabled="disabled" />
-        <input id="btnAnswer" type="button" value="接听" @click="answer"   disabled="disabled" />
-        <input id="btnSignOut" type="button" value="签出" @click="clickSignOut" disabled="disabled" />
-        <input id="btnCallOut" type="button" value="呼出" @click="clickCallOut" disabled="disabled" />
-        <input id="btnSetIdle" type="button" value="示闲" @click="clickSetIdle"  disabled="disabled" />
-        <input id="btnSetBusy" type="button" value="示忙" @click="clickSetBusy" disabled="disabled" />
-		<input id="btnHangup"  type="button" value="挂机" @click="clickHangup"  disabled="disabled" />
-		<input id="btnHold"  type="button" value="保持" @click="Hold"  disabled="disabled"/>
-		<input id="btnCannel"  type="button" value="取消" @click="cannel"  disabled="disabled"/>
-		<input id="btnsetRetrieveHold"  type="button" value="唤醒" @click="setRetrieveHold"  disabled="disabled"/>
-		<input id="btnConsultation"  type="button" value="咨询" @click="doConsultation"  disabled="disabled"/>
-		<input id="CallNumber" type="text" style="width: 120px" v-model="callphone" placeholder="请输入咨询号码"/>
-		<input id="btnTransfer"  type="button" value="转接" @click="Transfer"  disabled="disabled"/>
-		<!-- <input id="btnSingleStepConfCallEx"  type="button" value="会议" @click="SingleStepConfCallEx"  disabled="disabled"/>  -->
-		<!-- <input id="state" type="text" style="width: 75px" readonly="readonly" placeholder="状态" />
-        </div> --> 
 	</section>
 </template>
 
@@ -60,7 +39,6 @@ export default {
 		changeNmeType(){
 			if(this.names=="czhangliang"){	
 				let a=this.names.trim().substr(1);	
-				console.log( a)	
 				this.names=a;
 			}else if(this.names=="chenjing_cms"){
 				this.names=this.names.split('_').shift("_");
@@ -69,10 +47,8 @@ export default {
 			}
 		},
 		 initParam:function(){ 
-			 console.log(this.names);
 			   initParam(this.names);
 			  
-        //   this.doSignIn()
 			 },
 			  clickCallOut:function(){
            clickCallOut('1',this.phone);

@@ -852,7 +852,8 @@ export default{
 			appointmentTime:this.times,
 			afpRecord:this.mainform.afpRecord,
 			RowId:this.$route.params.id,
-		}			
+		}
+		console.log(REefresh)			
 		localStorage.setItem("REefresh",JSON.stringify(REefresh))
 		this.$message({
             type:'success',
@@ -870,8 +871,9 @@ export default{
 			appointmentTime:this.times,
 			afpRecord:this.mainform.afpRecord,
 			RowId:this.$route.params.id,
-		}			
-		localStorage.setItem("REefresh",JSON.stringify(REefresh))
+		}	
+		console.log(REefresh)		
+		// localStorage.setItem("REefresh",JSON.stringify(REefresh))
 	let RowIds=localStorage.getItem(this.$route.params.id);
 		if(localStorage.getItem("REefresh")!=""){
 			let FreshList=JSON.parse(localStorage.getItem("REefresh"));

@@ -115,7 +115,6 @@ export default {
         sessionStorage.setItem(id,id)				
 			  },
 			handleCurrentChanges(val) {
-				// console.log(val)
         		this.currentRow = val;
       		},
     // localNumber(){

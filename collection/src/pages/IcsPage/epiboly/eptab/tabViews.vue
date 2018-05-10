@@ -17,7 +17,7 @@ export default {
        { name: "催收信息", path: "/IcsPage/epiboly/eptab/tabViews/cs_message" },
         { name: "合同信息", path: "/IcsPage/epiboly/eptab/tabViews/ht_message" },
         { name: "催收历史", path: "/IcsPage/epiboly/eptab/tabViews/cs_history" },
-        { name: "车辆信息", path: "/IcsPage/epiboly/eptab/tabViews/showlist" },
+        // { name: "车辆信息", path: "/IcsPage/epiboly/eptab/tabViews/showlist" },
         { name: "还款计划", path: "/IcsPage/epiboly/eptab/tabViews/hk_plan" },
         // { name: "扣款流水", path: "/tab/tabView/kk_list" },
         { name: "CMS历史", path: "/IcsPage/epiboly/eptab/tabViews/cms_history" }

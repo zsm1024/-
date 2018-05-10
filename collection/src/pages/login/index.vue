@@ -68,7 +68,7 @@
           this.loading = true
          this.$store.dispatch('LoginByUsername', this.loginForm).then((res) => {
             this.loading = false
-            this.$router.push({ path: '/' })
+            this.$router.push({ path: '/IcsPage' })
                 this.showDialog = true
           }).catch((res) => {
                this.$message({

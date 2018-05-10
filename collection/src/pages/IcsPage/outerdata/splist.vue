@@ -45,7 +45,7 @@
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
        <el-table-column label="操作"  align="center" >
 			<template  slot-scope="scope">
-				<router-link class="a-href" :to="{path:'/outerdata/listdetial'}" ><span @click="clickDetail(scope.row)">详情</span></router-link>
+				<router-link class="a-href" :to="{path:'/IcsPage/outerdata/listdetial'}" ><span @click="clickDetail(scope.row)">详情</span></router-link>
 			</template>
 		</el-table-column>
        <el-table-column  :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" >

@@ -40,7 +40,7 @@
 
 				<!--工具条-->
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[50,100,200,500,1000]"   :total="total"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[100,200,500,1000,2000,5000]"   :total="total"   style="float:right;">
 					</el-pagination>
 				</el-col>
 			</el-collapse-item>
@@ -59,7 +59,7 @@
 					</el-table-column>
 				</el-table>
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangetwo" @size-change="handleSizeChangetwo" :page-size="pagesizetwo" :page-sizes="[100,200,500,1000,2000]"   :total="totaltwo"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangetwo" @size-change="handleSizeChangetwo" :page-size="pagesizetwo" :page-sizes="[100,200,500,1000,2000,5000]"   :total="totaltwo"   style="float:right;">
 					</el-pagination>
 				</el-col>
 
@@ -77,7 +77,7 @@
 				</el-table>
 				<el-col :span="24" class="toolbar">
 					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[100,200,500,1000,2000]"   :total="totalthr"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[100,200,500,1000,2000,5000]"   :total="totalthr"   style="float:right;">
 					</el-pagination>
 				</el-col>
 
@@ -114,7 +114,7 @@ export default {
                 
                 ],
 				total: 0,
-				pagesize:1000,
+				pagesize:2000,
 				page: 1,
 				id:this.$route.params.id,
 				listLoading:false,
@@ -143,7 +143,7 @@ export default {
 				],
 				totalthr: 0,
 				pagethr:1,
-				pagesizethr:1000,
+				pagesizethr:2000,
 				listLoadingthr: false,
 				// spMarks:'',
 			}

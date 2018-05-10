@@ -10,7 +10,7 @@
         <ul class="list-unstyled">
           <li>或者你可以去:</li>
           <li class="link-type">
-            <router-link to="/dashboard">回首页</router-link>
+            <router-link to="/IcsPage">回首页</router-link>
           </li>
           
           <li><a @click.prevent="dialogVisible=true" href="#">点我看图</a></li>
@@ -40,7 +40,7 @@ export default {
   methods: {
     back() {
       if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
+        this.$router.push({ path: '/IcsPage' })
       } else {
         this.$router.go(-1)
       }

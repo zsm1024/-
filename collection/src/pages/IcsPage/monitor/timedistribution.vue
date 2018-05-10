@@ -31,7 +31,7 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			
-			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"  style="float:right;">
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[50, 100,200,500,1000]"   :total="total"  style="float:right;">
 			</el-pagination>
 		</el-col>
 
@@ -93,7 +93,7 @@
 					overdueDays: this.filters.overdueDays,
 					pageSize: this.pagesize,
 					id:this.id
-                };
+				};
 				this.listLoading = true;
 				//NProgress.start();
 				station(para).then((res) => {
@@ -103,7 +103,8 @@
 					this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();
-				});
+				});	
+				localStorage.setItem("overDueId",this.id);	
 			},
 			
 			//全选单选多选

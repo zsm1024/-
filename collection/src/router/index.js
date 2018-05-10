@@ -173,7 +173,7 @@ export const constantRouterMap = [{
       path: 'colsearchdetail/:id',
       name: '合同查询处理详情页',
       redirect: '/IcsPage/searchs/colsearchdetail/cs_message/:id',
-      component: _import('searchs/colsearchdetail'),
+      component: _import('IcsPage/searchs/colsearchdetail'),
       children: [{
           path: '/IcsPage/searchs/colsearchdetail/cs_message/:id',
           name: '合同查询详情页',
@@ -269,7 +269,7 @@ export const constantRouterMap = [{
 ]
 
 export default new Router({
- // mode: 'history', //后端支持可开
+  mode: 'history', //后端支持可开
   scrollBehavior: () => ({
     y: 0
   }),

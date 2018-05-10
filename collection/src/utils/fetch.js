@@ -2,13 +2,16 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-// import {path} from '../'
+var baseApi=window.g.api;
+if(process.env.NODE_ENV=="api"){
+  baseApi=process.env.BASE_API;
+}
 // export {Module} from '../../static/js/path'
 // 创建axios实例
 const service = axios.create({
   // baseURL:Module,
-  baseURL: process.env.BASE_API, // api的base_url
-  timeout: 1800000                  // 请求超时时间
+  baseURL: baseApi, // api的base_url
+  timeout: 1800000    // 请求超时时间
 })
 // console.log(Module)
 // request拦截器

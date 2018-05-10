@@ -99,7 +99,8 @@ export default {
       cols: [
         { title: "节点名称", field: "step"},
         { title: "用户ID", field: "username"},
-        { title: "审批日期", field: "updateTime"},     
+        { title: "审批日期", field: "updateTime"}, 
+        { title: "备注", field: "remarks"},      
       ]
     };
   },

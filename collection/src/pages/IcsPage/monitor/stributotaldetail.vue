@@ -194,7 +194,8 @@ export default {
         startTime:this.times1,
 				endTime:this.times2	,
         pageSize: this.pagesize,
-        overdueDays:this.id
+        overdueDays:this.id,
+        queueId:localStorage.getItem("overDueId")
       };
       this.listLoading = true;
       //NProgress.start();

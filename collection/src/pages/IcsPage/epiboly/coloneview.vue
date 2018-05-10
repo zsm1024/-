@@ -108,6 +108,7 @@
 					{ title: '姓名', field: 'name', width: "60" },
 					{ title: '合同号', field: 'applicationNumber', width: "80" },
 					{ title: '用户ID', field: 'processer', width: "130" },
+					{ title: '派单时间', field: 'createTime', width: "120" },	
 					{ title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "130" },
                     { title: '委托金额', field: 'entrustMoney', width: "130" },
 					{ title: '委托逾期天数', field: 'entrustOverDueDays', width: "100" },
@@ -121,8 +122,7 @@
 					{ title: '未偿本金', field: 'residualAmount', width: "90" },
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '职业', field: 'occupation', width: "90" },
-					{ title: '贷款产品', field: 'loanProducts', width: "150" },
-					{ title: '派单时间', field: 'createTime', width: "120" },					
+					{ title: '贷款产品', field: 'loanProducts', width: "150" },								
 					{ title: '区域', field: 'Region', width: "80" },		
 					{ title: '核销状态', field: 'check_statues', width: "100" },
 					{ title: '收车状态', field: 'car_statues', width: "100" },
@@ -155,18 +155,6 @@
 				// console.log(val)
         		this.currentRow = val;
       		},
-			// sings(row){
-			// 	let a=row;
-			// 	console.log(row);
-			// 	this.rowsIndes=a;
-			// 	console.log("rowsIndes"+this.rowsIndes);
-			// 	this.setCurrent(row);
-			// 	// this.$refs.singleTable.sings(this.rowsIndes);
-			// },
-			
-			// localNumber(){
-     		// 	
-    		// },
 			dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
@@ -205,37 +193,9 @@
 				};
 				this.listLoading = true;				//NProgress.start();
 				listOutsource(para).then((res) => {
-					let data=res.data.result;
-					console.log(res)					
+					let data=res.data.result;					
 					 this.datas=data.data;					 
 					 this.total=data.recordsTotal;
-					//  console.log(this.datas);
-					// for( var i=0; i<this.datas.length; i++){
-					// 		 console.log(this.datas[i])
-					// }
-					//  this.datas.forEach((element,index) => {
-					// 	//  console.log(element.name)
-					// 	  element.name = element.name.replace(/\s+/g,"")
-					// 	 if(element.name=="赵现杰"){
-					// 		 console.log("123")
-					// 		// element.push({"class":"aaa"})
-					// 		// console.log(this.datas)
-					// 		//  alert(element[index])
-					// 		// alert("123")
-					// 	 }
-						
-					//  });
-					// this.cols = data.cols;
-					//  this.datas = res;
-					//  console.log(users)
-					//  console.log(data)
-					// this.total = res.data.total;
-					// this.users = res.data.users;
-					 
-					//  this.total = res.data.recordsTotal;
-					// let data=res.data.result.data;
-					  
-					//  this.cols = res.data.cols;
 					  this.listLoading = false;
 					//NProgress.done();
 				});

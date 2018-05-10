@@ -112,7 +112,7 @@ export default {
 			  localStorage.setItem("nextNum","0");
 				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
         localStorage.setItem("total",this.total)
-        sessionStorage.setItem(id,id)				
+        localStorage.setItem(id,id)				
 			  },
 			handleCurrentChanges(val) {
 				// console.log(val)

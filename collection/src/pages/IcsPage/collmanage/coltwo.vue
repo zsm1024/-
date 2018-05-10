@@ -24,7 +24,7 @@
 		<el-table :data="users2" :max-height="heights" highlight-current-row v-loading="listLoading" border style="width: 100%;">
 			<el-table-column label="操作" width="80" fixed="left">
 				<template slot-scope="scope">
-					 <router-link class="a-href" :to="{path:'/tab/tabview/'+scope.row.id}">处理</router-link>
+					 <router-link class="a-href" :to="{path:'/IcsPage/tab/tabview/'+scope.row.id}">处理</router-link>
 				</template>
 			</el-table-column>
 			<el-table-column type="index" width="60" sortable >

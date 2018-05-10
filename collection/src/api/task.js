@@ -74,6 +74,14 @@ export function getTaskHostList(params){
       data
     })
   }
+  export function cancelCoUer(params) {
+    const data = params;
+    return fetch({
+      url: '/missionInfos/cancelCoUer',
+      method: 'post',
+       data
+    })
+  }
   export function positionUser(params){
     return fetch({
       url: '/users/getAllUserByPositionOnly',

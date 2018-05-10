@@ -1,14 +1,5 @@
 <template>
-<section>
-	 <!--action="http://192.168.2.113:8081/os/actionCodeImport" type="post" enctype="multipart/form-data" target="targetIfr" -->
-	<!-- <form action="http://10.50.130.26:8080/os/actionCodeImport" method="post" enctype="multipart/form-data" target="targetIfr" >
-		<input type="file"   name="filename" id="">
-		<input type="submit" value="上传" style="cursor:pointer">
-		
-	</form>
-	<iframe name="targetIfr" style="display:none" ></iframe>  -->
-	 
-		 
+<section>		 
 	<div style="padding:10px 0;color:red"><span>提示:请按照导入模板格式上传文件</span></div>
 	<el-upload
 				class='ensure ensureButt'
@@ -31,23 +22,14 @@
 			<el-button slot="trigger" size="small" type="primary" @click="chooseFile" style="padding:7px 9px">选取导入文件</el-button>
 			<el-button style="margin-left: 10px; padding:7px 9px" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
 			<el-button @click="uploadlist" type="primary" size="small" style="padding:7px 9px">模板下载</el-button>		
-		</el-upload>
-	<!-- <form >
-
-	<input type="file" @change="getFile($event)"  name="filename"/>
-	<el-button @click="submitForm($event)" type="primary" size="mini">上传</el-button>
-
-	</form> -->
-		
+		</el-upload>		
 </section>
 </template>
 <script>
 import {path} from '@/config'
-//  import{Path} from "@/utils/path";
 	export default{
 		data(){
 			return{
-				//http://10.50.130.26:8080/os/actionCodeImport
 				importFileUrl:"",
 				file:'',
 				listDownload:"",				
@@ -62,33 +44,12 @@ import {path} from '@/config'
 		},
 		methods:{
 		PathList(){
-			console.log(path)
-		// 	let obj=new	Path();
 			this.importFileUrl=path.importPath;
 			this.listDownload=path.listDownload;
-		//  console.log(obj.importPath)
 		},
-			// getFile(event){
-			// 	this.file=event.target.files[0];
-			// 	console.log(this.file)
-			// },
-			// submitForm(event){
-			// 	event.preventDefault();
-			// 	let formData = new FormData();
-			// 	formData.append("file",this.file)			
-			// 	let config={
-			// 		headers:{
-			// 			'Content-Type': 'multipart/form-data'
-			// 		}
-			// 	}
-
-			// 	this.$http.post('http://10.50.130.26:8080/os/actionCodeImport',formData, config).then(function(res){
-			// 		console.log(res)
-			// 	})
-			// },
 
 			uploadlist(){
-				//"http://bdorange.gwmfc.com:1833/ics/os/downloadActionCode"
+
 				window.open(this.listDownload)
 			},
 			chooseFile(){
@@ -97,13 +58,8 @@ import {path} from '@/config'
 		 // 上传成功后的回调
 		submitUpload() {
 			this.$refs.uploadfile.submit();			
-			// console.log(this.$refs.upload);
 		  },
 		onprogress(event,file,fileList){
-			// console.log(file)
-			// console.log(file.raw)
-			// console.log(file.response)
-			// console.log(event);
 		},
 		handleRemove(file,fileList){
 			// console.log(file,fileList)
@@ -130,13 +86,6 @@ import {path} from '@/config'
 			});
 		},
 		uploadSuccess (response, file, fileList) {
-			console.log(response)
-			console.log(file.response)
-			// if(!response.success){
-			// 	console.log("123")
-			// }else{
-			// 	console.log("4565")
-			// }
 			if(response.success){
 				this.$notify({
 					message:response.message,

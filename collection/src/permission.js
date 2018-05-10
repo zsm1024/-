@@ -58,7 +58,6 @@ router.beforeEach((to, from, next) => {
             next({ ...to }) // hack方法 确保addRoutes已完成
           })
         }).catch(() => {
-          debugger;
           store.dispatch('FedLogOut').then(() => {
             Message.error('验证失败,请重新登录')
             next({ path: '/IcsPage/login'})

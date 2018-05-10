@@ -30,7 +30,7 @@
         <!--工具条-->
         <el-col :span="24" class="toolbar">
             
-            <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"  style="float:right;">
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[ 20, 50, 100,200]"   :total="total"  style="float:right;">
             </el-pagination>
         </el-col>
     </section>
@@ -50,8 +50,8 @@
 				lists: [],
 				cols: [
                     {title:'用户名称',field:'username'},
-					{title:'数量',field:'countAll'},
-					{title:'日数量',field:'countAllDate'},
+					{title:'月数量',field:'countAll'},
+					{title:'数量',field:'countAllDate'},
                     {title:'承诺还款案件数',field:'allowanceConut'},
                     {title:'逾期应收款总计',field:'receivables'},
                     {title:'未偿总金额',field:'loanAmountAll'},
@@ -60,7 +60,7 @@
 
                 ],
 				total: 0,
-				pagesize: 20,
+				pagesize: 50,
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列

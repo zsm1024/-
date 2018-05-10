@@ -225,7 +225,9 @@ export default {
                   type: 'success',
                   message: '关闭完成！'
                 })
+                this.disable=true;
               this.getLists();
+
             }else{
             this.$alert(' 关闭失败！','提示',{
                     confirmButtonText:'确定',
