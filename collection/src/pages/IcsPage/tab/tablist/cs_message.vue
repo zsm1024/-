@@ -13,7 +13,7 @@
 			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
 				<el-button class="filter-item"   type="primary" style=" position:absolute;top:14px;left:125px"   @click="addUserInfos = true">添加</el-button>
 				<el-table :data="items.customerPhones" border stripe :row-class-name="tableRowClassNameCustom" >
-					<el-table-column label="操作"  align="center" width="100"> 
+					<el-table-column label="操作"  align="center" width="70"> 
 						<!-- width="95" -->
 						<template slot-scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
@@ -46,7 +46,7 @@
 			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
 				<el-button class="filter-item" style="  position:absolute;top:14px;left:125px"  type="primary"  @click="addWorkInfos = true">添加</el-button>	
 				<el-table :data="items.customerAddresses" border stripe :row-class-name="tableRowClassNameAddress" >
-					<el-table-column label="操作" align="center"  width="100">
+					<el-table-column label="操作" align="center"  width="70">
 						<template slot-scope="scope" >
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
 							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, scope.row,items.customerAddresses)"> 移除</el-button>
@@ -307,25 +307,25 @@ export default {
 			ET:'',
 			dealerName:"",
 			cols:[
-				{title:'角色',field:'roleName',width:"70"},
-            	{title:'姓名',field:'name',width:"80"}, 
-            	{title: '关系', field: 'relationship', width: "50" },         
-            	{title:'电话',field:'phone',width:"140"},
-            	{title: '电话类型', field: 'phoneType', width: "90" },
-            	{title: '电话码', field: 'phoneNum', width: "90" },	
-            	{title:'信息来源',field:'infoSource',width:"60"},
-            	{title:'有效性',field:'effectiveness',width:"60"},
+				{title:'角色',field:'roleName'},
+            	{title:'姓名',field:'name'}, 
+            	{title: '关系', field: 'relationship'},         
+            	{title:'电话',field:'phone',width:"150"},
+            	{title: '电话类型', field: 'phoneType',width:"70"},
+            	{title: '电话码', field: 'phoneNum'},	
+            	{title:'信息来源',field:'infoSource',width:"70"},
+            	{title:'有效性',field:'effectiveness',width:"70"},
 			],
 			dialogStatus: '',
 			cols1:[
 				{title:'角色',field:'roleName',width:"70"},
             	{title:'姓名',field:'name',width:"80"},
-				{title:'关系', field: 'relationship', width: "50" }, 
+				{title:'关系', field: 'relationship', width: "70" }, 
 				{title:'省',field:'province',width:"60"},
 				{title:'市',field:'city',width:"60"},     
-				{title:'地址',field:'address',width:"200"},				
+				{title:'地址',field:'address'},				
 				{title: '地址类型', field: 'addressType', width: "70" },
-				{title:'所有权类型',field:'propertyType',width:"60"},
+				{title:'所有权类型',field:'propertyType',width:"80"},
             	{title:'信息来源',field:'infoSource',width:"60"},
 				{title:'有效性',field:'effectiveness',width:"60"},
 				
@@ -334,8 +334,8 @@ export default {
 				{ title: '角色名', field: 'roleName', width: "60" },
 				{ title: '姓名', field: 'name', width: "80" },
 				// { title: '拼音', field: 'pinyin', width: "80" },
-				{ title: '职业', field: 'occupation', width: "80" },
-				{ title: '单位名称', field: 'unitName', width: "110" },
+				{ title: '职业', field: 'occupation' },
+				{ title: '单位名称', field: 'unitName' },
 				{ title: '性别', field: 'sex', width: "45" },
 				{ title: '证件类型', field: 'documentType', width: "90"},
 				{ title: '证件号码', field: 'documentNum', width: "145"},

@@ -116,6 +116,13 @@ export function queueInfos(params){
     data
   })
 }
+export function queueDelInfo(params){
+  return fetch({
+    url: 'queueInfos/delete/'+params.id,
+    method: 'delete',
+    params: params
+  })
+}
 export function delInfo(params){
   return fetch({
     url: '/queueDistributions/delete/'+params.id,
@@ -456,16 +463,41 @@ export function updateAreaState(params){
       params: params
     })
   }
-
-
-
-
-  // foreuignVisitRecords\insert  
-  // customerAddresss\findType?missionId
-  // export function messageDialog(params){
-  //   return fetch({
-  //     url: '/messageTemplate/listAll',
-  //     method: 'get',
-  //     params:params
-  //   })
-  // }
+  export function rateList(params) {
+    return fetch({
+      url: '/rate/list',
+      method: 'get',
+      params: params
+    })
+  }
+  export function rateinsert(params) {
+    const data = params;
+    return fetch({
+      url: '/rate/insert',
+      method: 'post',
+      data
+    })
+  }
+  export function ratedel(params){
+    const data = params;
+    return fetch({
+      url: '/rate/del',
+      method: 'post',
+      data
+    })
+  }
+  export function rateupdate(params){
+    const data = params;
+    return fetch({
+      url: '/rate/update',
+      method: 'post',
+      data
+    })
+  }
+  export function commission(params) {
+    return fetch({
+      url: '/commission/monitor',
+      method: 'get',
+      params: params
+    })
+  }

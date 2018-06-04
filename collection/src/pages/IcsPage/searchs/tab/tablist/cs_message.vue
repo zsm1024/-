@@ -27,7 +27,7 @@
 					
 				<el-table :data="items.customerAddresses" border stripe :row-class-name="TableRowClassAddress" >
 					
-					<el-table-column :prop="cols1.field" show-overflow-tooltip :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center"  >
+					<el-table-column :prop="cols1.field" show-overflow-tooltip :label="cols1.title" :width="cols1.width" v-for="(cols1, index) in cols1" :key="index" align="center"  >
 						<template slot-scope="scope">							
 							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span>
 							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
@@ -209,7 +209,7 @@ export default {
 				{title:'角色',field:'roleName',width:"60"},
             	{title:'姓名',field:'name',width:"60"}, 
             	{title: '关系', field: 'relationship', width: "50" },         
-            	{title:'电话',field:'phone',width:"135"},
+            	{title:'电话',field:'phone'},
             	{title: '电话类型', field: 'phoneType', width: "90" },
             	{title: '电话码', field: 'phoneNum', width: "60" },	
             	{title:'信息来源',field:'infoSource',width:"60"},
@@ -217,16 +217,16 @@ export default {
 			],
 			dialogStatus: '',
 			cols1:[
-				{title:'角色',field:'roleName',width:"60"},
+				{title:'角色',field:'roleName', width:"60"},
             	{title:'姓名',field:'name',width:"60"},
-            	{title:'关系', field: 'relationship', width: "50" },      
-				{title:'地址',field:'address',width:"200"},
-				{title:'省',field:'province',width:"60"},
-				{title:'市',field:'city',width:"60"},
-				{title: '地址类型', field: 'addressType', width: "70" },
-				{title:'所有权类型',field:'propertyType',width:"60"},
-            	{title:'信息来源',field:'infoSource',width:"60"},
-				{title:'有效性',field:'effectiveness',width:"60"},
+            	{title:'关系',field: 'relationship'},      
+				{title:'地址',field:'address'},
+				{title:'省',field:'province'},
+				{title:'市',field:'city'},
+				{title: '地址类型', field: 'addressType'},
+				{title:'所有权类型',field:'propertyType'},
+            	{title:'信息来源',field:'infoSource'},
+				{title:'有效性',field:'effectiveness'},
 				
 			],
 			baseinfo:[
@@ -234,10 +234,10 @@ export default {
 				{ title: '姓名', field: 'name', width: "60" },
 				//{ title: '拼音', field: 'pinyin', width: "80" },
 				{ title: '职业', field: 'occupation', width: "80" },
-				{ title: '单位名称', field: 'unitName', width: "110" },
+				{ title: '单位名称', field: 'unitName' },
 				{ title: '性别', field: 'sex', width: "45" },
 				{ title: '证件类型', field: 'documentType', width: "90"},
-				{ title: '证件号码', field: 'documentNum', width: "145"},
+				{ title: '证件号码', field: 'documentNum'},
 				{ title: '出生日期', field: 'birthDate', width: "80"}
 			],
 			id:this.$route.params.id,	

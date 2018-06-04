@@ -152,7 +152,7 @@
       <el-form-item label="地址类型 "  label-width="95px"  prop="addressType">
         <i style="color:red">*</i> 
 					<el-select  style="width:150px" id="selectMes" v-model="mainformvisit.addressType" @change="changeAddressType" >
-						<el-option v-for="(item,index) in addressType" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
+						<el-option v-for="(item,index) in addressTypes" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
 					</el-select>
 				</el-form-item>	
       <el-form-item label="地址 " label-width="95px" prop="address">
@@ -384,6 +384,7 @@ export default{
       type:"",
       address:[],
       addressType:[],
+      addressTypes:[],
       formLabelWidth:'60px',
       mainformvisit: {
           appointmentTime: '',
@@ -416,14 +417,13 @@ export default{
 		//路径配置
 		PathList(){
 		// let obj=new	Path();
-		this.importFileUrl=path.uploadPath;
-		this.downLoadPath=path.downLoadPath;
+		this.importFileUrl=path.api+"/files/upload";
+		this.downLoadPath=path.api;
 		// console.log(obj.uploadPath)
 		},
 		
 		fileListTypesChange(val){
 			this.upLoadData.fileType=val;
-			console.log(this.upLoadData.fileType)
 		},
 		changesub(){
 			if(this. mainformvisit.addressStn==""||this. mainformvisit.houseStn==""||this. mainformvisit.workStn==""||this. mainformvisit.carStn==""){
@@ -461,7 +461,7 @@ export default{
 	    querySearch2(querySt,cb){
 		  let data =this.restaurants2;
 		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
-          cb(results) 
+        cb(results) 
 	  },
 	   createFilter(querySt){
           return(item) =>{
@@ -635,7 +635,8 @@ export default{
 				};
 				tab_view(para).then( res =>{
 					let data =res.data.result;
-					this.lists=data;
+          this.lists=data;
+         
 					this.phoneListNums=data.customerPhones;
 					this.applicationNumber=data.applicationNumber;					
 					this.UserArr.splice(0,this.UserArr.length);
@@ -645,15 +646,13 @@ export default{
 					});					
 					data.customerAddresses.forEach(el =>{
 						this.addressType.push(el.addressType.split(" ").shift())
-					});
+          });
 					this.phoneListNums.forEach(el =>{
 						this.TypeArr.push(el.phoneType.split(" ").shift())
-					});
-
+          });
 					this.userList2=(this.TypeArr.concat(this.addressType))
 					this.unique(this.UserArr,this.getname);
-					this.unique(this.userList2,this.getfangshi)
-
+          this.unique(this.userList2,this.getfangshi)
 				});
 			},
 			// concatList(arr,item){
@@ -740,7 +739,6 @@ export default{
 				}
 				getFileType(para).then(res=>{
 					let data=res.data.result
-					console.log(data)
 					this.fileListType=data
 				})
 				
@@ -946,7 +944,7 @@ export default{
 		},
 		downLoad(item){
 			// console.log(item)
-			window.open(this.downLoadPath+item.path);//文件中心地址
+			window.open(this.downLoadPath+"/files/download?path="+item.path);//文件中心地址
 			this.listrefresh()
 		},
 		deleteList(item){
@@ -954,7 +952,6 @@ export default{
 				id:item.id
 			}
 			delet(para).then(res=>{
-				console.log(res.data)
 				if(res.data.success==true){
 					this.$message({
 					showClose: true,
@@ -1016,9 +1013,7 @@ export default{
 	isaddress(val){
 		if(val=="Y"){
 			this.mainformvisit.addressName=""
-		} 
-		// if(val=="N"&&this.mainformvisit.addressName!=""){			
-		// }		
+		} 	
 	},
 	addressNames(val){
 		if(val!=""&&this.mainformvisit.istrue=="N"){
@@ -1026,16 +1021,6 @@ export default{
 		}
 	},
 
-//     getlistvisit() {
-// 			let para = {
-// 				missionId: this.$route.params.id
-// 			};
-// 			tab_view(para).then(res => {
-// 				 let data = res.data.result;			
-//          	this.items = data;							 
-//       });
-      
-//    },
    getaddress(){
      let para={
        type:"object"
@@ -1081,18 +1066,16 @@ export default{
     });
    },
    getaddressType(){
-// 	   console.log("12333")
+
      let para={
        	missionId: this.$route.params.id
 	 } 
      AddresssfindByType(para).then(res=>{
-		 console.log(res)
        let data=res.data.result;
-       this.addressType=data
+       this.addressTypes=data;
      })
    },
    changeAddressType(val){
-	   console.log("12323")
      this.roleName=val.split("-").shift();
      this.type=val.split("-").pop();
      this.address=[];
@@ -1102,7 +1085,6 @@ export default{
        type:this.type
      }
      AddresssfindAddress(para).then(res=>{
-		 console.log(res)
        let data=res.data.result
        this.address=data;
       for(let a=0;a<this.address.length;a++){
@@ -1124,17 +1106,7 @@ export default{
 				address:this.mainformvisit.address,
 				addressReal:this.mainformvisit.istrue,
 				addressRemarks:this.mainformvisit.addressName,
-				// callReal:this.mainformvisit.isanswer,
-				// seeIt:this.mainformvisit.isperson,
-				// seeItS:this.mainformvisit.ispersons,
-				// :this.mainformvisit.,
-				// cusAddressSituation:this.mainformvisit.addressStn,
-				// ownerHource:this.mainformvisit.houseStn,
-				// cusWorkSituation:this.mainformvisit.workStn,
-				// carControl:this.mainformvisit.carStn
 			  } 	
-			  console.log("1"+para)		 
-			//   ||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.addressName==""
 			  if((this.timesvisit==""||this.timesvisit==undefined)||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.addressName==""){
 				  this.$notify({
 					title:"提示:",
@@ -1168,8 +1140,6 @@ export default{
 				cusWorkSituation:this.mainformvisit.workStn,
 				carControl:this.mainformvisit.carStn
 			  }  
-			  console.log("2")
-			   console.log(para)	
 			   if(this.timesvisit==""||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.isanswer==""||this.mainformvisit.addressStn==""||this.mainformvisit.houseStn==""||this.mainformvisit.workStn==""||this.mainformvisit.carStn==""){
 				  this.$notify({
                     title:"提示:",
@@ -1202,7 +1172,6 @@ export default{
 				cusWorkSituation:this.mainformvisit.workStn,
 				carControl:this.mainformvisit.carStn
 			  } 
-			   console.log("3"+para)	
 			  if((this.timesvisit==""||this.timesvisit==undefined)||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.isanswer==""||this.mainformvisit.isperson==""||this.mainformvisit.addressStn==""||this.mainformvisit.houseStn==""||this.mainformvisit.workStn==""||this.mainformvisit.carStn==""){
 				  this.$notify({
                    title:"提示:",
@@ -1278,8 +1247,8 @@ export default{
 		
   },
 	mounted() {
-	this.getlists();
-	this.callParent();
+  this.callParent();
+	this.getlists();	
 	this.PathList();
 	this.restaurants=this.userList;
 	this.restaurants1=this.getname;

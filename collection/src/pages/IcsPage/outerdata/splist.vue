@@ -48,34 +48,14 @@
 				<router-link class="a-href" :to="{path:'/IcsPage/outerdata/listdetial'}" ><span @click="clickDetail(scope.row)">详情</span></router-link>
 			</template>
 		</el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" >
+       <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" >
 		</el-table-column>     
    </el-table>
    <!--工具条-->
 	<el-col :span="24" class="toolbar">			
-		<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize"  :page-sizes='[20,50,100,200,500,1000,2000]' :total="total" style="float:right;">
+		<el-pagination layout="total, sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize"  :page-sizes='[100,200,500,1000,2000]' :total="total" style="float:right;">
 		</el-pagination>
 	</el-col>
-    <!-- <el-dialog  title="取消代管" :visible.sync="cancelhost">
-         <el-form inline ref="multipleTable">
-            <el-form-item label="用户ID">
-                 <el-autocomplete v-model="state1" :fetch-suggestions="querySearchs" size="small"  placeholder="请输入用户ID"  @select="handleSelect" class="autoInput" style="width:100%">
-            </el-autocomplete>
-            </el-form-item> -->
-            <!-- <el-form-item >
-                <el-button style="padding:10px 15px"  @click="toggleSelection()" >取 消</el-button>
-                <el-button type="primary" style="padding:10px 15px" @click="cancel()">确 定</el-button> 
-            </el-form-item> -->
-         <!-- </el-form> -->
-    <!-- <el-table :data="addList" border height="400" @selection-change="handleSelectionChange" ref="multipleTable">
-      <el-table-column  type="selection" aline="center" ></el-table-column>
-       <el-table-column v-for="(item,index) in cols1" :key="index" :prop="item.field" :label="item.title" aline="center" ></el-table-column>
-    </el-table>
-  <div slot="footer" class="dialog-footer">
-    <el-button style="padding:10px 15px"  >取 消</el-button>
-   <el-button type="primary" style="padding:10px 15px" @click="addChange()">确 定</el-button> 
-  </div> -->
-<!-- </el-dialog>   -->
 </section>
 </template>
 <script >
@@ -94,54 +74,23 @@ export default {
           restaurants:[],
           file:[],
           state:'',
-        //   state1:"",
           items:"",
           a:[],
           itemsId:0,
           addlists:[],
-        //   userList:[],
           userLists:[],
-        //   cancelhost:false,
           multipleSelection:[],   
            cols: [   
-            //    { title: '用户ID', field: 'processer', width: "60" },
                     { title: '预派案公司', field: 'willSendCompany', width: "60" },
                     { title: '数量', field: 'caseAmount', width: "60"},
                     { title: '委托逾期金额', field: 'entrustMoneys', width: "60" },
                     { title: '逾期金额', field: 'overdueTotals', width: "80" },
-					// { title: '姓名', field: 'name', width: "60" },
-            		// { title: '合同号', field: 'applicationNumber', width: "80" },
-           			// { title: '职业', field: 'occupation', width: "90" },
-           			// { title: '逾期天数', field: 'overdueDays', width: "75" },
-					// { title: '逾期金额', field: 'overdueTotal', width: "80" },
-					// { title: '贷款产品', field: 'loanProducts', width: "150" },
-					// { title: '贷款车型', field: 'car', width: "150" },
-					// { title: '约会日期', field: 'appointmentTime', width: "80" },
-					// { title: '区域', field: 'Region', width: "80" },
-					// { title: '省份', field: 'province', width: "50" },
-					// { title: '城市', field: 'city', width: "50" },
-					// { title: '最近行动代码', field: 'M_Code', width: "120" },
-					// { title: '最近行动时间', field: 'M_Time', width: "120" },
-					// { title: '贷款金额', field: 'loanAmount', width: "90" },
-					// { title: '未偿本金', field: 'residualAmount', width: "90" },
-					// { title: '派单时间', field: 'updateTime', width: "120" },
-					// { title: '核销状态', field: 'check_statues', width: "100" },
-                    // { title: '收车状态', field: 'car_statues', width: "100" },
                     ],
 				total: 0,
 				page: 1,
-				pagesize:20,
+				pagesize:500,
                 currentPage:1,
                 listLoading: false, 
-                // filters: {					
-				// 	name: '',
-				// 	applicationNumber:"",
-				// 	overdueDays:"",
-				// 	appointmentTime:"",
-				// 	processer:"",
-				// 	startTime:"",
-				// 	endTime:"",
-				// },
       }
   },
   methods: {
@@ -152,59 +101,17 @@ export default {
       dataChanges(val){
            this.times=val;
       },
-    //   querySearch(queryString,cb){
-    //       let data =this.restaurants;
-    //       let results = queryString ? data.filter(this.createFilter(queryString)) :data;
-    //       cb(results) 
-    //   },
-    //   querySearchs(queryString,cb){
-    //       let datas =this.file;
-    //       let files = queryString ? datas.filter(this.createFilters(queryString)) :datas;
-    //       cb(files) 
-    //   },
         createFilters(queryString){
           return(item) =>{
                return (item.value.toLowerCase().indexOf(queryString.toLowerCase()) ===0)
           }
       },
-    //   createFilter(queryString){
-    //       return(item) =>{
-    //            return (item.value.toLowerCase().indexOf(queryString.toLowerCase()) ===0)
-    //       }
-    //   },
     getlists(){
-        // this.restaurants=this.userList;
-        // this.file=this.userLists; 
         this.listShow();
         let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-200;
         this.heights=h;
-        // this.getTaskUser();
-        // this. getTaskUser1()
 
     },  
-    // getTaskUser(){
-    //      getTaskHostUser().then((res) => {
-    //          let data =res.data.result;
-    //          this.a=data;
-    //          this.a.forEach(el => {
-    //              this.userList.push({"value":el.nickname,"id":el.id})
-    //          });
-            //  this.datas=data.data;
-            // this.total=data.recordsTotal;
-    //     })
-    // },
-    // getTaskUser1(){
-    //      getTaskHostUser1().then((res) => {
-    //          let data =res.data.result;
-    //          this.userLists.splice(0,this.userLists.length)
-    //          data.forEach(el => {
-    //                 this.userLists.push({"value":el.username,"id":el.id})      
-    //          });
-            
-            //  this.datas=data.data;
-            // this.total=data.recordsTotal;
-    //     })
-    // },
      handleSelectionChange(val){        
             this.multipleSelection=val;
 
@@ -222,7 +129,6 @@ export default {
             // deadTimeOfTheSendCase: this.times,
             // status:"1",
         }
-        console.log(para)
         if(this.addlists.length==0){          
              this.$alert('请选择待派案案件！','提示',{
                     confirmButtonText:'确定',
@@ -249,14 +155,7 @@ export default {
     listShow(){       
         let para = {
 			page: this.page,
-            pageSize:this.pagesize,
-            // name:this.filters.name,
-			// applicationNumber:this.filters.applicationNumber,
-			// overdueDays:this.filters.overdueDays,
-			// appointmentTime:this.filters.appointmentTime,
-			// startTime:this.times1,
-            // endTime:this.times2	,
-            // username:this.filters.processer,													
+            pageSize:this.pagesize,											
         };
         this.listLoading = true;
         listApproveOsCase(para).then((res) => {
@@ -266,25 +165,9 @@ export default {
             this.listLoading = false;
         });
          
-        //  getTaskHostUser().then((res) => {
-        //      this.userList=[];
-        //      let data =res.data.result;
-        //      this.a=data;
-        //      this.a.forEach(el => {
-        //          this.userList.push({"value":el.nickname,"id":el.id})
-        //      });
-        //     this.restaurants=this.userList;
-        //     this.file=this.userLists;
-            //  this.datas=data.data;
-            // this.total=data.recordsTotal;
-        // })
+       
     },
-    // handleSelect(item){
-    //    this.items=item.value;
-    //    this.itemsId=item.id;
 
-
-    // },
     cancelhostList(){
         this.addlists=[];
         this.multipleSelection.forEach(f =>{
@@ -313,19 +196,7 @@ export default {
 
         
     },
-    //  toggleSelection(){
-    //     this.cancelhost=false;
-    // },
-    // cancel(){
-    //     let para={
-    //         id:this.itemsId
-    //     }
-    //    cancelEscrow(para).then(res =>{
-    //        this.cancelhost=false;
-    //        this.userLists.splice(0,this.userLists.length) 
-    //        this.getlists();
-    //    })
-    // }
+
 },
   mounted () {
     this.listShow();

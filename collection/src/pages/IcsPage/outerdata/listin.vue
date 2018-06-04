@@ -44,8 +44,8 @@ import {path} from '@/config'
 		},
 		methods:{
 		PathList(){
-			this.importFileUrl=path.importPath;
-			this.listDownload=path.listDownload;
+			this.importFileUrl=path.api+"/os/actionCodeImport";
+			this.listDownload=path.api+"/os/downloadActionCode";
 		},
 
 			uploadlist(){

@@ -157,7 +157,7 @@
       <el-form-item label="地址类型 "  label-width="95px"  prop="addressType">
         <i style="color:red">*</i> 
 					<el-select  style="width:150px" id="selectMes" v-model="mainformvisit.addressType" @change="changeAddressType" >
-						<el-option v-for="(item,index) in addressTypeserach" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
+						<el-option v-for="(item,index) in addressTypesearch" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
 					</el-select>
 				</el-form-item>	
       <el-form-item label="地址 " label-width="95px" prop="address">
@@ -285,7 +285,7 @@ export default{
 				// {title:'其他',field:'name',width:"60"},	
 			],
 			addressType:[],
-			addressTypeserach:[],
+			addressTypesearch:[],
 			datas:[],
 			templateId:'',
 			phone:'',
@@ -423,8 +423,8 @@ export default{
 	methods:{
 		PathList(){
 		// let obj=new	Path();
-		this.importFileUrl=path.uploadPath;
-		this.downLoadPath=path.downLoadPath;
+		this.importFileUrl=path.api+"/files/upload";
+		this.downLoadPath=path.api;
 		// console.log(obj.uploadPath)
 		},
 		fileListTypesChange(val){
@@ -852,8 +852,7 @@ export default{
 			appointmentTime:this.times,
 			afpRecord:this.mainform.afpRecord,
 			RowId:this.$route.params.id,
-		}
-		console.log(REefresh)			
+		}			
 		localStorage.setItem("REefresh",JSON.stringify(REefresh))
 		this.$message({
             type:'success',
@@ -918,7 +917,7 @@ export default{
 			//  console.log(file)
 		},
 		handleChange(file,fileList){			
-			console.log(this.fileListStatue)
+		
 			console.log(file)
 		},
 		beforeUpload:function(file){
@@ -956,7 +955,7 @@ export default{
 		downLoad(item){
 			// console.log(item)
 			// window.open("http://10.50.24.81/"+item.path);//文件中心
-			window.open(downLoadPath+item.path);//文件中心地址
+			window.open(downLoadPath+"/files/download?path="+item.path);//文件中心地址
 			this.listrefresh()
 		},
 		deleteList(item){
@@ -989,7 +988,7 @@ export default{
 				id:this.$route.params.id
 			}
 			RecordsFind(para).then(res=>{
-				console.log(res)
+				
 			});
 			this.getvisitlist();
 		},
@@ -1089,8 +1088,8 @@ export default{
 	 }
      AddresssfindByType(para).then(res=>{
 	   let data=res.data.result;
-		console.log(res)
-       this.addressTypesearch=data
+       this.addressTypesearch=data;
+       console.log(this.addressTypesearch)
      })
    },
    changeAddressType(val){

@@ -122,12 +122,13 @@
     }
    	.el-input {
       display: inline-block;
-      min-height: 35px;
+      min-height:35px;
       width: 85%;
       border-radius: 3px;
     }
     .el-input__inner{
-      border-radius: 3px!important
+      border-radius: 3px!important;
+       height:22px;
     }
     .tips {
       font-size: 13px;

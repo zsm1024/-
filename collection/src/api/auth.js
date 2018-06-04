@@ -7,7 +7,13 @@ export function getUsers(params) {
         params: params
     })
 }
-
+export function getUsersAll(params) {
+    return fetch({
+        url: '/users/listAll',
+        method: 'get',
+        params: params
+    })
+}
 export function getRoles(params) {
     return fetch({
         url: '/roles/all',
@@ -199,3 +205,20 @@ export function deletePost(params) {
     })
 }
 
+//修改密码
+export function changeSub(params) {
+    const data = params;
+    return fetch({
+        url: '/users/changePWD',
+        method: 'put',
+        data
+    })
+}
+//初始化密码refreshSub
+export function refreshSub(params) {
+    return fetch({
+        url: '/users/initPassword',
+        method: 'get',
+        params: params
+    })
+}

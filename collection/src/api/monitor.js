@@ -59,3 +59,10 @@ export function gethistory(params) {
       params: params
     })
 }
+export function ControlVehicle(params) {
+    return fetch({
+      url: '/osControlVehicle/list',
+      method: 'get',
+      params: params
+})
+}

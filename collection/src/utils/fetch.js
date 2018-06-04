@@ -6,6 +6,7 @@ var baseApi=window.g.api;
 if(process.env.NODE_ENV=="api"){
   baseApi=process.env.BASE_API;
 }
+console.log(baseApi);
 // export {Module} from '../../static/js/path'
 // 创建axios实例
 const service = axios.create({

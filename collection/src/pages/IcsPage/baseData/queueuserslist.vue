@@ -122,7 +122,6 @@ export default {
     },
     Edit(row) {
       let para = row;
-      console.log(para)
       if ((row.edit = !row.edit)) {
         return;
       } else {

@@ -1,6 +1,6 @@
 <template>
     <section ref="changeHeight" style="overflow-y: auto;">
-        <div>
+        <!-- <div>
             <el-tabs v-model="activeTabdetailName" type="card"  @tab-remove="closeTab">
             <el-tab-pane
                 v-for="(item) in tabListdetail"
@@ -13,7 +13,7 @@
                 <component :is="item.component"></component>
             </el-tab-pane>
             </el-tabs>
-        </div>
+        </div> -->
     </section>
 </template>
 

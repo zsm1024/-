@@ -218,7 +218,7 @@
      		 this.addTabs = true;
      		 repairDetial(para).then(res => {
 		  		let data =res.data.result;
-		  		console.log(this.res)
+				  this.wbInfo = data;
 	 		 });
 				// var indexlink = "showdetail";
 				// var label = '维保信息详情';

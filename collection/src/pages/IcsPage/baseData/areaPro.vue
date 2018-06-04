@@ -28,12 +28,12 @@
 				<el-form-item label="区域代码:" prop="areaCode" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.areaCode" style="width:300px"></el-input>
 				</el-form-item>
-				<el-form-item label="描述:" prop="areaDistribution" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.areaDistribution" style="width:300px"></el-input>
-				</el-form-item>
-				<el-form-item label="名字" prop="areaName" :label-width="formLabelWidth">
+        <el-form-item label="名称" prop="areaName" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.areaName" style="width:300px"></el-input>
 				</el-form-item>
+				<el-form-item label="描述:" prop="areaDistribution" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.areaDistribution" style="width:300px"></el-input>
+				</el-form-item>				
 				<el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.state" style="width:300px" ></el-input>
 				</el-form-item>
@@ -43,7 +43,7 @@
 						<!-- <el-option label="N" value="N"></el-option> -->
 					<!-- </el-select> -->
 					<!-- <el-input v-model="AdduserForm.distribution"></el-input> -->
-				<!-- </el-form-item>				 -->
+				<!-- </el-form-item>-->
 			</el-form>
 			<div slot="footer" class="dialog-footer">
         <el-button @click="addUserInfo">取 消</el-button>
@@ -71,8 +71,8 @@
 				formLabelWidth: '120px',
                 cols:[
                     { title: "区域代码", field: "areaCode" },
-                    { title: "描述", field: "areaDistribution" },
-                    { title: "名字", field: "areaName" },
+                    { title: "名称", field: "areaName" },
+                    { title: "描述", field: "areaDistribution" },               
                     { title: "状态", field: "state" }
 				],
 				AdduserForm:{					

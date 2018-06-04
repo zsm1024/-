@@ -2,17 +2,18 @@
 <section ref="abc" style="height:100%">
     <el-form :model="filters" inline>
         <el-form-item>
-			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:150px"></el-input>
+			<el-input v-model="filters.name" placeholder="当事人" clearable  size="mini" style="width:100px"></el-input>
 	  </el-form-item>
 	  <el-form-item>
-			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:150px"></el-input>
+			<el-input v-model="filters.applicationNumber" placeholder="合同号" size="mini" clearable style="width:100px"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-input v-model="filters.overdueDays" placeholder="逾期天数"  clearable style="width:150px"></el-input>
+			<el-input v-model="filters.overdueDays" placeholder="逾期天数" size="mini" clearable style="width:100px"></el-input>
 		</el-form-item>
           <el-form-item>
-            <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:150px"></el-input>           
+            <el-input v-model="filters.processer" placeholder="用户ID" size="mini" clearable style="width:150px"></el-input>           
         </el-form-item>
+       
         <el-form-item>
             <el-date-picker v-model="value6" 
 					type="daterange" 
@@ -23,8 +24,18 @@
 					</el-date-picker>
             <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
         </el-form-item>
+         <el-form-item>
+        <el-select v-model="filters.userInfos" multiple filterable placeholder="请选择协办催收员" size="mini" class="checkmore" @change="colchange">
+        <el-option
+          v-for="item in userInfos"
+          :key="item.id"
+          :label="item.nickname"
+          :value="item.username">
+        </el-option>
+        </el-select> 
+        </el-form-item>
         <el-form-item>
-            <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
+            <el-button type="primary" size="small" @click="listShow('filters')" style="padding:7px 9px">查询</el-button>
         </el-form-item>
     </el-form>
     
@@ -75,7 +86,7 @@ import {
   positionUser,
   cancelCoUer
 } from "@/api/task";
-import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
+import { getAuthUser, getAuthtree, sysPositionslistAll,getUsersAll } from "@/api/auth";
 export default {
   data() {
     return {
@@ -101,7 +112,10 @@ export default {
       options1: [],
       options2: [],
       treedata: [],
+      userInfos:[],
+      value5:[],
       k: [],
+      ss:[],
       cancelhost: false,
       multipleSelection: [],
       cols: [
@@ -140,7 +154,8 @@ export default {
         appointmentTime: "",
         processer: "",
         startTime: "",
-        endTime: ""
+        endTime: "",
+        userInfos:"",
       },
       AdduserForms: {
         positionId: "",
@@ -150,6 +165,19 @@ export default {
     };
   },
   methods: {
+    colchange(val){
+      //  this.ss=val      
+    },
+    //获取用户信息
+    getuserInfos(){  
+      getUsersAll().then(res => {
+        this.userInfos=[],
+         res.data.forEach(f=>{
+           this.userInfos.push({"username":f.username,"nickname":f.nickname,"id":f.id})
+         })    
+      });
+    },
+    
     dataChange(val) {
       this.times2 = val.split("至").pop();
       this.times1 = val.split("至").shift();
@@ -157,18 +185,12 @@ export default {
     dataChanges(val) {
       this.times = val;
     },
-    //   querySearch(queryString,cb){
-    //       let data =this.restaurants;
-    //       let results = queryString ? data.filter(this.createFilter(queryString)) :data;
-    //       cb(results)
-    //   },
     getMessage(val) {
       this.AdduserForms.areaCode = val;
       let para = {
         positionId: this.AdduserForms.positionId
       };
       positionUser(para).then(res => {
-        // this.AdduserForms.positionId="";
         this.options1 = [];
         let data = res.data.result;
         this.options1 = data;
@@ -209,45 +231,19 @@ export default {
     getDl_AllList() {
       authlist().then(res => {
         this.options2 = res.data.result;
-        // this.listLoading = false;
       });
     },
 
     getlists() {
-      // this.restaurants=this.userList;
-      // this.file=this.userLists;
       this.listShow();
       let h =
         (window.innerHeight ||
           document.documentElement.clientHeight ||
           document.body.clientHeight) - 190;
-      this.heights = h;
-      // this.getTaskUser();
-      // this. getTaskUser1()
-    },
-    // getTaskUser(){
-    //      getTaskHostUser().then((res) => {
-    //          let data =res.data.result;
-    //          this.a=data;
-    //          this.a.forEach(el => {
-    //              this.userList.push({"value":el.nickname,"id":el.id})
-    //          });
-    //         //  this.datas=data.data;
-    //         // this.total=data.recordsTotal;
-    //     })
-    // },
-    // getTaskUser1(){
-    //      getTaskHostUser1().then((res) => {
-    //          let data =res.data.result;
-    //          this.userLists.splice(0,this.userLists.length)
-    //          data.forEach(el => {
-    //                 this.userLists.push({"value":el.username,"id":el.id})
-    //          });
+        this.heights = h;
 
-    //         //  this.datas=data.data;
-    //         // this.total=data.recordsTotal;
-    //     })
-    // },
+    },
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -257,24 +253,27 @@ export default {
         this.addlists.push(f.id);
       });
       this.b = [];
-      for (let i = 0; i < this.multipleSelection.length; i++) {
-        if (
-          this.multipleSelection[i].lockFlag != "null" ||
-          this.multipleSelection[i].lockFlag == "Y"
-        ) {
-          this.b.push(this.multipleSelection[i].lockFlag);
+     this.multipleSelection.forEach((f,i)=>{
+        if(f.turnStatus||f.turnStatus!=null||f.coStatus||f.coStatus!=null||f.backCaseStatus||f.backCaseStatus!=null||f.leaveStatus||f.leaveStatus!=null ){      
+        this.b.push(f.turnStatus)
         }
-      }
-      if (this.b.indexOf("N", 0) == -1) {
-        let para = {
+      })
+      if(this.b.length>0){
+          this.$alert("请选未申请的案件！", "提示", {
+          confirmButtonText: "确定",
+          type: "warning",
+          center: "true"
+        });
+      }else{
+         let para = {
           coUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,
           coTime: this.times,
           status: "1",
           queueId: this.AdduserForms.areaList
-        };
-        if (
-          this.AdduserForms.stateCode == "" ||
+         }
+         if (
+         this.AdduserForms.stateCode == "" ||
           this.AdduserForms.areaList == "" ||
           this.addlists.length == 0 ||
           this.times == ""
@@ -285,7 +284,7 @@ export default {
             center: "true"
           });
         } else {
-          coMissionApp(para).then(res => {
+         coMissionApp(para).then(res => {
             this.AdduserForms.stateCode = "";
             this.AdduserForms.areaList = "";
             this.times = "";
@@ -294,13 +293,53 @@ export default {
             this.listShow();
           });
         }
-      } else {
-        this.$alert("请选未申请的案件！", "提示", {
-          confirmButtonText: "确定",
-          type: "warning",
-          center: "true"
-        });
       }
+
+
+      // for (let i = 0; i < this.multipleSelection.length; i++) {
+      //   if (
+      //     this.multipleSelection[i].lockFlag != "null" ||
+      //     this.multipleSelection[i].lockFlag == "Y"
+      //   ) {
+      //     this.b.push(this.multipleSelection[i].lockFlag);
+      //   }
+      // }
+      // if (this.b.indexOf("N", 0) == -1) {
+      //   let para = {
+      //     coUser: this.AdduserForms.stateCode,
+      //     missionIds: this.addlists,
+      //     coTime: this.times,
+      //     status: "1",
+      //     queueId: this.AdduserForms.areaList
+      //   };
+      //   if (
+      //     this.AdduserForms.stateCode == "" ||
+      //     this.AdduserForms.areaList == "" ||
+      //     this.addlists.length == 0 ||
+      //     this.times == ""
+      //   ) {
+      //     this.$alert("请填写完整的协办条件！", "提示", {
+      //       confirmButtonText: "确定",
+      //       type: "warning",
+      //       center: "true"
+      //     });
+      //   } else {
+      //     coMissionApp(para).then(res => {
+      //       this.AdduserForms.stateCode = "";
+      //       this.AdduserForms.areaList = "";
+      //       this.times = "";
+      //       this.coTime = "";
+      //       this.addlists = [];
+      //       this.listShow();
+      //     });
+      //   }
+      // } else {
+      //   this.$alert("请选未申请的案件！", "提示", {
+      //     confirmButtonText: "确定",
+      //     type: "warning",
+      //     center: "true"
+      //   });
+      // }
     },
     handleCurrentChange(val) {
       this.pages = val;
@@ -310,7 +349,7 @@ export default {
       this.pagesize = val;
       this.getlists();
     },
-    listShow() {
+    listShow(filters) {
       let para = {
         page: this.page,
         pageSize: this.pagesize,
@@ -320,8 +359,10 @@ export default {
         appointmentTime: this.filters.appointmentTime,
         startTime: this.times1,
         endTime: this.times2,
-        username: this.filters.processer
+        username: this.filters.processer,
+        userInfos:this.filters.userInfos.toString()
       };
+      console.log(para)
       this.listLoading = true;
       listCoMission(para).then(res => {
         let data = res.data.result;
@@ -397,6 +438,7 @@ export default {
   mounted() {
     this.listShow();
     this.getDl_AllList();
+    this.getuserInfos()
     // this.getTaskUser1();
 
     // this.getTaskUser();
@@ -429,5 +471,6 @@ td {
   padding: 0 !important;
   white-space: nowrap;
 }
+.checkmore .el-select__tags{max-width:100%!important}
 </style>
 

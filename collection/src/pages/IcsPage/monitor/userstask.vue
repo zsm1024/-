@@ -59,7 +59,7 @@
 
                 ],
 				total: 0,
-				pagesize: 20,
+				pagesize:100,
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列

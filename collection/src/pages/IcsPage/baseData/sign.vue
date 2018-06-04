@@ -68,7 +68,7 @@
                 cols:[
                     {title:'名称',field:'placeholder',width:"180"},
 					{title:'值',field:'value',width:"190"},
-					{title:'是否是固定值',field:'isFixed',width:"190"},
+					{title:'是否是固定值',field:'isFixedName',width:"190"},
                     {title:'创建时间',field:'createTime',width:"90"},
                     {title:'修改时间',field:'updateTime',width:"80"},
                     {title:'创建人',field:'createUser',width:"70"},

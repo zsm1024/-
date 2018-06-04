@@ -30,27 +30,27 @@
 			<el-form :model="AdduserForm" ref="AdduserForm">
 				 <!-- :rules="phonerules" -->
 				<el-form-item label="规则名称：" prop="name" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.name" ></el-input>
+					<el-input v-model="AdduserForm.name"  style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="规则描述：" prop="describes" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.describes"></el-input>
+					<el-input v-model="AdduserForm.describes" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="最小值：" prop="startDate" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.startDate"></el-input>
+					<el-input v-model="AdduserForm.startDate" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="最大值：" prop="endDate" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.endDate" ></el-input>
+					<el-input v-model="AdduserForm.endDate" style="width:300px" ></el-input>
 				</el-form-item>
 				<el-form-item label="区域代码:" prop="stateCode" :label-width="formLabelWidth">
-					<el-select v-model="AdduserForm.stateCode" placeholder="请选择" @change="getMessages" >
+					<el-select v-model="AdduserForm.stateCode" placeholder="请选择" @change="getMessages" style="width:300px">
 						<el-option v-for="item in options1" :key="item.value" :label="item.areaName" :value="item.id"></el-option>
 					</el-select>
 		    	</el-form-item>
 				<el-form-item label="类型：" prop="type" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.type"></el-input>
+					<el-input v-model="AdduserForm.type" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="版本：" prop="vision" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.vision"></el-input>
+					<el-input v-model="AdduserForm.vision" style="width:300px"></el-input>
 				</el-form-item>			
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -89,7 +89,7 @@ export default {
         { title: "规则描述", field: "describes", width: "190" },
         { title: "最小值", field: "startDate", width: "90" },
         { title: "最大值", field: "endDate", width: "80" },
-        { title: "区域", field: "areaId", width: "80" },
+        { title: "区域", field: "areaName", width: "80" },
         { title: "类型", field: "type", width: "70" },
         { title: "版本", field: "vision", width: "70" }
       ],

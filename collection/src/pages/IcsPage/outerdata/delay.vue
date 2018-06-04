@@ -55,7 +55,7 @@
       <!--       -->
    <el-table :data="datas"  style="width:100% ;margin-top:5px;" highlight-current-row border :max-height="this.heights"  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title"  v-for="(cols, index) in cols" :key="index" align="center" show-overflow-tooltip>
+       <el-table-column  :prop="cols.field" :label="cols.title" sortable v-for="(cols, index) in cols" :key="index" align="center" show-overflow-tooltip>
 		</el-table-column>
         
    </el-table>
@@ -111,7 +111,7 @@ export default {
 					{ title: '收车状态', field: 'car_statues', width: "100" },],
 				total: 0,
 				page: 1,
-				pagesize:10,
+				pagesize:500,
                 currentPage:1,
                 listLoading: false, 
                 labelWidth:"120px",
