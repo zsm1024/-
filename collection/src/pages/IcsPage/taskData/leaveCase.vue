@@ -98,7 +98,6 @@ export default {
         { title: "贷款产品", field: "loanProducts", width: "180" },
         { title: "贷款车型", field: "car", width: "180" },
         { title: "约会日期", field: "appointmentTime", width: "150" },
-        { title: "区域", field: "Region", width: "80" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
         { title: "最近行动代码", field: "M_Code", width: "140" },
@@ -199,12 +198,12 @@ export default {
               type: "warning",
               center: "true"
             });
-          }else{
+          } else {
             let para = {
-          missionIds: this.addlists,
-          leaveTime: this.times
-        };
-             leaveTheCaseApp(para).then(res => {
+              missionIds: this.addlists,
+              leaveTime: this.times
+            };
+        leaveTheCaseApp(para).then(res => {
               this.listShow();
               this.escrowTime = "";
             });
@@ -233,41 +232,7 @@ export default {
               this.escrowTime = "";
             });
         }
-      }
-      // for (let i = 0; i < this.multipleSelection.length; i++) {
-      //   if (
-      //     this.multipleSelection[i].lockFlag != "null" ||
-      //     this.multipleSelection[i].lockFlag == "Y"
-      //   ) {
-      //     this.b.push(this.multipleSelection[i].lockFlag);
-      //   }
-      // }
-      // if (this.b.indexOf("N", 0) == -1) {
-      //   let para = {
-      //     // userId:this.itemsId,
-      //     missionIds: this.addlists,
-      //     // status:"2",
-      //     leaveTime: this.times
-      //   };
-      //   if (this.escrowTime == "" || this.addlists.length == 0) {
-      //     this.$alert("请选择留案日期或待留案案件！", "提示", {
-      //       confirmButtonText: "确定",
-      //       type: "warning",
-      //       center: "true"
-      //     });
-      //   } else {
-      //     leaveTheCaseApp(para).then(res => {
-      //       this.listShow();
-      //       this.escrowTime = "";
-      //     });
-      //   }
-      // } else {
-      //   this.$alert("请选未申请的案件！", "提示", {
-      //     confirmButtonText: "确定",
-      //     type: "warning",
-      //     center: "true"
-      //   });
-      // }
+      }     
     },
     handleCurrentChange(val) {
       this.pages = val;
@@ -293,7 +258,6 @@ export default {
       listLeaveTheCase(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
-        console.log(res);
         this.total = data.recordsTotal;
         this.listLoading = false;
       });

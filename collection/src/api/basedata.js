@@ -501,3 +501,9 @@ export function updateAreaState(params){
       params: params
     })
   }
+  export function getOsControlVehicleD(params) {
+    return fetch({
+      url: '/osControlVehicle/getOsControlVehicleD/'+params.id,
+      method: 'get',
+    })
+  }

@@ -282,7 +282,7 @@ export default{
 			};
 			this.$refs[mainform].validate((valid) => {
 				if (valid) {
-                    getNextMissonId(para).then(res => {0
+                    getNextMissonId(para).then(res => {
 						var nextId = res.data.result;
 						// console.log(nextId)
 						 this.$router.push(nextId)

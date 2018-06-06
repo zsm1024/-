@@ -64,7 +64,7 @@
 	export default{
 		data(){
 			return{
-			activeNames:["1"],
+			activeNames:["1","2"],
 			 items:[],
 			 cols:[
               	{title:'催收日期',field:'afpDate',width:"190"},

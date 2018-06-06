@@ -32,13 +32,7 @@
 				<el-form-item>
 					<el-input v-model="filters.Cnum" placeholder="合同号"></el-input>
 				</el-form-item> -->
-                <!-- <el-form-item>
-					<el-select v-model="formInline.region" placeholder="请选择" @change="handleOptionChange">
-                    <el-option label="合同号" value="合同号"></el-option>
-                    <el-option label="派单时间" value="派单时间"></el-option>
-                    <el-option label="当事人"  value="当事人间"></el-option>
-                    </el-select>
-				</el-form-item> -->
+                
 				<el-form-item>
 					<el-button type="primary" @click="getUsers" size="mini">查询</el-button>
 				</el-form-item>				
@@ -77,10 +71,6 @@
 				times1:"",
 				times2:"",
 			   userid:localStorage.getItem('UserId'),
-               formInline:{
-                    user:"",
-                    region:""
-                },
 				filters: {					
 					name: '',
 					applicationNumber:"",
@@ -107,8 +97,7 @@
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '职业', field: 'occupation', width: "90" },
 					{ title: '贷款产品', field: 'loanProducts', width: "150" },
-					{ title: '派单时间', field: 'createTime', width: "120" },					
-					{ title: '区域', field: 'Region', width: "80" },		
+					{ title: '派单时间', field: 'createTime', width: "120" },							
 					{ title: '核销状态', field: 'check_statues', width: "100" },
 					{ title: '收车状态', field: 'car_statues', width: "100" }					
 					],
@@ -130,7 +119,7 @@
 		methods: {
 			 setCurrent(row,id) {
 				this.$refs.singleTable3.setCurrentRow(row);
-			  localStorage.setItem("nextNum","2");
+			  localStorage.setItem("nextNum","3");
 				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
 				localStorage.setItem("total",this.total)
 				sessionStorage.setItem(id,id)				

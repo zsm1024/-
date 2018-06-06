@@ -288,7 +288,8 @@ export default{
 			 sort:"1",
 			fileList:{
 				fileType:""
-			},
+      },
+      nextId:"",
 			messageform: {
 				// contractNum:this.applicationNumber,
 				template:'',
@@ -537,7 +538,8 @@ export default{
 				}
 			});
 			localStorage.removeItem("CJPhone");
-			localStorage.removeItem("REefresh")
+      localStorage.removeItem("REefresh");
+      localStorage.removeItem(this.$route.params.id)
 		},
 	
         getlists(){	
@@ -557,7 +559,9 @@ export default{
 			
         },
 		onSubmitnext(mainform) {
-			let NextIndex=parseInt(localStorage.getItem("currentRow"));
+
+			this.$refs[mainform].validate((valid) => {
+        	let NextIndex=parseInt(localStorage.getItem("currentRow"));
 			let TotalNum=parseInt(localStorage.getItem("total"));
 			let  CJBZ="";
 			CJBZ+=localStorage.getItem("CJPhone");
@@ -582,14 +586,12 @@ export default{
 				type:localStorage.getItem("nextNum"),
 				sort:this.sort,
 			};
-			this.$refs[mainform].validate((valid) => {
 				if (valid) {
 					this.disabledNex=true;
-                    getNextMissonId(para).then(res => {						
-						var nextId = res.data.result;
-						// console.log(nextId)
-						 this.$router.push(nextId);
-						 localStorage.setItem(nextId,nextId)						 
+          getNextMissonId(para).then(res => {	
+             this.nextId = res.data.result;
+						 this.$router.push( this.nextId);
+						 localStorage.setItem(this.nextId,this.nextId)						 
 					});
 					recordAdd(para).then(res =>{
 						
@@ -597,15 +599,16 @@ export default{
 						if(res.data.success){	
 						this.$refs['mainform'].resetFields();
 							this.$notify({
-                                type:'success',
+                type:'success',
 								message:'提交成功',
 								duration:1000,
 							});							
-                            setTimeout(()=>{
+      setTimeout(()=>{
 								this.disabledNex=false;
 							},1000)
 							localStorage.removeItem("REefresh");
-							localStorage.removeItem(nextId,nextId)
+              localStorage.removeItem(this.nextId,this.nextId);
+               localStorage.removeItem(this.$route.params.id)
 						}else{
 							this.$refs['mainform'].resetFields();
 							this.$notify({
@@ -846,7 +849,8 @@ export default{
 			afpRecord:this.mainform.afpRecord,
 			RowId:this.$route.params.id,
 		}			
-		localStorage.setItem("REefresh",JSON.stringify(REefresh))
+    localStorage.setItem("REefresh",JSON.stringify(REefresh));
+    localStorage.setItem(this.$route.params.id,this.$route.params.id)
 		this.$message({
             type:'success',
             message:'暂存成功！',

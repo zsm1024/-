@@ -99,7 +99,6 @@ export default {
 					{ title: '贷款产品', field: 'loanProducts', width: "180" },
 					{ title: '贷款车型', field: 'car', width: "180" },
 					{ title: '约会日期', field: 'appointmentTime', width: "150" },
-					{ title: '区域', field: 'Region', width: "80" },
 					{ title: '省份', field: 'province', width: "50" },
 					{ title: '城市', field: 'city', width: "50" },
 					{ title: '最近行动代码', field: 'M_Code', width: "140" },

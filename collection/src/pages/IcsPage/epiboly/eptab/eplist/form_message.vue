@@ -543,7 +543,8 @@ export default{
 				}
 			});
 			localStorage.removeItem("CJPhone");
-			localStorage.removeItem("REefresh")
+      localStorage.removeItem("REefresh");
+       localStorage.removeItem(this.$route.params.id)
 		},
 	
         getlists(){	
@@ -563,7 +564,9 @@ export default{
 			
         },
 		onSubmitnext(mainform) {
-			let NextIndex=parseInt(localStorage.getItem("currentRow"));
+			
+			this.$refs[mainform].validate((valid) => {
+				let NextIndex=parseInt(localStorage.getItem("currentRow"));
 			let TotalNum=parseInt(localStorage.getItem("total"));
 			let  CJBZ="";
 			CJBZ+=localStorage.getItem("CJPhone");
@@ -588,7 +591,6 @@ export default{
 				type:localStorage.getItem("nextNum"),
 				sort:this.sort,
 			};
-			this.$refs[mainform].validate((valid) => {
 				if (valid) {
 					this.disabledNex=true;
                     getNextMissonId(para).then(res => {						
@@ -611,7 +613,8 @@ export default{
 								this.disabledNex=false;
 							},1000)
 							localStorage.removeItem("REefresh");
-							localStorage.removeItem(nextId,nextId)
+              localStorage.removeItem(nextId,nextId);
+               localStorage.removeItem(this.$route.params.id)
 						}else{
 							this.$refs['mainform'].resetFields();
 							this.$notify({
@@ -853,7 +856,8 @@ export default{
 			afpRecord:this.mainform.afpRecord,
 			RowId:this.$route.params.id,
 		}			
-		localStorage.setItem("REefresh",JSON.stringify(REefresh))
+    localStorage.setItem("REefresh",JSON.stringify(REefresh));
+    localStorage.setItem(this.$route.params.id,this.$route.params.id)
 		this.$message({
             type:'success',
             message:'暂存成功！',

@@ -63,6 +63,10 @@ export const constantRouterMap = [{
         path: '/IcsPage/epiboly/eptab/tabViews/cms_history/:id',
         component: _import('IcsPage/epiboly/eptab/eplist/cms_history')
       },
+      {
+        path: '/IcsPage/epiboly/eptab/tabViews/controlCar/:id',
+        component: _import('IcsPage/epiboly/eptab/eplist/controlCar')
+      },
     ]
     }]
   },
@@ -119,6 +123,13 @@ export const constantRouterMap = [{
         hidden: true,
         component: _import('IcsPage/realdata/realdetial')
       },
+      {
+        path: 'IcsPage/cars/carsControlDetial/:id',
+        name: '控车管理详情',
+        hidden: true,
+        component: _import('IcsPage/cars/carsControlDetial')
+      },
+      
     ]
   },
   {
@@ -159,6 +170,10 @@ export const constantRouterMap = [{
         {
           path: '/IcsPage/tab/tabView/cms_history/:id',
           component: _import('IcsPage/tab/tablist/cms_history')
+        },
+        {
+          path: '/IcsPage/tab/tabView/controlCar/:id',
+          component: _import('IcsPage/tab/tablist/controlCar')
         },
       ]
     }, ]
@@ -206,6 +221,10 @@ export const constantRouterMap = [{
         {
           path: '/IcsPage/searchs/colsearchdetail/cms_history/:id',
           component: _import('IcsPage/searchs/tab/tablist/cms_history')
+        },
+        {
+          path: '/IcsPage/searchs/colsearchdetail/controlCar/:id',
+          component: _import('IcsPage/searchs/tab/tablist/controlCar')
         },
       ]
     }, ]

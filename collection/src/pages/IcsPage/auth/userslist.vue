@@ -269,7 +269,14 @@ export default {
       let para = {
         id: id
       };
-      refreshSub(para)
+      refreshSub(para).then(res =>{
+        if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "重置成功！"
+            });
+        }
+      })
     },
     delUserBtn(id, data) {
       this.$confirm("确定删除" + data.username + "用户吗？", "提示", {

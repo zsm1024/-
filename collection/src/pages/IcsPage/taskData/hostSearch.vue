@@ -107,8 +107,7 @@
 					{ title: '贷款金额', field: 'loanAmount', width: "90" },
 					{ title: '职业', field: 'occupation', width: "90" },
 					{ title: '贷款产品', field: 'loanProducts', width: "150" },
-					{ title: '派单时间', field: 'createTime', width: "120" },					
-					{ title: '区域', field: 'Region', width: "80" },		
+					{ title: '派单时间', field: 'createTime', width: "120" },						
 					{ title: '核销状态', field: 'check_statues', width: "100" },
 					{ title: '收车状态', field: 'car_statues', width: "100" }					
 					],

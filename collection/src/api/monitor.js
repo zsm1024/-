@@ -64,5 +64,5 @@ export function ControlVehicle(params) {
       url: '/osControlVehicle/list',
       method: 'get',
       params: params
-})
+    })
 }

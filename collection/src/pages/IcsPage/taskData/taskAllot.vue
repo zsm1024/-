@@ -40,7 +40,7 @@
 					</el-date-picker> -->
 				<!-- </el-form-item> -->
                 <el-form-item>
-                    <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入待分配人员姓名"  @select="handleSelect" class="autoInput" style="width:150px">
+                    <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入分配至人员姓名"  @select="handleSelect" class="autoInput" style="width:150px">
                     </el-autocomplete>
                 </el-form-item>
                 <el-form-item>
@@ -91,7 +91,6 @@ export default {
         { title: "贷款产品", field: "loanProducts", width: "180" },
         { title: "贷款车型", field: "car", width: "180" },
         { title: "约会日期", field: "appointmentTime", width: "150" },
-        { title: "区域", field: "Region", width: "80" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
         { title: "最近行动代码", field: "M_Code", width: "140" },

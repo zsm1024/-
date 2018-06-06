@@ -11,8 +11,12 @@
 				</el-table-column>
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" >
 					<template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>
+							<el-input  v-show="scope.row.edit" v-if="col.field!='state'"size="small" v-model="scope.row[col.field]"></el-input>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
+							<el-select v-show="scope.row.edit" v-if="col.field=='state'"  v-model="scope.row[col.field]" placeholder="请选择" >
+								<el-option label="Y" value="Y"></el-option>
+								<el-option label="N" value="N"></el-option>
+							</el-select>
 						</template>
 				</el-table-column>
 			</el-table>
@@ -35,7 +39,11 @@
 					<el-input v-model="AdduserForm.areaDistribution" style="width:300px"></el-input>
 				</el-form-item>				
 				<el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.state" style="width:300px" ></el-input>
+					<el-select placeholder="请选择" v-model="AdduserForm.state" style="width:300px" >
+								<el-option label="Y" value="Y"></el-option>
+								<el-option label="N" value="N"></el-option>
+							</el-select>
+					<!-- <el-input v-model="AdduserForm.state" style="width:300px" ></el-input> -->
 				</el-form-item>
 				<!-- <el-form-item label="分配规则：" prop="distributionId" :label-width="formLabelWidth">
 					<el-select  v-model="AdduserForm.distributionId" placeholder="请选择" style="width:300px">
@@ -43,7 +51,7 @@
 						<!-- <el-option label="N" value="N"></el-option> -->
 					<!-- </el-select> -->
 					<!-- <el-input v-model="AdduserForm.distribution"></el-input> -->
-				<!-- </el-form-item>-->
+				<!-- </el-form-item>				 -->
 			</el-form>
 			<div slot="footer" class="dialog-footer">
         <el-button @click="addUserInfo">取 消</el-button>

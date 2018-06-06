@@ -25,9 +25,9 @@
 			<el-dialog title="新增短信模板" :visible.sync="addUserInfos" >
 			<el-form :model="AdduserForm" ref="AdduserForm">
 				 <!-- :rules="phonerules" -->
-				 <el-form-item label="模板代码：" prop="pendingSign" :label-width="formLabelWidth">
+				 <!-- <el-form-item label="模板代码：" prop="pendingSign" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.pendingSign" style="width:300px"></el-input>
-				</el-form-item>
+				</el-form-item> -->
 				<el-form-item label="模板名称：" prop="title" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.title" style="width:300px"></el-input>
 				</el-form-item>				
@@ -69,14 +69,14 @@
 				addUserInfos:false,
 				formLabelWidth: '120px',
                 cols:[
-					{title:'模板代码',field:'pendingSign',width:"90"},
+					// {title:'模板代码',field:'pendingSign',width:"90"},
                     {title:'模板名称',field:'title',width:"90"},            
                     {title:'模板内容',field:'template'},
                  
 				],
 				AdduserForm:{					
 					title:"", 
-					pendingSign:"",
+					// pendingSign:"",
 					template:"",								
 			},
             }
@@ -188,7 +188,7 @@
 		choice(AdduserForm){			
  			let para ={
 				title:this.AdduserForm.title,
-				pendingSign:this.AdduserForm.pendingSign,
+				// pendingSign:this.AdduserForm.pendingSign,
 				template:this.AdduserForm.template,				
 			};
             this.$refs[AdduserForm].validate((valid) => {			
@@ -202,7 +202,7 @@
                         this.lists.unshift(
                         {
 						"title":this.$refs['AdduserForm'].model.title,
-						"pendingSign":this.$refs['AdduserForm'].model.pendingSign,
+						// "pendingSign":this.$refs['AdduserForm'].model.pendingSign,
                         "template":this.$refs['AdduserForm'].model.template,											                        
 						},	
                         

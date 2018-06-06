@@ -5,7 +5,7 @@
 				<div>
 					<table class="ht_table">	
 						<tr>
-							<td class="tds">申请号</td><td>{{details.applicationNumber}}</td>
+							<td class="tds">合同号</td><td>{{details.applicationNumber}}</td>
 							<td class="tds">合同状态</td><td>{{details.state}}</td>		
 							<td class="tds">省份</td><td>{{details.province}}</td>
 							<td class="tds">城市</td><td colspan="4">{{details.city}}</td>

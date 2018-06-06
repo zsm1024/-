@@ -45,7 +45,7 @@
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中..." >
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title"  sortable v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" >
+       <el-table-column  :prop="cols.field" :label="cols.title"  sortable v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" :width="cols.width">
 		</el-table-column>     
    </el-table>
    <!--工具条-->
@@ -108,6 +108,7 @@ export default {
       cols: [
         { title: "用户ID", field: "processer", width: "60" },
         { title: "预派案公司", field: "willSendCompany", width: "80" },
+        { title: "派单时间", field: "createTime", width: "100" },
         { title: "派案到期日", field: "deadTimeOfTheSendCase", width: "80" },
         { title: "派案状态", field: "sendApproveStatus", width: "60" },
         { title: "退案状态", field: "backCaseStatus", width: "60" },
@@ -122,14 +123,13 @@ export default {
         { title: "贷款产品", field: "loanProducts", width: "150" },
         { title: "贷款车型", field: "car", width: "150" },
         { title: "约会日期", field: "appointmentTime", width: "80" },
-        { title: "区域", field: "Region", width: "80" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
         { title: "最近行动代码", field: "M_Code", width: "120" },
         { title: "最近行动时间", field: "M_Time", width: "120" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
         { title: "未偿本金", field: "residualAmount", width: "90" },
-        { title: "派单时间", field: "updateTime", width: "120" },
+       
         { title: "核销状态", field: "check_statues", width: "100" },
         { title: "收车状态", field: "car_statues", width: "100" }
       ],
@@ -340,7 +340,6 @@ export default {
         this.backlists.push(f.id);
       });
       this.k = [];
-      console.log(this.multipleSelection);
       for (let i = 0; i < this.multipleSelection.length; i++) {
         if (
           this.multipleSelection[i].sendApproveStatus != "派案完成" ||
@@ -365,7 +364,7 @@ export default {
           });
         }
       } else {
-        this.$alert("请选择有派案公司的案件！", "提示", {
+        this.$alert("请选择有效的退案的案件！", "提示", {
           confirmButtonText: "确定",
           type: "warning",
           center: "true"

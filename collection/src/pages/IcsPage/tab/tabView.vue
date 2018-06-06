@@ -48,6 +48,7 @@ export default {
 						 {'name':"还款计划",path:'/IcsPage/tab/tabView/hk_plan'},
 						 {'name':"扣款流水",path:'/IcsPage/tab/tabView/kk_list'},
 						 {'name':"CMS历史",path:'/IcsPage/tab/tabView/cms_history'},
+						//{'name':"控制车辆信息",path:'/IcsPage/tab/tabView/controlCar'},
 					 ],
          
         }
