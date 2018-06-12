@@ -60,7 +60,7 @@
            <el-date-picker type="date" placeholder="选择日期" v-model="coTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">协办</el-button>
+        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUse">协办</el-button>
         <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">取消协办</el-button>
        </el-form-item>
     </el-form>                       
@@ -94,6 +94,7 @@ export default {
       heights: 0,
       datas: [],
       times: "",
+      NoUse:true,
       value6: "",
       times1: "",
       times2: "",
@@ -289,6 +290,7 @@ export default {
             this.times = "";
             this.coTime = "";
             this.addlists = [];
+            this.NoUse = false;
             this.listShow();
           });
         }
@@ -361,13 +363,13 @@ export default {
         username: this.filters.processer,
         userInfos:this.filters.userInfos.toString()
       };
-      console.log(para)
       this.listLoading = true;
       listCoMission(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
         this.total = data.recordsTotal;
         this.listLoading = false;
+        this.NoUse = false;
       });
       //获取岗位信息
       sysPositionslistAll().then(res => {

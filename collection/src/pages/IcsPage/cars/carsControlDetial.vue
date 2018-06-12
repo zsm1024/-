@@ -27,7 +27,7 @@
 			</el-collapse-item>
             <el-collapse-item title="控制车辆信息" name="2"style="position:relative"  >
                 <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subCarInfo('carForm')">提交</el-button>
-               <el-form :inline="true" :model="carForm" ref="carForm" :rules="rules" label-width="90px" class="controlinfos">
+               <el-form :inline="true" :model="carForm" ref="carForm" :rules="rules" label-width="90px" class="controlinfos" v-loading="listLoadings" >
                        <el-form-item label="车辆来源" prop="comefrom" >
                             <el-select v-model="carForm.comefrom"  clearable placeholder="车辆来源"  style="width:175px" >
 							<el-option v-for="(item,index) in comefrom" :key="index"  :label="item.val " :value="item.val "></el-option>
@@ -61,7 +61,7 @@
                     </el-form-item>
                     <el-form-item label="变现情况" prop="province">
                         <el-select   v-model="carForm.realize" placeholder="变现情况" style="width:175px">
-                            	<el-option v-for="(item,index) in findway" :key="index"  :label="item.val " :value="item.val "></el-option>	
+                            	<el-option v-for="(item,index) in realizeType" :key="index"  :label="item.val " :value="item.val "></el-option>	
 						</el-select>
                     </el-form-item> 
                     <el-form-item label="车型" prop="province" >
@@ -86,27 +86,28 @@
                          <el-date-picker style="width:175px" v-model="carForm.cartime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="signTime"></el-date-picker>
                     </el-form-item>  
                     <el-form-item label="车辆价格(发票价)" prop="province">
-                        <el-input v-model="carForm.price" placeholder="公里数" clearable  ></el-input>
+                        <el-input v-model="carForm.price" placeholder="车辆价格(发票价)" clearable  ></el-input>
                     </el-form-item>
                     <el-form-item label="车辆出险情况" prop="province">
-                        <el-input v-model="carForm.danger" placeholder="公里数" clearable  ></el-input>
+                        <el-input v-model="carForm.danger" placeholder="车辆出险情况" clearable  ></el-input>
                     </el-form-item>
                     <el-form-item label="售后维修情况" prop="province">
-                        <el-input v-model="carForm.sale" placeholder="公里数" clearable  ></el-input>
-                    </el-form-item>  
+                        <el-input v-model="carForm.sale" placeholder="售后维修情况" clearable  ></el-input>
+                    </el-form-item>
+                    <el-form-item label="车辆是否查封" prop="province">
+                    <el-select v-model="carForm.receive"  placeholder="车辆是否查封" style="width:175px">
+						<el-option label="是" value="是"></el-option>
+						<el-option label="否" value="否"></el-option>                           
+					</el-select>  
                     <el-form-item label="证件类型" prop="province">
-                        <el-select v-model="carForm.idtype" multiple  placeholder="证件类型" style="width:175px">
+                        <el-select v-model="carForm.idtype" multiple  placeholder="证件类型" style="width:175px;min-height:100px">
                         <el-option v-for="(item,index) in document" :key="item.key"  :label="item.val" :value="item.val" @change="typechange"></el-option>
 						</el-select>
                     </el-form-item>                                           
                 <el-form-item label="客户遗留物品" prop="province">
-                    <el-input v-model="carForm.leave" placeholder="客户遗留物品" clearable ></el-input>
+                    <el-input v-model="carForm.leave" placeholder="客户遗留物品" clearable type="textarea" ></el-input>
                 </el-form-item> 
-                <el-form-item label="车辆是否查封" prop="province">
-                    <el-select v-model="carForm.receive"  placeholder="车辆是否查封" style="width:175px">
-						<el-option label="是" value="是"></el-option>
-						<el-option label="否" value="否"></el-option>                           
-					</el-select>
+                
                 </el-form-item>
              </el-form> 
             </el-collapse-item>	
@@ -397,7 +398,7 @@ import {
 export default {
   data() {
     return {
-      activeNames: ["1", "2"],
+      activeNames: ["1"],
       details: [],
       lists: [],
       time: "",
@@ -518,6 +519,7 @@ export default {
       },
       id: this.$store.state.navTabs.tabId,
       listLoading: false,
+      listLoadings: false,
       visitpagesize: 20,
       visittotal: 0,
       visitpages: 1,
@@ -538,28 +540,17 @@ export default {
   methods: {
     getconpany(){
       getTaskHostUser().then(res => {
-        console.log(res)
         // this.userList = [];
         let data = res.data.result;
-        // this.a = data;
-        // this.a.forEach(el => {
-        //   this.userList.push({
-        //     value: el.nickname,
-        //     id: el.id,
-        //     username: el.username
-        //   });
-        // });
          this.restaurants =data;
 
       });
     },
      handleSelect(item) {
        console.log(item)
-      // this.items = item.value;
-      // this.itemsId = item.username;
+    
     },
     timechange(val){
-      console.log(val)
       this.carForm.time=val;
     },
     typechange(val) {
@@ -669,7 +660,7 @@ export default {
       let para = {
         id: this.$route.params.id
       };
-      this.listLoading = true;
+      this.listLoadings = true;
       getOsControlVehicle(para).then(res => {
         let data = res.data.result;
         this.id = data.id;
@@ -695,8 +686,7 @@ export default {
           (this.carForm.idtype = data.documentTypeArray),
           (this.carForm.leave = data.customerLegacy),
           (this.carForm.receive = data.vehicleSealed),
-          (this.listLoading = false);
-          console.log(res)
+          (this.listLoadings = false);
       });
     },
     subCarInfo(carForm) {
@@ -1228,7 +1218,7 @@ export default {
   },
   mounted() {
     this.getlists();
-    this.getcontrolCar();
+   this.getcontrolCar();
     this.gettype();
     this.sendCar();
     this.ParkingCar();
@@ -1241,8 +1231,9 @@ export default {
         document.documentElement.clientHeight ||
         document.body.clientHeight) - 105;
     this.$refs.abcd.style.height = h + "px";
-  }
-};
+  },
+}
+
 </script>
 
 <style>

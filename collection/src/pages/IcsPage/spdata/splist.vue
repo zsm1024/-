@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="当事人" style="width:130px" clearable></el-input>
 				</el-form-item>
         <el-form-item>
-					<el-input v-model="filters.overdueDays" placeholder="逾期天数"  style="width:130px" clearable></el-input>
+					<el-input v-model="filters.applicant" placeholder="申请人"  style="width:130px" clearable></el-input>
 				</el-form-item>
         <el-form-item>
 					<el-input v-model="filters.applicationNumber" placeholder="合同号"  style="width:130px" clearable></el-input>
@@ -69,7 +69,9 @@ export default {
             applicationNumber: "",
             name: "",
             startTime:"",
-					  endTime:"",         
+            endTime:"", 
+            applicant:"", 
+                   
         },
         currentRow: null,
         id:this.$route.params.id,
@@ -138,22 +140,22 @@ export default {
 				this.heights=h;
         let para = {
         page: this.page,
-        // name: this.filters.name,
-        // applicationNumber: this.filters.applicationNumber,
+        name: this.filters.name,
+        applicationNumber: this.filters.applicationNumber,
+        applicant:this.filters.applicant,
         // overdueDays: this.filters.overdueDays,
         // inputTime: this.filters.inputTime,
         pageSize: this.pagesize,
         
         // userId:this.id,
-        // startTime:this.times1,
-				// endTime:this.times2	
+         startTime:this.times1,
+				 endTime:this.times2	
       };
       // this.listLoading = true;
       //NProgress.start();
       ApprovalList(para).then(res => {                
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
-      // console.log( res)
             // this.cols = this.lists;
             // this.listLoading = false;
         //NProgress.done();

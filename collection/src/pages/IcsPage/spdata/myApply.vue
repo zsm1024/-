@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
         <el-form-item>
-					<el-input v-model="filters.name" placeholder="当事人" style="width:130px" clearable></el-input>
+					<el-input v-model="filters.name" placeholder="申请人" style="width:130px" clearable></el-input>
 				</el-form-item>
         <el-form-item>
 					<el-input v-model="filters.overdueDays" placeholder="逾期天数"  style="width:130px" clearable></el-input>
@@ -71,7 +71,8 @@ export default {
             applicationNumber: "",
             name: "",
             startTime:"",
-					  endTime:"",         
+            endTime:"", 
+            applicant:""        
         },
         currentRow: null,
         id:this.$route.params.id,
@@ -139,15 +140,15 @@ export default {
 				this.heights=h;
         let para = {
         page: this.page,
-        // name: this.filters.name,
-        // applicationNumber: this.filters.applicationNumber,
+        name: this.filters.name,
+        applicationNumber: this.filters.applicationNumber,
         // overdueDays: this.filters.overdueDays,
         // inputTime: this.filters.inputTime,
         pageSize: this.pagesize,
-        
+        applicant:this.filters.applicant,
         // userId:this.id,
-        // startTime:this.times1,
-				// endTime:this.times2	
+        startTime:this.times1,
+				endTime:this.times2	
       };
       // this.listLoading = true;
       //NProgress.start();
