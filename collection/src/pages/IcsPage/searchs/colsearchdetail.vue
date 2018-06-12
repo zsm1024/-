@@ -40,7 +40,7 @@ export default {
 					{'names':"还款计划",path:'/IcsPage/searchs/colsearchdetail/hk_plan'},
 					{'names':"扣款流水",path:'/IcsPage/searchs/colsearchdetail/kk_list'},
 					{'names':"CMS历史",path:'/IcsPage/searchs/colsearchdetail/cms_history'},
-					{'names':"控制车辆信息",path:'/IcsPage/searchs/colsearchdetail/controlCar'},
+					//{'names':"控制车辆信息",path:'/IcsPage/searchs/colsearchdetail/controlCar'},
 				],
          
         }
