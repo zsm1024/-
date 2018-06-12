@@ -194,7 +194,6 @@ export default {
       };
       colHistory_trail(para).then(res => {
         let data = res.data.result;
-        0;
         this.totalTrail = data.recordsTotal;
         this.pathMsg = data.data;
       });
