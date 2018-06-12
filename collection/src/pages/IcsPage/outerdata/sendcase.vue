@@ -128,8 +128,7 @@ export default {
         { title: "最近行动代码", field: "actSign", width: "120" },
         { title: "最近行动时间", field: "inputTime", width: "120" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
-        { title: "未偿本金", field: "residualAmount", width: "90" },
-       
+        { title: "未偿本金", field: "residualAmount", width: "90" },     
         { title: "核销状态", field: "check_statues", width: "100" },
         { title: "收车状态", field: "car_statues", width: "100" }
       ],
@@ -258,7 +257,7 @@ export default {
           // status:"1",
         };
         if (
-          (this.itemsId == "" && this.times == "") ||
+          (this.itemsId||this.times) ||
           this.addlists.length == 0
         ) {
           this.$alert("请选择派案公司、到期日和或外派案件！", "提示", {
