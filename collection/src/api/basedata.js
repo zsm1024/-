@@ -501,9 +501,32 @@ export function updateAreaState(params){
       params: params
     })
   }
+  export function balance(params) {
+    const data = params;
+    return fetch({
+      url: '/commission/balance',
+      method: 'post',
+      data
+    })
+  }
   export function getOsControlVehicleD(params) {
     return fetch({
       url: '/osControlVehicle/getOsControlVehicleD/'+params.id,
       method: 'get',
+    })
+  }
+  export function commissionlist(params) {
+    return fetch({
+      url: '/commission/list',
+      method: 'get',
+      params: params
+    })
+  }
+  export function updateCommission(params){
+    const data = params;
+    return fetch({
+      url: '/commission/update',
+      method: 'put',
+      data
     })
   }

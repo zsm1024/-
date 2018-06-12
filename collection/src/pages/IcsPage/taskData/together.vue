@@ -254,7 +254,7 @@ export default {
       this.b = [];
      this.multipleSelection.forEach((f,i)=>{
         if(f.turnStatus||f.turnStatus!=null||f.coStatus||f.coStatus!=null||f.backCaseStatus||f.backCaseStatus!=null||f.leaveStatus||f.leaveStatus!=null ){      
-        this.b.push(f.turnStatus)
+        this.b.push(f.coStatus)
         }
       })
       if(this.b.length>0){

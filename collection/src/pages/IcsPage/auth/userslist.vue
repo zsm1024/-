@@ -115,6 +115,7 @@ export default {
       cols: [
         { title: "登录名", field: "username" },
         { title: "用户名", field: "nickname" },
+        { title: "角色", field: "roleName" },
         { title: "电话", field: "phone" },
         { title: "岗位", field: "position" }
       ],

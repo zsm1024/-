@@ -7,14 +7,14 @@
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='Edit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>
 				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" >
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" show-overflow-tooltip sortable  >
 					<template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field=='rate'||col.field=='widthdrawMoneyDaysStart')" v-model="scope.row[col.field]"></el-input>
+							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field=='isPay'||col.field=='payMonth')" v-model="scope.row[col.field]"></el-input>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
-                            <span v-show="scope.row.edit" v-if="(col.field!='rate'||col.field!='widthdrawMoneyDaysStart')&&col.field!='widthdrawMoneyModel'" >{{ scope.row[col.field] }}</span>
-                            <el-select v-show="scope.row.edit" class="comSty" v-if="col.field=='widthdrawMoneyModel'" v-model="scope.row[col.field]" placeholder="请选择">
-								<el-option label="有效" value="有效"></el-option>
-								<el-option label="无效" value="无效"></el-option>
+                            <span v-show="scope.row.edit" v-if="(col.field!='isPay'||col.field!='payMonth')&&col.field!='isValid'" >{{ scope.row[col.field] }}</span>
+              <el-select v-show="scope.row.edit" class="comSty" v-if="col.field=='isValid'" v-model="scope.row[col.field]" placeholder="请选择">
+								<el-option label="0" value="0"></el-option>
+								<el-option label="1" value="1"></el-option>
 							</el-select>
 						</template>
 				</el-table-column>
@@ -27,7 +27,7 @@
     </section>
 </template>
 <script>
-import { rateList,  rateupdate,} from "@/api/basedata";
+import { commissionlist,  updateCommission,} from "@/api/basedata";
 export default {
   data() {
     return {
@@ -39,15 +39,14 @@ export default {
       lists: [],
       formLabelWidth: "140px",
       cols: [
-        { title: "外包公司名称", field: "entrustOverdueDaysStart" },
-        { title: "委派周期", field: "entrustOverdueDaysEnd" },
-        { title: "结算佣金月份", field: "entrustMoneyStart" },
-        { title: "收回金额", field: "entrustMoneyStart" },
-        { title: "佣金方式", field: "entrustMoneyEnd" },
-        { title: "费率", field: "widthdrawMoneyDaysEnd" },
-        { title: "是否已付", field: "widthdrawMoneyDaysStart" },
-        { title: "付款月份", field: "rate" },
-        { title: "是否有效", field: "widthdrawMoneyModel" },
+        { title: "外包公司名称", field: "osCompany" },
+        { title: "委案周期", field: "entrustCycle" },
+        { title: "收回金额", field: "recoveryAmount" },
+        { title: "佣金方式", field: "mode" },
+        { title: "费率", field: "rate" },
+        { title: "是否已付", field: "isPay" },
+        { title: "付款月份", field: "payMonth" },
+        { title: "是否有效", field: "isValid" },
       ],
     };
   },
@@ -71,7 +70,7 @@ export default {
         pageSize: this.pagesize
       };
       this.listLoading = true;
-      rateList(para).then(res => {
+      commissionlist(para).then(res => {
         //  console.log(res.data.result.fixed)
         let data = res.data.result;
         this.lists = data.data;
@@ -85,22 +84,23 @@ export default {
     },
     Edit(row) {
       let para = row;
+      console.log(para)
       if ((row.edit = !row.edit)) {
         return;
       } else {
-        // rateupdate(para).then(res => {
-        //   if (res.data.success) {
-        //     this.$message({
-        //       type: "success",
-        //       message: "编辑成功！"
-        //     });
-        //   } else {
-        //     this.$message({
-        //       type: "error",
-        //       message: "编辑失败，请联系管理员！"
-        //     });
-        //   }
-        // });
+        updateCommission(para).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "编辑成功！"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "编辑失败，请联系管理员！"
+            });
+          }
+        });
       }
     }, 
   },

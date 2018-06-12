@@ -125,8 +125,8 @@ export default {
         { title: "约会日期", field: "appointmentTime", width: "80" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
-        { title: "最近行动代码", field: "M_Code", width: "120" },
-        { title: "最近行动时间", field: "M_Time", width: "120" },
+        { title: "最近行动代码", field: "actSign", width: "120" },
+        { title: "最近行动时间", field: "inputTime", width: "120" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
         { title: "未偿本金", field: "residualAmount", width: "90" },
        
