@@ -257,7 +257,7 @@ export default {
           // status:"1",
         };
         if (
-          (this.itemsId||this.times) ||
+          (this.itemsId==""||this.times=="") ||
           this.addlists.length == 0
         ) {
           this.$alert("请选择派案公司、到期日和或外派案件！", "提示", {
