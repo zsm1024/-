@@ -102,7 +102,7 @@ export default {
               })
         }else{
              approveSendCaseApp(para).then( res=>{ 
-                     this.listShow() 
+              this.listShow() 
              }) 
         }
     },
