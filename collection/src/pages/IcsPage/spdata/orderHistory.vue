@@ -71,7 +71,8 @@ export default {
             applicationNumber: "",
             name: "",
             startTime:"",
-					  endTime:"",         
+            endTime:"",  
+            applicant:""       
         },
         currentRow: null,
         id:this.$route.params.id,
@@ -140,15 +141,15 @@ export default {
 				this.heights=h;
         let para = {
         page: this.page,
-        // name: this.filters.name,
-        // applicationNumber: this.filters.applicationNumber,
+        name: this.filters.name,
+        applicationNumber: this.filters.applicationNumber,
         // overdueDays: this.filters.overdueDays,
         // inputTime: this.filters.inputTime,
         pageSize: this.pagesize,
-        
+        applicant:this.filters.applicant,
         // userId:this.id,
-        // startTime:this.times1,
-				// endTime:this.times2	
+        startTime:this.times1,
+				endTime:this.times2	
       };
       // this.listLoading = true;
       //NProgress.start();

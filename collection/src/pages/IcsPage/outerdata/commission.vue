@@ -11,7 +11,7 @@
 					<template slot-scope="scope">
               <span v-show="scope.row.edit" v-if="(col.field!='depositDate'&&col.field!='mode')" >{{ scope.row[col.field] }}</span>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
-              <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期" format='yyyy-MM-dd' value-format="timestamp" v-if="col.field=='depositDate'"  style="width: 100%;" v-model="scope.row[col.field]" @change="gettime(scope.row[col.field])"></el-date-picker>
+              <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期" format='yyyy-MM-dd' value-format="timestamp" v-if="col.field=='depositDate'"  style="width: 100%;" v-model="scope.row[col.field]"></el-date-picker>
 						  <el-select class="comSty" v-show="scope.row.edit" v-if="col.field=='mode'" v-model="scope.row[col.field]" placeholder="请选择方式">
 							  <el-option label="收款" value="收款"></el-option>
 								<el-option label="控车" value="控车"></el-option>
@@ -56,7 +56,7 @@ export default {
       this.dateChange=""
       if (date) {
         var src = new Date(date);
-        this.dateChange = src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
+        date = src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
       }
     },
     handleSizeChange(val) {
@@ -118,13 +118,17 @@ export default {
     toggleSelection(rows){
       this.types=[];
       let para=rows;
+      
       for(var i=0;i<rows.length;i++){ 
         // if(!rows[i].mode){
-            this.types.push(rows[i].mode)
+            this.types.push(rows[i].mode) 
+            //  let date=rows[i].depositDate;
+            // var src = new Date(date);
+            // date = src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
+           
             // console.log(rows[i].mode)
         // }
       }
-
       if( this.types.indexOf(null, 0) != -1 ){
          this.types=[]
       }

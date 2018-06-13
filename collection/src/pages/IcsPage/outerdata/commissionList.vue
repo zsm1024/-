@@ -1,20 +1,20 @@
 <template>
     <section ref="abc" style="overflow-y: auto;">
-        	<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
+        	<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" :fit="true" style="width: 100%;" stripe  >
                 <el-table-column label="操作"  align="center" width="100"> 
 						<!-- width="95" -->
 						 <template slot-scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='Edit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
 						</template>
 				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" show-overflow-tooltip sortable  >
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" show-overflow-tooltip sortable :width="col.width" >
 					<template slot-scope="scope">
 							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field=='isPay'||col.field=='payMonth')" v-model="scope.row[col.field]"></el-input>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
                             <span v-show="scope.row.edit" v-if="(col.field!='isPay'||col.field!='payMonth')&&col.field!='isValid'" >{{ scope.row[col.field] }}</span>
               <el-select v-show="scope.row.edit" class="comSty" v-if="col.field=='isValid'" v-model="scope.row[col.field]" placeholder="请选择">
-								<el-option label="0" value="0"></el-option>
-								<el-option label="1" value="1"></el-option>
+								<el-option label="无效" value="0"></el-option>
+								<el-option label="有效" value="1"></el-option>
 							</el-select>
 						</template>
 				</el-table-column>
@@ -39,11 +39,14 @@ export default {
       lists: [],
       formLabelWidth: "140px",
       cols: [
-        { title: "外包公司名称", field: "osCompany" },
+        { title: "合同号", field: "applicationNumber",width:'180px' },
+        { title: "外包公司名称", field: "osCompany",width:'180px' },
         { title: "委案周期", field: "entrustCycle" },
         { title: "收回金额", field: "recoveryAmount" },
         { title: "佣金方式", field: "mode" },
+        { title: "结算佣金", field: "commission" },
         { title: "费率", field: "rate" },
+        { title: "是否控车", field: "isControlCar" },
         { title: "是否已付", field: "isPay" },
         { title: "付款月份", field: "payMonth" },
         { title: "是否有效", field: "isValid" },
@@ -71,9 +74,16 @@ export default {
       };
       this.listLoading = true;
       commissionlist(para).then(res => {
-        //  console.log(res.data.result.fixed)
         let data = res.data.result;
         this.lists = data.data;
+       console.log( this.lists)
+        for(let i=0;i<this.lists.length;i++){
+          if(this.lists[i].isValid==0){
+            this.lists[i].isValid="无效"
+          }else{
+             this.lists[i].isValid="有效"
+          }
+        }
         this.lists = this.lists.map(v => {
           this.$set(v, "edit", false);
           return v;
@@ -84,7 +94,6 @@ export default {
     },
     Edit(row) {
       let para = row;
-      console.log(para)
       if ((row.edit = !row.edit)) {
         return;
       } else {

@@ -35,7 +35,7 @@
 					</el-table-column>									
 				</el-table>
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[20, 50, 100,500,1000]"   :total="total"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[5,10, 20, 50, 100]"   :total="total"   style="float:right;">
 					</el-pagination>
 				</el-col>				
 			</el-collapse-item>	
@@ -54,7 +54,7 @@
 					</el-table-column>			
 				</el-table>	
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeTrail" @size-change="handleSizeChangeTrail" :page-size="pagesizeTrail" :page-sizes="[20, 50, 100,500,1000]"   :total="totalTrail"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeTrail" @size-change="handleSizeChangeTrail" :page-size="pagesizeTrail" :page-sizes="[5,10, 20, 50, 100]"   :total="totalTrail"   style="float:right;">
 					</el-pagination>
 				</el-col>			
 			</el-collapse-item>
@@ -67,7 +67,7 @@
 					</el-table-column>			
 				</el-table>	
 				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeCode" @size-change="handleSizeChangeCode" :page-size="pagesizeCode" :page-sizes="[20, 50,100,500,1000]"   :total="totalCode"   style="float:right;">
+					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangeCode" @size-change="handleSizeChangeCode" :page-size="pagesizeCode" :page-sizes="[5,10, 20, 50, 100]"   :total="totalCode"   style="float:right;">
 					</el-pagination>
 				</el-col>			
 			</el-collapse-item> 

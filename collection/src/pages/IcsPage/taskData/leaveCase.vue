@@ -47,7 +47,7 @@
                     </el-autocomplete> -->
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">留案</el-button>
+                    <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUse">留案</el-button>
                 </el-form-item>
     </el-form>
            
@@ -85,6 +85,7 @@ export default {
       userList: [],
       b: [],
       lockTime: [],
+      NoUse:true,
       multipleSelection: [],
       cols: [
         { title: "用户ID", field: "processer", width: "60" },
@@ -166,6 +167,7 @@ export default {
     hostList() {
       this.addlists = [];
       this.b = [];
+      
       this.multipleSelection.forEach(f => {
         this.addlists.push(f.id);
       });
@@ -199,6 +201,7 @@ export default {
               center: "true"
             });
           } else {
+            this.NoUse= true;
             let para = {
               missionIds: this.addlists,
               leaveTime: this.times
@@ -227,6 +230,7 @@ export default {
             center: "true"
           });
         } else {
+          this.NoUse= true;
            leaveTheCaseApp(para).then(res => {
               this.listShow();
               this.escrowTime = "";
@@ -260,6 +264,7 @@ export default {
         this.datas = data.data;
         this.total = data.recordsTotal;
         this.listLoading = false;
+        this.NoUse = false;
       });
     }
     // handleSelect(item){

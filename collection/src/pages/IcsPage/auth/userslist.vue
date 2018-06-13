@@ -271,8 +271,8 @@ export default {
         id: id
       };
       refreshSub(para).then(res =>{
-        if (res.data.success) {
-            this.$message({
+        if(res.data.success){
+          this.$message({
               type: "success",
               message: "重置成功！"
             });
@@ -321,11 +321,13 @@ export default {
     },
     //获取列表
     getlists() {
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-260;
-        this.heights=h;
+      let h =
+        (window.innerHeight ||
+          document.documentElement.clientHeight ||
+          document.body.clientHeight) - 260;
+      this.heights = h;
       let para = {
         page: this.page,
-      
         pageSize: this.pagesize
       };
       this.listLoading = true;
@@ -337,9 +339,7 @@ export default {
         this.listLoading = false;
         //NProgress.done();
       });
-    },
-
-   
+    }
   },
   mounted() {
     this.getlists();

@@ -24,7 +24,7 @@
             <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
+            <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px" >查询</el-button>
         </el-form-item>
     </el-form>
     
@@ -49,7 +49,7 @@
            <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
       </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">转换队列</el-button>
+        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUser">转换队列</el-button>
         <!-- <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">取消</el-button> -->
        </el-form-item>
     </el-form>                       
@@ -111,6 +111,7 @@ export default {
       items: "",
       a: [],
       b: [],
+      NoUser:true,
       itemsId: 0,
       addlists: [],
       //   userList:[],
@@ -266,6 +267,7 @@ export default {
             center: "true"
           });
         } else {
+          this.NoUser=true;
           turnQueue(para).then(res => {
             this.listShow();
           });
@@ -334,9 +336,9 @@ export default {
       listTurnQueue(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
-        console.log(data);
         this.total = data.recordsTotal;
         this.listLoading = false;
+        this.NoUser=false;
       });
       //获取岗位信息
       sysPositionslistAll().then(res => {
