@@ -65,8 +65,9 @@
 				heights:0,
 				lists: [],
 				cols: [
-                 	{ title: '姓名', field: 'name', width: "60" },
-            		{ title: '合同号', field: 'applicationNumber', width: "80" },  { title: '申请号', field: 'appNum', width: "80" },  			
+          { title: '姓名', field: 'name', width: "60" },
+          { title: '合同号', field: 'applicationNumber', width: "80" }, 
+          { title: '申请号', field: 'appNum', width: "80" },  			
 					{ title: '贷款产品', field: 'loanProducts', width: "150" },
 					{ title: '贷款车型', field: 'loanCar', width: "150" },
 					{ title: '付款日期', field: 'datePayment', width: "80" },
