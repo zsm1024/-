@@ -21,7 +21,7 @@ export default {
         { name: "还款计划", path: "/IcsPage/epiboly/eptab/tabViews/hk_plan" },
         // { name: "扣款流水", path: "/tab/tabView/kk_list" },
         { name: "CMS历史", path: "/IcsPage/epiboly/eptab/tabViews/cms_history" },
-        //{name:"控制车辆信息",path:'/IcsPage/epiboly/eptab/tabViews/controlCar'},
+        {name:"控制车辆信息",path:'/IcsPage/epiboly/eptab/tabViews/controlCar'},
       ]
     };
   },
