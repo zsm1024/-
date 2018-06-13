@@ -13,7 +13,7 @@
 			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
 				<el-button class="filter-item"   type="primary" style=" position:absolute;top:14px;left:125px"   @click="addUserInfos = true">添加</el-button>
 				<el-table :data="items.customerPhones" border stripe :row-class-name="tableRowClassNameCustom" >
-					<el-table-column label="操作"  align="center" width="70"> 
+					<el-table-column label="操作"  align="center" width="90"> 
 						<!-- width="95" -->
 						<template slot-scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
@@ -319,7 +319,7 @@ export default {
 			dialogStatus: '',
 			cols1:[
 				{title:'角色',field:'roleName',width:"70"},
-            	{title:'姓名',field:'name',width:"80"},
+        {title:'姓名',field:'name',width:"80"},
 				{title:'关系', field: 'relationship', width: "70" }, 
 				{title:'省',field:'province',width:"60"},
 				{title:'市',field:'city',width:"60"},     
