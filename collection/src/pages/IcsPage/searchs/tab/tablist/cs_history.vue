@@ -1,9 +1,25 @@
 <template>
-	<section class="cslist" ref="abc" style="overflow-y: auto;">
-		<el-collapse v-model="activeNames">
+	<section  ref="abc" style="overflow-y: auto;">
+		<el-collapse v-model="activeNames" accordion>
 			<el-collapse-item name="1">
-				<template slot="title" ><span class="titles">催收信息</span></template>					
-				<el-table :data="items" border :default-expand-all="true">					
+				<template slot="title" ><span class="titles">催收信息</span></template>	
+            <el-form inline :model="filters">
+				<el-form-item>
+					<el-input class="inputUser"  placeholder="录入人" v-model="filters.realUser" style="width:140px" clearable></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-date-picker v-model="value6" 
+				type="daterange" 
+				range-separator="至" 				
+				placeholder="请选择约会时间区域" 				
+				@change="dataChange"></el-date-picker> 
+					 <!-- <el-date-picker type="date" placeholder="选择日期" v-model="filters.inputTime" style="width: 130px;" @change="dataChanges" ></el-date-picker>   -->
+				</el-form-item>			
+				<el-form-item>
+					<el-button type="primary"  size="mini" style="" @click="getmessage()">查询</el-button>
+				</el-form-item>				
+			</el-form>  				
+				<el-table :data="items" border :default-expand-all="true" class="cslist">					
 					<el-table-column type="expand" >						
 						<template slot-scope="props">
 							<el-form  inline class="demo-table-expand">
@@ -114,12 +130,24 @@
 			 total: 0,
 			 pagesize:50,
 			 page: 1,
+			 times1: "",
+			  times2: "",
+			  value6:"",
+			filters: {					
+				realUser:""	,
+				startTime: "",
+        		endTime: ""			
+			},
 			}
 		},
 		methods:{
 			// asd(){
 			// 	// this.getmessage()
 			// },
+			 dataChange(val) {
+				this.times2 = val.split("至").pop();
+				this.times1 = val.split("至").shift();
+			},
 			handleSizeChange(val) {
 				this.pagesize = val;
 				this.getmessage();
@@ -132,7 +160,12 @@
 				let para = {
 					contractId: this.$route.params.id,
 					page:this.page,
-					pageSize:this.pagesize
+					pageSize:this.pagesize,
+					realUser:this.filters.realUser,
+					startTime: this.times1,
+        			endTime: this.times2,
+					// afpDate:this.filters.inputTime
+
 				};
      		 	listAfpSimplesRestByContractId(para).then(res => {				 
 					let data = res.data.result;
@@ -224,4 +257,5 @@
 	.cslist .el-form-item{width: 100%;text-align: left;margin: 0;}
 	.cslist .el-form-item label{margin-left: 10px;}
 	.cslist .el-form--inline .el-form-item__content{vertical-align: baseline;}
+	.inputUser .el-input__inner{height: 29px!important}
 </style>
