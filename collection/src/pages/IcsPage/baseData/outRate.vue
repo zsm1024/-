@@ -31,17 +31,17 @@
 				<el-form-item label="截止委托逾期天数" prop="entrustOverdueDaysEnd" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.entrustOverdueDaysEnd" style="width:300px"></el-input>
 				</el-form-item>
-                <el-form-item label="起始收款/车天数" prop="entrustMoneyStart" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.entrustMoneyStart" style="width:300px"></el-input>
+                <el-form-item label="起始收款/车天数" prop="widthdrawMoneyDaysStart" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.widthdrawMoneyDaysStart" style="width:300px"></el-input>
 				</el-form-item>	
-                <el-form-item label="截止收款/车天数" prop="entrustMoneyEnd" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.entrustMoneyEnd" style="width:300px"></el-input>
-				</el-form-item>	
-                <el-form-item label="起始委托金额" prop="widthdrawMoneyDaysEnd" :label-width="formLabelWidth">
+                <el-form-item label="截止收款/车天数" prop="widthdrawMoneyDaysEnd" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.widthdrawMoneyDaysEnd" style="width:300px"></el-input>
 				</el-form-item>	
-                <el-form-item label="截止委托金额" prop="widthdrawMoneyDaysStart" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.widthdrawMoneyDaysStart" style="width:300px"></el-input>
+                <el-form-item label="起始委托金额" prop="entrustMoneyStart" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.entrustMoneyStart" style="width:300px"></el-input>
+				</el-form-item>	
+                <el-form-item label="截止委托金额" prop="entrustMoneyEnd" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.entrustMoneyEnd" style="width:300px"></el-input>
 				</el-form-item>	
                 <el-form-item label="代理费比例" prop="rate" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.rate" style="width:300px"></el-input>
