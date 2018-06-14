@@ -65,6 +65,7 @@
                     {title:'费用支付情况',field:'costPayment'},
 
                 ],
+                id:"",
 				total: 0,
 				pagesize: 20,
 				page: 1,
@@ -84,15 +85,22 @@
 				this.getlists();
             },
             
-           
+        //获取url
+        getUrl(){
+              let str =window.location.href
+              let indexs=str.lastIndexOf("\/");
+              str =str.substring(indexs+1,str.length)
+              this.id=str;
+        },
 			//获取列表
 			getlists() {
 			let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
 			this.heights=h;
 				let para = {
 					page: this.page,
-					pageSize: this.pagesize
-				};
+                    pageSize: this.pagesize,
+                    queueId:this.id,
+                };
 				this.listLoading = true;
 				//NProgress.start();
 				ControlVehicle(para).then((res) => {
@@ -105,6 +113,7 @@
 			},		
 		},
 		mounted() {
+            this.getUrl();
             this.getlists();
         }
     }

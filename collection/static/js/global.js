@@ -6,7 +6,7 @@ window.g={
     // uploadPath:"http://bdorange.gwmfc.com:1833/ics/files/upload",//附件接口地址
     // downLoadPath:"http://10.50.101.210:8081/",//附件下载地址（fastDFS地址）
     // api:"http://bdorange.gwmfc.com:1833/ics"
-    api:"http://icstest.gwmfc.com:1833/ics"
+    api:"http://icstest.gwmfc.com:18081/ics"
    //2.本地环境
     //importPath:"http://10.50.101.210:8081/ics/os/actionCodeImport",//外包数据导入接口
     //listDownload:"http://10.50.101.210:8081/ics/os/downloadActionCode",//外包数据模板下载地址

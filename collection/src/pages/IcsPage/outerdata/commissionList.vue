@@ -9,9 +9,13 @@
 				</el-table-column>
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" show-overflow-tooltip sortable :width="col.width" >
 					<template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field=='isPay'||col.field=='payMonth')" v-model="scope.row[col.field]"></el-input>
+							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field=='payMonth')" v-model="scope.row[col.field]"></el-input>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
-                            <span v-show="scope.row.edit" v-if="(col.field!='isPay'||col.field!='payMonth')&&col.field!='isValid'" >{{ scope.row[col.field] }}</span>
+            <span v-show="scope.row.edit" v-if="col.field!='payMonth'&&col.field!='isValid'&&col.field!='isPay'" >{{ scope.row[col.field] }}</span>
+              <el-select v-show="scope.row.edit" class="comSty" v-if="col.field=='isPay'" v-model="scope.row[col.field]" placeholder="请选择">
+								<el-option label="是" value="1"></el-option>
+								<el-option label="否" value="0"></el-option>
+							</el-select>
               <el-select v-show="scope.row.edit" class="comSty" v-if="col.field=='isValid'" v-model="scope.row[col.field]" placeholder="请选择">
 								<el-option label="无效" value="0"></el-option>
 								<el-option label="有效" value="1"></el-option>
