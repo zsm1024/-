@@ -28,14 +28,7 @@
         </el-col>
         <!--列表-->
         <el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe border>
-            
-            <el-table-column label="操作"  align="center" >
-                <template  slot-scope="scope">
-                     <router-link class="a-href" :to="{path:'/IcsPage/searchs/colsearchdetail/'+scope.row.id}">详情</router-link> 
-                      <!-- <router-link class="a-href" :to="{path:'/searchs/123'}">详情</router-link> -->
-                </template>
-            </el-table-column>
-            <el-table-column  align="center" :prop="col.field" sortable :label="col.title" :width="col.width"  v-for="(col, index) in cols" :key="index" >
+            <el-table-column  align="center" :prop="col.field" sortable :label="col.title"  v-for="(col, index) in cols" :key="index" >
             </el-table-column>
         </el-table>
 
@@ -50,7 +43,7 @@
 
 <script>
 	//import NProgress from 'nprogress'
-	import { getcontractInfos } from '@/api/collmanage';
+	import { ListLegalActionMonitor } from '@/api/legal';
 
 	export default {
 		data() {
@@ -65,15 +58,22 @@
 				heights:0,
 				lists: [],
 				cols: [
-                 	{ title: '姓名', field: 'name', },
-					{ title: '合同号', field: 'applicationNumber', },
-					{ title: '申请号', field: 'appNum', width: "150" },  			
-					{ title: '贷款产品', field: 'loanProducts', width: "150" },
-					{ title: '贷款车型', field: 'loanCar', width: "150" },
-					{ title: '付款日期', field: 'datePayment' },
-					{ title: '证件类型', field: 'documentType' },
-					{ title: '证件号', field: 'documentNum',width: "150" },				
-					{ title: '合同状态', field: 'state'  },
+                 	{ title: '城市', field: 'city', width: "60" },
+					{ title: '一审案号', field: 'firstInstanceReference', width: "80" },
+					{ title: '二审案号', field: 'secondInstanceNumber', width: "80" },
+					{ title: '诉讼标的', field: 'target', width: "80" },  			
+					{ title: '诉讼费', field: 'legalActionFee', width: "150" },
+					{ title: '保全费', field: 'preservationFee', width: "150" },
+					{ title: '立案时间', field: 'submissionFilingTime', width: "80" },
+					{ title: '第一次开庭时间', field:'firstCourtTime', width: "80" },
+					{ title: '第二次开庭时间', field:'secondCourtTime', width: "50" },				
+					{ title: '一审判决时间', field: 'trialMediationTime', width: "100" },
+					{ title: '判决书生效时间', field:'judgmentEffectTime', width: "100" },
+					{ title: '申请执行时间', field: 'applyActionTime', width: "80" },
+					{ title: '上失信被执行人时间', field: 'discreditTime', width: "50" },				
+					{ title: '法院终裁日期', field: 'receiveCourtFinalDate', width: "100" },
+					{ title: '核销状态', field: 'state', width: "100" },
+					{ title: '收车状态', field: 'receiveCarStatus', width: "100" },
 
                 ],
 				total: 0,
@@ -106,29 +106,24 @@
 				let para = {
 					page: this.page,
 					pageSize: this.pagesize,
-					applicationNumber:this.filters.applicationNumber,
-					name:this.filters.name,
-					documentType:this.filters.documentType,
-					documentNum:this.filters.documentNum,
-					appNum:this.filters.appNum
 					
+					// applicationNumber:this.filters.applicationNumber,
+					// name:this.filters.name,
+					// documentType:this.filters.documentType,
+					// documentNum:this.filters.documentNum,
+					// appNum:this.filters.appNum
+
 				};
-				this.listLoading = true;
+				// this.listLoading = true;
 				//NProgress.start();
-				getcontractInfos(para).then((res) => {
+				ListLegalActionMonitor(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
-					this.lists.forEach(el => {
-						
-					});
 					this.cols = this.cols;
-					this.listLoading = false;
+					// this.listLoading = false;
 					//NProgress.done();
 				});
-			},
-			
-			
-			
+			},									
 		},
 		mounted() {
             this.getlists();

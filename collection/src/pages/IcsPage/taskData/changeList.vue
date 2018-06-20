@@ -411,9 +411,9 @@ td {
   line-height: 23px !important;
   background: #f0f0f0;
 }
-.el-table .cell {
+/* .el-table .cell {
   padding: 0 !important;
   white-space: nowrap;
-}
+} */
 </style>
 

@@ -239,6 +239,6 @@
     }
 </script>
 <style>
-    #messageTbale.el-table .cell{white-space:normal}
+    /* #messageTbale.el-table .cell{white-space:normal} */
 </style>
  

@@ -1,10 +1,36 @@
 <template>
     <section>
         <!--工具条-->
-        <!-- <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.queueName" placeholder="队列名称" clearable></el-input>
+                    <el-input  clearable v-model="filters.province" placeholder="省"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.placeStorage" placeholder="停放地点" clearable></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.findingWays" placeholder="寻找方式" clearable></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.vehicleControlMechanism" placeholder="控车机构" clearable></el-input>
+                </el-form-item>
+                <el-form-item>
+                     <el-date-picker v-model="filters.vehicleControlDate" 
+					type="date"			
+					placeholder="请选择控车日期" 				
+					@change="dataChange"
+                    clearable
+					>
+					</el-date-picker>
+                    <!-- type="daterange" 
+					range-separator="至"  -->
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.realizeMode" placeholder="变现情况" clearable></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input v-model="filters.carSealUp" placeholder="车辆是否查封" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" size="mini" @click="getlists" >查询</el-button>
@@ -13,7 +39,7 @@
                 
                 </el-form-item>
             </el-form>
-        </el-col> -->
+        </el-col>
         <!--列表-->
         <el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe border>          
             <el-table-column label="操作"  align="center" >
@@ -22,7 +48,7 @@
                     
                 </template>
             </el-table-column>
-            <el-table-column sortable align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" show-overflow-tooltip >
+            <el-table-column sortable align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" show-overflow-tooltip :width="col.width">
             </el-table-column>
         </el-table>
 
@@ -43,7 +69,14 @@
 		data() {
 			return {
 				filters: {
-					queueName:'',
+                    queueName:'',
+                    province:"",
+                    placeStorage:"",
+                    findingWays:"",
+                    vehicleControlMechanism:"",
+                    vehicleControlDate:"",
+                    realizeMode:"",
+                    carSealUp:""
 				},
 			
 				lists: [],
@@ -52,12 +85,12 @@
                     {title:'姓名',field:'name'},
                     {title:'控车机构',field:'vehicleControlMechanism'},
                     {title:'控车日期',field:'vehicleControlDate'},
-                    {title:'车辆是否查封',field:'carSealUp'},
+                    {title:'车辆是否查封',field:'carSealUp',width:"130"},
                     {title:'停放地点',field:'placeStorage'},
                     {title:'省份',field:'province'},
                     {title:'城市',field:'city'},
                     {title:'逾期天数',field:'overdueDays'},
-                    {title:'剩余本金总额',field:'residualAmount'},
+                    {title:'剩余本金总额',field:'residualAmount',width:"130"},
                     {title:'车型',field:'loanCar'},
                     {title:'寻找方式',field:'findingWays'},
                     {title:'变现情况',field:'realizeMode'},
@@ -84,7 +117,11 @@
 				this.page = val;
 				this.getlists();
             },
-            
+            dataChange(val) {
+                this.filters.vehicleControlDate=val;
+                this.times2 = val.split("至").pop();
+                this.times1 = val.split("至").shift();
+            },
         //获取url
         getUrl(){
               let str =window.location.href
@@ -100,6 +137,15 @@
 					page: this.page,
                     pageSize: this.pagesize,
                     queueId:this.id,
+                    province:this.filters.province,
+                    placeStorage:this.filters.placeStorage,
+                    findingWays:this.filters.findingWays,
+                    vehicleControlMechanism:this.filters.vehicleControlMechanism,
+                    vehicleControlDate:this.filters.vehicleControlDate,
+                    realizeMode:this.filters.realizeMode,
+                    carSealUp:this.filters.carSealUp,
+                    // startTime: this.times1,
+                    // endTime: this.times2,
                 };
 				this.listLoading = true;
 				//NProgress.start();

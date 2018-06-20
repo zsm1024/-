@@ -4,7 +4,7 @@
 		<el-col :span="24" id="el-icons">	
 			<i class="el-icon-message" @click="messageOpen">短信</i>
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
-			<i class="el-icon-edit" @click="visitList">外访记录</i>			 
+			<!-- <i class="el-icon-edit" @click="visitList">外访记录</i>			  -->
 		</el-col>
 	</el-row>
 	<!-- <div>{{callback.roleName}}</div> -->

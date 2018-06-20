@@ -76,10 +76,10 @@
                 cols:[
                     {title:'起始委托逾期天数',field:'entrustOverdueDaysStart'},
 					{title:'截止委托逾期天数',field:'entrustOverdueDaysEnd'},
-					{title:'起始收款/车天数',field:' widthdrawMoneyDaysStart'},
+					{title:'起始收款/车天数',field:'widthdrawMoneyDaysStart'},
                     {title:'截止收款/车天数',field:'widthdrawMoneyDaysEnd'},
                     {title:'起始委托金额',field:'entrustMoneyStart'},
-                    {title:'截止委托金额',field:' entrustMoneyEnd'},
+                    {title:'截止委托金额',field:'entrustMoneyEnd'},
                     {title:'代理费比例',field:'rate'},
                     {title:'收款模式',field:'widthdrawMoneyModel'},
                     {title:'控车模式',field:'widthdrawCarModel'},

@@ -13,7 +13,7 @@
 			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
 				<el-button class="filter-item"   type="primary" style=" position:absolute;top:14px;left:125px"   @click="addUserInfos = true">添加</el-button>
 				<el-table :data="items.customerPhones" border stripe :row-class-name="tableRowClassNameCustom" >
-					<el-table-column label="操作"  align="center" width="90"> 
+					<el-table-column label="操作"  align="center" width="70"> 
 						<!-- width="95" -->
 						<template slot-scope="scope">
 							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
@@ -319,7 +319,7 @@ export default {
 			dialogStatus: '',
 			cols1:[
 				{title:'角色',field:'roleName',width:"70"},
-        {title:'姓名',field:'name',width:"80"},
+            	{title:'姓名',field:'name',width:"80"},
 				{title:'关系', field: 'relationship', width: "70" }, 
 				{title:'省',field:'province',width:"60"},
 				{title:'市',field:'city',width:"60"},     
@@ -929,7 +929,7 @@ export default {
 	.el-form-item__content{line-height: 24px!important}
   	.table-expand label { width:90px!important;text-align:el-pagination__rightwrapper;}
   	.table-expand .el-form-item {margin: 0 0 0 2px!important; min-width:220px!important;color: #269aff!important;}
-  	.el-table .cell{padding: 0!important;white-space:nowrap!important};
+  	/* .el-table .cell{padding: 0!important;white-space:nowrap!important}; */
 	.floatForm{position: fixed;bottom: 0;right:0}
 	::-webkit-scrollbar{width:2px;height:12px }
 	::-webkit-scrollbar-track{background-color:#fff;border-radius: 8px}

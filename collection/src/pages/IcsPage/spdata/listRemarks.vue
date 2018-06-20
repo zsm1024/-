@@ -134,9 +134,6 @@ export default {
       Approvalfind(para).then(res=>{
         let data=res.data.result;
         this.lists=data;
-        console.log(res)
-         console.log(this.lists)
-        console.log(this.lists.station)
         this.listPage=data.applyListDtos;
    
         if(data.isShow!="Y"){

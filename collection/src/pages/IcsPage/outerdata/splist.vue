@@ -179,6 +179,6 @@ export default {
     table{width: 100%;text-align: center;}
 	tr{width: 100%;}
 	td{border-right: 1px solid #dfe6ec;border-bottom: 1px solid #dfe6ec;height:23px!important;line-height: 23px!important;background: #f0f0f0;}
-    .el-table .cell{padding: 0!important;white-space:nowrap};
+    /* .el-table .cell{padding: 0!important;white-space:nowrap}; */
 </style>
 

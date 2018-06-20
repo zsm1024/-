@@ -51,18 +51,17 @@
           <el-select v-model="AdduserForms.stateCode" placeholder="人员" @change="getMessages" style="width:120px">
             <el-option v-for="item in options1" :key="item.id" :label="item.nickname" :value="item.id"></el-option>
           </el-select>
-		</el-form-item>      
-        <!-- <el-form-item label="协办人姓名"> -->
-           <!-- <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入协办人姓名"  @select="handleSelect" class="autoInput" style="width:150px">
-            </el-autocomplete> -->
-      <!-- </el-form-item> -->
+		</el-form-item> 
        <el-form-item label="协办到期日">
            <el-date-picker type="date" placeholder="选择日期" v-model="coTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
-      </el-form-item>
+      </el-form-item>     
       <el-form-item>
         <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUse">协办</el-button>
         <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">取消协办</el-button>
        </el-form-item>
+       <el-form-item label="备注:">
+      <el-input type="textarea"  v-model="AdduserForms.remarks" placeholder="备注" style="width: 380px;"></el-input>  
+    </el-form-item>
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left" disabled></el-table-column>
@@ -160,7 +159,8 @@ export default {
       AdduserForms: {
         positionId: "",
         stateCode: "",
-        areaList: ""
+        areaList: "",
+        remarks:""
       }
     };
   },
@@ -270,15 +270,17 @@ export default {
           missionIds: this.addlists,
           coTime: this.times,
           status: "1",
-          queueId: this.AdduserForms.areaList
+          queueId: this.AdduserForms.areaList,
+          remarks:this.AdduserForms.remarks
          }
          if (
          this.AdduserForms.stateCode == "" ||
           this.AdduserForms.areaList == "" ||
           this.addlists.length == 0 ||
-          this.times == ""
+          this.times == "" ||
+          this.AdduserForms.remarks ==""
         ) {
-          this.$alert("请填写完整的协办条件！", "提示", {
+          this.$alert("请检查队列、岗位、人员、日期、备注是否填写完整！", "提示", {
             confirmButtonText: "确定",
             type: "warning",
             center: "true"
@@ -468,10 +470,10 @@ td {
   line-height: 23px !important;
   background: #f0f0f0;
 }
-.el-table .cell {
+/* .el-table .cell {
   padding: 0 !important;
   white-space: nowrap;
-}
+} */
 .checkmore .el-select__tags{max-width:100%!important}
 </style>
 

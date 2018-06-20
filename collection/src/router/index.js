@@ -175,6 +175,10 @@ export const constantRouterMap = [{
           path: '/IcsPage/tab/tabView/controlCar/:id',
           component: _import('IcsPage/tab/tablist/controlCar')
         },
+        {
+          path: '/IcsPage/tab/tabView/legal/:id',
+          component: _import('IcsPage/tab/tablist/legal')
+        },
       ]
     }, ]
   },

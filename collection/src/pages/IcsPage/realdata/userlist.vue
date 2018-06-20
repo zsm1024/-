@@ -23,7 +23,7 @@
                     
                 </template>
             </el-table-column>
-            <el-table-column sortable align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" >
+            <el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" >
             </el-table-column>
         </el-table>
 
@@ -52,8 +52,8 @@
                     {title:'用户名称',field:'username'},
 					{title:'月数量',field:'countAll'},
 					{title:'数量',field:'countAllDate'},
-                    {title:'承诺还款案件数',field:'allowanceConut'},
-                    {title:'逾期应收款总计',field:'receivables'},
+                    {title:'承诺还款案件数',field:'allowanceConut',width:"130"},
+                    {title:'逾期应收款总计',field:'receivables',width:"130"},
                     {title:'未偿总金额',field:'loanAmountAll'},
                     {title:'已处理',field:'processed'},
                     {title:'未处理',field:'untreated'},

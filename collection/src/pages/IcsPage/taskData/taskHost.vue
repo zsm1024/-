@@ -14,7 +14,7 @@
             <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:150px"></el-input>           
         </el-form-item>
         <el-form-item>
-            <el-date-picker v-model="value6" 
+          <el-date-picker v-model="value6" 
 					type="daterange" 
 					range-separator="至" 				
 					placeholder="请选择约会时间区域" 				
@@ -332,9 +332,9 @@ td {
   line-height: 23px !important;
   background: #f0f0f0;
 }
-.el-table .cell {
+/* .el-table .cell {
   padding: 0 !important;
   white-space: nowrap;
-}
+} */
 </style>
 
