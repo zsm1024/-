@@ -4,7 +4,7 @@
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
                     <el-table :data="items.customerSimpleList" border stripe :row-class-name="TableRowClassNames"> 
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title" show-overflow-tooltip v-for="(baseinfo, index) in baseinfo" :key="index"   align="center">
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title" show-overflow-tooltip v-for="(baseinfo, index) in baseinfo" :key="index" :width="baseinfo.width"  align="center">
 						</el-table-column>			
 					</el-table>
                 </template>
@@ -230,15 +230,15 @@ export default {
 				
 			],
 			baseinfo:[
-				{ title: '角色名', field: 'roleName', width: "60" },
-				{ title: '姓名', field: 'name', width: "60" },
+				{ title: '角色名', field: 'roleName'},
+				{ title: '姓名', field: 'name'},
 				//{ title: '拼音', field: 'pinyin', width: "80" },
-				{ title: '职业', field: 'occupation', width: "80" },
-				{ title: '单位名称', field: 'unitName' },
-				{ title: '性别', field: 'sex', width: "45" },
-				{ title: '证件类型', field: 'documentType', width: "90"},
-				{ title: '证件号码', field: 'documentNum'},
-				{ title: '出生日期', field: 'birthDate', width: "80"}
+				{ title: '职业', field: 'occupation' },
+				{ title: '单位名称', field: 'unitName', width: "150" },
+				{ title: '性别', field: 'sex'},
+				{ title: '证件类型', field: 'documentType'},
+				{ title: '证件号码', field: 'documentNum', width: "150"},
+				{ title: '出生日期', field: 'birthDate'}
 			],
 			id:this.$route.params.id,	
 			remarkopen: false,
@@ -278,13 +278,9 @@ export default {
 					remarks:this.remarkform.remarks,
 					id:this.$route.params.id
 				}
-				console.log(para)
 				this.$refs[remarkform].validate((valid) => {
                 if(valid){
                     addMessage(para).then(res =>{
-					
-						console.log(para)
-						console.log(res)
                         if(res.data.success){
                             this.$message({
                                 type: 'success',
@@ -331,7 +327,7 @@ export default {
 			};          
 			getlistAfpRest(para).then(res => {				
                 let data = res.data.result;		                
-				this.items = data;						
+				this.items = data;					
 				// this.remarkform.remarks = this.items.remarks;
 				// this.cols=data.cols;
                 // this.cols1=data.cols1; 
@@ -352,12 +348,10 @@ export default {
 
      		colHistory_note(paras).then(res => {			 
 				let data = res.data.result;
-				console.log(data)
 				if(data==null){
 					return false;
 				}else{
 					this.marks=data.remarks;
-					console.log(this.marks)	
 				}					
 					// this.item.push(data);			
       		});
@@ -384,7 +378,6 @@ export default {
 			contractId:this.id
 		};
 			jxsInfosearch(para).then(res =>{
-				console.log(res)
 				if(res.data.success){
 				let data =res.data.result;
 				this.JRZY="金融专员";

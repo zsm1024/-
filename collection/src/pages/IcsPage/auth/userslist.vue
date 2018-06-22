@@ -80,13 +80,20 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="收款模式：" prop="widthdrawMoneyModel" :label-width="formLabelWidth">
+                <el-input v-model="addUser.widthdrawMoneyModel" style="width:300px"></el-input>
+            </el-form-item>	
+            <el-form-item label="收车模式：" prop="widthdrawCarModel" :label-width="formLabelWidth">
+                <el-input v-model="addUser.widthdrawCarModel" style="width:300px"></el-input>
+            </el-form-item>	
             <el-form-item> 
                 <el-row :span="4" style="margin-left:200px">
                     <el-button @click="cancelBtn('addUser')">取消</el-button>
                     <el-button type="primary" @click="addBtn('addUser')">确 定</el-button>
                 </el-row>   	
-                
-            </el-form-item>	
+            
+            </el-form-item>
+            
 		</el-form>
     </el-dialog>
 	</section>
@@ -117,7 +124,9 @@ export default {
         { title: "用户名", field: "nickname" },
         { title: "角色", field: "roleName" },
         { title: "电话", field: "phone" },
-        { title: "岗位", field: "position" }
+        { title: "岗位", field: "position" },
+        { title: "收款模式", field: "widthdrawMoneyModel" },
+        { title: "控车模式", field: "widthdrawCarModel" },
       ],
       total: 0,
       page: 1,
@@ -138,7 +147,11 @@ export default {
         phone: "",
         roleIds: [],
         positionId: [],
-        positionIdEdi:[]
+        positionIdEdi:[],
+        widthdrawMoneyModel:"",
+        widthdrawCarModel:""
+
+
       }
     };
   },
@@ -180,7 +193,10 @@ export default {
             phone: this.addUser.phone,
             roleIds: arrrole,
             positionIds: this.addUser.positionIdEdi,
-            id: this.id
+            id: this.id,
+            widthdrawMoneyModel:this.addUser.widthdrawMoneyModel,
+            widthdrawCarModel:this.addUser.widthdrawCarModel,
+
         };
         toEditUser(para).then(res => {
           if (res.data.success) {
@@ -206,7 +222,9 @@ export default {
                 phone: this.addUser.phone,
                 roleIds: arrrole,
                 positionIds: this.addUser.positionId,
-                id: this.id
+                id: this.id,
+                widthdrawMoneyModel:this.addUser.widthdrawMoneyModel,
+                widthdrawCarModel:this.addUser.widthdrawCarModel,
             };
         toAddUser(para).then(res => {
           if (res.data.success) {
@@ -238,8 +256,10 @@ export default {
       this.toEdit = false;
       this.submit = 'true'
       this.id = "";
-      this.addUser.roleIds="",
-      this.addUser.positionId=""
+      this.addUser.roleIds="";
+      this.addUser.positionId="";
+      this.addUser.widthdrawMoneyModel="";
+      this.addUser.widthdrawCarModel="";
     },
     editUserBtn(id) {
       this.title = "编辑用户";
@@ -264,6 +284,8 @@ export default {
         this.addUser.positionIds = aa;
         this.addUser.positionIdEdi=res.data.result.positionIds
         this.addUser.roleIds = res.data.result.roleIds[0];
+        this.addUser.widthdrawMoneyModel=res.data.result.widthdrawMoneyModel
+        this.addUser.widthdrawCarModel=res.data.result.widthdrawCarModel
       });
     },
     refreshSubmit(id) {

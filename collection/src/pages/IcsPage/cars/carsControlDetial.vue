@@ -404,8 +404,12 @@ export default {
       lists: [],
       time: "",
       signTimes: "",
-      id: "",
+      id:"",
       icsId: "",
+      stopListid:"",
+      stopListicsId: "",
+      controlCarid: "",
+      controlCaricsId: "",
       comefrom: [],
       findway: [],
       document: [],
@@ -679,8 +683,8 @@ export default {
       this.listLoadings = true;
       getOsControlVehicle(para).then(res => {
         let data = res.data.result;
-        this.id = data.id;
-        this.icsId = data.icsId;
+        this.controlCarid = data.id;
+        this.controlCaricsId = data.icsId;
         (this.carForm.comefrom = data.vehicleSource),
           (this.carForm.company = data.vehicleControlMechanism),
           (this.carForm.time = data.vehicleControlDate),
@@ -707,8 +711,8 @@ export default {
     },
     subCarInfo(carForm) {
       let para = {
-        id: this.id,
-        icsId: this.icsId,
+        id:this.controlCarid,
+        icsId:this.controlCaricsId,
         vehicleSource: this.carForm.comefrom,
         vehicleControlMechanism: this.carForm.company,
         vehicleControlDate: this.carForm.time,
@@ -733,10 +737,10 @@ export default {
         // documentType:""
       };
       this.$refs[carForm].validate((valid) => {
-        debugger;
             if (valid) {
               updateOsControlVehicle(para).then(res => {
                       this.getcontrolCar();
+                      this.costDetail();
                     });
                   }else{
                     return false;
@@ -746,7 +750,7 @@ export default {
     //送车信息
     sendCar() {
       let paras = {
-        id: this.$route.params.id,
+        id:this.$route.params.id,
         page: this.visitpages,
         pageSize: this.visitpagesize
       };
@@ -769,6 +773,8 @@ export default {
               type: "success",
               message: "编辑成功！"
             });
+             this.sendCar()
+            this.costDetail();
           } else {
             this.$message({
               type: "error",
@@ -795,6 +801,8 @@ export default {
                 type: "success",
                 message: "删除成功！"
               });
+               this.sendCar()
+              this.costDetail();
             } else {
               this.$message({
                 type: "error",
@@ -845,6 +853,7 @@ export default {
               this.addSendCars = false;
               this.$refs["AddsendCarInfo"].resetFields();
               this.sendCar();
+              this.costDetail();
             } else {
               this.$message({
                 type: "error",
@@ -893,6 +902,7 @@ export default {
               message: "车辆停放信息编辑成功！"
             });
             this.ParkingCar();
+            this.costDetail();
           } else {
             this.$message({
               type: "error",
@@ -920,6 +930,7 @@ export default {
                 message: "删除成功！"
               });
               this.ParkingCar();
+              this.costDetail();
             } else {
               this.$message({
                 type: "error",
@@ -974,6 +985,7 @@ export default {
               this.addParkingCars = false;
               this.$refs["AddparkCarInfo"].resetFields();
               this.ParkingCar();
+              this.costDetail();
             } else {
               this.$message({
                 type: "error",
@@ -1046,6 +1058,7 @@ export default {
             message: "变现信息修改成功！"
           });
           this.getrealizeList();
+          this.costDetail();
         } else {
           this.$message({
             type: "error",
@@ -1062,8 +1075,8 @@ export default {
       this.listLoading = true;
       getOsCarRelease(para).then(res => {
         let data = res.data.result;
-        this.id = data.id;
-        this.icsId = data.icsId;
+        this.stopListid = data.id;
+        this.stopListicsId = data.icsId;
         (this.stop.notice = data.vehicleReleaseMode),
           (this.stop.time = data.pickUpDate),
           (this.stop.name = data.pickUpName),
@@ -1079,9 +1092,9 @@ export default {
     },
     subStop() {
       let para = {
-        id: this.id,
-        icsId: this.icsId,
-        realizeMode: this.stop.notice,
+        id: this.stopListid,
+        vehicleReleaseMode:this.stop.notice,
+        icsId: this.stopListicsId,
         pickUpDate: this.stop.time,
         pickUpName: this.stop.name,
         pickUpPhone: this.stop.phone,
@@ -1089,7 +1102,7 @@ export default {
         handover: this.stop.place,
         kilometre: this.stop.distance,
         vehicleState: this.stop.statius,
-        vehicleReleaseMode: this.stop.deal,
+        saleSigned:this.stop.deal,       
         remarks: this.stop.marks
       };
       updateOsCarRelease(para).then(res => {
@@ -1099,6 +1112,7 @@ export default {
             message: "放车信息修改成功！"
           });
           this.getrealizeList();
+          this.costDetail();
         } else {
           this.$message({
             type: "error",

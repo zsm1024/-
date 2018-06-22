@@ -43,14 +43,14 @@ export default {
       lists: [],
       formLabelWidth: "140px",
       cols: [
-        { title: "合同号", field: "applicationNumber",width:'180px' },
-        { title: "外包公司名称", field: "osCompany",width:'180px' },
+        { title: "申请号", field: "appNum",width:'180px' },
+        { title: "外包公司名称", field: "osCompanyName",width:'180px' },
         { title: "委案周期", field: "entrustCycle" },
         { title: "收回金额", field: "recoveryAmount" },
         { title: "佣金方式", field: "mode" },
         { title: "结算佣金", field: "commission" },
         { title: "费率", field: "rate" },
-        { title: "是否控车", field: "isControlCar" },
+        // { title: "是否控车", field: "isControlCar" },
         { title: "是否已付", field: "isPay" },
         { title: "付款月份", field: "payMonth" },
         { title: "是否有效", field: "isValid" },
@@ -80,12 +80,16 @@ export default {
       commissionlist(para).then(res => {
         let data = res.data.result;
         this.lists = data.data;
-       console.log( this.lists)
         for(let i=0;i<this.lists.length;i++){
           if(this.lists[i].isValid==0){
             this.lists[i].isValid="无效"
           }else{
              this.lists[i].isValid="有效"
+          }
+          if(this.lists[i].isPay==0){
+            this.lists[i].isPay="否"
+          }else{
+             this.lists[i].isPay="是"
           }
         }
         this.lists = this.lists.map(v => {

@@ -31,7 +31,7 @@
 					</el-table-column>
 					<el-table-column align="center" type="index"  label="序号" width="40">
 						</el-table-column>
-					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" >
+					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
 					</el-table-column>									
 				</el-table>
 				<el-col :span="24" class="toolbar">					
@@ -83,16 +83,16 @@
 			activeNames:["1","2"],
 			 items:[],
 			 cols:[
-              	{title:'催收日期',field:'afpDate',width:"190"},
-              	{title:'联系方式',field:'linkInfomation',width:"60"},
-              	{title:'联系人',field:'linkman',width:"60"},
-              	{title:'催收代码',field:'actSign',width:"60"},
+              	{title:'催收日期',field:'afpDate'},
+              	{title:'联系方式',field:'linkInfomation'},
+              	{title:'联系人',field:'linkman'},
+              	{title:'催收代码',field:'actSign'},
              	// {title:'代码名称',field:'actNotes',width:"130"},
-              	{title:'约会日期',field:'appointmentTime',width:"190"},
-              	{title:'承诺金额',field:'allowance',width:"60"},
-              	{title:'承诺日期',field:'allDate',width:"190"},
-				{title:'用户ID',field:'username',width:"60"},	
-				{title:'录入人',field:'realUser',width:"60"},				
+              	{title:'约会日期',field:'appointmentTime'},
+              	{title:'承诺金额',field:'allowance'},
+              	{title:'承诺日期',field:'allDate'},
+				{title:'用户ID',field:'username'},	
+				{title:'录入人',field:'realUser'},				
 				],
 			 titles:[
 					],

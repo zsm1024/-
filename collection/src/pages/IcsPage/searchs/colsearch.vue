@@ -71,7 +71,7 @@
 					{ title: '贷款产品', field: 'loanProducts', width: "150" },
 					{ title: '贷款车型', field: 'loanCar', width: "150" },
 					{ title: '付款日期', field: 'datePayment' },
-					{ title: '证件类型', field: 'documentType' },
+					{ title: '证件类型', field: 'documentType',width: "100"  },
 					{ title: '证件号', field: 'documentNum',width: "150" },				
 					{ title: '合同状态', field: 'state'  },
 
@@ -118,9 +118,6 @@
 				getcontractInfos(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
-					this.lists.forEach(el => {
-						
-					});
 					this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();

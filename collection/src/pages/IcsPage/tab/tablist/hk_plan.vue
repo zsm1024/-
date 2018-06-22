@@ -22,6 +22,8 @@
 			<el-table :data="liststwo" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in colstwo" :key="index" align="center" :width="col.width" sortable :fixed="col.fixed">
 				</el-table-column>
+				<!-- <el-table-column :prop="cola.field" :label="cola.title" v-for="(cola, index) in colstwo" :key="index" align="center" :width="cola.width" sortable :fixed="cola.fixed">
+				</el-table-column> -->
 			</el-table>
 
 			<!--工具条-->
@@ -44,18 +46,18 @@ export default {
 				lists: [],
 				// ,fixed:"left",fixed:"right"
 				cols: [
-			{title:'还款期数',field:'repaymentPeriod',width:"80"},
-            {title:'到期日',field:'dueDate',width:"90"},
-            {title:'月应还本金',field:'monthRepay',width:"90"},
-            {title:'利息额',field:'interestAmount',width:"80"},
-            {title:'月息',field:'monthly',width:"70"},
-            {title:'复合利息',field:'compoundAmount',width:"80"},
+			{title:'还款期数',field:'repaymentPeriod'},
+            {title:'到期日',field:'dueDate'},
+            {title:'月应还本金',field:'monthRepay',width:"120"},
+            {title:'利息额',field:'interestAmount'},
+            {title:'月息',field:'monthly'},
+            {title:'复合利息',field:'compoundAmount'},
             {title:'分期付款额',field:'installmentAmount',width:"100"},
-            {title:'结算金额',field:'settlementAmount',width:"80"},
+            {title:'结算金额',field:'settlementAmount'},
             {title:'未结清本金',field:'outstandingAmoimt',width:"100"},
-            {title:'调整身份',field:'adjustIdentity',width:"80"},
+            {title:'调整身份',field:'adjustIdentity'},
             {title:'实际还款日',field:'actualDay',width:"100"},
-            {title:'逾期天数',field:'overdueDays',width:"80"},
+            {title:'逾期天数',field:'overdueDays'},
 				],
 				total: 0,
 				pagesize: 20,
@@ -64,19 +66,19 @@ export default {
                 listLoading: false,	                
                 liststwo: [],
 				colstwo: [
-					{title:'到期日',field:'dueDate'},
-            		{title:'还款期数',field:'repaymentPeriod'},
-            		{title:'未偿本金',field:'noPrincipal'},
-           			{title:'还款本金额',field:'repaymentAmount'},
-            		{title:'还款利息额',field:'repaymentInterest'},
-            		{title:'月息',field:'monthly'},
-            		{title:'复合利息金额',field:'compoundAmount'},
-            		{title:'净还款金额',field:'netAmount'},
-            		{title:'杂费',field:'incidental'},
-            		{title:'已付款总额',field:'totalPaid'},
-            		{title:'未承兑/取消',field:'trueday'},
-            		{title:'实际还款日',field:'actualDay'},
-            		{title:'逾期天数',field:'overdueDays'},
+					{title:'到期日',field:'dueDate',width:"150"},
+            		{title:'还款期数',field:'repaymentPeriod',width:"150"},
+            		{title:'未偿本金',field:'noPrincipal',width:"150"},
+           			{title:'还款本金额',field:'repaymentAmount',width:"150"},
+            		{title:'还款利息额',field:'repaymentInterest',width:"150"},
+            		{title:'月息',field:'monthly',width:"150"},
+            		{title:'复合利息金额',field:'compoundAmount',width:"150"},
+            		{title:'净还款金额',field:'netAmount',width:"150"},
+            		{title:'杂费',field:'incidental',width:"150"},
+            		{title:'已付款总额',field:'totalPaid',width:"150"},
+            		{title:'未承兑/取消',field:'trueday',width:"150"},
+            		{title:'实际还款日',field:'actualDay',width:"150"},
+            		{title:'逾期天数',field:'overdueDays',width:"150"},
 				],
 				totaltwo: 0,
 				pagesizetwo: 20,
@@ -162,4 +164,5 @@ export default {
 }
 </script>
 <style>
+
 </style>

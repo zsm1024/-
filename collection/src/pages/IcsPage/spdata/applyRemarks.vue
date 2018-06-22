@@ -113,7 +113,7 @@
             <el-option v-for="items in options2" :key="items.id" :label="items.nickname" :value="items.id"></el-option>
         </el-select>
     </el-form-item>
-    <el-form-item label="审批备注:(不超过2000字)">
+    <el-form-item label="备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">

@@ -869,9 +869,9 @@ export default{
 			RowId:this.$route.params.id,
 		}		
 		//localStorage.setItem("REefresh",JSON.stringify(REefresh))
-		let RowIds=localStorage.getItem(this.$route.params.id);
+		var RowIds=localStorage.getItem(this.$route.params.id);
 		if(localStorage.getItem("REefresh")!=""){
-			let FreshList=JSON.parse(localStorage.getItem("REefresh"));
+			var FreshList=JSON.parse(localStorage.getItem("REefresh"));
 			if(RowIds==FreshList.RowId){
 				this.mainform.actSign=FreshList.actSign,
 				this.mainform.allowance=FreshList.allowance,

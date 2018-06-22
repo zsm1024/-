@@ -331,15 +331,15 @@ export default {
 				
 			],
 			baseinfo:[
-				{ title: '角色名', field: 'roleName', width: "60" },
-				{ title: '姓名', field: 'name', width: "80" },
+				{ title: '角色名', field: 'roleName' },
+				{ title: '姓名', field: 'name' },
 				// { title: '拼音', field: 'pinyin', width: "80" },
 				{ title: '职业', field: 'occupation' },
-				{ title: '单位名称', field: 'unitName' },
-				{ title: '性别', field: 'sex', width: "45" },
-				{ title: '证件类型', field: 'documentType', width: "90"},
-				{ title: '证件号码', field: 'documentNum', width: "145"},
-				{ title: '出生日期', field: 'birthDate', width: "80"}
+				{ title: '单位名称', field: 'unitName',width: "145" },
+				{ title: '性别', field: 'sex'},
+				{ title: '证件类型', field: 'documentType'},
+				{ title: '证件号码', field: 'documentNum',width: "145"},
+				{ title: '出生日期', field: 'birthDate'}
 			],
 			callback:{
 				phoneType:'',
@@ -810,7 +810,6 @@ export default {
 				 let data = res.data.result;			
 				 this.items = data;	
 				 this.appNum=data.appNum;	
-				
 				this.items.customerPhones = this.items.customerPhones.map(v => {
 					this.$set(v, 'edit', false)
 					return v;

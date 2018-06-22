@@ -24,7 +24,7 @@
 					<router-link class="a-href" :to="{path:'/IcsPage/monitor/stributotaldetail/'+scope.row.overdueDays}">详情</router-link>
 				</template>
 			</el-table-column>
-			<el-table-column  align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" sortable show-overflow-tooltip >
+			<el-table-column  align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" sortable show-overflow-tooltip >
 			</el-table-column>
 		</el-table>
 
@@ -56,9 +56,9 @@
                     {title:'队列名称',field:'queueName'},
                     {title:'逾期天数',field:'overdueDays'},
                     {title:'数量',field:'count'},
-                    {title:'承诺还款案件数',field:'promiseNum'},
-                    {title:'逾期应收款总计',field:'overdueTotal'},
-                    {title:'未偿总金额',field:'residueTotal'},
+                    {title:'承诺还款案件数',field:'promiseNum',width:'130'},
+                    {title:'逾期应收款总计',field:'overdueTotal',width:'130'},
+                    {title:'未偿总金额',field:'residueTotal',width:'100'},
                     {title:'已处理',field:'processed'},
                     {title:'未处理',field:'untreated'},
                 ],

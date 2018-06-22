@@ -23,7 +23,7 @@
                     
                 </template>
             </el-table-column>
-            <el-table-column sortable align="center" :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" show-overflow-tooltip >
+            <el-table-column sortable align="center" :prop="col.field" :label="col.title"  :width="col.width" v-for="(col, index) in cols" :key="index" show-overflow-tooltip >
             </el-table-column>
         </el-table>
 
@@ -51,8 +51,8 @@
 				cols: [
                     {title:'队列名称',field:'queueName'},
                     {title:'数量',field:'count'},
-                    {title:'逾期应收款总计',field:'overdueTotal'},
-                    {title:'承诺还款案件数',field:'promiseNum'},
+                    {title:'逾期应收款总计',field:'overdueTotal',width:'130'},
+                    {title:'承诺还款案件数',field:'promiseNum',width:'130'},
                     {title:'未偿总金额',field:'residueTotal'},
                     {title:'已处理',field:'processed'},
                     {title:'未处理',field:'untreated'},

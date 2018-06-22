@@ -47,7 +47,8 @@ export default {
         { title: "申请号", field: "appNum" },
         { title: "扣款日期", field: "deductDate" },
         { title: "对公存款日期(若非扣款日期)", field: "depositDate" },
-        { title: "方式", field: "mode" }
+        { title: "方式", field: "mode" },
+        { title: "是否控车", field: "mode" }
       ]
     };
   },
