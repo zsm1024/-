@@ -39,10 +39,9 @@
 				</template>
 			</el-table-column>
 			
-			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" >
+			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" show-overflow-tooltip  v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
 		</el-table>
-
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			

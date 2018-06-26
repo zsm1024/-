@@ -7,17 +7,20 @@
                     <el-input v-model="filters.applicationNumber" placeholder="合同号" clearable style="width:130px"></el-input>
                 </el-form-item>
                <el-form-item>
-                    <el-input v-model="filters.appNum" placeholder="申请号" clearable style="width:130px"></el-input>
+                    <el-date-picker style="width:130px" v-model="filters.submissionFilingTime" @change="submissionFilingTime" type="date" value-format="yyyy-MM-dd" placeholder="立案时间"></el-date-picker>
+                </el-form-item>
+				 <el-form-item>
+                    <el-date-picker style="width:130px" v-model="filters.firstCourtTime" @change="firstCourtTime" type="date" value-format="yyyy-MM-dd" placeholder="第一次开庭时间"></el-date-picker>
+                </el-form-item>
+				<el-form-item>
+                    <el-input v-model="filters.city" placeholder="城市" clearable style="width:130px"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="当事人" clearable style="width:130px"></el-input>
+                    <el-input v-model="filters.name" placeholder="姓名" clearable style="width:130px"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input v-model="filters.documentType" placeholder="证件类型" clearable style="width:130px"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-input v-model="filters.documentNum" placeholder="证件号" clearable style="width:200px"></el-input>
-                </el-form-item>
+                    <el-input v-model="filters.firstInstanceReference" placeholder="一审案号" clearable style="width:130px"></el-input>
+                </el-form-item>               
                 <el-form-item>
                     <el-button type="primary"  @click="getlists" size="mini" style="padding:7px 9px" >查询</el-button>
 					<el-button type="primary"   size="mini" @click="hostList()" style="padding:7px 9px" >导出</el-button>
@@ -60,18 +63,28 @@ import { path } from "@/config";
 				filters: {
 					applicationNumber:'',
 					name:"",
-					documentType:"",
-					documentNum:"",
-					appNum:""
+					firstInstanceReference:"",
+					city:"",
+					firstCourtTime:"",
+					submissionFilingTime:""
 				},
 				heights:0,
 				lists: [],
 				addlists: [],
-				cols: [
+				cols: [					
+					{ title: '姓名', field: 'name'},
+					{ title: '合同号', field: 'applicationNumber', width: "120" },
+					{ title: '案件状态', field: 'status' },
+					{ title: '逾期天数', field: 'overdueDays'},
+					{ title: '约会日期', field: 'appointmentTime'},
+					{ title: '最近行动代码', field: 'actSign', width: "120" },
+					{ title: '贷款车型', field: 'loanCar', width: "150" },
+					{ title: '贷款金额', field: 'loanAmount' },
+					{ title: '省份', field: 'province'},	
                  	{ title: '城市', field: 'city'},
 					{ title: '一审案号', field: 'firstInstanceReference'},
 					{ title: '二审案号', field: 'secondInstanceNumber'},
-					{ title: '诉讼标的', field: 'target'},  			
+					{ title: '诉讼标的', field: 'target'},  							
 					{ title: '诉讼费', field: 'legalActionFee'},
 					{ title: '保全费', field: 'preservationFee'},
 					{ title: '立案时间', field: 'submissionFilingTime', width: "120" },
@@ -98,6 +111,12 @@ import { path } from "@/config";
 			}
 		},
 		methods: {
+			submissionFilingTime(val){
+				this.filters.submissionFilingTime=val;
+			},
+			firstCourtTime(val){
+				this.filters.firstCourtTime=val;
+			},
 			handleCurrentChanges(val) {
         		this.currentRow = val;
       		},
@@ -110,7 +129,7 @@ import { path } from "@/config";
 				this.getlists();
 			},
 			setCurrent(row,id) {
-				debugger;
+
 				this.$refs.table.setCurrentRow(row);
 				localStorage.setItem("nextNum","0");
 				localStorage.setItem("currentRow",parseInt(this.currentRow)+1);
@@ -127,9 +146,8 @@ import { path } from "@/config";
 					this.addlists.push(f.id);
 				});
 				var ids = this.addlists.toString();
-				// let paths="http://192.168.2.113:8081/ics"
-				// window.location.href=paths +"/legalAction/laCaseExport?ids="+ ids;
-				window.location.href=this.exportPaths +"/legalAction/laCaseExport?ids="+ ids;
+				 let path12=this.exportPaths +"/legalAction/laCaseExport?ids="+ ids;
+				window.open(path12)
 				
 			},
 			//获取列表
@@ -139,12 +157,13 @@ import { path } from "@/config";
 				let para = {
 					page: this.page,
 					pageSize: this.pagesize,
-					queueId:"120"
-					// applicationNumber:this.filters.applicationNumber,
-					// name:this.filters.name,
-					// documentType:this.filters.documentType,
-					// documentNum:this.filters.documentNum,
-					// appNum:this.filters.appNum
+					queueId:"120",
+					applicationNumber:this.filters.applicationNumber,
+					name:this.filters.name,
+					city:this.filters.city,
+					firstInstanceReference:this.filters.firstInstanceReference,
+					firstCourtTime:this.filters.firstCourtTime,
+					submissionFilingTime:this.filters.submissionFilingTime,
 
 				};
 				// this.listLoading = true;
@@ -159,8 +178,8 @@ import { path } from "@/config";
 				});
 			},
 			hostListAll(){
-				// window.location.href=this.exportPaths+"/legalAction/laCaseExportAll"
-				window.open("http://192.168.2.113:8081/ics/legalAction/laCaseExportAll")
+				let paths=this.exportPaths+"/legalAction/laCaseExportAll"
+				window.open(paths)
 			},							
 		},
 		mounted() {

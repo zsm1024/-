@@ -402,7 +402,6 @@ export default {
             this.$refs[AdduserForm].validate((valid) => {
                 if(valid){
                     addInfo(para).then(res =>{
-                    // debugger;
                     if(res.data.success){
                         this.$message({
                             type: 'success',

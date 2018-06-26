@@ -7,7 +7,7 @@
 						<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='Edit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
 					</template> -->
 				<!-- </el-table-column> -->
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" >
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" :width="col.width" align="center" >
 					<template slot-scope="scope">
               <span v-show="scope.row.edit" v-if="(col.field!='depositDate'&&col.field!='mode')" >{{ scope.row[col.field] }}</span>
 							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
@@ -46,9 +46,9 @@ export default {
         { title: "姓名", field: "name" },
         { title: "申请号", field: "appNum" },
         { title: "扣款日期", field: "deductDate" },
-        { title: "对公存款日期(若非扣款日期)", field: "depositDate" },
+        { title: "对公存款日期(若非扣款日期)", field: "depositDate",width:"200" },
         { title: "方式", field: "mode" },
-        { title: "是否控车", field: "mode" }
+        { title: "是否控车", field: "isControlCar" }
       ]
     };
   },

@@ -1,26 +1,28 @@
 <template>
-<el-collapse v-model="activeNames">	
-    <el-collapse-item name="1" title="诉讼案件信息" style="position:relative">	
-        <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subListInfo('legalInfo')">提交</el-button>
+<el-collapse v-model="activeNames" accordion>	
+    <el-collapse-item name="1" title="诉讼案件信息"  style="position:relative">	
+        <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subListInfo('legalInfo')" :disabled="NoUsed">提交</el-button>
         <!-- @click="subCarInfo('legalInfo')"		 -->
         
-        <table ref="legalInfo" :model="legalInfo">
-            <tbody class="legal">
+        <table ref="legalInfo" :model="legalInfo" >
+            <tbody class="legal" v-loading="listLoadings">
                 <tr>
                     <td><span>申请诉前保全时间</span></td>
                     <td><el-date-picker v-model="legalInfo.applyBeforeLawsuitAllTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="applyBeforeLawsuitAllTime"></el-date-picker></td>
                     <td><span>诉前的保全法院</span></td>
                     <td><input  v-model="legalInfo.beforeLawsuitAllCourt"/></td>
                     <td><span>采取诉前保全时间</span></td>
-                    <td><input type="text" v-model="legalInfo.actionBeforeLawsuitAllTime"></td>
+                    <td>
+                      <el-date-picker v-model="legalInfo.actionBeforeLawsuitAllTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="actionBeforeLawsuitAllTime"></el-date-picker>
+                    </td>
                 </tr>
                 <tr>
                     <td><span>申诉前的调解时间</span></td><td><el-date-picker v-model="legalInfo.beforeLawsuitConciliationTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="beforeLawsuitConciliationTime"></el-date-picker></td>
                     <td ><span>诉前调解法院</span></td><td colspan="3"><input type="text" v-model="legalInfo.beforeLawsuitConciliationCourt" style="display:inlin-block;width:95%"></td>
                 </tr>
                 <tr>
-                    <td><span>提交债券主张时间</span></td><td><el-date-picker v-model="legalInfo.submissionClaimsTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="submissionClaimsTime"></el-date-picker></td>
-                    <td ><span>受理债券主张法院</span></td><td colspan="3"><input type="text" v-model="legalInfo.acceptClaimsCourt" style="display:inlin-block;width:95%"></td>
+                    <td><span>提交债权主张时间</span></td><td><el-date-picker v-model="legalInfo.submissionClaimsTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="submissionClaimsTime"></el-date-picker></td>
+                    <td ><span>受理债权主张法院</span></td><td colspan="3"><input type="text" v-model="legalInfo.acceptClaimsCourt" style="display:inlin-block;width:95%"></td>
                 </tr>                
                 <tr>
                     <td><span>提交立案时间</span></td>
@@ -67,7 +69,7 @@
                     <td><span>提出/收到二审诉状时间</span></td>
                     <td><el-date-picker v-model="legalInfo.proposeReceiveSecondInstanceTime" @change="proposeReceiveSecondInstanceTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td> 
                     <td><span>发布二审开庭公告时间</span></td>
-                    <td><el-date-picker v-model="legalInfo.publisSecondInstanceCourtTime" @change="publisSecondInstanceCourtTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
+                    <td><el-date-picker v-model="legalInfo.publishSecondInstanceCourtTime" @change="publishSecondInstanceCourtTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
                     <td><span>二审法院</span></td>
                     <td><input  v-model="legalInfo.secondInstanceCourt"/></td>
                 </tr>
@@ -85,7 +87,7 @@
                     <td><span>判决生效时间</span></td>
                     <td><el-date-picker v-model="legalInfo.judgmentEffectTime" @change="judgmentEffectTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>                    
                     <td><span>申请执行时间</span></td>
-                    <td><el-date-picker v-model="legalInfo.applyActioTime" @change="applyActioTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
+                    <td><el-date-picker v-model="legalInfo.applyActionTime" @change="applyActionTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
                 </tr>
                 <tr>
                     <td><span>申请执行法院</span></td>
@@ -100,22 +102,22 @@
                     <td><input  v-model="legalInfo.entrustedActionCourt"/></td>                  
                     <td><span>收到法院终裁日期</span></td>
                     <td><el-date-picker v-model="legalInfo.receiveCourtFinalDate" @change="receiveCourtFinalDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td> 
-                    <td><span>上失信</span></td>
-                    <td><input  v-model="legalInfo.discreditTime"/></td>                   
+                    <td><span>上失信时间</span></td>
+                    <td><el-date-picker v-model="legalInfo.discreditTime" @change="discreditTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>                   
                 </tr>
             </tbody>
         </table>
     </el-collapse-item>
         <el-collapse-item  title="诉讼费用" name="2" style="position:relative">
-            <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini"  @click="addSsFee" >添加</el-button>
+            <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsFee" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="FeeList"  >
                  <!-- -->
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope" >
-						<el-button :type="scope.row.edit?'success':'primary'" size="mini" @click='EditFee(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+						<el-button :type="scope.row.edit?'success':'primary'" :disabled="NoUsed" size="mini" @click='EditFee(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
                         <!-- @click='sendCarEdit(scope.row)' -->
-						<el-button type="danger" size="mini"  @click.native.prevent="deleteFee(scope.$index, scope.row,FeeList)" > 移除</el-button>
+						<el-button type="danger" size="mini" :disabled="NoUsed" @click.native.prevent="deleteFee(scope.$index, scope.row,FeeList)" > 移除</el-button>
                         <!-- -->
 					</template>
 				</el-table-column>
@@ -139,7 +141,7 @@
                         <el-input v-model="LegalActionFee.amount" placeholder="费用金额" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>
                     <el-form-item label="缴纳时间:" prop="payDate" :label-width="formLabelWidth">
-                        <el-date-picker v-model="LegalActionFee.payDate" @change="payDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
+                        <el-date-picker v-model="LegalActionFee.payDate" @change="payDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择" style="width:300px"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="支付方式:" prop="payMethod" :label-width="formLabelWidth">                       
                          <el-select v-model="LegalActionFee.payMethod"  placeholder="支付方式" style="width:300px">
@@ -148,7 +150,7 @@
                          </el-select>
                     </el-form-item>
                      <el-form-item label="报销状态:" prop=" reimStatus" :label-width="formLabelWidth">
-                        <el-select v-model="LegalActionFee.reimStatus"  placeholder="支付方式" style="width:300px">
+                        <el-select v-model="LegalActionFee.reimStatus"  placeholder="报销状态" style="width:300px">
                             <el-option label="是" value="是"></el-option>
                             <el-option label="否" value="否"></el-option>  
                          </el-select>
@@ -158,21 +160,21 @@
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                  <el-button  type="primary" @click.native.prevent="cancleFee">确 定</el-button> 
+                  <el-button  type="primary" @click.native.prevent="cancleFee">取 消</el-button> 
                   <el-button  type="primary" @click.native.prevent="subFee('LegalActionFee')">确 定</el-button> 
                 </div>			
 		    </el-dialog>
     </el-collapse-item>
           <el-collapse-item  title="诉讼事件管理" name="3" style="position:relative">
-           <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini"  @click="addSsEvent" >添加</el-button>
+           <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini" :disabled="NoUsed" @click="addSsEvent" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="EventList"  >
                  <!-- -->
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope" >
-						<el-button :type="scope.row.edit?'success':'primary'" size="mini" @click='EditEvent(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+						<el-button :type="scope.row.edit?'success':'primary'" size="mini" :disabled="NoUsed" @click='EditEvent(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
                         <!-- @click='sendCarEdit(scope.row)' -->
-						<el-button type="danger" size="mini"  @click.native.prevent="deleteEvent(scope.$index, scope.row,EventList)" > 移除</el-button>
+						<el-button type="danger" size="mini" :disabled="NoUsed"  @click.native.prevent="deleteEvent(scope.$index, scope.row,EventList)" > 移除</el-button>
                         <!-- -->
 					</template>
 				</el-table-column>
@@ -189,8 +191,8 @@
 			</el-col>
             <el-dialog title="新增诉讼事件" :visible.sync="addSsEvents" >
 			    <el-form :model="LegalActionEvent" ref="LegalActionEvent">
-                    <el-form-item label="诉讼代码:" prop=" legalActionCode" :label-width="formLabelWidth">                      
-                        <el-input v-model="LegalActionEvent.legalActionCode" placeholder="诉讼代码" clearable  size="mini" style="width:300px"></el-input>
+                    <el-form-item label="诉讼事件:" prop=" legalActionCode" :label-width="formLabelWidth">                      
+                        <el-input v-model="LegalActionEvent.legalActionCode" placeholder="诉讼事件" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>
                     <el-form-item label="提醒时间:" prop="remindTime" :label-width="formLabelWidth">
                         <el-date-picker v-model="LegalActionEvent.remindTime" @change="remindTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" style="width:300px"></el-date-picker>
@@ -206,15 +208,15 @@
 		    </el-dialog>
     </el-collapse-item>
           <el-collapse-item  title="评估拍卖管理" name="4" style="position:relative">
-            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini"  @click="addSsInfo" >添加</el-button>
+            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini":disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="InfoList"  >
                  <!-- -->
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope" >
-						<el-button :type="scope.row.edit?'success':'primary'" size="mini" @click='EditInfo(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
+						<el-button :type="scope.row.edit?'success':'primary'" :disabled="NoUsed" size="mini" @click='EditInfo(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
                         <!-- @click='sendCarEdit(scope.row)' -->
-						<el-button type="danger" size="mini"  @click.native.prevent="deleteInfo(scope.$index, scope.row,InfoList)" > 移除</el-button>
+						<el-button type="danger" size="mini" :disabled="NoUsed" @click.native.prevent="deleteInfo(scope.$index, scope.row,InfoList)" > 移除</el-button>
                         <!-- -->
 					</template>
 				</el-table-column>
@@ -275,12 +277,13 @@ import {
   ListLegalActionInfo,
   insertLegalActionInfos,
   updateLegalActionInfos,
-  delLegalActionInfo
+  delLegalActionInfo,
+  operationStatus
 } from "@/api/legal"
 export default {
   data() {
     return {
-      activeNames: ["3", "4"],
+      activeNames: ["1"],
       legalInfo: {
         applyBeforeLawsuitAllTime: "",
         beforeLawsuitAllCourt: "",
@@ -305,14 +308,14 @@ export default {
         publisJudgmentTime: "",
         trialMediationTime: "",
         proposeReceiveSecondInstanceTime: "",
-        publisSecondInstanceCourtTime: "",
+        publishSecondInstanceCourtTime: "",
         secondInstanceCourt: "",
         secondInstanceNumber: "",
         secondInstanceCourtTime: "",
         secondTrialMediationTime: "",
         publishSecondJudgmentTime: "",
         judgmentEffectTime: "",
-        applyActioTime: "",
+        applyActionTime: "",
         applyActionCourt: "",
         actionNumber: "",
         entrustActionTime: "",
@@ -348,6 +351,7 @@ export default {
       addSsFees: false,
       addSsEvents: false,
       addSsInfos: false,
+      NoUsed:false,
       cols: [
         { title: "费用名称", field: "feeType" },
         { title: "费用", field: "amount" },
@@ -359,7 +363,7 @@ export default {
         { title: "录入时间", field: "createTime" }
       ],
       cols1: [
-        { title: "诉讼名称", field: "legalActionCode" },
+        { title: "诉讼事件", field: "legalActionCode" },
         { title: "提醒时间", field: "remindTime" },
         { title: "操作员", field: "operator" },
         { title: "备注", field: "remark", width: "300" },
@@ -386,6 +390,7 @@ export default {
       pagesizeEvent: 20,
       totalEvent: 0,
       listLoading: false,
+      listLoadings:false,
       icsId: "",
       id: "",
       formLabelWidth: "120px",
@@ -443,8 +448,8 @@ export default {
     proposeReceiveSecondInstanceTime(val) {
       this.legalInfo.proposeReceiveSecondInstanceTime = val;
     },
-    publisSecondInstanceCourtTime(val) {
-      this.legalInfo.publisSecondInstanceCourtTime = val;
+    publishSecondInstanceCourtTime(val) {
+      this.legalInfo.publishSecondInstanceCourtTime = val;
     },
     secondInstanceCourtTime(val) {
       this.legalInfo.secondInstanceCourtTime = val;
@@ -458,8 +463,8 @@ export default {
     judgmentEffectTime(val) {
       this.legalInfo.judgmentEffectTime = val;
     },
-    applyActioTime(val) {
-      this.legalInfo.applyActioTime = val;
+    applyActionTime(val) {
+      this.legalInfo.applyActionTime = val;
     },
     entrustActionTime(val) {
       this.legalInfo.entrustActionTime = val;
@@ -478,6 +483,12 @@ export default {
     },
     auctioneerTime(val){
         this.LegalActionInfo.auctioneerTime = val;
+    },
+    discreditTime(val){
+      this.LegalActionInfo.discreditTime = val;
+    },
+    actionBeforeLawsuitAllTime(val){
+      this.LegalActionInfo.actionBeforeLawsuitAllTime = val;     
     },
     visithandleCurrentChange(val) {
       this.visitpage = val;
@@ -512,12 +523,11 @@ export default {
         this.getListInfo();
       });
     },
-    getListInfo() {
+    getListInfo() { 
+      this.listLoadings = true;
       let para = {
         id: this.$route.params.id
-      };
-
-      this.listLoadings = true;
+      };   
       listLegalActionInfo(para).then(res => {
         let data = res.data.result;
         this.id = data.id;
@@ -531,11 +541,14 @@ export default {
             data.beforeLawsuitConciliationTime),
           (this.legalInfo.beforeLawsuitConciliationTime =
             data.beforeLawsuitConciliationTime),
+          (this.legalInfo.filingCourt =
+            data.filingCourt),          
           (this.legalInfo.submissionClaimsTime = data.submissionClaimsTime),
           (this.legalInfo.acceptClaimsCourt = data.acceptClaimsCourt),
           (this.legalInfo.submissionFilingTime = data.submissionFilingTime),
           (this.legalInfo.captureExpendsTime = data.captureExpendsTime),
           (this.legalInfo.firstInstanceReference = data.firstInstanceReference),
+          (this.legalInfo.beforeLawsuitConciliationCourt = data.beforeLawsuitConciliationCourt),
           (this.legalInfo.applyLawsuitAllTime = data.applyLawsuitAllTime),
           (this.legalInfo.payDepositTime = data.payDepositTime),
           (this.legalInfo.deposit = data.deposit),
@@ -550,8 +563,8 @@ export default {
           (this.legalInfo.trialMediationTime = data.trialMediationTime),
           (this.legalInfo.proposeReceiveSecondInstanceTime =
             data.proposeReceiveSecondInstanceTime),
-          (this.legalInfo.publisSecondInstanceCourtTime =
-            data.publisSecondInstanceCourtTime),
+          (this.legalInfo.publishSecondInstanceCourtTime =
+            data.publishSecondInstanceCourtTime),
           (this.legalInfo.secondInstanceCourt = data.secondInstanceCourt),
           (this.legalInfo.secondInstanceNumber = data.secondInstanceNumber),
           (this.legalInfo.secondInstanceCourtTime =
@@ -561,7 +574,7 @@ export default {
           (this.legalInfo.publishSecondJudgmentTime =
             data.publishSecondJudgmentTime),
           (this.legalInfo.judgmentEffectTime = data.judgmentEffectTime),
-          (this.legalInfo.applyActioTime = data.applyActioTime),
+          (this.legalInfo.applyActionTime = data.applyActionTime),
           (this.legalInfo.applyActionCourt = data.applyActionCourt),
           // (this.legalInfo.secondCourtTime = data.secondCourtTime),
           (this.legalInfo.actionNumber = data.actionNumber),
@@ -602,15 +615,15 @@ export default {
         trialMediationTime: this.legalInfo.trialMediationTime,
         proposeReceiveSecondInstanceTime: this.legalInfo
           .proposeReceiveSecondInstanceTime,
-        publisSecondInstanceCourtTime: this.legalInfo
-          .publisSecondInstanceCourtTime,
+        publishSecondInstanceCourtTime: this.legalInfo
+          .publishSecondInstanceCourtTime,
         secondInstanceCourt: this.legalInfo.secondInstanceCourt,
         secondInstanceNumber: this.legalInfo.secondInstanceNumber,
         secondInstanceCourtTime: this.legalInfo.secondInstanceCourtTime,
         secondTrialMediationTime: this.legalInfo.secondTrialMediationTime,
         publishSecondJudgmentTime: this.legalInfo.publishSecondJudgmentTime,
         judgmentEffectTime: this.legalInfo.judgmentEffectTime,
-        applyActioTime: this.legalInfo.applyActioTime,
+        applyActionTime: this.legalInfo.applyActionTime,
         applyActionCourt: this.legalInfo.applyActionCourt,
         actionNumber: this.legalInfo.actionNumber,
         entrustActionTime: this.legalInfo.entrustActionTime,
@@ -619,13 +632,25 @@ export default {
         discreditTime: this.legalInfo.discreditTime
       };
       updateLegalActionInfo(para).then(res => {
-        this.getListInfo();
+        if(res.data.success){
+          this.$message({
+            type: "success",
+            message: "更新成功！"
+          });
+          this.getListInfo();
+        }else{
+          this.$message({
+            type: "error",
+            message: "操作失败！"
+          });
+        }
+        
       });
     },
     //获取诉讼费
     getSsFee() {
       let para = {
-        id: this.$route.params.id,
+        legalActionId: this.$route.params.id,
         page: this.pageFee,
         pageSize: this.pagesizeFee
       };
@@ -969,6 +994,19 @@ export default {
     cancleInfo() {
       this.addSsInfos = false;
       this.$refs["LegalActionInfo"].resetFields();
+    },
+    getCommition(){
+      operationStatus().then(res=>{
+        console.log(res.data)
+        let data =res.data
+        if(data.success){
+          if(data.result=="0"){
+            this.NoUsed=true;
+          }else{
+            this.NoUsed=false;
+          }
+        }
+      })
     }
   },
   mounted() {
@@ -976,6 +1014,7 @@ export default {
     this.getSsFee();
     this.getSsEvent();
     this.getSsInfo();
+    this.getCommition()
   }
 };
 </script>

@@ -16,7 +16,7 @@ export default {
         { title: "控车日期", field: "vehicleControlDate"},
         { title: "控车省市", field: "vehicleControlProvince" },
         { title: "控车时逾期天数", field: "vehicleControlDays" },
-        { title: "变现情况", field: "realisation" },
+        { title: "", field: "realisation" },
         { title: "提车日期", field: "pickUpDate"},
         { title: "交接地", field: "handover" },
       ]
@@ -28,7 +28,22 @@ export default {
         id:this.$route.params.id,
       };
       getOsControlVehicleD(para).then(res=> {
+
          this.carlist =res.data.result;
+         var date = new Date();
+				var seperator1 = "-";
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;										
+         this.carlist.forEach(el => {
+          el.pickUpDate=currentdate;
+         });
       })
     }
   },

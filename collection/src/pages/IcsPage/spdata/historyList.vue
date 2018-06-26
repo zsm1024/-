@@ -82,7 +82,7 @@
     </el-form-item>      
   </el-form>
   <el-table :data="listPage">
-      <el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" border stripe :key="index" align="center" :width="cols.width"></el-table-column>
+      <el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" border stripe :key="index" align="center" :width="cols.width" class="spTable"></el-table-column>
   </el-table> 
   </section>
 </template>

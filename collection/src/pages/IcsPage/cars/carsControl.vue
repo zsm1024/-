@@ -81,9 +81,9 @@
 			
 				lists: [],
 				cols: [
-                    {title:'申请号',field:'appNum'},
+                    {title:'申请号',field:'appNum',width:"130"},
                     {title:'姓名',field:'name'},
-                    {title:'控车机构',field:'vehicleControlMechanism'},
+                    {title:'控车机构',field:'vehicleControlMechanism',width:"200"},
                     {title:'控车日期',field:'vehicleControlDate'},
                     {title:'车辆是否查封',field:'carSealUp',width:"130"},
                     {title:'停放地点',field:'placeStorage'},
@@ -91,11 +91,11 @@
                     {title:'城市',field:'city'},
                     {title:'逾期天数',field:'overdueDays'},
                     {title:'剩余本金总额',field:'residualAmount',width:"130"},
-                    {title:'车型',field:'loanCar'},
+                    {title:'车型',field:'loanCar',width:"150"},
                     {title:'寻找方式',field:'findingWays'},
                     {title:'变现情况',field:'realizeMode'},
                     {title:'费用总计',field:'totalCost'},
-                    {title:'费用支付情况',field:'costPayment'},
+                    {title:'费用支付情况',field:'costPayment',width:"130"},
 
                 ],
                 id:"",

@@ -3,7 +3,7 @@
 		<el-collapse v-model="activeNames" accordion>
 			<el-collapse-item title="客户基本信息" name="1">
 				<div>
-					<table class="ht_table">	
+					<table class="ht_table" v-loading="listLoading1">	
 						<tr>
 							<td class="tds">客户姓名</td><td>{{details.name}}</td>
 							<td class="tds">申请号</td><td>{{details.appNum}}</td>		
@@ -20,27 +20,124 @@
 						<tr>
 							<td class="tds">罚息</td><td>{{details.penalty}}</td>
 							<td class="tds">费用</td><td>{{details.cost}}</td>
-							<td class="tds">ET结算金额</td><td>{{details.et}}</td>							
+							<td class="tds">ET结算金额</td><td  colspan="3">{{details.et}}</td>							
 						</tr>						
 					</table>
 				</div>			
 			</el-collapse-item>
-            <el-collapse-item title="控制车辆信息" name="2"style="position:relative"  >
+            <el-collapse-item title="控制车辆信息" name="2" style="position:relative"  >
                 <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subCarInfo('carForm')">提交</el-button>
-               <el-form :inline="true" :model="carForm" ref="carForm" :rules="rules" label-width="90px" id="controlinfos" class="controlinfos" v-loading="listLoadings" >
-                       <el-form-item label="车辆来源" prop="comefrom" >
-                            <el-select v-model="carForm.comefrom"  clearable placeholder="车辆来源"  style="width:230px" >
-							<el-option v-for="(item,index) in comefrom" :key="index"  :label="item.val " :value="item.val "></el-option>
-						</el-select>
-                    </el-form-item> 
+                <table :model="carForm" ref="carForm" >
+                  <tbody  class="legal" v-loading="listLoadings">
+                    <tr>
+                      <td><i style="color:red;font-weight:blod;margin-right:3px;font-size14px">*</i>车辆来源</td>
+                      <td>
+                        <el-select v-model="carForm.comefrom"  clearable placeholder="车辆来源"  style="width:100%" >
+                          <el-option v-for="(item,index) in comefrom" :key="index"  :label="item.val " :value="item.val "></el-option>
+                        </el-select>
+                      </td>
+                      <td><i style="color:red;font-weight:blod;margin-right:3px;font-size14px">*</i>控车机构</td>
+                      <td>
+                        <el-select v-model="carForm.company"  clearable placeholder="控车机构"  style="width:100%" >
+							            <el-option v-for="(item,index) in restaurants" :key="index"  :label="item.nickname " :value="item.nickname "></el-option>
+                        </el-select>
+                      </td>
+                      <td><i style="color:red;font-weight:blod;margin-right:3px;font-size14px">*</i>控车日期</td>
+                      <td> 
+                        <el-date-picker style="width:100%" v-model="carForm.time" type="date" placeholder="请选择" @change="timechange">
+					              </el-date-picker>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>控车省市</td>
+                      <td><el-input v-model="carForm.province" placeholder="控车省市" clearable ></el-input></td>
+                      <td>寻找方式</td>
+                      <td>
+                        <el-select  v-model="carForm.search" placeholder="请选择方式" style="width:100%">
+                          <el-option v-for="(item,index) in findway" :key="index"  :label="item.val " :value="item.val "></el-option>
+                        </el-select>
+                      </td>
+                      <td>车辆状态</td>
+                      <td> <el-input v-model="carForm.statius" placeholder="车辆状态" clearable ></el-input></td>
+                    </tr>
+                    <tr>
+                      <td>控车时逾期天数</td>
+                      <td><el-input v-model="carForm.overdueDay" placeholder="控车时逾期天数" clearable  ></el-input></td>
+                      <td>变现情况</td>
+                      <td>
+                        <el-select   v-model="carForm.realize" placeholder="变现情况" style="width:100%">
+                          <el-option v-for="(item,index) in realizeTypes" :key="index"  :label="item.val " :value="item.val "></el-option>	
+						            </el-select>
+                      </td>
+                      <td>车型</td>
+                      <td><el-input v-model="carForm.cartype" placeholder="车型"  readonly ></el-input></td>
+                    </tr>
+                    <tr>
+                      <td>车牌号</td> 
+                      <td><el-input v-model="carForm.carnum" placeholder="车牌号" clearable  ></el-input></td>
+                      <td>车身颜色</td>
+                      <td><el-input v-model="carForm.carcolor" placeholder="车身颜色" clearable></el-input></td>
+                      <td>公里数</td>
+                      <td><el-input v-model="carForm.cardrive" placeholder="公里数" clearable ></el-input></td>
+                    </tr>
+                    <tr>
+                      <td>车架号</td>
+                      <td><el-input v-model="carForm.carframe" placeholder="车架号" clearable readonly ></el-input></td>
+                      <td>发动机号</td>
+                      <td> <el-input v-model="carForm.motor" placeholder="发动机号" clearable readonly ></el-input></td>
+                      <td>车辆登记日/合同签订日</td>
+                      <td>
+                        <el-date-picker style="width:100%" v-model="carForm.cartime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="signTime"></el-date-picker>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>车辆价格(发票价)</td>
+                      <td><el-input v-model="carForm.price" placeholder="车辆价格(发票价)" clearable  ></el-input></td>
+                      <td>车辆出险情况</td>
+                      <td> <el-input v-model="carForm.danger" placeholder="车辆出险情况" clearable  ></el-input></td>
+                      <td>车辆是否查封</td>
+                      <td>
+                        <el-select v-model="carForm.receive"  placeholder="车辆是否查封" style="width:100%">
+                        <el-option label="是" value="是"></el-option>
+                        <el-option label="否" value="否"></el-option>                           
+                      </el-select> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>证件类型</td>
+                      <td colspan="5">
+                        <el-select v-model="carForm.idtype" multiple  placeholder="证件类型" style="width:100%">
+                          <el-option v-for="(item) in document" :key="item.key"  :label="item.val" :value="item.val" @change="typechange"></el-option>
+						            </el-select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>售后维修情况</td>
+                      <td colspan="5"> <el-input v-model="carForm.sale" type="textarea" placeholder="售后维修情况" clearable style="width:100%" ></el-input></td>
+                    </tr>
+                    <tr>
+                      <td>客户遗留物品</td>
+                      <td colspan="5">
+                        <el-input v-model="carForm.leave" placeholder="客户遗留物品" clearable type="textarea" style="width:100%">
+                        </el-input>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+               <!-- <el-form :inline="true" :model="carForm" ref="carForm" :rules="rules" label-width="90px" id="controlinfos" class="controlinfos" v-loading="listLoadings" >
+              <el-form-item label="车辆来源" prop="comefrom" >
+                <el-select v-model="carForm.comefrom"  clearable placeholder="车辆来源"  style="width:230px" >
+							    <el-option v-for="(item,index) in comefrom" :key="index"  :label="item.val " :value="item.val "></el-option>
+						    </el-select>
+              </el-form-item> 
                     <el-form-item label="控车机构" prop="company">
                       <el-select v-model="carForm.company"  clearable placeholder="控车机构"  style="width:230px" >
 							            <el-option v-for="(item,index) in restaurants" :key="index"  :label="item.nickname " :value="item.nickname "></el-option>
-                      </el-select>
+                      </el-select> -->
                       <!-- <el-autocomplete v-model="carForm.company" clearable :fetch-suggestions="querySearch" size="small"  placeholder="请输入控车机构"  @select="handleSelect" class="autoInput" style="width:150px">
                       </el-autocomplete> -->
                         <!-- <el-input v-model="carForm.company" placeholder="控车机构" clearable></el-input> -->
-                    </el-form-item>
+                    <!-- </el-form-item>
                     <el-form-item label="控车日期" prop="time">
                         <el-date-picker style="width:230px" v-model="carForm.time" type="date" placeholder="请选择" @change="timechange">
 					</el-date-picker>
@@ -62,7 +159,7 @@
                     <el-form-item label="变现情况" prop="province">
                         <el-select   v-model="carForm.realize" placeholder="变现情况" style="width:230px">
                             	<el-option v-for="(item,index) in realizeType" :key="index"  :label="item.val " :value="item.val "></el-option>	
-						</el-select>
+						        </el-select>
                     </el-form-item> 
                     <el-form-item label="车型" prop="province" >
                         <el-input v-model="carForm.cartype" placeholder="车型" clearable  ></el-input>
@@ -110,7 +207,7 @@
                       <el-input v-model="carForm.leave" placeholder="客户遗留物品" clearable type="textarea" style="width:230px"></el-input>
                   </el-form-item>                                                                        
                 </el-form-item>
-             </el-form> 
+             </el-form>  -->
             </el-collapse-item>	
             <el-collapse-item  title="送车信息" name="3" style="position:relative">
                 <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="addSendCar" >添加</el-button>
@@ -162,12 +259,13 @@
             <el-button type="danger" size="mini"  @click.native.prevent="deleteparkingCars(scope.$index, scope.row,parkList)"> 移除</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :key="index" align="center" >
-					<template slot-scope="scope"> 
-            <el-date-picker v-show="scope.row.edit" v-if="col.field=='indate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" @change="inchange(scope.row[col.field])" ></el-date-picker>
-            <el-date-picker v-show="scope.row.edit" v-if="col.field=='outdate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" @change="outchange(scope.row[col.field])" ></el-date-picker> 
-            <el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>            
-						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>         						  
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :width="col.width" :key="index" align="center" >
+					<template slot-scope="scope">            
+            <el-input  v-show="scope.row.edit" v-if="(col.field!='outdate'&&col.field!='indate'&&col.field!='storageDays')"  size="small" v-model="scope.row[col.field]"></el-input> 
+           <el-date-picker v-show="scope.row.edit" v-if="col.field=='indate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" @change="inchange(scope.row[col.field])"  ></el-date-picker>
+            <el-date-picker v-show="scope.row.edit" v-if="col.field=='outdate'"  v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" @change="outchange(scope.row[col.field])" ></el-date-picker> 
+						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>  
+            <span v-show="scope.row.edit" v-if="col.field=='storageDays'" >{{ scope.row[col.field] }}</span>        						  
           </template>
 				</el-table-column>
 			</el-table>
@@ -197,7 +295,7 @@
                               <!-- <el-input v-model="AddparkCarInfo.outdate" placeholder="地图距离" clearable  size="mini" style="width:300px"></el-input> -->
                           </el-form-item>
                           <el-form-item label="保管天数:" prop="storageDays" :label-width="formLabelWidth">
-                              <el-input v-model="AddparkCarInfo.storageDays" placeholder="保管天数" clearable  size="mini" style="width:300px"></el-input>
+                              <el-input v-model="AddparkCarInfo.storageDays" placeholder="保管天数" clearable readonly  size="mini" style="width:300px"></el-input>
                           </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -206,101 +304,115 @@
                 </div>
 		        </el-dialog>
             </el-collapse-item>	
-            <el-collapse-item title="变现信息" name="5"style="position:relative">
+            <el-collapse-item title="变现信息" name="5" style="position:relative">
                  <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="subReal" >确认</el-button>
-                <el-form :inline="true" :model="realize" label-width="90px" class="controlinfos">
-                    <el-form-item label="变现方式">
-                        <el-select v-model="realize.type"  placeholder="变现方式" style="width:175px">                       
-                          <el-option v-for="(item,index) in realizeType" :key="item.key"  :label="item.val" :value="item.val"></el-option>
-                            <!-- <el-option label="处置" value="处置"></el-option>
-                            <el-option label="赎回" value="赎回"></el-option>                            -->
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="付款方">
-                        <el-input v-model="realize.payoff" placeholder="付款方" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="收款金额">
-                        <el-input v-model="realize.receivemoney" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="车款到账日">
-                         <el-date-picker style="width:175px" v-model="realize.time" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="moneytime"></el-date-picker>
-                    </el-form-item>
-                     <el-form-item label="需减免的费用">
-                        <el-input v-model="realize.cost" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                     <el-form-item label="需减免的罚息金额">
-                        <el-input v-model="realize.lowerinterest" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                     <el-form-item label="需核销的利息">
-                        <el-input v-model="realize.interest" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                     <el-form-item label="需核销的本金">
-                        <el-input v-model="realize.principal" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item>
-                    <el-form-item label="车辆是否查封">
-                        <el-select v-model="realize.receive"  placeholder="车辆是否查封" style="width:175px">
-						    <el-option label="是" value="是"></el-option>
-						    <el-option label="否" value="否"></el-option>                           
-					    </el-select>
-                    </el-form-item>
-                    <el-form-item label="客户是否同意配合过户">
-                        <el-select v-model="realize.transfer"  placeholder="车辆是否查封" style="width:175px">
-						    <el-option label="是" value="是"></el-option>
-						    <el-option label="否" value="否"></el-option>                           
-					    </el-select>
-                    </el-form-item>
-                    <el-form-item label="是否签署买卖协议">
-                        <el-select v-model="realize.business"  placeholder="请选择" style="width:175px">
-						    <el-option label="是" value="是"></el-option>
-						    <el-option label="否" value="否"></el-option>                           
-					    </el-select>
-                    </el-form-item>
-                    <el-form-item label="费用回收金额">
-                        <el-input v-model="realize.recovery" placeholder="费用回收金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="查封对方信息">
-                        <el-input type="textarea" v-model="realize.infos" placeholder="查封对方信息" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="车辆违规信息">
-                        <el-input type="textarea" v-model="realize.violationInfos" placeholder="车辆违规信息" clearable ></el-input>
-                    </el-form-item> 
-                </el-form>
+                 <table v-loading="listLoading5" :model="realize">
+                    <tbody class="legal">
+                      <tr>
+                        <td>变现方式</td>
+                        <td>
+                          <el-select v-model="realize.type"  placeholder="变现方式" style="width:100%">                       
+                              <el-option v-for="(item) in realizeType" :key="item.key"  :label="item.val" :value="item.val">
+                              </el-option>                    
+                          </el-select>
+                        </td>
+                        <td>付款方</td>
+                        <td><el-input v-model="realize.payoff" placeholder="付款方" clearable ></el-input></td>
+                        <td>收款金额</td>
+                        <td><el-input v-model="realize.receivemoney" placeholder="收款金额" clearable ></el-input></td>
+                        
+                      </tr>
+                      <tr>
+                        <td>车款到账日</td>
+                        <td><el-date-picker v-model="realize.time" type="date"  style="width:100%" value-format="yyyy-MM-dd" placeholder="请选择" @change="moneytime"></el-date-picker></td>
+                        <td>需减免的费用</td>
+                        <td> <el-input v-model="realize.cost" placeholder="需减免的费用" clearable ></el-input></td>
+                        <td>需减免的罚息</td>
+                        <td><el-input v-model="realize.lowerinterest" placeholder="需减免的罚息金额" clearable ></el-input></td>                       
+                      </tr>
+                      <tr>
+                        <td>需核销的利息</td>
+                        <td> <el-input v-model="realize.interest" placeholder="需核销的利息" clearable ></el-input></td>
+                        <td>需核销的本金</td>
+                        <td><el-input v-model="realize.principal" placeholder="需核销的本金" clearable ></el-input></td>
+                        <td>车辆是否查封</td>
+                        <td>
+                          <el-select v-model="realize.receive"  placeholder="车辆是否查封"  style="width:100%" >
+                            <el-option label="是" value="是"></el-option>
+                            <el-option label="否" value="否"></el-option>                           
+                          </el-select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>客户是否同意配合过户</td>
+                        <td>
+                          <el-select v-model="realize.transfer"  placeholder="客户是否同意配合过户"  style="width:100%" >
+                            <el-option label="是" value="是"></el-option>
+                            <el-option label="否" value="否"></el-option>                           
+                          </el-select>
+                        </td>
+                        <td>是否签署买卖协议</td>
+                        <td>
+                          <el-select v-model="realize.business"  placeholder="请选择"  style="width:100%" >
+                            <el-option label="是" value="是"></el-option>
+                            <el-option label="否" value="否"></el-option>                           
+                          </el-select>
+                        </td>
+                        <td>费用回收金额</td>
+                        <td> <el-input v-model="realize.recovery" placeholder="费用回收金额" clearable ></el-input></td>
+                      </tr>
+                      <tr>
+                        <td>查封对方信息</td>
+                        <td colspan="5"><el-input type="textarea" v-model="realize.infos" placeholder="查封对方信息" clearable ></el-input></td>
+                      </tr>                     
+                    </tbody>
+                    <tr>
+                      <td>车辆违规信息</td>
+                      <td colspan="5"> <el-input type="textarea" v-model="realize.violationInfos" placeholder="车辆违规信息" clearable ></el-input></td>
+                    </tr>
+                 </table>
+               
             </el-collapse-item>
             <el-collapse-item title="放车信息" name="6" style="position:relative">
                  <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="subStop" >确认</el-button>
-                 <el-form :inline="true" :model="stop" label-width="90px" class="controlinfos">
-                    <el-form-item label="车辆放行说明">
-                        <el-input v-model="stop.notice" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item>
-                    <el-form-item label="提车日期">
-                        <el-date-picker style="width:175px" v-model="stop.time" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
-                    </el-form-item> 
-                    <el-form-item label="提车人姓名">
-                        <el-input v-model="stop.name" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="提车人电话">
-                        <el-input v-model="stop.phone" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="提车人身份证号">
-                        <el-input v-model="stop.cardNum" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="交接地">
-                        <el-input v-model="stop.place" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="公里数">
-                        <el-input v-model="stop.distance" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="车辆状态">  
-                        <el-input v-model="stop.statius" placeholder="收款金额" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="是否签署买卖协议">
-                        <el-select v-model="stop.deal"  placeholder="请选择" style="width:175px">
-						    <el-option label="是" value="是"></el-option>
-						    <el-option label="否" value="否"></el-option>                           
-					    </el-select>
-                    </el-form-item>
-                    <div><span>备注</span><el-input type="textarea" v-model="stop.marks"></el-input></div>
-                 </el-form>
+                 <table v-loading="listLoading5" :model="stop">
+                   <tbody class="legal">
+                     <tr>
+                       <td>车辆放行说明</td>
+                       <td> <el-input v-model="stop.notice" placeholder="车辆放行说明" clearable ></el-input></td>
+                       <td>提车日期</td>
+                       <td> <el-date-picker style="width:100%" v-model="stop.time" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
+                       <td>提车人姓名</td>
+                       <td> <el-input v-model="stop.name" placeholder="提车人姓名" clearable ></el-input></td>
+                     </tr>
+                     <tr>
+                       <td>提车人电话</td>
+                       <td><el-input v-model="stop.phone" placeholder="提车人电话" clearable ></el-input></td>
+                       <td>提车人身份证号</td>
+                       <td> <el-input v-model="stop.cardNum" placeholder="提车人身份证号" clearable ></el-input></td>
+                       <td>交接地</td>
+                       <td><el-input v-model="stop.place" placeholder="交接地" clearable ></el-input></td>                    
+                     </tr>
+                     <tr>
+                         <td>公里数</td>
+                         <td><el-input v-model="stop.distance" placeholder="公里数" clearable ></el-input></td>
+                         <td>车辆状态</td>
+                         <td> <el-input v-model="stop.statius" placeholder="车辆状态" clearable ></el-input></td>
+                         <td>是否签署买卖协议</td>
+                         <td>
+                           <el-select v-model="stop.deal"  placeholder="请选择" style="width:100%">
+                            <el-option label="是" value="是"></el-option>
+                            <el-option label="否" value="否"></el-option>                           
+                           </el-select>
+                         </td>
+                     </tr>
+                     <tr>
+                       <td>备注</td>
+                       <td colspan="5"><el-input type="textarea" v-model="stop.marks"></el-input></td>
+                     </tr>
+                   </tbody>
+                 </table>
+                
             </el-collapse-item>
             <el-collapse-item  title="费用明细" name="7" style="position:relative">
                 <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="addcost" >添加</el-button>
@@ -314,14 +426,15 @@
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols2" :key="index" align="center" >
 					<template slot-scope="scope">  
             <el-select  class="comSty" v-model="scope.row[col.field]" v-show="scope.row.edit" v-if="col.field=='costType'">                    
-                <el-option v-for="(item,index) in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
+                <el-option v-for="(item) in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
             </el-select>
             <el-select  class="comSty" v-model="scope.row[col.field]" v-show="scope.row.edit" v-if="col.field=='whetherPay'">                    
                 <el-option label="已支付" value="已支付"></el-option>
 								<el-option label="待支付" value="待支付"></el-option>   
             </el-select>
-                <el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>            
+                <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='paymentInstitution'" v-model="scope.row[col.field]"></el-input>            
 						    <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span> 
+                <span v-show="scope.row.edit" v-if="col.field=='paymentInstitution'" >{{ scope.row[col.field] }}</span> 
                  <!-- <el-select  v-show="scope.row.edit" v-if="col.field=='whetherPay'" v-model="scope.row[col.field]" placeholder="请选择方式">
 							  <el-option label="已支付" value="已支付"></el-option>
 								<el-option label="待支付" value="待支付"></el-option>
@@ -337,7 +450,7 @@
                 <el-form :model="AddparkcostInfo" ref="AddparkcostInfo">
                           <el-form-item label="控车费用:" prop="custodian" :label-width="formLabelWidth">
                             <el-select v-model="AddparkcostInfo.costType"  placeholder="控车费用" style="width:300px">                    
-                          <el-option v-for="(item,index) in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
+                          <el-option v-for="(item) in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
                         </el-select>
                           </el-form-item>
                           <el-form-item label="备注:" prop="remark" :label-width="formLabelWidth">
@@ -356,7 +469,6 @@
                               </el-select>
                           </el-form-item>
                           
-                          </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="canclecost">取 消</el-button>
@@ -399,7 +511,7 @@ import {
 export default {
   data() {
     return {
-      activeNames: ["1"],
+      activeNames: ["2"],
       details: [],
       lists: [],
       time: "",
@@ -430,18 +542,18 @@ export default {
       cols1: [
         { title: "保管机构", field: "custodian" },
         { title: "保管地", field: "placeStorage" },
-        { title: "钥匙保管人姓名", field: "keyKeeperName" },
-        { title: "钥匙保管人电话", field: "keyKeeperPhone" },
+        { title: "钥匙保管人姓名", field: "keyKeeperName",width:"100"},
+        { title: "钥匙保管人电话", field: "keyKeeperPhone",width:"100" },
         { title: "入库日期", field: "indate" },
         { title: "出库日期", field: "outdate" },
         { title: "保管天数", field: "storageDays" }
       ],
       cols2: [
-        { title: "费用类型", field: "costType" },
-        { title: "备注", field: "remark" },
+        { title: "费用类型", field: "costType" },        
         { title: "费用金额", field: "costAmount" },
         { title: "需支付机构", field: "paymentInstitution" },
-        { title: "是否支付", field: "whetherPay" }
+        { title: "是否支付", field: "whetherPay" },
+        { title: "备注", field: "remark" },
       ],
       carForm: {
         comefrom: "",
@@ -525,6 +637,9 @@ export default {
       id: this.$store.state.navTabs.tabId,
       listLoading: false,
       listLoadings: false,
+      listLoading1: false,
+      listLoading5: false,
+      listLoading6: false,
       visitpagesize: 20,
       visittotal: 0,
       visitpages: 1,
@@ -634,11 +749,12 @@ export default {
       let para = {
         id: this.$route.params.id
       };
-      this.listLoading = true;
+      this.listLoading1 = true;
       getCustomerOsBasic(para).then(res => {
+
         let data = res.data.result;
         this.details = data;
-        this.listLoading = false;
+        this.listLoading1 = false;
       });
     },
     //控制车辆信息
@@ -666,8 +782,14 @@ export default {
       let realizeInfo = {
         type: "realize_type"
       };
+      let realizeInfos = {
+        type: "realisation"
+      };
       findByType(realizeInfo).then(res => {
         this.realizeType = res.data.result;
+      });
+      findByType(realizeInfos).then(res => {
+        this.realizeTypes = res.data.result;
       });
       let costtype = {
         type: "cost_type"
@@ -710,6 +832,7 @@ export default {
       });
     },
     subCarInfo(carForm) {
+      debugger
       let para = {
         id:this.controlCarid,
         icsId:this.controlCaricsId,
@@ -736,16 +859,30 @@ export default {
         vehicleSealed: this.carForm.receive,
         // documentType:""
       };
-      this.$refs[carForm].validate((valid) => {
-            if (valid) {
-              updateOsControlVehicle(para).then(res => {
+
+        if(this.carForm.comefrom==null||this.carForm.comefrom==""||this.carForm.company==null||this.carForm.company==""||this.carForm.time==undefined||this.carForm.time==""){
+           this.$message({
+              type: "error",
+              message: "请填写必填信息！"
+            });
+        }else{
+          updateOsControlVehicle(para).then(res => {
+                  if (res.data.success) {
+                      this.$message({
+                        type: "success",
+                        message: "编辑成功！"
+                      });
                       this.getcontrolCar();
                       this.costDetail();
-                    });
-                  }else{
-                    return false;
-                  };
-        })
+                    } else {
+                      this.$message({
+                        type: "error",
+                        message:res.data.message
+                      });
+                    }                    
+              });
+        }
+       
     },
     //送车信息
     sendCar() {
@@ -890,13 +1027,27 @@ export default {
       });
     },
     parkingEdit(row) {
+      debugger
       let para = row;
-      row.indate = this.inChange;
+    if(this.inChange){
+      row.indate = this.inChange;    
+    }
+    if(this.outChange){
       row.outdate = this.outChange;
+    }
       if ((row.edit = !row.edit)) {
+        
       } else {
-        updateParkingInformation(para).then(res => {
+        updateParkingInformation(para).then(res => {         
           if (res.data.success) {
+      let eArr = row.indate.split("-");
+      let sArr  = row.outdate.split("-");
+      let sRDate=new Date(sArr[0],sArr[1],sArr[2])
+      let eRDate=new Date(eArr[0],eArr[1],eArr[2])
+      let days =((sRDate-eRDate)/(24*60*60*1000))+1;
+      row.storageDays=days
+      console.log(days);
+      console.log(row.storageDays)
             this.$message({
               type: "success",
               message: "车辆停放信息编辑成功！"
@@ -962,7 +1113,7 @@ export default {
         keyKeeperPhone: this.AddparkCarInfo.keyKeeperPhone,
         indate: this.AddparkCarInfo.indate,
         outdate: this.AddparkCarInfo.outdate,
-        storageDays: this.AddparkCarInfo.storageDays
+        storageDays: this.AddparkCarInfo.storageDays.toString()
       };
       this.$refs[AddparkCarInfo].validate(valid => {
         if (valid) {
@@ -1010,7 +1161,7 @@ export default {
       let para = {
         id: this.$route.params.id
       };
-      this.listLoading = true;
+      this.listLoading5 = true;
       getOsCashChange(para).then(res => {
         let data = res.data.result;
         this.id = data.id;
@@ -1029,7 +1180,7 @@ export default {
           (this.realize.recovery = data.recoverableAmount),
           (this.realize.infos = data.sealUpOtherInformation),
           (this.realize.violationInfos = data.vehicleViolationInformation),
-          (this.listLoading = false);
+          (this.listLoading5 = false);
       });
     },
     subReal() {
@@ -1274,5 +1425,17 @@ export default {
 .ht_table .tds {
   color: #000;
 }
-#controlinfos .el-input{width: 230px}
+ #controlinfos .el-input{width: 230px}
+.legal .el-date-editor .el-input__inner {
+  margin-top: 5px;
+}
+.legal td{padding: 0 1px}
+ .legal .el-date-editor.el-input {
+  width: 160px;
+} 
+.legal input {
+  height: 30px;
+  margin-top: 2px;
+  width:100%
+}
 </style>

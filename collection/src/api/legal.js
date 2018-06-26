@@ -127,3 +127,10 @@ export function laCaseExport(params) {
     data
 })
 }
+export function operationStatus(params) {
+  return fetch({
+    url: '/legalAction/operationStatus',
+    method: 'get',
+    params: params
+})
+}
