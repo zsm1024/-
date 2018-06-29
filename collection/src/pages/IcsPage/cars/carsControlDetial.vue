@@ -25,7 +25,7 @@
 					</table>
 				</div>			
 			</el-collapse-item>
-            <el-collapse-item title="控制车辆信息" name="2" style="position:relative"  >
+            <el-collapse-item title="控制车辆信息" name="2"style="position:relative"  >
                 <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subCarInfo('carForm')">提交</el-button>
                 <table :model="carForm" ref="carForm" >
                   <tbody  class="legal" v-loading="listLoadings">
@@ -107,7 +107,7 @@
                       <td>证件类型</td>
                       <td colspan="5">
                         <el-select v-model="carForm.idtype" multiple  placeholder="证件类型" style="width:100%">
-                          <el-option v-for="(item) in document" :key="item.key"  :label="item.val" :value="item.val" @change="typechange"></el-option>
+                          <el-option v-for="item in document" :key="item.key"  :label="item.val" :value="item.val" @change="typechange"></el-option>
 						            </el-select>
                       </td>
                     </tr>
@@ -312,7 +312,7 @@
                         <td>变现方式</td>
                         <td>
                           <el-select v-model="realize.type"  placeholder="变现方式" style="width:100%">                       
-                              <el-option v-for="(item) in realizeType" :key="item.key"  :label="item.val" :value="item.val">
+                              <el-option v-for="item in realizeType" :key="item.key"  :label="item.val" :value="item.val">
                               </el-option>                    
                           </el-select>
                         </td>
@@ -426,7 +426,7 @@
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols2" :key="index" align="center" >
 					<template slot-scope="scope">  
             <el-select  class="comSty" v-model="scope.row[col.field]" v-show="scope.row.edit" v-if="col.field=='costType'">                    
-                <el-option v-for="(item) in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
+                <el-option v-for="item in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
             </el-select>
             <el-select  class="comSty" v-model="scope.row[col.field]" v-show="scope.row.edit" v-if="col.field=='whetherPay'">                    
                 <el-option label="已支付" value="已支付"></el-option>
@@ -450,7 +450,7 @@
                 <el-form :model="AddparkcostInfo" ref="AddparkcostInfo">
                           <el-form-item label="控车费用:" prop="custodian" :label-width="formLabelWidth">
                             <el-select v-model="AddparkcostInfo.costType"  placeholder="控车费用" style="width:300px">                    
-                          <el-option v-for="(item) in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
+                          <el-option v-for="item in costtype" :key="item.key"  :label="item.val" :value="item.val"></el-option>   
                         </el-select>
                           </el-form-item>
                           <el-form-item label="备注:" prop="remark" :label-width="formLabelWidth">
@@ -832,7 +832,6 @@ export default {
       });
     },
     subCarInfo(carForm) {
-      debugger
       let para = {
         id:this.controlCarid,
         icsId:this.controlCaricsId,
@@ -1027,7 +1026,6 @@ export default {
       });
     },
     parkingEdit(row) {
-      debugger
       let para = row;
     if(this.inChange){
       row.indate = this.inChange;    
@@ -1040,14 +1038,6 @@ export default {
       } else {
         updateParkingInformation(para).then(res => {         
           if (res.data.success) {
-      let eArr = row.indate.split("-");
-      let sArr  = row.outdate.split("-");
-      let sRDate=new Date(sArr[0],sArr[1],sArr[2])
-      let eRDate=new Date(eArr[0],eArr[1],eArr[2])
-      let days =((sRDate-eRDate)/(24*60*60*1000))+1;
-      row.storageDays=days
-      console.log(days);
-      console.log(row.storageDays)
             this.$message({
               type: "success",
               message: "车辆停放信息编辑成功！"

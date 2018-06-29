@@ -39,7 +39,7 @@
       <!-- :placeholder="lists.coTime"  -->
      <el-date-picker v-else placeholder="请选择" type="date" v-model="mainform.coTime" style="width:150px"  @change="coTimeChange"></el-date-picker>
     </el-form-item>
-    <el-form-item label="审批备注:(不超过2000字)">
+    <el-form-item label="备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">
@@ -65,7 +65,7 @@
        <input  v-if="lists.isShow=='N'" :value="lists.leaveTime" disabled/>
        <el-date-picker  v-else type="date"  v-model="lists.leaveTime" @change="changeTime"></el-date-picker>
     </el-form-item>
-    <el-form-item label="审批备注:(不超过2000字)">
+    <el-form-item label="备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">
@@ -221,6 +221,7 @@ export default {
       Approvalfind(para).then(res=>{
         let data=res.data.result;
         this.lists=data;
+        this.inputs=data.remarks;
         this.listPage=data.applyListDtos;
         this.mainform.queueName=data.goalQueue;
         this.goalForm.queueName=data.goalQueue;

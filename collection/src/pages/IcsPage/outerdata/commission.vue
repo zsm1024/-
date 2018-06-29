@@ -121,14 +121,8 @@ export default {
       let para=rows;
       
       for(var i=0;i<rows.length;i++){ 
-        // if(!rows[i].mode){
             this.types.push(rows[i].mode) 
-            //  let date=rows[i].depositDate;
-            // var src = new Date(date);
-            // date = src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
-           
-            // console.log(rows[i].mode)
-        // }
+
       }
       if( this.types.indexOf(null, 0) != -1 ){
          this.types=[]

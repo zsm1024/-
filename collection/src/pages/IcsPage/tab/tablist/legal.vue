@@ -103,28 +103,30 @@
                     <td><span>收到法院终裁日期</span></td>
                     <td><el-date-picker v-model="legalInfo.receiveCourtFinalDate" @change="receiveCourtFinalDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td> 
                     <td><span>上失信时间</span></td>
-                    <td><el-date-picker v-model="legalInfo.discreditTime" @change="discreditTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>                   
+                    <td><el-date-picker v-model="legalInfo.discreditTime" @change="discreditTimes" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>                   
                 </tr>
             </tbody>
         </table>
     </el-collapse-item>
         <el-collapse-item  title="诉讼费用" name="2" style="position:relative">
             <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsFee" >添加</el-button>
-             <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="FeeList"  >
-                 <!-- -->
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope" >
-						<el-button :type="scope.row.edit?'success':'primary'" :disabled="NoUsed" size="mini" @click='EditFee(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>
-                        <!-- @click='sendCarEdit(scope.row)' -->
+						<el-button :type="scope.row.edit?'success':'primary'" :disabled="NoUsed" size="mini" @click='EditFee(scope.row)'  >{{scope.row.edit?'完成':'编辑'}}</el-button>           
 						<el-button type="danger" size="mini" :disabled="NoUsed" @click.native.prevent="deleteFee(scope.$index, scope.row,FeeList)" > 移除</el-button>
-                        <!-- -->
 					</template>
 				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" :width="col.width">
+				<el-table-column :prop="col.field" class="feesNum" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" :width="col.width" show-overflow-tooltip>
 					<template slot-scope="scope">  
-                        <el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>            
-						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>         						  
+                        <el-input  v-show="scope.row.edit" v-if="(col.field!='feeType'&&col.field!='creator'&&col.field!='createTime'&&col.field!='payDate')" size="small" v-model="scope.row[col.field]"></el-input> 
+                         <span v-show="scope.row.edit" v-if="(col.field=='creator'||col.field=='createTime')" >{{ scope.row[col.field] }}</span> 
+						            <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span> 
+                         <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期"  v-if="col.field=='payDate'"  style="width: 100%;" v-model="scope.row[col.field]"></el-date-picker>
+                        <el-select   v-model="scope.row[col.field]" v-show="scope.row.edit" v-if="col.field=='feeType'">   
+                          <el-option label="诉讼费" value="诉讼费"></el-option>
+                          <el-option label="保全费" value="保全费"></el-option>   
+                        </el-select>        						  
                     </template>
 				</el-table-column>
 			</el-table>
@@ -134,8 +136,11 @@
 			</el-col>
             <el-dialog title="新增诉讼费用" :visible.sync="addSsFees" >
 			    <el-form :model="LegalActionFee" ref="LegalActionFee">
-                    <el-form-item label="费用类型:" prop="feeType" :label-width="formLabelWidth">                      
-                        <el-input v-model="LegalActionFee.feeType" placeholder="费用类型" clearable  size="mini" style="width:300px"></el-input>
+                    <el-form-item label="费用类型:" prop="feeType" :label-width="formLabelWidth">
+                      <el-select v-model="LegalActionFee.feeType"  placeholder="费用类型" style="width:300px">
+                            <el-option label="诉讼费" value="诉讼费"></el-option>
+                            <el-option label="保全费" value="保全费"></el-option>  
+                        </el-select>                      
                     </el-form-item>
                     <el-form-item label="费用金额:" prop="amount" :label-width="formLabelWidth">
                         <el-input v-model="LegalActionFee.amount" placeholder="费用金额" clearable  size="mini" style="width:300px"></el-input>
@@ -149,7 +154,7 @@
                             <el-option label="其它" value="其它"></el-option>  
                          </el-select>
                     </el-form-item>
-                     <el-form-item label="报销状态:" prop=" reimStatus" :label-width="formLabelWidth">
+                     <el-form-item label="报销状态:" prop="reimStatus" :label-width="formLabelWidth">
                         <el-select v-model="LegalActionFee.reimStatus"  placeholder="报销状态" style="width:300px">
                             <el-option label="是" value="是"></el-option>
                             <el-option label="否" value="否"></el-option>  
@@ -178,10 +183,12 @@
                         <!-- -->
 					</template>
 				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :key="index" align="center" :width="col.width">
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :key="index" align="center" :width="col.width" show-overflow-tooltip>
 					<template slot-scope="scope">  
-                        <el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>            
-						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>         						  
+                        <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='remindTime'&&col.field!='createTime'&&ol.field!='operator'" v-model="scope.row[col.field]"></el-input> 
+                        <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期"  v-if="col.field=='remindTime'"  style="width: 100%;" v-model="scope.row[col.field]"></el-date-picker>           
+						            <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>  
+                        <span v-show="scope.row.edit" v-if="col.field=='createTime'||col.field=='operator'">{{ scope.row[col.field] }}</span>         						  
                     </template>
 				</el-table-column>
 			</el-table>
@@ -191,7 +198,7 @@
 			</el-col>
             <el-dialog title="新增诉讼事件" :visible.sync="addSsEvents" >
 			    <el-form :model="LegalActionEvent" ref="LegalActionEvent">
-                    <el-form-item label="诉讼事件:" prop=" legalActionCode" :label-width="formLabelWidth">                      
+                    <el-form-item label="诉讼事件:" prop="legalActionCode" :label-width="formLabelWidth">                      
                         <el-input v-model="LegalActionEvent.legalActionCode" placeholder="诉讼事件" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>
                     <el-form-item label="提醒时间:" prop="remindTime" :label-width="formLabelWidth">
@@ -208,7 +215,7 @@
 		    </el-dialog>
     </el-collapse-item>
           <el-collapse-item  title="评估拍卖管理" name="4" style="position:relative">
-            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini":disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
+            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="InfoList"  >
                  <!-- -->
@@ -220,10 +227,11 @@
                         <!-- -->
 					</template>
 				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols2" :key="index" align="center" :width="col.width">
-					<template slot-scope="scope">  
-                        <el-input  v-show="scope.row.edit" size="small" v-model="scope.row[col.field]"></el-input>            
-						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>         						  
+				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols2" :key="index" align="center" :width="col.width" show-overflow-tooltip >
+					<template slot-scope="scope"> 
+                      <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期"  v-if="col.field=='auctioneerTime'"  style="width: 100%;" v-model="scope.row[col.field]"></el-date-picker>    
+                        <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='auctioneerTime'" v-model="scope.row[col.field]"></el-input>            
+						          <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>         						  
                     </template>
 				</el-table-column>
 			</el-table>
@@ -232,23 +240,23 @@
 				</el-pagination>
 			</el-col>
             <el-dialog title="评估拍卖管理" :visible.sync="addSsInfos" >
-			    <el-form :model="LegalActionInfo" ref="LegalActionInfo">
-                     <el-form-item label="评估/拍卖机构:" prop=" auctioneer" :label-width="formLabelWidth">                      
+			            <el-form :model="LegalActionInfo" ref="LegalActionInfo">
+                     <el-form-item label="评估/拍卖机构:" prop="auctioneer" :label-width="formLabelWidth">                      
                         <el-input v-model="LegalActionInfo.auctioneer" placeholder="评估/拍卖机构" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>
-                    <el-form-item label="地址:" prop=" address" :label-width="formLabelWidth">                      
+                    <el-form-item label="地址:" prop="address" :label-width="formLabelWidth">                      
                         <el-input v-model="LegalActionInfo.address" placeholder="地址" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>
                     <el-form-item label="联系人:" prop="contact" :label-width="formLabelWidth">
                         <el-input v-model="LegalActionInfo.contact" placeholder="联系人" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item> 
-                     <el-form-item label="联系电话:" prop=" phone" :label-width="formLabelWidth">                      
+                     <el-form-item label="联系电话:" prop="phone" :label-width="formLabelWidth">                      
                         <el-input v-model="LegalActionInfo.phone" placeholder="联系电话" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>
                     <el-form-item label="拍卖/评估时间:" prop="auctioneerTime" :label-width="formLabelWidth">
                         <el-date-picker v-model="LegalActionInfo.auctioneerTime" @change="auctioneerTime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" style="width:300px"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="拍卖/评估金额:" prop=" auctioneerMount" :label-width="formLabelWidth">
+                    <el-form-item label="拍卖/评估金额:" prop="auctioneerMount" :label-width="formLabelWidth">
                         <el-input v-model="LegalActionInfo.auctioneerMount" placeholder="拍卖/评估金额" clearable  size="mini" style="width:300px"></el-input>
                     </el-form-item>                 
                 </el-form>
@@ -355,7 +363,7 @@ export default {
       cols: [
         { title: "费用名称", field: "feeType" },
         { title: "费用", field: "amount" },
-        { title: "缴纳时间", field: "payDate" },
+        { title: "缴纳时间", field: "payDate",width:"130" },
         { title: "支付方式", field: "payMethod" },
         { title: "备注", field: "remark" },
         { title: "报销状态", field: "reimStatus" },
@@ -364,9 +372,9 @@ export default {
       ],
       cols1: [
         { title: "诉讼事件", field: "legalActionCode" },
-        { title: "提醒时间", field: "remindTime" },
-        { title: "操作员", field: "operator" },
-        { title: "备注", field: "remark", width: "300" },
+        { title: "提醒时间", field: "remindTime",width:"130"  },
+          { title: "备注", field: "remark", width: "300" },
+        { title: "操作员", field: "operator" },     
         { title: "创建时间", field: "createTime" }
       ],
       cols2: [
@@ -374,7 +382,7 @@ export default {
         { title: "地址", field: "address", width: "150" },
         { title: "联系人", field: "contact" },
         { title: "联系电话", field: "phone" },
-        { title: "拍卖/评估时间", field: "auctioneerTime" },
+        { title: "拍卖/评估时间", field: "auctioneerTime",width:"130"  },
         { title: "拍卖/评估金额", field: "auctioneerMount" }
       ],
       visitpagesize: 20,
@@ -482,9 +490,11 @@ export default {
       this.LegalActionEvent.remindTime = val;
     },
     auctioneerTime(val){
+  
         this.LegalActionInfo.auctioneerTime = val;
     },
-    discreditTime(val){
+    discreditTimes(val){
+      
       this.LegalActionInfo.discreditTime = val;
     },
     actionBeforeLawsuitAllTime(val){
@@ -515,21 +525,23 @@ export default {
       this.pagesizeInfo = val;
     },
     //获取诉讼信息
-    insert() {
-      let para = {
-        missionId: this.$route.params.id
-      };
-      insertLegalActionInfo(para).then(res => {
-        this.getListInfo();
-      });
-    },
+    // insert() {
+    //   let para = {
+    //     missionId: this.$route.params.id
+    //   };
+    //   insertLegalActionInfo(para).then(res => {
+    //     this.getListInfo();
+    //   });
+    // },
     getListInfo() { 
-      this.listLoadings = true;
+     
       let para = {
         id: this.$route.params.id
       };   
       listLegalActionInfo(para).then(res => {
         let data = res.data.result;
+        if(data!=null){
+         this.listLoadings = true;
         this.id = data.id;
         this.missionId = data.missionId;
         (this.legalInfo.applyBeforeLawsuitAllTime =
@@ -583,12 +595,17 @@ export default {
           (this.legalInfo.receiveCourtFinalDate = data.receiveCourtFinalDate),
           (this.legalInfo.discreditTime = data.discreditTime),
           (this.listLoadings = false);
+           this.getSsFee();
+          this.getSsEvent();
+          this.getSsInfo();  
+        }
+               
       });
     },
-    subListInfo(legalInfo) {
+    subListInfo() {
       let para = {
         id: this.id,
-        missionId: this.missionId,
+        missionId: this.$route.params.id,
         applyBeforeLawsuitAllTime: this.legalInfo.applyBeforeLawsuitAllTime,
         beforeLawsuitAllCourt: this.legalInfo.beforeLawsuitAllCourt,
         actionBeforeLawsuitAllTime: this.legalInfo.actionBeforeLawsuitAllTime,
@@ -629,7 +646,7 @@ export default {
         entrustActionTime: this.legalInfo.entrustActionTime,
         entrustedActionCourt: this.legalInfo.entrustedActionCourt,
         receiveCourtFinalDate: this.legalInfo.receiveCourtFinalDate,
-        discreditTime: this.legalInfo.discreditTime
+        discreditTime: this.legalInfo.discreditTime       
       };
       updateLegalActionInfo(para).then(res => {
         if(res.data.success){
@@ -650,7 +667,7 @@ export default {
     //获取诉讼费
     getSsFee() {
       let para = {
-        legalActionId: this.$route.params.id,
+        legalActionId:this.id,
         page: this.pageFee,
         pageSize: this.pagesizeFee
       };
@@ -668,7 +685,7 @@ export default {
     },
     subFee(LegalActionFee) {
       let para = {
-        legalActionId: this.$route.params.id,
+        legalActionId: this.id,
         feeType: this.LegalActionFee.feeType,
         amount: this.LegalActionFee.amount,
         payDate: this.LegalActionFee.payDate,
@@ -766,7 +783,7 @@ export default {
     //获取诉讼事件
     getSsEvent() {
       let para = {
-        legalActionId: this.$route.params.id,
+        legalActionId: this.id,
         page: this.pageEvent,
         pageSize: this.pagesizeEvent
       };
@@ -784,7 +801,7 @@ export default {
     },
     subEvent(LegalActionEvent) {
       let para = {
-        legalActionId: this.$route.params.id,
+        legalActionId: this.id,
         legalActionCode: this.LegalActionEvent.legalActionCode,
         remindTime: this.LegalActionEvent.remindTime,
         operator: this.LegalActionEvent.operator,
@@ -881,7 +898,7 @@ export default {
     //huoqu
     getSsInfo() {
       let para = {
-        legalActionId:this.$route.params.id,
+        legalActionId:this.id,
         page: this.pageInfo,
         pageSize: this.pagesizeInfo
       };
@@ -896,11 +913,10 @@ export default {
     },
     addSsInfo() {
       this.addSsInfos = true;
-      this.$refs["LegalActionInfo"].resetFields();
     },
     subInfo(LegalActionInfo) {
       let para = {
-        legalActionId: this.$route.params.id,
+        legalActionId: this.id,
         auctioneer: this.LegalActionInfo.auctioneer,
         contact: this.LegalActionInfo.contact,
         address: this.LegalActionInfo.address,
@@ -915,8 +931,8 @@ export default {
               this.$message({
                 type: "success",
                 message: "添加成功！"
-              });            
-              // this.$refs["LegalActionInfo"].resetFields();
+              });        
+              this.$refs["LegalActionInfo"].resetFields();
                this.addSsInfos = false;
               this.getSsInfo();
             } else {
@@ -997,7 +1013,6 @@ export default {
     },
     getCommition(){
       operationStatus().then(res=>{
-        console.log(res.data)
         let data =res.data
         if(data.success){
           if(data.result=="0"){
@@ -1010,11 +1025,9 @@ export default {
     }
   },
   mounted() {
-    this.insert();
-    this.getSsFee();
-    this.getSsEvent();
-    this.getSsInfo();
-    this.getCommition()
+    // this.insert();
+    this.getListInfo()
+   this.getCommition()
   }
 };
 </script>
@@ -1023,10 +1036,13 @@ export default {
   margin-top: 5px;
 }
 .legal .el-date-editor.el-input {
-  width: 160px;
+  width:98%!important;
 }
 .legal input {
   height: 22px;
+  width: 98%!important
 }
-</style>
+.feesNum .el-input__inner{height:30px!important}
+.feesNum .el-date-editor .el-input__inner{height:30px!important}
+ </style>
 
