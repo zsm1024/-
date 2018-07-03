@@ -118,31 +118,23 @@ export default {
     // },
     toggleSelection(rows){
       this.types=[];
-      let para=rows;
       
-      for(var i=0;i<rows.length;i++){ 
-            this.types.push(rows[i].mode) 
-
+      for(var i=0;i<rows.length;i++){
+        if(rows[i].mode&&rows[i].mode!=null){
+           this.types.push(rows[i])
+        }             
       }
-      if( this.types.indexOf(null, 0) != -1 ){
-         this.types=[]
-      }
-      if(this.types.length==0){
-        this.$message({
-              type: "error",
-              message: "请检查收车方式是否填写！"
-            }); 
-      }else{ 
-          balance(para).then(res =>{
+      let para=this.types;
+      balance(para).then(res =>{
         if(res.data.success){
+         
+          this.getlists()
           this.$message({
               type: "success",
-              message: res.data.message
+              message: res.data.message+",共计算了"+this.types.length+"条数据！"
             });
-          this.getlists()
         }
-      })           
-      }
+      }) 
      }
   },
   mounted() {

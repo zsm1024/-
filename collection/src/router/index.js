@@ -129,7 +129,18 @@ export const constantRouterMap = [{
         hidden: true,
         component: _import('IcsPage/cars/carsControlDetial')
       },
-      
+      {
+        path: 'IcsPage/writeoff/writeoffDetial/:id',
+        name: '核销基本信息',
+        hidden: true,
+        component: _import('IcsPage/writeoff/writeoffDetial')
+      },
+      {
+        path: 'IcsPage/writeoff/writeoffMessage/:id',
+        name: '核销信息',
+        hidden: true,
+        component: _import('IcsPage/writeoff/writeoffMessage')
+      },
     ]
   },
   {

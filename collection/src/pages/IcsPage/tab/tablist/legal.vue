@@ -185,7 +185,7 @@
 				</el-table-column>
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :key="index" align="center" :width="col.width" show-overflow-tooltip>
 					<template slot-scope="scope">  
-                        <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='remindTime'&&col.field!='createTime'&&ol.field!='operator'" v-model="scope.row[col.field]"></el-input> 
+                        <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='remindTime'&&col.field!='createTime'&&col.field!='operator'" v-model="scope.row[col.field]"></el-input> 
                         <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期"  v-if="col.field=='remindTime'"  style="width: 100%;" v-model="scope.row[col.field]"></el-date-picker>           
 						            <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>  
                         <span v-show="scope.row.edit" v-if="col.field=='createTime'||col.field=='operator'">{{ scope.row[col.field] }}</span>         						  
@@ -215,7 +215,7 @@
 		    </el-dialog>
     </el-collapse-item>
           <el-collapse-item  title="评估拍卖管理" name="4" style="position:relative">
-            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
+            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini":disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="InfoList"  >
                  <!-- -->
@@ -230,7 +230,7 @@
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols2" :key="index" align="center" :width="col.width" show-overflow-tooltip >
 					<template slot-scope="scope"> 
                       <el-date-picker v-show="scope.row.edit" type="date" placeholder="选择日期"  v-if="col.field=='auctioneerTime'"  style="width: 100%;" v-model="scope.row[col.field]"></el-date-picker>    
-                        <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='auctioneerTime'" v-model="scope.row[col.field]"></el-input>            
+                        <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='auctioneerTime'&&col.field!='auctioneerTime'" v-model="scope.row[col.field]"></el-input>            
 						          <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>         						  
                     </template>
 				</el-table-column>
@@ -507,19 +507,19 @@ export default {
       this.visitpagesizes = val;
     },
     CurrentChangeFee(val) {
-      this.visitpageFee = val;
+      this.pageFee = val;
     },
     SizeChangeFee(val) {
       this.pagesizeFee = val;
     },
     CurrentChangeEvent(val) {
-      this.visitpageEvent = val;
+      this.pageEvent = val;
     },
     SizeChangeEvent(val) {
       this.pagesizeEvent = val;
     },
     CurrentChangeInfo(val) {
-      this.visitpageInfo = val;
+      this.pageInfo = val;
     },
     SizeChangeInfo(val) {
       this.pagesizeInfo = val;
@@ -684,7 +684,17 @@ export default {
       this.addSsFees = true;
     },
     subFee(LegalActionFee) {
-      let para = {
+     var feeTypeList=[]
+     this.FeeList.forEach(el => {
+       feeTypeList.push(el.feeType)
+     }); 
+      if(feeTypeList.indexOf(this.LegalActionFee.feeType)!=-1){
+        this.$message({
+          type: "success",
+           message: this.LegalActionFee.feeType+"已经存在！"
+        });
+      }else{
+        let para = {
         legalActionId: this.id,
         feeType: this.LegalActionFee.feeType,
         amount: this.LegalActionFee.amount,
@@ -722,6 +732,8 @@ export default {
           });
         }
       });
+      }
+      
     },
     EditFee(row) {
       let para = row;

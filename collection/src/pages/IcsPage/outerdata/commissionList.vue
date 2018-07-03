@@ -6,7 +6,11 @@
 					<el-input  v-model="filters.osCompanyName" placeholder="外包公司名称" style="width:140px"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.isPay" placeholder="是否已付" style="width:140px"></el-input>
+           <el-select  v-model="filters.isPay" placeholder="是否已付">
+								<el-option label="是" value="1"></el-option>
+								<el-option label="否" value="0"></el-option>
+                <el-option label="全部显示" value=""></el-option>
+						</el-select>
 				</el-form-item>
 				<el-form-item>
           <el-date-picker style="width:140px" v-model="filters.payMonthStart" @change="payMonthStart" type="month" value-format="yyyy-MM-dd" placeholder="开始月份"></el-date-picker>
@@ -76,7 +80,7 @@ export default {
       ],
       filters: {					
 					osCompanyName: '',
-					applicationNumber:"",
+					isPay:"0",
 					payMonthStart:"",
 					payMonthEnd:"",
 				},
@@ -94,7 +98,7 @@ export default {
       this.getlists();
     },
     payMonth(val){
-      console.log(val)
+      
       // this.payMonth=val
     },
     handleSizeChange(val) {
@@ -107,12 +111,13 @@ export default {
           document.documentElement.clientHeight ||
           document.body.clientHeight) - 240;
       this.heights = h;
-      if(this.filters.isPay=="1"){
-        this.filters.isPay="是"
+      if(this.filters.isPay=="是"){
+        this.filters.isPay="1"
       }
-      if(this.filters.isPay=="0"){
-         this.filters.isPay="否"
+      if(this.filters.isPay=="否"){
+         this.filters.isPay="0"
       }
+      
       let para = {
         page: this.page,
         pageSize: this.pagesize,
