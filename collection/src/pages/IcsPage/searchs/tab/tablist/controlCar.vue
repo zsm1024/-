@@ -43,7 +43,10 @@ export default {
 				// this.NowFormatDate=currentdate;
          this.carlist =res.data.result;
          this.carlist.forEach(element => {
-           element.pickUpDate=currentdate
+           if(element.pickUpDate&&element.pickUpDate!=null){
+             element.pickUpDate=currentdate
+           }
+           
          });
       })
     }

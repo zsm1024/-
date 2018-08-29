@@ -141,6 +141,12 @@ export const constantRouterMap = [{
         hidden: true,
         component: _import('IcsPage/writeoff/writeoffMessage')
       },
+      {
+        path: 'IcsPage/writeoff/writeoffapprove/:id',
+        name: '核销审批',
+        hidden: true,
+        component: _import('IcsPage/writeoff/writeoffapprove')
+      },
     ]
   },
   {
@@ -189,6 +195,10 @@ export const constantRouterMap = [{
         {
           path: '/IcsPage/tab/tabView/legal/:id',
           component: _import('IcsPage/tab/tablist/legal')
+        },
+        {
+          path: '/IcsPage/tab/tabView/writeoffDetial/:id',
+          component: _import('IcsPage/tab/tablist/writeoffDetial')
         },
       ]
     }, ]
@@ -240,6 +250,10 @@ export const constantRouterMap = [{
         {
           path: '/IcsPage/searchs/colsearchdetail/controlCar/:id',
           component: _import('IcsPage/searchs/tab/tablist/controlCar')
+        },
+        {
+          path: '/IcsPage/searchs/colsearchdetail/legal/:id',
+          component: _import('IcsPage/searchs/tab/tablist/legal')
         },
       ]
     }, ]

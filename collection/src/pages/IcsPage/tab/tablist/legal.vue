@@ -258,7 +258,7 @@
                     </el-form-item>
                     <el-form-item label="拍卖/评估金额:" prop="auctioneerMount" :label-width="formLabelWidth">
                         <el-input v-model="LegalActionInfo.auctioneerMount" placeholder="拍卖/评估金额" clearable  size="mini" style="width:300px"></el-input>
-                    </el-form-item>                 
+                    </el-form-item>              
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="cancleInfo">取 消</el-button>
@@ -286,7 +286,8 @@ import {
   insertLegalActionInfos,
   updateLegalActionInfos,
   delLegalActionInfo,
-  operationStatus
+  operationStatus,
+  getAfpId
 } from "@/api/legal"
 export default {
   data() {
@@ -404,7 +405,8 @@ export default {
       formLabelWidth: "120px",
       FeeList: [],
       EventList: [],
-      InfoList: []
+      InfoList: [],
+      afpIdNum:""
     };
   },
   methods: {
@@ -536,7 +538,7 @@ export default {
     getListInfo() { 
      
       let para = {
-        id: this.$route.params.id
+       id: this.$route.params.id
       };   
       listLegalActionInfo(para).then(res => {
         let data = res.data.result;
@@ -594,10 +596,7 @@ export default {
           (this.legalInfo.entrustedActionCourt = data.entrustedActionCourt),
           (this.legalInfo.receiveCourtFinalDate = data.receiveCourtFinalDate),
           (this.legalInfo.discreditTime = data.discreditTime),
-          (this.listLoadings = false);
-           this.getSsFee();
-          this.getSsEvent();
-          this.getSsInfo();  
+          (this.listLoadings = false);        
         }
                
       });
@@ -667,7 +666,7 @@ export default {
     //获取诉讼费
     getSsFee() {
       let para = {
-        legalActionId:this.id,
+        afpId: this.afpIdNum,
         page: this.pageFee,
         pageSize: this.pagesizeFee
       };
@@ -695,7 +694,7 @@ export default {
         });
       }else{
         let para = {
-        legalActionId: this.id,
+        missionId: this.$route.params.id,
         feeType: this.LegalActionFee.feeType,
         amount: this.LegalActionFee.amount,
         payDate: this.LegalActionFee.payDate,
@@ -795,7 +794,7 @@ export default {
     //获取诉讼事件
     getSsEvent() {
       let para = {
-        legalActionId: this.id,
+        afpId: this.afpIdNum,
         page: this.pageEvent,
         pageSize: this.pagesizeEvent
       };
@@ -813,7 +812,7 @@ export default {
     },
     subEvent(LegalActionEvent) {
       let para = {
-        legalActionId: this.id,
+       missionId: this.$route.params.id,
         legalActionCode: this.LegalActionEvent.legalActionCode,
         remindTime: this.LegalActionEvent.remindTime,
         operator: this.LegalActionEvent.operator,
@@ -910,7 +909,7 @@ export default {
     //huoqu
     getSsInfo() {
       let para = {
-        legalActionId:this.id,
+        afpId:this.afpIdNum,
         page: this.pageInfo,
         pageSize: this.pagesizeInfo
       };
@@ -928,7 +927,7 @@ export default {
     },
     subInfo(LegalActionInfo) {
       let para = {
-        legalActionId: this.id,
+        missionId: this.$route.params.id,
         auctioneer: this.LegalActionInfo.auctioneer,
         contact: this.LegalActionInfo.contact,
         address: this.LegalActionInfo.address,
@@ -1034,12 +1033,29 @@ export default {
           }
         }
       })
+    },
+    getAfpIds(){
+      let para={
+      id:this.$route.params.id
+      }
+      getAfpId(para).then(res=>{
+        if(res.data.success){
+          this.afpIdNum=res.data.result
+        this.getListInfo()
+        this.getSsFee();
+        this.getSsEvent();
+        this.getSsInfo();  
+        }
+        
+      })
     }
   },
   mounted() {
+    this.getAfpIds()
     // this.insert();
-    this.getListInfo()
-   this.getCommition()
+  
+   this.getCommition();
+    
   }
 };
 </script>

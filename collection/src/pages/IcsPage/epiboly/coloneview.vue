@@ -108,7 +108,7 @@
 					{ title: '姓名', field: 'name', width: "60" },
 					{ title: '合同号', field: 'applicationNumber', width: "80" },
 					{ title: '用户ID', field: 'processer', width: "130" },
-					{ title: '派单时间', field: 'createTime'},	
+					{ title: '派单时间', field: 'createTime', width: "150" },	
 					{ title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "130" },
           { title: '委托金额', field: 'entrustMoney', width: "130" },
 					{ title: '委托逾期天数', field: 'entrustOverDueDays', width: "100" },

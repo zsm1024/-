@@ -134,3 +134,10 @@ export function operationStatus(params) {
     params: params
 })
 }
+export function getAfpId(params) {
+  return fetch({
+    url: '/legalAction/getAfpId/'+params.id,
+    method: 'get',
+    // params: params
+})
+}

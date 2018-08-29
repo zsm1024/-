@@ -1,5 +1,5 @@
 <template>
-<section>
+<section class="sections">
   <el-form :data="lists" v-if="lists.station=='协办'" :model="mainform">
     <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/IcsPage/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>

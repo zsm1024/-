@@ -130,3 +130,10 @@ export function jxsInfo(params){
       params:params
     })
   }
+  export function getAppNumAll(params) {
+    return fetch({
+        url: '/contractInfos/getAppNumAll',
+        method: 'get',
+        params: params 
+    })
+}

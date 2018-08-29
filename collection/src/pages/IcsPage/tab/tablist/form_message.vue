@@ -376,7 +376,8 @@ export default{
 					fileType:""
 				},
 	timesvisit:"",
-      IsTrue:"",
+	  IsTrue:"",
+	  channel:"",
       addressStn:[],
       houseStn:[],
       workStn:[],
@@ -703,6 +704,27 @@ export default{
 			 this.callParent();
 			 let pList=[];
 			//   this.userList=[];
+			 messageDialog().then( res =>{				
+				let data =res.data.result;
+				 this.messageModel.splice(0,this.messageModel.length)
+				 data.forEach(e =>{
+					this.messageModel.push({"lable":e.id,"value":e.title,"channel":e.channel})
+					this.messageTemplate.push({"lable":e.id,"value":e.title,"channel":e.channel});					
+				 });	
+			});
+   function trimSpace(array){
+			 for(var i = 0 ;i<array.length;i++)
+			 {
+	      if(array[i].phone == null||array[i].phone =="")
+	      {
+	        array.splice(i,1);
+	        i= i-1;                  
+	      }
+			 }
+			 return array;
+}
+       this.phoneListNums=trimSpace(this.phoneListNums) 
+       console.log(this.phoneListNums)
 			 this.phoneListNums.forEach(e =>{
 				 if(//e.infoSource=="CMS"&&e.roleName=="主借人"&&
 				 e.effectiveness=="Y"){
@@ -715,14 +737,7 @@ export default{
 			 })
 			  this.messageform.phone=pList[0]+"-主借人"
 			  this.messageform.messagedesc="";
-			 messageDialog().then( res =>{				
-				let data =res.data.result;
-				 this.messageModel.splice(0,this.messageModel.length)
-				 data.forEach(e =>{
-					this.messageModel.push({"lable":e.id,"value":e.title})
-					this.messageTemplate.push({"lable":e.id,"value":e.title});					
-				 });	
-			});
+			
 			// this.messageform.selectTitle="";
 			
 		 },
@@ -763,26 +778,29 @@ export default{
 			// console.log(this.messageModel.label)			
 			this.messageTemplate.forEach(val =>{
 				 if(val.value===item){
-					 this.templateId=val.lable;					
+					 this.templateId=val.lable;	
+					 this.channel=val.channel;				
 				 }else{
 					 return;
 				 }
 			});
 			let para={
+				channel:this.channel,
 				templateId:this.templateId,
 				contractNum:this.applicationNumber,
 				phone:this.messageform.phone.split("-").shift("-")
 				}
 				// messageTemplate
-				messageTemplate(para).then(res =>{
-					let data =res.data.result
-					this.messageform.messagedesc=data;
-				});		
+				 messageTemplate(para).then(res =>{
+					 let data =res.data.result
+					 this.messageform.messagedesc=data.smsContent;
+				 });		
 		},
 			confirmmessage(messageform) {			
 				let phoneNum =this.messageform.phone.split('-').shift("-");
 				// this.messageopen=false;
 				let para={
+					channel:this.channel,
 					phone:phoneNum,
 					smsContent:this.messageform.messagedesc,
 					missionId: this.$route.params.id,

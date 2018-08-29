@@ -1,5 +1,5 @@
 <template>
-<section>
+<section class="sections">
   <el-form :data="lists" v-if="lists.station=='协办'">
     <el-form-item label="案件ID:" label-width="120px">
      <router-link class="a-href" :to="{path:'/IcsPage/searchs/colsearchdetail/'+lists.icsId}"><span>{{lists.applicationNumber}}</span></router-link>
@@ -103,7 +103,7 @@
       <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
-  <el-table :data="listPage">
+  <el-table :data="listPage" id="spRemarks">
       <el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" border stripe :key="index" align="center" :width="cols.width" show-overflow-tooltip class="spTable" ></el-table-column>
   </el-table> 
   </section>
@@ -243,5 +243,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+  #spRemarks.el-table .cell{white-space: normal!important}
+</style>
 
 

@@ -41,6 +41,7 @@ export default {
 					{'names':"扣款流水",path:'/IcsPage/searchs/colsearchdetail/kk_list'},
 					{'names':"CMS历史",path:'/IcsPage/searchs/colsearchdetail/cms_history'},
 					{'names':"控制车辆信息",path:'/IcsPage/searchs/colsearchdetail/controlCar'},
+					{'names':"法诉信息",path:'/IcsPage/searchs/colsearchdetail/legal'},
 				],
          
         }
@@ -62,7 +63,7 @@ export default {
 </script>
 <style >
 #tabCon{height:30px;line-height: 30px;width:100%;border-bottom: 1px solid #f0f0f0 } 
-.routerTab{padding: 5px;cursor: pointer;margin: 0 5px}
+.routerTab{padding: 5px 3px;cursor: pointer;margin: 0 3px}
 .routerTab:hover{cursor: pointer;color:#20a0ff   }
  #THead .el-collapse-item__header{ background: #dfe6ec!important;}
 </style>

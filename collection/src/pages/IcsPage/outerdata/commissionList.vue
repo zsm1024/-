@@ -153,7 +153,19 @@ export default {
         this.listLoading = false;
       });
     },
-    Edit(row) {
+    Edit(row) {   
+       if(row.isValid=="否"){
+            row.isValid="0"
+          }
+          if(row.isValid=="是"){
+            row.isValid="1"
+          }         
+          if(row.isPay=="否"){
+             row.isPay="0"
+          }
+          if( row.isPay=="是"){
+             row.isPay="1"
+          } 
       let para = row;
       if ((row.edit = !row.edit)) {
         return;

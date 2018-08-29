@@ -6,9 +6,7 @@
                 <el-form-item>
                     <el-input v-model="filters.applicationNumber" placeholder="合同号" clearable style="width:130px"></el-input>
                 </el-form-item>
-               <el-form-item>
-                    <el-input v-model="filters.appNum" placeholder="申请号" clearable style="width:130px"></el-input>
-                </el-form-item>
+               
                 <el-form-item>
                     <el-input v-model="filters.name" placeholder="当事人" clearable style="width:130px"></el-input>
                 </el-form-item>
@@ -18,17 +16,30 @@
                 <el-form-item>
                     <el-input v-model="filters.documentNum" placeholder="证件号" clearable style="width:200px"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary"  @click="getlists" size="mini" >查询</el-button>
+				<el-form-item>
+                  <el-input v-model="filters.appNum" placeholder="申请号" clearable style="width:630px"></el-input> 
+					<!-- <el-select v-model="filters.appNum" multiple filterable style="width:630px"  placeholder="申请号" >
+						<el-option v-for="(item,index) in appNumList" :key="index" :label="item.label" :value="item.value" ></el-option>
+					</el-select> -->
                 </el-form-item>
+				<el-form-item>
+                    <el-button type="primary"  @click="getlists" size="mini" class="buttons" >查询</el-button>
+                </el-form-item>                
                 <el-form-item>
                 
                 </el-form-item>
             </el-form>
+			<el-form :inline="true" style="margin-bottom:10px">
+				<el-button class="buttons" type="primary" size="mini"  @click="writeoffExport()">核销清单导出</el-button>
+				<el-button class="buttons" type="primary" size="mini" @click="ourterExport()">外包派案情况导出</el-button>
+				<el-button class="buttons" type="primary" size="mini" @click="listExport()">催收记录导出</el-button>
+				<el-button class="buttons" type="primary" size="mini" @click="FilesExport()">附件下载</el-button>
+
+			</el-form>
         </el-col>
         <!--列表-->
-        <el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe border>
-            
+        <el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="handleSelectionChange"   style="width: 100%;" stripe border>
+            <el-table-column type="selection" align="center" fixed="left"></el-table-column>
             <el-table-column label="操作"  align="center" >
                 <template  slot-scope="scope">
                      <router-link class="a-href" :to="{path:'/IcsPage/searchs/colsearchdetail/'+scope.row.id}">详情</router-link> 
@@ -50,8 +61,8 @@
 
 <script>
 	//import NProgress from 'nprogress'
-	import { getcontractInfos } from '@/api/collmanage';
-
+	import { getcontractInfos,exportWoBill,getAppNumAll } from '@/api/collmanage';
+	import {path} from '@/config'
 	export default {
 		data() {
 			return {
@@ -62,8 +73,10 @@
 					documentNum:"",
 					appNum:""
 				},
+				listsArray:[],
 				heights:0,
 				lists: [],
+				listPath:"",
 				cols: [
                  	{ title: '姓名', field: 'name', },
 					{ title: '合同号', field: 'applicationNumber', },
@@ -81,14 +94,16 @@
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列
-
+				appNumList:[]
 				
 				
 
 			}
 		},
 		methods: {
-
+			 handleSelectionChange(val){        
+             this.multipleSelection=val;
+        	},
 			handleSizeChange(val) {
 				this.pagesize = val;
 				this.getlists();
@@ -101,7 +116,7 @@
            
 			//获取列表
 			getlists() {
-				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-180;
+				let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-230	;
 				this.heights=h;
 				let para = {
 					page: this.page,
@@ -118,21 +133,74 @@
 				getcontractInfos(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
+					// res.data.result.data.forEach(el => {
+					// 	this.appNumList.push({'value':el.appNum,'label':el.appNum})
+					// });
 					this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();
 				});
 			},
-			
+			listExport(){
+				this.listsArray=[];
+				this.multipleSelection.forEach(el =>{
+					this.listsArray.push(el.appNum)
+				});
+				this.listsArray=this.listsArray.toString()
+				let as =this.listPath + "/wo/exportAfpRecord?appNums=" +this.listsArray;
+				window.open(this.listPath + "/wo/exportAfpRecord?appNums=" +this.listsArray )
+				// window.open()
+			},
+			writeoffExport(){
+				this.listsArray=[];
+				this.multipleSelection.forEach(el =>{
+					this.listsArray.push(el.appNum)
+				});
+				this.listsArray=this.listsArray.toString()
+				window.open(this.listPath + "/wo/exportWoBill?appNums=" +this.listsArray )
+			},
+			ourterExport(){
+				this.listsArray=[];
+				this.multipleSelection.forEach(el =>{
+					this.listsArray.push(el.appNum)
+				});
+				this.listsArray=this.listsArray.toString()
+
+				window.open(this.listPath + "/wo/exportOsBill?appNums=" +this.listsArray )
+			},
+			FilesExport(){
+				this.listsArray=[];
+				this.multipleSelection.forEach(el =>{
+					this.listsArray.push(el.appNum)
+				});
+				this.listsArray=this.listsArray.toString()
+				let as =this.listPath + "/wo/exportFile?appNums=" +this.listsArray;
+				console.log(as)
+				window.open(this.listPath + "/wo/exportFile?appNums=" +this.listsArray )
+			},
+		getAppNumAlls(){
+			getAppNumAll().then(res =>{
+				if(res.data.success){
+					let datas=res.data.result
+					this.appNumList= datas;
+				}else{
+					console.log(res.data.message)	
+				}				
+			})	
+		}
 			
 			
 		},
 		mounted() {
-            this.getlists();
+			this.getlists();
+			this.listPath=path.api;
+			
         }
     }
 </script>
 
 <style scoped>
-
+.buttons{
+	padding:4px 10px
+}
 </style>

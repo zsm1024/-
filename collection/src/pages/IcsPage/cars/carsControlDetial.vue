@@ -706,7 +706,6 @@ export default {
       let eRDate=new Date(eArr[0],eArr[1],eArr[2])
       let days =((sRDate-eRDate)/(24*60*60*1000))+1;
       this.AddparkCarInfo.storageDays=days
-      console.log(days)
     },
     getInDate(val) {
       this.AddparkCarInfo.indate = val;

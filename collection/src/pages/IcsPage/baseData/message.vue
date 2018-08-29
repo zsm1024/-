@@ -34,6 +34,9 @@
 				<el-form-item label="模板内容：" prop="template" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.template" style="width:300px" type="textarea"></el-input>
 				</el-form-item>
+				<el-form-item label="通道：" prop="template" :label-width="formLabelWidth">
+					<el-input v-model="AdduserForm.channel" style="width:300px" ></el-input>
+				</el-form-item>
 				<!-- <el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.state"style="width:300px" ></el-input>
 				</el-form-item>
@@ -71,7 +74,9 @@
                 cols:[
 					// {title:'模板代码',field:'pendingSign',width:"90"},
                     {title:'模板名称',field:'title',width:"90"},            
-                    {title:'模板内容',field:'template'},
+					{title:'模板内容',field:'template'},
+					{title:'通道',field:'channel',width:"90"},
+					
                  
 				],
 				AdduserForm:{					
@@ -203,7 +208,8 @@
                         {
 						"title":this.$refs['AdduserForm'].model.title,
 						// "pendingSign":this.$refs['AdduserForm'].model.pendingSign,
-                        "template":this.$refs['AdduserForm'].model.template,											                        
+						"template":this.$refs['AdduserForm'].model.template,
+						"channel":this.$refs['AdduserForm'].model.channel,											                        
 						},	
                         
                     );

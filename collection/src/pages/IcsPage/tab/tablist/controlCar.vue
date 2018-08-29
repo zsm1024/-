@@ -41,7 +41,9 @@ export default {
 				}
 				var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;										
          this.carlist.forEach(el => {
-          el.pickUpDate=currentdate;
+           if(el.pickUpDate&&el.pickUpDate!=null){
+             el.pickUpDate=currentdate;
+           }         
          });
       })
     }

@@ -165,14 +165,14 @@ import { path } from "@/config";
 					submissionFilingTime:this.filters.submissionFilingTime,
 
 				};
-				// this.listLoading = true;
+				 this.listLoading = true;
 				//NProgress.start();
 				ListLegalActionMonitor(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
 					this.cols = this.cols;
 					this.exportPaths = path.api;
-					// this.listLoading = false;
+					this.listLoading = false;
 					//NProgress.done();
 				});
 			},

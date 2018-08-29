@@ -149,13 +149,13 @@ export default {
         startTime:this.times1,
 				endTime:this.times2	
       };
-      // this.listLoading = true;
+      this.listLoading = true;
       //NProgress.start();
       ApprovalmyApplyList(para).then(res => {                
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
             // this.cols = this.lists;
-            // this.listLoading = false;
+            this.listLoading = false;
         //NProgress.done();
       });
     },
