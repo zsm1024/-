@@ -100,7 +100,6 @@ export function PermissionsUpdate(params) {
         data
     })
 }
-
 export function PermissionsDelete(params) {
     const data = params;
     return fetch({
