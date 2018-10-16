@@ -138,7 +138,7 @@ export default {
 		.main-container {
 			min-height: 100%;
 			transition: margin-left 0.28s ease-out;
-			margin-left: 200px;
+			margin-left: 205px;
 		}
 	}
 	//  section{padding: 0 5px}

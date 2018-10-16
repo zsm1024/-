@@ -51,14 +51,30 @@
           <el-select v-model="AdduserForms.stateCode" placeholder="人员" @change="getMessages" style="width:120px">
             <el-option v-for="item in options1" :key="item.id" :label="item.nickname" :value="item.id"></el-option>
           </el-select>
-		</el-form-item> 
-       <el-form-item label="协办到期日">
-           <el-date-picker type="date" placeholder="选择日期" v-model="coTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
-      </el-form-item>     
+          <el-date-picker type="date" placeholder="协办到期日" v-model="coTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>
+		</el-form-item>       
       <el-form-item>
-        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUse">协办</el-button>
-        <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">取消协办</el-button>
+         <el-button type="primary" size="small" @click="addList" style="padding:7px 9px">新增</el-button>
+        <el-button type="primary" size="small" @click="hostList" style="padding:7px 9px" :disabled="NoUse">协办</el-button>
+        <el-button type="primary" size="small" @click="cancelhostList" style="padding:7px 9px">取消协办</el-button>
        </el-form-item>
+       <el-table :data="allList" style="width:650px" max-height="90" :show-header="false" >
+          <el-table-column  prop="coUser" label="队列" ></el-table-column>
+          <el-table-column prop="position" label="岗位" ></el-table-column>
+          <el-table-column prop="nickname" label="人员" ></el-table-column>
+          <el-table-column prop="coTime" label="协办到期日" ></el-table-column>
+          <el-table-column fixed="right" label="操作">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="deleteListRow(scope.$index, allList)"
+                type="text"
+                size="small">
+                移除
+              </el-button>
+            </template>
+          </el-table-column>
+       </el-table>
+        <!-- <el-input type="textarea"  v-model="allList" placeholder="备注" style="width: 380px;"></el-input>  -->
        <el-form-item label="备注:">
       <el-input type="textarea"  v-model="AdduserForms.remarks" placeholder="备注" style="width: 380px;"></el-input>  
     </el-form-item>
@@ -156,12 +172,17 @@ export default {
         endTime: "",
         userInfos:"",
       },
+      allList:[],
       AdduserForms: {
         positionId: "",
         stateCode: "",
-        areaList: "",
+        areaList:"",
         remarks:""
-      }
+      },
+      obj1:{},
+      obj2:{},
+      obj3:{},
+      coVoList:[]
     };
   },
   methods: {
@@ -186,7 +207,10 @@ export default {
       this.times = val;
     },
     getMessage(val) {
-      this.AdduserForms.areaCode = val;
+      this.AdduserForms.areaCode = val; 
+       this.obj2 = this.options.find((item)=>{
+        return item.id ===val;
+      });  
       let para = {
         positionId: this.AdduserForms.positionId
       };
@@ -198,11 +222,17 @@ export default {
     },
     getMessage1(val) {
       this.AdduserForms.areaList = val;
+      this.obj1 = this.options2.find((item)=>{
+        return item.id ===val ;
+      });
       //  this.getUser();
       //  this.getAllList()
     },
     getMessages(val) {
       this.AdduserForms.stateCode = val;
+       this.obj3 = this.options1.find((item)=>{
+        return item.id ===val ;
+      });
       //  this.getUser();
       //  this.getAllList()
     },
@@ -231,9 +261,9 @@ export default {
     getDl_AllList() {
       authlist().then(res => {
         this.options2 = res.data.result;
+        
       });
     },
-
     getlists() {
       this.listShow();
       let h =
@@ -246,6 +276,12 @@ export default {
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+    addList(){
+      // if(!this.AdduserForms.stateCode&& !this.times&&!this.AdduserForms.areaList&&!this.AdduserForms.positionId){
+         this.allList.push({coUser:this.obj1.queueName,position:this.obj2.position,nickname:this.obj3.nickname,coTime:this.times} )
+         this.coVoList.push({coQueueId:this.AdduserForms.areaList,coTime:this.times,coUser:this.AdduserForms.stateCode})
+      // }
     },
     hostList() {
       this.addlists = [];
@@ -266,11 +302,12 @@ export default {
         });
       }else{
          let para = {
-          coUser: this.AdduserForms.stateCode,
+          // coUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,
-          coTime: this.times,
+          coVoList:this.coVoList,
+          // coTime: this.times,
           status: "1",
-          queueId: this.AdduserForms.areaList,
+          // queueId: this.AdduserForms.areaList,
           remarks:this.AdduserForms.remarks
          }
          if (
@@ -289,60 +326,17 @@ export default {
           coMissionApp(para).then(res => {
             this.AdduserForms.stateCode = "";
             this.AdduserForms.areaList = "";
+             this.AdduserForms.remarks =="";
             this.times = "";
             this.coTime = "";
             this.addlists = [];
             this.NoUse = false;
+            this.coVoList=[];
+            this.allList=[];
             this.listShow();
           });
         }
       }
-
-
-      // for (let i = 0; i < this.multipleSelection.length; i++) {
-      //   if (
-      //     this.multipleSelection[i].lockFlag != "null" ||
-      //     this.multipleSelection[i].lockFlag == "Y"
-      //   ) {
-      //     this.b.push(this.multipleSelection[i].lockFlag);
-      //   }
-      // }
-      // if (this.b.indexOf("N", 0) == -1) {
-      //   let para = {
-      //     coUser: this.AdduserForms.stateCode,
-      //     missionIds: this.addlists,
-      //     coTime: this.times,
-      //     status: "1",
-      //     queueId: this.AdduserForms.areaList
-      //   };
-      //   if (
-      //     this.AdduserForms.stateCode == "" ||
-      //     this.AdduserForms.areaList == "" ||
-      //     this.addlists.length == 0 ||
-      //     this.times == ""
-      //   ) {
-      //     this.$alert("请填写完整的协办条件！", "提示", {
-      //       confirmButtonText: "确定",
-      //       type: "warning",
-      //       center: "true"
-      //     });
-      //   } else {
-      //     coMissionApp(para).then(res => {
-      //       this.AdduserForms.stateCode = "";
-      //       this.AdduserForms.areaList = "";
-      //       this.times = "";
-      //       this.coTime = "";
-      //       this.addlists = [];
-      //       this.listShow();
-      //     });
-      //   }
-      // } else {
-      //   this.$alert("请选未申请的案件！", "提示", {
-      //     confirmButtonText: "确定",
-      //     type: "warning",
-      //     center: "true"
-      //   });
-      // }
     },
     handleCurrentChange(val) {
       this.pages = val;
@@ -436,6 +430,9 @@ export default {
       //        this.userLists.splice(0,this.userLists.length)
       //        this.getlists();
       //    })
+    },
+    deleteListRow(index, rows){
+        rows.splice(index, 1);
     }
   },
   mounted() {

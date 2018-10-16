@@ -10,12 +10,19 @@
     <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
-    <el-form-item label="协办队列:" label-width="120px">
+     <el-form-item label="协办列表:" label-width="120px">
+        <el-table :data="lists.coVoList">
+            <el-table-column  prop="coQueueName" label="协办队列" width="100">     </el-table-column>
+      <el-table-column  prop="coUserName"
+      label="协办员" width="100"></el-table-column>    
+        </el-table>       
+    </el-form-item>
+    <!-- <el-form-item label="协办队列:" label-width="120px">
       <span>{{lists.goalQueue}}</span>
     </el-form-item>
     <el-form-item label="协办员:" label-width="120px">
       <span>{{lists.goalCollector}}</span>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="审批备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
@@ -111,8 +118,8 @@
 <script>
 import {Approvalfind,Approvalapply} from "@/api/sp";
 export default {
-  data() {
-    return {
+  data() {     
+    return {    
       disable:false,
       lists:[],
       listPage:[],

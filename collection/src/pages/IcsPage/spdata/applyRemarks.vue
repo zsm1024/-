@@ -10,7 +10,38 @@
     <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
-    <el-form-item label="协办队列:" label-width="120px" prop="queueName">
+    <el-form-item>
+      <el-table :data="lists.coVoList"  id="coId" >
+        <!-- v-if="lists.isShow!='N'" -->
+        <el-table-column  prop="coQueueName" label="协办队列">
+          <template slot-scope="scope">
+            <el-select placeholder="请选择"  v-model="scope.row.coQueueName"  style="width:150px" @change="queueChange" clearable >
+            <el-option  v-for="item in listsLeft" :key="item.id" :label="item.queueName" :value="item.id"></el-option>
+      </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="coUser" label="协办岗位">
+            <template slot-scope="scope">
+              <el-select  placeholder="请选择"  v-model="scope.row.positionName"  style="width:150px" @change="getMessage(scope.row.positionName)"  clearable >
+                <el-option  v-for="item in options" :key="item.id" :label="item.position" :value="item.id"></el-option>
+              </el-select>
+            </template>
+        </el-table-column>
+        <el-table-column  prop="coUserName" label="协办员">
+          <template slot-scope="scope">
+            <el-select placeholder="请选择" v-model="scope.row.coUserName" style="width:150px" @change="colChange" clearable>
+              <el-option v-for="items in options1" :key="items.id" :label="items.nickname" :value="items.id"></el-option>
+              </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="coTime" label="协办到期日">
+          <template slot-scope="scope">
+            <el-date-picker placeholder="请选择" type="date" v-model="scope.row.coTime" style="width:150px"  @change="coTimeChange"></el-date-picker>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-form-item>
+    <!-- <el-form-item label="协办队列:" label-width="120px" prop="queueName">
       <span v-if="lists.isShow=='N'">{{lists.goalQueue}}</span>
       <el-select  v-else placeholder="请选择"  v-model="mainform.queueName"  style="width:150px" @change="queueChange" clearable >
             <el-option  v-for="item in listsLeft" :key="item.id" :label="item.queueName" :value="item.id"></el-option>
@@ -18,34 +49,25 @@
     </el-form-item>
       <el-form-item label="协办岗位:" label-width="120px" prop="positionId">
       <span v-if="lists.isShow=='N'">{{lists.position}}</span>
-       <!-- <el-select v-model="AdduserForms.positionId" placeholder="请选择岗位" @change="getMessage" style="width:120px">
-            <el-option v-for="item in options" :key="item.id" :label="item.position" :value="item.id"></el-option>
-          </el-select> -->
-          <!-- @change="getMessage" -->
       <el-select  v-else placeholder="请选择"  v-model="mainform.positionId"  style="width:150px" @change="getMessage"  clearable >
-        <!-- :placeholder="lists.goalQueue" -->
             <el-option  v-for="item in options" :key="item.id" :label="item.position" :value="item.id"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="协办员:" label-width="120px" prop="goalCollector"> 
        <span v-if="lists.isShow=='N'">{{lists.goalCollector}}</span>
-       <!-- authlistRight -->
       <el-select v-else placeholder="请选择" v-model="mainform.goalCollector" style="width:150px" @change="colChange" clearable>
             <el-option v-for="items in options1" :key="items.id" :label="items.nickname" :value="items.id"></el-option>
         </el-select>
     </el-form-item>
      <el-form-item label="协办到期日:" label-width="120px" prop="coTime">
       <span v-if="lists.isShow=='N'">{{lists.coTime}}</span>
-      <!-- :placeholder="lists.coTime"  -->
      <el-date-picker v-else placeholder="请选择" type="date" v-model="mainform.coTime" style="width:150px"  @change="coTimeChange"></el-date-picker>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
     <el-form-item style="padding:10px ">
       <el-button type="primary" size="small" :disabled="disable" @click="approve">提交</el-button>
-      <!-- <el-button type="primary" size="small" :disabled="disable" @click="refuse">拒绝</el-button>
-      <el-button type="primary" size="small" :disabled="disable" @click="close">关闭</el-button> -->
       <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
@@ -131,6 +153,7 @@
 <script>
 import {Approvalfind,Approvalapply} from "@/api/sp";
 import {positionUser} from '@/api/task';
+import Moment from 'moment/moment';
  import{authlist,authlistRight} from "@/api/basedata"
  import { getAuthUser,getAuthtree,sysPositionslistAll} from "@/api/auth";
 export default {
@@ -177,19 +200,23 @@ export default {
     //协办到期日
     coTimeChange(val){
       this.mainform.coTime=val;
+      console.log(val)
     },
     colChange(val){
         this.colchange=val
+        console.log(val)
     },
     goalChange(val){
         this.goalchange=val
     },
      //获取岗位信息
-     getMessage(){
+     getMessage(val){
        this.mainform.goalCollector="";
       let para={
-       positionId:this.mainform.positionId
+       positionId:val 
+      //  positionId:this.mainform.positionId
       };
+      console.log(val)
          positionUser(para).then(res => {
           this.mainform.goalCollector="";
             // this.AdduserForms.positionId="";
@@ -249,17 +276,21 @@ export default {
     approve(){
       this.lists.leaveTime=this.leaveTimeChange;
       this.lists.isReal="T";
+      if(this.lists.coVoList.length>0){
+        this.lists.coVoList.forEach(el => {
+          el.coTime=el.coTime?Moment(el.coTime).format('YYYY-MM-DD'):""
+        });
+      }
       this.lists.remarks=this.inputs;
       delete this.lists.applyListDtos;
       this.lists.goalQueue=this.mainform.queueName;  
       this.lists.goalQueue=this.goalForm.queueName;   
       this.lists.goalCollector=this.mainform.goalCollector;
       this.lists.turnUser=this.goalForm.goalCollector;
-      this.lists.coTime=this.mainform.coTime;
-      this.lists.coUser=this.colchange; 
-        
+      // this.lists.coTime=this.mainform.coTime?Moment(this.mainform.coTime).format('YYYY-MM-DD'):"";
+      this.lists.coUser=this.colchange;        
       let para=this.lists; 
-  
+  console.log(this.lists)
       if(this.lists.remarks==" "){
         this.$alert('请填写备注！','提示',{
                     confirmButtonText:'确定',
@@ -354,5 +385,9 @@ export default {
   }
 };
 </script>
+<style>
+  #coId .el-input{min-height: 0px!important} 
+</style>
+
 
 

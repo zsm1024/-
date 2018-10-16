@@ -12,11 +12,14 @@ import vSelect from 'vue-select'
 import 'font-awesome/css/font-awesome.css'
 import Validator from 'vue-validator'
 import './permission' // 权限
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
 if(process.env.NODE_ENV=="development"){
     Mock.bootstrap();
 }
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(iView);
 Vue.use(VueResource);
 Vue.component('v-select', vSelect);
 Vue.use(Validator)
