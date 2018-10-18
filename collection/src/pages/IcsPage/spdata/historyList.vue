@@ -10,7 +10,19 @@
     <el-form-item label="催收员:" label-width="120px">
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
-    <el-form-item label="协办队列:" label-width="120px">
+    <el-form-item>
+      <el-table :data="lists.coVoList">
+        <el-table-column  prop="coQueueName" label="协办队列">
+        </el-table-column>
+        <el-table-column  prop="positionName" label="协办岗位">
+        </el-table-column>
+        <el-table-column  prop="coUserName" label="协办员">
+        </el-table-column>
+        <el-table-column  prop="coTime" label="协办到期日">
+        </el-table-column>
+      </el-table>
+    </el-form-item>
+    <!-- <el-form-item label="协办队列:" label-width="120px">
       <span>{{lists.goalQueue}}</span>
     </el-form-item>
     <el-form-item label="协办员:" label-width="120px">
@@ -18,7 +30,7 @@
     </el-form-item>
     <el-form-item label="协办到期日:" label-width="120px">
       <span>{{lists.coTime}}</span>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item style="padding:10px ">
       <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      

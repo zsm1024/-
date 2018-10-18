@@ -66,7 +66,7 @@
           <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteListRow(scope.$index, allList)"
+                @click.native.prevent="deleteListRow(scope.$index, allList,coVoList)"
                 type="text"
                 size="small">
                 移除
@@ -278,10 +278,19 @@ export default {
       this.multipleSelection = val;
     },
     addList(){
-      // if(!this.AdduserForms.stateCode&& !this.times&&!this.AdduserForms.areaList&&!this.AdduserForms.positionId){
+      
+      if(this.AdduserForms.stateCode&&this.AdduserForms.areaList&&this.AdduserForms.positionId){
          this.allList.push({coUser:this.obj1.queueName,position:this.obj2.position,nickname:this.obj3.nickname,coTime:this.times} )
          this.coVoList.push({coQueueId:this.AdduserForms.areaList,coTime:this.times,coUser:this.AdduserForms.stateCode})
-      // }
+         this.AdduserForms.areaList="";this.AdduserForms.positionId="";this.AdduserForms.stateCode="";this.coTime="";
+       }else{
+          this.$alert("请将队列/岗位/人员填写完整！", "提示", {
+          confirmButtonText: "确定",
+          type: "warning",
+          center: "true"
+        });
+        return;
+       }
     },
     hostList() {
       this.addlists = [];
@@ -310,23 +319,18 @@ export default {
           // queueId: this.AdduserForms.areaList,
           remarks:this.AdduserForms.remarks
          }
-         if (
-         this.AdduserForms.stateCode == "" ||
-          this.AdduserForms.areaList == "" ||
-          this.addlists.length == 0 ||
-          this.times == "" ||
-          this.AdduserForms.remarks ==""
-        ) {
-          this.$alert("请检查队列、岗位、人员、日期、备注是否填写完整！", "提示", {
+         if(this.addlists.length == 0||this.AdduserForms.remarks ==""||this.coVoList.length==0){
+           this.$alert("请检查所选案件、备注、协办列表是否填写完整！", "提示", {
             confirmButtonText: "确定",
             type: "warning",
             center: "true"
-          });
-        } else {
-          coMissionApp(para).then(res => {
+         })
+         }else{
+           coMissionApp(para).then(res => {
             this.AdduserForms.stateCode = "";
             this.AdduserForms.areaList = "";
-             this.AdduserForms.remarks =="";
+            this.AdduserForms.remarks =="";
+            this.AdduserForms.positionId=""
             this.times = "";
             this.coTime = "";
             this.addlists = [];
@@ -335,7 +339,33 @@ export default {
             this.allList=[];
             this.listShow();
           });
-        }
+         }
+        //  if (
+        //  this.AdduserForms.stateCode == "" ||
+        //   this.AdduserForms.areaList == "" ||
+        //   this.addlists.length == 0 ||
+        //   this.times == "" ||
+        //   this.AdduserForms.remarks ==""
+        // ) {
+        //   this.$alert("请检查队列、岗位、人员、日期、备注是否填写完整！", "提示", {
+        //     confirmButtonText: "确定",
+        //     type: "warning",
+        //     center: "true"
+        //   });
+        // } else {
+        //   coMissionApp(para).then(res => {
+        //     this.AdduserForms.stateCode = "";
+        //     this.AdduserForms.areaList = "";
+        //      this.AdduserForms.remarks =="";
+        //     this.times = "";
+        //     this.coTime = "";
+        //     this.addlists = [];
+        //     this.NoUse = false;
+        //     this.coVoList=[];
+        //     this.allList=[];
+        //     this.listShow();
+        //   });
+        // }
       }
     },
     handleCurrentChange(val) {
@@ -431,8 +461,10 @@ export default {
       //        this.getlists();
       //    })
     },
-    deleteListRow(index, rows){
+    deleteListRow(index, rows,item){
         rows.splice(index, 1);
+        item.splice(index, 1);
+        console.log(item)
     }
   },
   mounted() {

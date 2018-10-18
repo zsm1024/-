@@ -12,9 +12,9 @@
     </el-form-item>
      <el-form-item label="协办列表:" label-width="120px">
         <el-table :data="lists.coVoList">
-            <el-table-column  prop="coQueueName" label="协办队列" width="100">     </el-table-column>
-      <el-table-column  prop="coUserName"
-      label="协办员" width="100"></el-table-column>    
+          <el-table-column  prop="coQueueName" label="协办队列" width="100"></el-table-column>
+          <el-table-column  prop="coUserName" label="协办员" width="100"></el-table-column> 
+           <el-table-column prop="coTime" label="协办到期日" width="100"></el-table-column>    
         </el-table>       
     </el-form-item>
     <!-- <el-form-item label="协办队列:" label-width="120px">

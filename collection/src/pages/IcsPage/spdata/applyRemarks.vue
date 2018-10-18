@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column  prop="coUserName" label="协办员">
           <template slot-scope="scope">
-            <el-select placeholder="请选择" v-model="scope.row.coUserName" style="width:150px" @change="colChange" clearable>
+            <el-select placeholder="请选择" v-model="scope.row.coUserName" style="width:150px" @change="colChange(scope.row)" clearable>
               <el-option v-for="items in options1" :key="items.id" :label="items.nickname" :value="items.id"></el-option>
               </el-select>
           </template>
@@ -203,8 +203,8 @@ export default {
       console.log(val)
     },
     colChange(val){
-        this.colchange=val
-        console.log(val)
+        this.colchange=val.coUserName;
+        val.coUser=val.coUserName
     },
     goalChange(val){
         this.goalchange=val
@@ -216,7 +216,6 @@ export default {
        positionId:val 
       //  positionId:this.mainform.positionId
       };
-      console.log(val)
          positionUser(para).then(res => {
           this.mainform.goalCollector="";
             // this.AdduserForms.positionId="";
