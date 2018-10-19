@@ -280,9 +280,12 @@ export default {
     addList(){
       
       if(this.AdduserForms.stateCode&&this.AdduserForms.areaList&&this.AdduserForms.positionId){
+         if(!this.coTime){
+          this.times=""
+         }
          this.allList.push({coUser:this.obj1.queueName,position:this.obj2.position,nickname:this.obj3.nickname,coTime:this.times} )
          this.coVoList.push({coQueueId:this.AdduserForms.areaList,coTime:this.times,coUser:this.AdduserForms.stateCode})
-         this.AdduserForms.areaList="";this.AdduserForms.positionId="";this.AdduserForms.stateCode="";this.coTime="";
+         this.AdduserForms.areaList="";this.AdduserForms.positionId="";this.AdduserForms.stateCode=""; this.coTime=""; this.times=""
        }else{
           this.$alert("请将队列/岗位/人员填写完整！", "提示", {
           confirmButtonText: "确定",

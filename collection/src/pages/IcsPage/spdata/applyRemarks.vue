@@ -15,7 +15,7 @@
         <!-- v-if="lists.isShow!='N'" -->
         <el-table-column  prop="coQueueName" label="协办队列">
           <template slot-scope="scope">
-            <el-select placeholder="请选择"  v-model="scope.row.coQueueName"  style="width:150px" @change="queueChange" clearable >
+            <el-select placeholder="请选择"  v-model="scope.row.coQueueName"  style="width:150px" @change="queueChange(scope.row)" clearable >
             <el-option  v-for="item in listsLeft" :key="item.id" :label="item.queueName" :value="item.id"></el-option>
       </el-select>
           </template>
@@ -354,8 +354,9 @@ export default {
       });
     },
     queueChange(val){
-      this.listId =val;
+      this.listId =val.coQueueName;
       this.lists.queueId=this.listId;
+      val.coQueueId=val.coQueueName
       this.rightShow()
     },
     goalqueueChange(val){
