@@ -25,7 +25,7 @@
 					</table>
 				</div>			
 			</el-collapse-item>
-            <el-collapse-item title="控制车辆信息" name="2"style="position:relative"  >
+            <el-collapse-item title="控制车辆信息" name="2" style="position:relative"  >
                 <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subCarInfo('carForm')">提交</el-button>
                 <table :model="carForm" ref="carForm" >
                   <tbody  class="legal" v-loading="listLoadings">
@@ -262,8 +262,8 @@
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :width="col.width" :key="index" align="center" >
 					<template slot-scope="scope">            
             <el-input  v-show="scope.row.edit" v-if="(col.field!='outdate'&&col.field!='indate'&&col.field!='storageDays')"  size="small" v-model="scope.row[col.field]"></el-input> 
-           <el-date-picker v-show="scope.row.edit" v-if="col.field=='indate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" @change="inchange(scope.row[col.field])"  ></el-date-picker>
-            <el-date-picker v-show="scope.row.edit" v-if="col.field=='outdate'"  v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" @change="outchange(scope.row[col.field])" ></el-date-picker> 
+           <el-date-picker v-show="scope.row.edit" v-if="col.field=='indate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" ></el-date-picker>
+            <el-date-picker v-show="scope.row.edit" v-if="col.field=='outdate'"  v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd"></el-date-picker> 
 						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>  
             <span v-show="scope.row.edit" v-if="col.field=='storageDays'" >{{ scope.row[col.field] }}</span>        						  
           </template>
@@ -503,6 +503,7 @@ import {
   savecost,
   updateOsDetailsCharges
 } from "@/api/cars";
+import Moment from "moment/moment";
 import { findByType } from "@/api/basedata";
 import {
 
@@ -679,35 +680,11 @@ export default {
     moneytime(val) {
       this.realize.time = val;
     },
-    inchange(date) {
-      this.inChange = "";
-      if (date) {
-        var srcd = new Date(date);
-        this.inChange =
-          srcd.getFullYear() +
-          "-" +
-          (srcd.getMonth() + 1) +
-          "-" +
-          srcd.getDate();
-      }
-    },
-    outchange(date) {
-      this.outChange = "";
-      if (date) {
-        var src = new Date(date);
-        this.outChange =
-          src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
-      }
-    },
-  GetDateDiff(startDate,endDate) {  
-    var startTime = new Date(Date.parse(startDate.replace(/-/g,   "/"))).getTime();     
-    var endTime = new Date(Date.parse(endDate.replace(/-/g,   "/"))).getTime();     
-    var dates = Math.abs((startTime - endTime))/(1000*60*60*24);
-    this.AddparkCarInfo.storageDays=dates+1        
-    },
-    
     countNum(){ 
-      this.GetDateDiff(this.AddparkCarInfo.indate,this.AddparkCarInfo.outdate)
+    let startTime = new Date(Date.parse(this.AddparkCarInfo.indate.replace(/-/g,   "/"))).getTime();     
+    let endTime = new Date(Date.parse(this.AddparkCarInfo.outdate.replace(/-/g,   "/"))).getTime();     
+    let dates = Math.abs((startTime - endTime))/(1000*60*60*24);
+    this.AddparkCarInfo.storageDays=dates+1    
     },
    
     getInDate(val) {
@@ -1030,12 +1007,8 @@ export default {
     },
     parkingEdit(row) {
       let para = row;
-    if(this.inChange){
-      row.indate = this.inChange;    
-    }
-    if(this.outChange){
-      row.outdate = this.outChange;
-    }
+      row.indate=row.indate? Moment(row.indate).format("YYYY-MM-DD") : "";
+      row.outdate=row.outdate? Moment(row.outdate).format("YYYY-MM-DD") : "";
       if ((row.edit = !row.edit)) {
         
       } else {
