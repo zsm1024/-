@@ -101,7 +101,12 @@ import {
   positionUser,
   cancelCoUer
 } from "@/api/task";
-import { getAuthUser, getAuthtree, sysPositionslistAll,getUsersAll } from "@/api/auth";
+import {
+  getAuthUser,
+  getAuthtree,
+  sysPositionslistAll,
+  getUsersAll
+} from "@/api/auth";
 export default {
   data() {
     return {
@@ -109,7 +114,7 @@ export default {
       heights: 0,
       datas: [],
       times: "",
-      NoUse:true,
+      NoUse: true,
       value6: "",
       times1: "",
       times2: "",
@@ -128,10 +133,10 @@ export default {
       options1: [],
       options2: [],
       treedata: [],
-      userInfos:[],
-      value5:[],
+      userInfos: [],
+      value5: [],
       k: [],
-      ss:[],
+      ss: [],
       cancelhost: false,
       multipleSelection: [],
       cols: [
@@ -170,35 +175,39 @@ export default {
         processer: "",
         startTime: "",
         endTime: "",
-        userInfos:"",
+        userInfos: ""
       },
-      allList:[],
+      allList: [],
       AdduserForms: {
         positionId: "",
         stateCode: "",
-        areaList:"",
-        remarks:""
+        areaList: "",
+        remarks: ""
       },
-      obj1:{},
-      obj2:{},
-      obj3:{},
-      coVoList:[]
+      obj1: {},
+      obj2: {},
+      obj3: {},
+      coVoList: []
     };
   },
   methods: {
-    colchange(val){
-      //  this.ss=val      
+    colchange(val) {
+      //  this.ss=val
     },
     //获取用户信息
-    getuserInfos(){  
+    getuserInfos() {
       getUsersAll().then(res => {
-        this.userInfos=[],
-         res.data.forEach(f=>{
-           this.userInfos.push({"username":f.username,"nickname":f.nickname,"id":f.id})
-         })    
+        (this.userInfos = []),
+          res.data.forEach(f => {
+            this.userInfos.push({
+              username: f.username,
+              nickname: f.nickname,
+              id: f.id
+            });
+          });
       });
     },
-    
+
     dataChange(val) {
       this.times2 = val.split("至").pop();
       this.times1 = val.split("至").shift();
@@ -207,10 +216,10 @@ export default {
       this.times = val;
     },
     getMessage(val) {
-      this.AdduserForms.areaCode = val; 
-       this.obj2 = this.options.find((item)=>{
-        return item.id ===val;
-      });  
+      this.AdduserForms.areaCode = val;
+      this.obj2 = this.options.find(item => {
+        return item.id === val;
+      });
       let para = {
         positionId: this.AdduserForms.positionId
       };
@@ -222,16 +231,16 @@ export default {
     },
     getMessage1(val) {
       this.AdduserForms.areaList = val;
-      this.obj1 = this.options2.find((item)=>{
-        return item.id ===val ;
+      this.obj1 = this.options2.find(item => {
+        return item.id === val;
       });
       //  this.getUser();
       //  this.getAllList()
     },
     getMessages(val) {
       this.AdduserForms.stateCode = val;
-       this.obj3 = this.options1.find((item)=>{
-        return item.id ===val ;
+      this.obj3 = this.options1.find(item => {
+        return item.id === val;
       });
       //  this.getUser();
       //  this.getAllList()
@@ -261,7 +270,6 @@ export default {
     getDl_AllList() {
       authlist().then(res => {
         this.options2 = res.data.result;
-        
       });
     },
     getlists() {
@@ -270,30 +278,45 @@ export default {
         (window.innerHeight ||
           document.documentElement.clientHeight ||
           document.body.clientHeight) - 190;
-        this.heights = h;
-
+      this.heights = h;
     },
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    addList(){
-      
-      if(this.AdduserForms.stateCode&&this.AdduserForms.areaList&&this.AdduserForms.positionId){
-         if(!this.coTime){
-          this.times=""
-         }
-         this.allList.push({coUser:this.obj1.queueName,position:this.obj2.position,nickname:this.obj3.nickname,coTime:this.times} )
-         this.coVoList.push({coQueueId:this.AdduserForms.areaList,coTime:this.times,coUser:this.AdduserForms.stateCode})
-         this.AdduserForms.areaList="";this.AdduserForms.positionId="";this.AdduserForms.stateCode=""; this.coTime=""; this.times=""
-       }else{
-          this.$alert("请将队列/岗位/人员填写完整！", "提示", {
+    addList() {
+      if (
+        this.AdduserForms.stateCode &&
+        this.AdduserForms.areaList &&
+        this.AdduserForms.positionId
+      ) {
+        if (!this.coTime) {
+          this.times = "";
+        }
+        this.allList.push({
+          coUser: this.obj1.queueName,
+          position: this.obj2.position,
+          nickname: this.obj3.nickname,
+          coTime: this.times
+        });
+        this.coVoList.push({
+          coQueueId: this.AdduserForms.areaList,
+          coTime: this.times,
+          coUser: this.AdduserForms.stateCode
+        });
+        this.AdduserForms.areaList = "";
+        this.AdduserForms.positionId = "";
+        this.AdduserForms.stateCode = "";
+        this.coTime = "";
+        this.times = "";
+      } else {
+        this.$alert("请将队列/岗位/人员填写完整！", "提示", {
           confirmButtonText: "确定",
           type: "warning",
           center: "true"
         });
         return;
-       }
+      }
     },
     hostList() {
       this.addlists = [];
@@ -301,48 +324,61 @@ export default {
         this.addlists.push(f.id);
       });
       this.b = [];
-     this.multipleSelection.forEach((f,i)=>{
-        if(f.turnStatus||f.turnStatus!=null||f.coStatus||f.coStatus!=null||f.backCaseStatus||f.backCaseStatus!=null||f.leaveStatus||f.leaveStatus!=null ){      
-        this.b.push(f.coStatus)
+      this.multipleSelection.forEach((f, i) => {
+        if (
+          f.turnStatus ||
+          f.turnStatus != null ||
+          f.coStatus ||
+          f.coStatus != null ||
+          f.backCaseStatus ||
+          f.backCaseStatus != null ||
+          f.leaveStatus ||
+          f.leaveStatus != null
+        ) {
+          this.b.push(f.coStatus);
         }
-      })
-      if(this.b.length>0){
-          this.$alert("请选未申请的案件！", "提示", {
+      });
+      if (this.b.length > 0) {
+        this.$alert("请选未申请的案件！", "提示", {
           confirmButtonText: "确定",
           type: "warning",
           center: "true"
         });
-      }else{
-         let para = {
+      } else {
+        let para = {
           // coUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,
-          coVoList:this.coVoList,
+          coVoList: this.coVoList,
           // coTime: this.times,
           status: "1",
           // queueId: this.AdduserForms.areaList,
-          remarks:this.AdduserForms.remarks
-         }
-         if(this.addlists.length == 0||this.AdduserForms.remarks ==""||this.coVoList.length==0){
-           this.$alert("请检查所选案件、备注、协办列表是否填写完整！", "提示", {
+          remarks: this.AdduserForms.remarks
+        };
+        if (
+          this.addlists.length == 0 ||
+          this.AdduserForms.remarks == "" ||
+          this.coVoList.length == 0
+        ) {
+          this.$alert("请检查所选案件、备注、协办列表是否填写完整！", "提示", {
             confirmButtonText: "确定",
             type: "warning",
             center: "true"
-         })
-         }else{
-           coMissionApp(para).then(res => {
+          });
+        } else {
+          coMissionApp(para).then(res => {
             this.AdduserForms.stateCode = "";
             this.AdduserForms.areaList = "";
-            this.AdduserForms.remarks =="";
-            this.AdduserForms.positionId=""
+            this.AdduserForms.remarks == "";
+            this.AdduserForms.positionId = "";
             this.times = "";
             this.coTime = "";
             this.addlists = [];
             this.NoUse = false;
-            this.coVoList=[];
-            this.allList=[];
+            this.coVoList = [];
+            this.allList = [];
             this.listShow();
           });
-         }
+        }
         //  if (
         //  this.AdduserForms.stateCode == "" ||
         //   this.AdduserForms.areaList == "" ||
@@ -390,7 +426,7 @@ export default {
         startTime: this.times1,
         endTime: this.times2,
         username: this.filters.processer,
-        userInfos:this.filters.userInfos.toString()
+        userInfos: this.filters.userInfos.toString()
       };
       this.listLoading = true;
       listCoMission(para).then(res => {
@@ -430,12 +466,13 @@ export default {
       this.k = [];
       for (let i = 0; i < this.multipleSelection.length; i++) {
         if (
-          this.multipleSelection[i].coTime == null||this.multipleSelection[i].coStatus != null
+          this.multipleSelection[i].coTime == null ||
+          this.multipleSelection[i].coStatus != null
         ) {
           this.k.push("NO");
         }
       }
-      if (this.k.length==0) {
+      if (this.k.length == 0) {
         let para = {
           ids: this.cancleList
         };
@@ -443,12 +480,12 @@ export default {
           this.cancleList = [];
           this.listShow();
         });
-      }else{
+      } else {
         this.$message({
-            showClose: true,
-          message: '存在不能取消协办的案件，请重新选择！',
-          type: 'error'
-        })
+          showClose: true,
+          message: "存在不能取消协办的案件，请重新选择！",
+          type: "error"
+        });
       }
     },
     toggleSelection() {
@@ -464,16 +501,16 @@ export default {
       //        this.getlists();
       //    })
     },
-    deleteListRow(index, rows,item){
-        rows.splice(index, 1);
-        item.splice(index, 1);
-        console.log(item)
+    deleteListRow(index, rows, item) {
+      rows.splice(index, 1);
+      item.splice(index, 1);
+      console.log(item);
     }
   },
   mounted() {
     this.listShow();
     this.getDl_AllList();
-    this.getuserInfos()
+    this.getuserInfos();
     // this.getTaskUser1();
 
     // this.getTaskUser();
@@ -506,6 +543,8 @@ td {
   padding: 0 !important;
   white-space: nowrap;
 } */
-.checkmore .el-select__tags{max-width:100%!important}
+.checkmore .el-select__tags {
+  max-width: 100% !important;
+}
 </style>
 

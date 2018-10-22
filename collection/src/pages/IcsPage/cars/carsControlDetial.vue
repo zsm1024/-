@@ -699,18 +699,22 @@ export default {
           src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
       }
     },
-    countNum(){
-      let eArr = this.AddparkCarInfo.indate.split("-");
-      let sArr  = this.AddparkCarInfo.outdate.split("-");
-      let sRDate=new Date(sArr[0],sArr[1],sArr[2])
-      let eRDate=new Date(eArr[0],eArr[1],eArr[2])
-      let days =((sRDate-eRDate)/(24*60*60*1000))+1;
-      this.AddparkCarInfo.storageDays=days
+  GetDateDiff(startDate,endDate) {  
+    var startTime = new Date(Date.parse(startDate.replace(/-/g,   "/"))).getTime();     
+    var endTime = new Date(Date.parse(endDate.replace(/-/g,   "/"))).getTime();     
+    var dates = Math.abs((startTime - endTime))/(1000*60*60*24);
+    this.AddparkCarInfo.storageDays=dates+1        
     },
+    
+    countNum(){ 
+      this.GetDateDiff(this.AddparkCarInfo.indate,this.AddparkCarInfo.outdate)
+    },
+   
     getInDate(val) {
       this.AddparkCarInfo.indate = val;
       if(this.AddparkCarInfo.outdate){
         this.countNum()
+        
       }
     },
     getOutDate(val) {

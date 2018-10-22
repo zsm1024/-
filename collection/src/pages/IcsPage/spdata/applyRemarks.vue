@@ -151,242 +151,238 @@
   </section>
 </template>
 <script>
-import {Approvalfind,Approvalapply} from "@/api/sp";
-import {positionUser} from '@/api/task';
-import Moment from 'moment/moment';
- import{authlist,authlistRight} from "@/api/basedata"
- import { getAuthUser,getAuthtree,sysPositionslistAll} from "@/api/auth";
+import { Approvalfind, Approvalapply } from "@/api/sp";
+import { positionUser } from "@/api/task";
+import Moment from "moment/moment";
+import { authlist, authlistRight } from "@/api/basedata";
+import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
 export default {
   data() {
     return {
-      disable:false,
-      lists:[],
-      leaveTimeChange:'',
-      listPage:[],
-      inputs:"",
-      listsLeft:"",
-      colchange:"",
-      goalchange:"",
-      listCocl:"",
+      disable: false,
+      lists: [],
+      leaveTimeChange: "",
+      listPage: [],
+      inputs: "",
+      listsLeft: "",
+      colchange: "",
+      goalchange: "",
+      listCocl: "",
       listId: "",
-      options:[],
-      options1:[],
-      options2:[],
-      authlistRight:"",
+      options: [],
+      options1: [],
+      options2: [],
+      authlistRight: "",
       mainform: {
-          queueName:"",
-          goalCollector:"",
-          positionId:"",
-          coTime:""
+        queueName: "",
+        goalCollector: "",
+        positionId: "",
+        coTime: ""
       },
-      goalForm:{
-          queueName:"",
-          goalCollector:"",
-          positionId:"",
+      goalForm: {
+        queueName: "",
+        goalCollector: "",
+        positionId: ""
       },
-      id:this.$route.params.id,
+      id: this.$route.params.id,
       cols: [
-        { title: "节点名称", field: "step"},
-        { title: "用户ID", field: "username"},
-        { title: "审批日期", field: "updateTime"},
-        { title: "备注", field: "remarks"},      
+        { title: "节点名称", field: "step" },
+        { title: "用户ID", field: "username" },
+        { title: "审批日期", field: "updateTime" },
+        { title: "备注", field: "remarks" }
       ]
     };
   },
   methods: {
-    changeTime(val){
-      this.leaveTimeChange=val
+    changeTime(val) {
+      this.leaveTimeChange = val;
     },
     //协办到期日
-    coTimeChange(val){
-      this.mainform.coTime=val;
-      console.log(val)
+    coTimeChange(val) {
+      this.mainform.coTime = val;
+      console.log(val);
     },
-    colChange(val){
-        this.colchange=val.coUserName;
-        val.coUser=val.coUserName
+    colChange(val) {
+      this.colchange = val.coUserName;
+      val.coUser = val.coUserName;
     },
-    goalChange(val){
-        this.goalchange=val
+    goalChange(val) {
+      this.goalchange = val;
     },
-     //获取岗位信息
-     getMessage(val){
-       this.mainform.goalCollector="";
-      let para={
-       positionId:val 
-      //  positionId:this.mainform.positionId
+    //获取岗位信息
+    getMessage(val) {
+      this.mainform.goalCollector = "";
+      let para = {
+        positionId: val
+        //  positionId:this.mainform.positionId
       };
-         positionUser(para).then(res => {
-          this.mainform.goalCollector="";
-            // this.AdduserForms.positionId="";
-            this.options1=[];
-            let data = res.data.result;
-            this.options1 = data; 
-        });
-
-     }, 
-     goalgetMessage(){
-       this.goalForm.goalCollector="";
-      let para={
-       positionId:this.goalForm.positionId
+      positionUser(para).then(res => {
+        this.mainform.goalCollector = "";
+        // this.AdduserForms.positionId="";
+        this.options1 = [];
+        let data = res.data.result;
+        this.options1 = data;
+      });
+    },
+    goalgetMessage() {
+      this.goalForm.goalCollector = "";
+      let para = {
+        positionId: this.goalForm.positionId
       };
-         positionUser(para).then(res => {
-          this.goalForm.goalCollector="";
-            // this.AdduserForms.positionId="";
-            this.options2=[];
-            let data = res.data.result;
-             this.options2 = data; 
-            // console.log( this.options2)
-        });
-
-     },   
-    getLists(){
-      let para={
-        id:this.id
-      }
-      Approvalfind(para).then(res=>{
-        let data=res.data.result;
-        this.lists=data;
-        this.inputs=data.remarks;
-        this.listPage=data.applyListDtos;
-        this.mainform.queueName=data.goalQueue;
-        this.goalForm.queueName=data.goalQueue;
-        this.mainform.goalCollector=data.goalCollector;
-        this.goalForm.goalCollector=data.goalCollector;
-        this.goalchange=data.turnUser;
-        this.mainform.coTime=data.coTime;
-        this.mainform.positionId=data.position;
-        this.goalForm.positionId=data.position;
-        this.leaveTimeChange=data.leaveTime;
-        this.colchange=data.coUser;
-        if(data.isShow!="Y"){
-          this.disable=true;
+      positionUser(para).then(res => {
+        this.goalForm.goalCollector = "";
+        // this.AdduserForms.positionId="";
+        this.options2 = [];
+        let data = res.data.result;
+        this.options2 = data;
+        // console.log( this.options2)
+      });
+    },
+    getLists() {
+      let para = {
+        id: this.id
+      };
+      Approvalfind(para).then(res => {
+        let data = res.data.result;
+        this.lists = data;
+        this.inputs = data.remarks;
+        this.listPage = data.applyListDtos;
+        this.mainform.queueName = data.goalQueue;
+        this.goalForm.queueName = data.goalQueue;
+        this.mainform.goalCollector = data.goalCollector;
+        this.goalForm.goalCollector = data.goalCollector;
+        this.goalchange = data.turnUser;
+        this.mainform.coTime = data.coTime;
+        this.mainform.positionId = data.position;
+        this.goalForm.positionId = data.position;
+        this.leaveTimeChange = data.leaveTime;
+        this.colchange = data.coUser;
+        if (data.isShow != "Y") {
+          this.disable = true;
         }
       });
       sysPositionslistAll().then(res => {
-                this.options = res.data.result;
-              
-                // this.options2=res.data.result;
-            });
+        this.options = res.data.result;
+
+        // this.options2=res.data.result;
+      });
     },
-    goback(){
-      history.go(-1)
+    goback() {
+      history.go(-1);
     },
-    approve(){
-      this.lists.leaveTime=this.leaveTimeChange;
-      this.lists.isReal="T";
-      if(this.lists.coVoList.length>0){
+    approve() {
+      this.lists.leaveTime = this.leaveTimeChange;
+      this.lists.isReal = "T";
+      if (this.lists.coVoList.length > 0) {
         this.lists.coVoList.forEach(el => {
-          el.coTime=el.coTime?Moment(el.coTime).format('YYYY-MM-DD'):""
+          el.coTime = el.coTime ? Moment(el.coTime).format("YYYY-MM-DD") : "";
         });
       }
-      this.lists.remarks=this.inputs;
+      this.lists.remarks = this.inputs;
       delete this.lists.applyListDtos;
-      this.lists.goalQueue=this.mainform.queueName;  
-      this.lists.goalQueue=this.goalForm.queueName;   
-      this.lists.goalCollector=this.mainform.goalCollector;
-      this.lists.turnUser=this.goalForm.goalCollector;
+      this.lists.goalQueue = this.mainform.queueName;
+      this.lists.goalQueue = this.goalForm.queueName;
+      this.lists.goalCollector = this.mainform.goalCollector;
+      this.lists.turnUser = this.goalForm.goalCollector;
       // this.lists.coTime=this.mainform.coTime?Moment(this.mainform.coTime).format('YYYY-MM-DD'):"";
-      this.lists.coUser=this.colchange;        
-      let para=this.lists; 
-  console.log(this.lists)
-      if(this.lists.remarks==" "){
-        this.$alert('请填写备注！','提示',{
-                    confirmButtonText:'确定',
-                    type:'warning',
-                    center:'true'
-              })
-        }else{
-          Approvalapply(para).then(res=>{ 
-           if(res.data.success==true){
-               this.$message({
-                  type: 'success',
-                  message: '提交完成！'
-                })              
-               this.getLists();            
-            }else{
-            this.$alert(' 提交失败！','提示',{
-                    confirmButtonText:'确定',
-                    type:'warning',
-                    center:'true'
-              })
-            }
-         
-          });
-       }
-    },  
-    approveturn(){
-        this.lists.isReal="T";
-      this.lists.remarks=this.inputs;
-      delete this.lists.applyListDtos;
-      this.lists.goalQueue=this.goalForm.queueName; 
-      this.lists.turnUser=this.goalchange;
-      let para=this.lists;  
-      if(this.lists.remarks==" "){
-        this.$alert('请填写备注！','提示',{
-                    confirmButtonText:'确定',
-                    type:'warning',
-                    center:'true'
-              })
-        }else{
-          Approvalapply(para).then(res=>{ 
-           if(res.data.success==true){
-               this.$message({
-                  type: 'success',
-                  message: '提交完成！'
-                })              
-               this.getLists();            
-            }else{
-            this.$alert(' 提交失败！','提示',{
-                    confirmButtonText:'确定',
-                    type:'warning',
-                    center:'true'
-              })
-            }
-         
-          });
-       }
+      this.lists.coUser = this.colchange;
+      let para = this.lists;
+      console.log(this.lists);
+      if (this.lists.remarks == " ") {
+        this.$alert("请填写备注！", "提示", {
+          confirmButtonText: "确定",
+          type: "warning",
+          center: "true"
+        });
+      } else {
+        Approvalapply(para).then(res => {
+          if (res.data.success == true) {
+            this.$message({
+              type: "success",
+              message: "提交完成！"
+            });
+            this.getLists();
+          } else {
+            this.$alert(" 提交失败！", "提示", {
+              confirmButtonText: "确定",
+              type: "warning",
+              center: "true"
+            });
+          }
+        });
+      }
     },
-     getLeftTree() {
+    approveturn() {
+      this.lists.isReal = "T";
+      this.lists.remarks = this.inputs;
+      delete this.lists.applyListDtos;
+      this.lists.goalQueue = this.goalForm.queueName;
+      this.lists.turnUser = this.goalchange;
+      let para = this.lists;
+      if (this.lists.remarks == " ") {
+        this.$alert("请填写备注！", "提示", {
+          confirmButtonText: "确定",
+          type: "warning",
+          center: "true"
+        });
+      } else {
+        Approvalapply(para).then(res => {
+          if (res.data.success == true) {
+            this.$message({
+              type: "success",
+              message: "提交完成！"
+            });
+            this.getLists();
+          } else {
+            this.$alert(" 提交失败！", "提示", {
+              confirmButtonText: "确定",
+              type: "warning",
+              center: "true"
+            });
+          }
+        });
+      }
+    },
+    getLeftTree() {
       this.listLoading = true;
       authlist().then(res => {
         this.listsLeft = res.data.result;
       });
     },
-    queueChange(val){
-      this.listId =val.coQueueName;
-      this.lists.queueId=this.listId;
-      val.coQueueId=val.coQueueName
-      this.rightShow()
+    queueChange(val) {
+      this.listId = val.coQueueName;
+      this.lists.queueId = this.listId;
+      val.coQueueId = val.coQueueName;
+      this.rightShow();
     },
-    goalqueueChange(val){
-      this.listIds =val;
-      this.lists.queueId=this.listIds;
-      this.rightShow()
+    goalqueueChange(val) {
+      this.listIds = val;
+      this.lists.queueId = this.listIds;
+      this.rightShow();
     },
-    CollectorChange(val){
-    },
-     rightShow() {
+    CollectorChange(val) {},
+    rightShow() {
       let para = {
         queueId: this.listId
       };
       authlistRight(para).then(res => {
         this.queueId = this.listId;
         let data = res.data.result;
-        this.authlistRight = data;     
+        this.authlistRight = data;
       });
-    },
-
+    }
   },
-   mounted() {
+  mounted() {
     this.getLists();
     this.getLeftTree();
-     this.goalgetMessage()
+    this.goalgetMessage();
   }
 };
 </script>
 <style>
-  #coId .el-input{min-height: 0px!important} 
+#coId .el-input {
+  min-height: 0px !important;
+}
 </style>
 
 
