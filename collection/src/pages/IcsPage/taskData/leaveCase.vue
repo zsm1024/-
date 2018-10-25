@@ -165,6 +165,7 @@ export default {
       this.multipleSelection = val;
     },
     hostList() {
+    
       this.addlists = [];
       this.b = [];
       
@@ -183,10 +184,12 @@ export default {
           f.leaveStatus != null ||
           this.multipleSelection[i].lockFlag == "Y"
         ) {
-          this.b.push(f.turnStatus, f.lockFlag);
+          if(f.leaveTime){
+            this.b.push(f.turnStatus, f.lockFlag);
+          }
+          
         }
       });
-
       if (this.b.length > 0) {
         if (this.b.indexOf("Y", 0) == 1) {
           this.multipleSelection.forEach((f, i) => {

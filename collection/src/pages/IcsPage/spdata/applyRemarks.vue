@@ -41,28 +41,6 @@
         </el-table-column>
       </el-table>
     </el-form-item>
-    <!-- <el-form-item label="协办队列:" label-width="120px" prop="queueName">
-      <span v-if="lists.isShow=='N'">{{lists.goalQueue}}</span>
-      <el-select  v-else placeholder="请选择"  v-model="mainform.queueName"  style="width:150px" @change="queueChange" clearable >
-            <el-option  v-for="item in listsLeft" :key="item.id" :label="item.queueName" :value="item.id"></el-option>
-      </el-select>
-    </el-form-item>
-      <el-form-item label="协办岗位:" label-width="120px" prop="positionId">
-      <span v-if="lists.isShow=='N'">{{lists.position}}</span>
-      <el-select  v-else placeholder="请选择"  v-model="mainform.positionId"  style="width:150px" @change="getMessage"  clearable >
-            <el-option  v-for="item in options" :key="item.id" :label="item.position" :value="item.id"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="协办员:" label-width="120px" prop="goalCollector"> 
-       <span v-if="lists.isShow=='N'">{{lists.goalCollector}}</span>
-      <el-select v-else placeholder="请选择" v-model="mainform.goalCollector" style="width:150px" @change="colChange" clearable>
-            <el-option v-for="items in options1" :key="items.id" :label="items.nickname" :value="items.id"></el-option>
-        </el-select>
-    </el-form-item>
-     <el-form-item label="协办到期日:" label-width="120px" prop="coTime">
-      <span v-if="lists.isShow=='N'">{{lists.coTime}}</span>
-     <el-date-picker v-else placeholder="请选择" type="date" v-model="mainform.coTime" style="width:150px"  @change="coTimeChange"></el-date-picker>
-    </el-form-item> -->
     <el-form-item label="备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
