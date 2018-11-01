@@ -67,6 +67,17 @@
 					</el-table>
 				</div>
 			</el-collapse-item>
+			<el-collapse-item title="核定授权" name="2">
+				<div>
+					<el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>					
+					<el-table-column prop="paymentDate" label="付款日期"  align="center" >
+					</el-table-column>
+					<el-table-column prop="remarks" label="备注"  align="center" >
+					</el-table-column>
+
+					</el-table>
+				</div>
+			</el-collapse-item>
 		</el-collapse>
 	</section>
 </template>

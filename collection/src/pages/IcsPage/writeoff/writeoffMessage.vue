@@ -56,13 +56,6 @@
 					</td>
 				</tr>
 			  </table>
-				<!-- <div>
-					<el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>					
-					<el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" align="center" >
-					</el-table-column>
-
-					</el-table>
-				</div> -->
 			</el-collapse-item>
 			<el-collapse-item title="还款登记" name="3" style="position:relative">
         <el-col style="text-align:right">
@@ -175,17 +168,14 @@ export default {
     };
   },
   methods: {
-    dayChange(val){
-     
+    dayChange(val){  
       this.messageforms.repaymentDay=val;
-      // this.messageforms.repaymentDay =this.messageforms.repaymentDay ? moment(this.messageforms.repaymentDay).format('YYYY-MM-DD'):""
     },
     dataChange(val){
       this.messageforms.repaymentDay=val
     },
     changes(val) {
       this.writeoff.b = val;
-      console.log(this.writeoff.b);
     },
     getreviewer(val){
       this.messageforms.reviewer=val
@@ -193,10 +183,13 @@ export default {
     getreviewerlist(){
       getByRoleId().then(res =>{
         this.messagetypes=res.data.result
-        // this.messageforms.reviewer=this.messagetypes[0].username
+        this.messageforms.reviewer=this.messagetypes[0].username
       })
     },
     confirmmessage(messageforms){
+      if(this.messageforms.reviewer=='zhangsong'){
+        this.messageforms.reviewer=1222328
+      }
       let para={
         icsId:this.$route.params.id,
         repaymentMoney:this.messageforms.repaymentMoney,
@@ -207,11 +200,13 @@ export default {
       }
       woinsert(para).then(res =>{
       if(res.data.success){
-          //  this.$refs['messageforms'].resetFields(); 
       this.messageopen=false; 
-        this.messageforms={}  
+        this.messageforms.repaymentMoney=""
+        this.messageforms.repaymentPeople=""
+        this.messageforms.repaymentDay=""
+        this.messageforms.reviewer=""
+        this.messageforms.remarks=""
         this.getwolist()  
-        // this.cancle()
       }else{
         this.$message({
           type: "warning",
@@ -222,7 +217,6 @@ export default {
     },
     cancle(messageforms){
       this.messageforms={}
-      // this.$refs['messageforms'].resetFields();    
       this.messageopen=false;
     },
     //获取列表
@@ -284,7 +278,6 @@ export default {
             if(ele.isPass==0){
               ele.isPass="待审核"
             }
-            ele.repaymentDay= ele.repaymentDay ? Moment(ele.repaymentDay).format('YYYY-MM-DD'):""
           });
            this.wolist =  this.wolist.map(v => {
 					this.$set(v, 'edit', false)
@@ -302,12 +295,12 @@ export default {
       // row.isPass=0
 			let para ={
         id:row.id,
-        isPass:0,
+        // isPass:0,
         repaymentMoney:row.repaymentMoney,
-        repaymentDay:this.messageforms.repaymentDay,
+        repaymentPeople:row.repaymentPeople,
+        repaymentDay:this.messageforms.repaymentDay?Moment(this.messageforms.repaymentDay).format('YYYY-MM-DD'):"",
         remarks:row.remarks
       } 
-      console.log(para)  
       //  this.getwolist() 
 				updateWriteOffRepayment(para).then(res =>{
 						if(res.data.success){

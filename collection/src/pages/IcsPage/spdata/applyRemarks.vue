@@ -11,6 +11,8 @@
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item>
+      <!-- <el-button type="primary" size="mini" @click="dialogs" >新增协办人</el-button> -->
+      <!-- v-if="isShow!=N" -->
       <el-table :data="lists.coVoList"  id="coId" >
         <!-- v-if="lists.isShow!='N'" -->
         <el-table-column  prop="coQueueName" label="协办队列">
@@ -39,8 +41,45 @@
             <el-date-picker placeholder="请选择" type="date" v-model="scope.row.coTime" style="width:150px"  @change="coTimeChange"></el-date-picker>
           </template>
         </el-table-column>
+        <el-table-column   label="操作">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="deleteListRow(scope.$index, lists.coVoList)"
+                type="text"
+                size="small">
+                移除
+              </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-form-item>
+    <el-dialog title="协办人员" :visible.sync="dialogFormVisible">
+        <el-form :model="AddCoForm" ref="AddCoForm">
+          <!-- @change="getMessagesPro" -->
+                 <el-form-item label="协办队列" prop="CoList" :label-width="formLabelWidth">
+                    <el-select placeholder="请选择"  v-model="AddCoForm.CoList"  style="width:300px"  clearable >
+                       <el-option  v-for="item in listsLeft" :key="item.id" :label="item.queueName" :value="item.id"></el-option>
+                    </el-select>
+                 </el-form-item>
+                 <el-form-item label="协办岗位" prop="CoGw" :label-width="formLabelWidth">
+                    <el-select placeholder="请选择"  v-model="AddCoForm.CoGw"  style="width:300px" @change="getMessages"  clearable  >
+                       <el-option  v-for="item in options" :key="item.id" :label="item.position" :value="item.id"></el-option>
+                    </el-select>
+                 </el-form-item>
+                 <el-form-item label="协办员" prop="CoPerson" :label-width="formLabelWidth">
+                    <el-select placeholder="请选择"  v-model="AddCoForm.CoPerson"  style="width:300px" clearable  >
+                       <el-option  v-for="item in CoOptions" :key="item.id" :label="item.username" :value="item.id"></el-option>
+                    </el-select>
+                 </el-form-item>
+                 <el-form-item   prop="CoTimes" label="协办到期日" :label-width="formLabelWidth">
+                    <el-date-picker placeholder="请选择" type="date" v-model="AddCoForm.CoTimes" style="width:300px"  @change="coTimeChange"></el-date-picker>
+                </el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+        <el-button @click="cancleaddUserInfo">取 消</el-button>
+        <el-button  type="primary" @click.native.prevent="choice('AddCoForm')">确 定</el-button>
+      </div>			
+    </el-dialog>
     <el-form-item label="备注:(不超过2000字)">
      <el-input  inline type="textarea"  :maxlength="2000" style="min-height:40px" :disabled="disable" v-model="inputs"></el-input>
     </el-form-item> 
@@ -137,6 +176,8 @@ import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
 export default {
   data() {
     return {
+      formLabelWidth: "120px",
+      dialogFormVisible: false,
       disable: false,
       lists: [],
       leaveTimeChange: "",
@@ -150,6 +191,7 @@ export default {
       options: [],
       options1: [],
       options2: [],
+      CoOptions: [],
       authlistRight: "",
       mainform: {
         queueName: "",
@@ -168,17 +210,84 @@ export default {
         { title: "用户ID", field: "username" },
         { title: "审批日期", field: "updateTime" },
         { title: "备注", field: "remarks" }
-      ]
+      ],
+      AddCoForm: {
+        CoList: "",
+        CoGw: "",
+        CoPerson: "",
+        CoTimes: ""
+      }
     };
   },
   methods: {
+    dialogs() {
+      this.dialogFormVisible = true;
+    },
     changeTime(val) {
       this.leaveTimeChange = val;
+    },
+    cancleaddUserInfo() {
+      this.dialogFormVisible = false;
+      this.$refs["AddCoForm"].resetFields();
+    },
+    choice(AddCoForm) {
+      this.lists.coVoList.push({
+        coQueueId: "53b0d5b9da284e749b8ae90b798c5994",
+        coQueueName: "实地北区队列",
+        coTime: this.AddCoForm.CoTimes,
+        coUser: "1222261",
+        coUserName: this.AddCoForm.CoPerson,
+        positionName: this.AddCoForm.CoGw
+      });
+      this.dialogFormVisible = false;
+      // let para ={
+      //          cityCde:this.AdduserForm.cityNme,
+      //          userId:this.AdduserForm.username
+      //       };
+      //       this.$refs[AdduserForm].validate((valid) => {
+      //           if(valid){
+      //             userCityInsert(para).then(res =>{
+      //               if(res.data.success){
+      //                   this.$message({
+      //                       type: 'success',
+      //                       message: '添加成功！'
+      //                   })
+      //                   this.lists.unshift(
+      //                   {
+      //                   "cityCde":this.$refs['AdduserForm'].model.cityNme,
+      //                    "userId":this.$refs['AdduserForm'].model.stateCode
+      // 			},
+
+      //               );
+      //                this.addUserInfos=false;
+      // 		this.$refs['AdduserForm'].resetFields();
+      // 		this.getList()
+      //               }else{
+      //                   this.$message({
+      //                       type: 'error',
+      //                       message: '添加失败，请联系管理员'
+      //                   })
+
+      //               }
+      //               })
+      //           }else{
+      //               this.addUserInfos=true;
+      //               this.$refs.AdduserForm.validate((valid) => {
+      //                   if (valid) {
+      //                   alert('submit!');
+      //                   } else {
+      //                       return false;
+      //                   }
+      //               });
+      //           }
+      //       });
     },
     //协办到期日
     coTimeChange(val) {
       this.mainform.coTime = val;
-      console.log(val);
+    },
+    coTimeChanges(val) {
+      this.AddCoForm.CoTimes = val;
     },
     colChange(val) {
       this.colchange = val.coUserName;
@@ -200,6 +309,20 @@ export default {
         this.options1 = [];
         let data = res.data.result;
         this.options1 = data;
+      });
+    },
+    getMessages(val) {
+      this.AddCoForm.CoPerson = "";
+      let para = {
+        positionId: val
+        //  positionId:this.mainform.positionId
+      };
+      positionUser(para).then(res => {
+        // this.mainform.goalCollector = "";
+        // this.AdduserForms.positionId="";
+        this.CoOptions = [];
+        let data = res.data.result;
+        this.CoOptions = data;
       });
     },
     goalgetMessage() {
@@ -265,7 +388,6 @@ export default {
       // this.lists.coTime=this.mainform.coTime?Moment(this.mainform.coTime).format('YYYY-MM-DD'):"";
       this.lists.coUser = this.colchange;
       let para = this.lists;
-      console.log(this.lists);
       if (this.lists.remarks == " ") {
         this.$alert("请填写备注！", "提示", {
           confirmButtonText: "确定",
@@ -348,6 +470,9 @@ export default {
         let data = res.data.result;
         this.authlistRight = data;
       });
+    },
+    deleteListRow(index, rows) {
+      rows.splice(index, 1);
     }
   },
   mounted() {

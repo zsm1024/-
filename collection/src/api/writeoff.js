@@ -71,3 +71,10 @@ export function find(params) {
     // params: params
   })
 }
+export function listReviewerHis(params) {
+  return fetch({
+    url: '/wo/listReviewerHis',
+    method: 'get',
+    params: params
+  })
+}

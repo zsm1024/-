@@ -4,6 +4,12 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
+                    <el-input  clearable v-model="filters.name" placeholder="当事人"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input  clearable v-model="filters.appNum" placeholder="申请号"></el-input>
+                </el-form-item>
+                <el-form-item>
                     <el-input  clearable v-model="filters.province" placeholder="省"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -31,6 +37,9 @@
                 </el-form-item>
                 <el-form-item>
                     <el-input v-model="filters.carSealUp" placeholder="车辆是否查封" clearable></el-input>
+                </el-form-item>
+                 <el-form-item>
+                    <el-input v-model="filters.payment" placeholder="费用支付情况" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" size="mini" @click="getlists" >查询</el-button>
@@ -69,6 +78,8 @@
 		data() {
 			return {
 				filters: {
+                    name:"",
+                    appNum:"",
                     queueName:'',
                     province:"",
                     placeStorage:"",
@@ -76,7 +87,8 @@
                     vehicleControlMechanism:"",
                     vehicleControlDate:"",
                     realizeMode:"",
-                    carSealUp:""
+                    carSealUp:"",
+                    payment:""
 				},
 			
 				lists: [],
@@ -144,6 +156,9 @@
                     vehicleControlDate:this.filters.vehicleControlDate,
                     realizeMode:this.filters.realizeMode,
                     carSealUp:this.filters.carSealUp,
+                    payment:this.filters.payment,
+                    name:this.filters.name,
+                    appNum:this.filters.appNum
                     // startTime: this.times1,
                     // endTime: this.times2,
                 };

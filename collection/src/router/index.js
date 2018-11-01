@@ -147,6 +147,12 @@ export const constantRouterMap = [{
         hidden: true,
         component: _import('IcsPage/writeoff/writeoffapprove')
       },
+      {
+        path: 'IcsPage/writeoff/HistoryList/:id',
+        name: '核销审批历史详情',
+        hidden: true,
+        component: _import('IcsPage/writeoff/HistoryList')
+      },
     ]
   },
   {

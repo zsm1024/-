@@ -165,81 +165,55 @@ export default {
       this.multipleSelection = val;
     },
     hostList() {
-    
+    debugger;
       this.addlists = [];
       this.b = [];
       
       this.multipleSelection.forEach(f => {
         this.addlists.push(f.id);
       });
-      this.multipleSelection.forEach((f, i) => {
-        if (
-          f.turnStatus ||
-          f.turnStatus != null ||
-          f.coStatus ||
-          f.coStatus != null ||
-          f.backCaseStatus ||
-          f.backCaseStatus != null ||
-          f.leaveStatus ||
-          f.leaveStatus != null ||
-          this.multipleSelection[i].lockFlag == "Y"
-        ) {
-          if(f.leaveTime){
-            this.b.push(f.turnStatus, f.lockFlag);
-          }
-          
-        }
-      });
-      if (this.b.length > 0) {
-        if (this.b.indexOf("Y", 0) == 1) {
-          this.multipleSelection.forEach((f, i) => {
-            if (f.leaveTime == null) {
-              this.lockTime.push(f.leaveTime);
-            }
-          });
-          if (this.lockTime.length > 0) {
-            this.$alert("转队列中的案件不需要申请留案！", "提示", {
-              confirmButtonText: "确定",
-              type: "warning",
-              center: "true"
-            });
-          } else {
-            this.NoUse= true;
-            let para = {
-              missionIds: this.addlists,
-              leaveTime: this.times
-            };
-        leaveTheCaseApp(para).then(res => {
-              this.listShow();
-              this.escrowTime = "";
-            });
-          }
-        } else {
-          this.$alert("请选未申请的案件！", "提示", {
-            confirmButtonText: "确定",
-            type: "warning",
-            center: "true"
-          });
-        }
-      } else {
-        let para = {
-          missionIds: this.addlists,
-          leaveTime: this.times
-        };
-        if (this.escrowTime == "" || this.addlists.length == 0) {
-          this.$alert("请选择留案日期或待留案案件!", "提示", {
-            confirmButtonText: "确定",
-            type: "warning",
-            center: "true"
-          });
-        } else {
-          this.NoUse= true;
-           leaveTheCaseApp(para).then(res => {
-              this.listShow();
-              this.escrowTime = "";
-            });
-        }
-      }     
+      this.multipleSelection.forEach((f, i) =>{
+        
+        // if(f.turnStatus ||f.turnStatus != null|| f.coStatus||f.coStatus != null|| f.backCaseStatus||f.backCaseStatus != null||f.leaveStatus||f.leaveStatus != null||this.multipleSelection[i].lockFlag == "Y" ){
+        //   if(f.leaveStatus=='申请中'){
+        //    this.$alert("请选未申请的案件！", "提示", {
+        //     confirmButtonText: "确定",
+        //     type: "warning",
+        //     center: "true"
+        //   });
+        // }else
+         if((f.lockFlag == "Y"&&f.leaveTime&&f.leaveTime!=null&&f.leaveStatus=='申请中')||(f.leaveStatus&&f.leaveStatus != null)){
+               this.$alert("请选未申请的案件！", "提示", {
+                confirmButtonText: "确定",
+                type: "warning",
+                center: "true"
+              });
+          }else if((f.lockFlag == "Y"&&!f.leaveTime&&f.leaveTime==null)||f.turnStatus ||f.turnStatus != null||f.coStatus||f.coStatus != null|| f.backCaseStatus||f.backCaseStatus != null){
+                 this.$alert("案件处于其它审批状态中不需要申请留案！", "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                  center: "true"
+                });
+          }else{
+                let para = {
+                  missionIds: this.addlists,
+                  leaveTime: this.times
+                };
+                if(this.escrowTime == "" || this.addlists.length == 0){
+                  this.$alert("请选择留案日期或待留案案件!", "提示", {
+                    confirmButtonText: "确定",
+                    type: "warning",
+                    center: "true"
+                  });
+                }else{
+                  this.NoUse= true;
+                  leaveTheCaseApp(para).then(res => {
+                      this.listShow();
+                      this.escrowTime = "";
+                    });
+                }
+              }
+      })   
     },
     handleCurrentChange(val) {
       this.pages = val;

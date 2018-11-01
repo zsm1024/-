@@ -262,8 +262,8 @@
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols1" :width="col.width" :key="index" align="center" >
 					<template slot-scope="scope">            
             <el-input  v-show="scope.row.edit" v-if="(col.field!='outdate'&&col.field!='indate'&&col.field!='storageDays')"  size="small" v-model="scope.row[col.field]"></el-input> 
-           <el-date-picker v-show="scope.row.edit" v-if="col.field=='indate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd" ></el-date-picker>
-            <el-date-picker v-show="scope.row.edit" v-if="col.field=='outdate'"  v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd"></el-date-picker> 
+           <el-date-picker v-show="scope.row.edit" v-if="col.field=='indate'" v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd"   ></el-date-picker>
+            <el-date-picker v-show="scope.row.edit" v-if="col.field=='outdate'"  v-model="scope.row[col.field]" type="date"  value-format="yyyy-MM-dd"  ></el-date-picker> 
 						<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>  
             <span v-show="scope.row.edit" v-if="col.field=='storageDays'" >{{ scope.row[col.field] }}</span>        						  
           </template>
@@ -505,10 +505,7 @@ import {
 } from "@/api/cars";
 import Moment from "moment/moment";
 import { findByType } from "@/api/basedata";
-import {
-
-  getTaskHostUser,
-} from "@/api/outerlist";
+import { getTaskHostUser } from "@/api/outerlist";
 export default {
   data() {
     return {
@@ -517,9 +514,9 @@ export default {
       lists: [],
       time: "",
       signTimes: "",
-      id:"",
+      id: "",
       icsId: "",
-      stopListid:"",
+      stopListid: "",
       stopListicsId: "",
       controlCarid: "",
       controlCaricsId: "",
@@ -543,18 +540,18 @@ export default {
       cols1: [
         { title: "保管机构", field: "custodian" },
         { title: "保管地", field: "placeStorage" },
-        { title: "钥匙保管人姓名", field: "keyKeeperName",width:"100"},
-        { title: "钥匙保管人电话", field: "keyKeeperPhone",width:"100" },
+        { title: "钥匙保管人姓名", field: "keyKeeperName", width: "100" },
+        { title: "钥匙保管人电话", field: "keyKeeperPhone", width: "100" },
         { title: "入库日期", field: "indate" },
         { title: "出库日期", field: "outdate" },
         { title: "保管天数", field: "storageDays" }
       ],
       cols2: [
-        { title: "费用类型", field: "costType" },        
+        { title: "费用类型", field: "costType" },
         { title: "费用金额", field: "costAmount" },
         { title: "需支付机构", field: "paymentInstitution" },
         { title: "是否支付", field: "whetherPay" },
-        { title: "备注", field: "remark" },
+        { title: "备注", field: "remark" }
       ],
       carForm: {
         comefrom: "",
@@ -630,10 +627,19 @@ export default {
         whetherPay: ""
       },
       rules: {
-        comefrom: [{ required: true, message: "请选择车辆来源", trigger: "blur" }],
-       
-        company: [ { required: true, message: '请填写联系人', trigger: 'blur' }],
-        time: [{ required: true, message: "请选择控车日期", trigger: "blur" ,type:'string' }]
+        comefrom: [
+          { required: true, message: "请选择车辆来源", trigger: "blur" }
+        ],
+
+        company: [{ required: true, message: "请填写联系人", trigger: "blur" }],
+        time: [
+          {
+            required: true,
+            message: "请选择控车日期",
+            trigger: "blur",
+            type: "string"
+          }
+        ]
       },
       id: this.$store.state.navTabs.tabId,
       listLoading: false,
@@ -653,26 +659,23 @@ export default {
       visitListsRecords: [],
       inChange: "",
       outChange: "",
-      userList:[],
-      restaurants:[],
-      a:[],
+      userList: [],
+      restaurants: [],
+      a: []
     };
   },
   methods: {
-    getconpany(){
+    getconpany() {
       getTaskHostUser().then(res => {
         // this.userList = [];
         let data = res.data.result;
-         this.restaurants =data;
-
+        this.restaurants = data;
       });
     },
-     handleSelect(item) {
-       console.log(item)
-    
+    handleSelect(item) {
     },
-    timechange(val){
-      this.carForm.time=val;
+    timechange(val) {
+      this.carForm.time = val;
     },
     typechange(val) {
       this.carForm.idtype = val;

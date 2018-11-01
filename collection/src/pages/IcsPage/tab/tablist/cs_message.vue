@@ -73,13 +73,15 @@
 						<td>{{JRZY}}</td>
 						<td style="background:#eef1f6">{{JXSNAME}}</td>
 						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
-						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6" >{{address.name}} </td>					
+						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6" >{{address.name}} </td>
+						<td>放款行</td>					
 					</tr>
 					<tr>
 						<td>{{dealerName}}</td>
 						<td>{{jxsName}}</td>
 						<td v-for="phone in phoneList" :key="phone.index">{{phone.phone}} </td>
-						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>	
+						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>
+						<td>{{bankName}}</td>	
 					</tr>
 				</table>
 				<!-- <label v-for="phone in phoneList" :key="phone.index">
@@ -130,6 +132,10 @@
 					</el-form-item>
 					<el-form-item label="合同终止日:" >
 						<span>{{items.endTime}}</span>
+						<!-- <span>{{items.total}}</span> -->
+					</el-form-item>
+					<el-form-item label="贷款车型:" >
+						<span>{{loanCar}}</span>
 						<!-- <span>{{items.total}}</span> -->
 					</el-form-item>
 				</el-form>				
@@ -265,13 +271,11 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
         <el-button @click="addWorkInfo" >取 消</el-button>
- <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
         <el-button  type="primary" @click.native.prevent="address('AddWorkForm')" >确 定</el-button>
       </div>			
 		</el-dialog>
 		<div id="bottomFrom">
 			<form-message ref="CJlist"></form-message>
-			<!-- :callback='callback' -->
 		</div>
 	</section>
 </template>
@@ -304,7 +308,9 @@ export default {
 			JXSNAME:"",
 			dealerName:"",
 			JRZY:"",
+			bankName:"",
 			ET:'',
+			loanCar:"",
 			dealerName:"",
 			cols:[
 				{title:'角色',field:'roleName'},
@@ -491,8 +497,7 @@ export default {
 					return false;
 				}else{
 					this.marks=data.remarks;	
-				}					
-					// this.item.push(data);			
+				}								
       		});
 		},
 		remarkopenList(){
@@ -516,16 +521,7 @@ export default {
                                 type: 'success',
                                 message: '添加成功！'
                             })
-                            // this.items.customerAddresses.unshift(
-                            // {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
-                            // "address":this.$refs['AddWorkForm'].model.address,
-                            // "addressType":this.$refs['AddWorkForm'].model.addressType,                  
-                            // "infoSource":"WCMS","effectiveness":"Y","edit":false},	
-                            
-                            // );
 						this.remarkopen=false;
-						
-						// this.$refs['remarkform'].resetFields();
 						this.getmessage_note()
                         }else{
                             this.$message({
@@ -679,12 +675,6 @@ export default {
 			window.frames['']
 			var pattern="-";
 			phoneNum=phoneNum.replace(new RegExp(pattern),"");
-			// let a=phoneNum;
-			// a.replace(/(^\s*)|(\s*$)/g, "");
-			// console.log(phoneNum.length)
-			// console.log(a.length);
-			// phoneNum=phoneNum.replace(/\s+/g,"")
-			// phoneNum="0"+a;
 			localStorage.removeItem("CJPhone");
 			localStorage.setItem("phoneNum","0"+phoneNum);
 			localStorage.setItem("CJPhone",phoneNum);
@@ -692,23 +682,18 @@ export default {
 			var user=localStorage.getItem("userName");
 			let phoneNumVal="0"+phoneNum
 			document.getElementById("frame2").contentWindow.telNumVal(phoneNumVal);
-			// initParam(user)
 			document.getElementById("frame2").contentWindow.clickCallOut("0","0"+phoneNum,this.appNum,row.name);
-			// clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
 		},	
 		ring1(phoneNum,row,){
 			var pattern="-";			
 			phoneNum=phoneNum.replace(new RegExp(pattern),"");
-			// phoneNum=phoneNum;	
 			localStorage.removeItem("CJPhone");
 			localStorage.setItem("phoneNum",phoneNum);
 			localStorage.setItem("CJPhone",phoneNum);
 			this.$refs.CJlist.PhoneCtr();
 			var user=localStorage.getItem("userName");
 			document.getElementById("frame2").contentWindow.telNumVal(phoneNum);
-			document.getElementById("frame2").contentWindow.clickCallOut("0",phoneNum,this.appNum,row.name);
-        	// initParam(user)
-			// clickCallOut("0",phoneNum,row.name,this.applicationNumbers)			
+			document.getElementById("frame2").contentWindow.clickCallOut("0",phoneNum,this.appNum,row.name);		
 		},	
 		phoneEdit(row){
 			let para = row
@@ -776,32 +761,7 @@ export default {
 		addWorkInfo(){
 			this.addWorkInfos=false;
 			this.$refs['AddWorkForm'].resetFields();
-		},
-		// slibceshi(){
-           
-		// 	let para = {
-		// 		missionId: this.$route.params.id
-		// 	};
-		// 	tab_view(para).then(res => {
-		// 		 let data = res.data.result;			
-		// 		 this.items = data;								
-		// 		this.items.customerPhones = this.items.customerPhones.map(v => {
-                   
-		// 			this.$set(v, 'edit', false)
-		// 			return v;
-					
-		// 		});
-				
-		// 		this.items.customerAddresses = this.items.customerAddresses.map(v => {
-		// 			this.$set(v, 'edit', false)
-		// 			return v
-		// 		})
-		// 		this.remarkform.remarks = this.items.remarks;
-		// 		// this.cols=data.cols;
-        //         // this.cols1=data.cols1; 
-		// 		this.height=document.documentElement.clientHeight-400;       
-		// 	});
-        // },	
+		},	
 		getlist() {
 			let para = {
 				missionId: this.$route.params.id
@@ -821,12 +781,11 @@ export default {
 					return v
 				})
 				this.remarkform.remarks = this.items.remarks;
-				// this.cols=data.cols;
-                // this.cols1=data.cols1; 
 				this.height=document.documentElement.clientHeight-400;       
 			});
 			getdeal(para).then(res =>{
 				let data =res.data.result;
+				this.loanCar=data.loanCar
 				this.ET=data.et;			
 			})
    },
@@ -842,6 +801,7 @@ export default {
 				this.jxsName=data.name;
 				this.dealerName=data.dealerName;
 				this.JXSNAME="名称"
+				this.bankName=data.bankName
 				data.phone.forEach(element => {
 					this.phoneList.push({"phone":element.phone,"name":"电话"})
 				});
@@ -849,19 +809,8 @@ export default {
 					 this.addressList.push({"address":element,"name":"地址"})
 				});
 				}
-				
-				// console.log(data.address)
 			})
 	},
-	//  getCodeAll().then(res => {
-	// 			 console.log(res)
-    //              var arrpush = [];
-    //              res.data.result.forEach(function(value,index){
-    //                 arrpush.push(value.actCode+"-"+value.actNotes);
-    //              })
-    //              this.getdaima = arrpush;
-              
-	// 		});
 	//获取电话码
 	getPhoneCode(){
 		PhoneCodeListAll().then(res =>{
@@ -876,24 +825,11 @@ export default {
 	},
 	tableRowClassNameCustom(row,rowIndex){
 		row.phoneType=row.phoneType.split(" ").shift(" ").trim();
-		// let reg=/[a-zA-Z]/g;
-		// console.log(row.relationship.replace(reg," ").trim())
-		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
 	tableRowClassNameAddress(row,rowIndex){
 		let rows=row.addressType.split(":").pop(":").trim();
 		row.addressType=rows.split(" ").shift(" ").trim();
-		// let reg=/[a-zA-Z]/g;
-		// console.log(row.relationship.replace(reg," ").trim());
-		// row.relationship=row.relationship.replace(reg," ").trim()
 	},
-// 	c(s){
-// 		console.log(s.value.length)
-//     // if(s.value.length > 3){
-//     //     return s.value = s.value.substr(0, 3), alert('最大字符数为3');
-//     // }
-//     // return !0;
-// }
   },
   components:{
 	  formMessage

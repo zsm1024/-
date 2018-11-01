@@ -48,7 +48,7 @@
 			</el-table>
 			<!--工具条-->
 			<el-col :span="24" class="toolbar">				
-				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[20,30, 50, 100,500,1000,2000]"   :total="total"   style="float:right;">
+				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 25,30,50, 100,500,1000,2000]"   :total="total"   style="float:right;">
 				</el-pagination>
 			</el-col>		
     </section>
@@ -60,7 +60,7 @@ export default {
     return {
       total: 0,
       heights: 0,
-      pagesize:30,
+      pagesize:25,
       page: 1,
       listLoading: false,
       lists: [],
@@ -109,7 +109,7 @@ export default {
       let h =
         (window.innerHeight ||
           document.documentElement.clientHeight ||
-          document.body.clientHeight) - 240;
+          document.body.clientHeight) - 200;
       this.heights = h;
       if(this.filters.isPay=="是"){
         this.filters.isPay="1"
@@ -192,7 +192,7 @@ export default {
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||
-        document.body.clientHeight) - 155;
+        document.body.clientHeight) - 100;
     this.$refs.abc.style.height = h + "px";
   }
 };
