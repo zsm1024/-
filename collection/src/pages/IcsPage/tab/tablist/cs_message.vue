@@ -1,6 +1,7 @@
 <template>
 	<section  ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">	
 		<el-collapse v-model="activeNames">	
+			<!-- <el-button>查询征信影像</el-button> -->
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
                     <el-table :data="items.customerSimpleList" border stripe  :row-class-name="tableRowClassNames"> 
@@ -290,6 +291,7 @@ import {PhoneCodeListAll} from "@/api/basedata";
 export default {
   data() {	 
     	return {
+			as:"",
 			floatForm:{
 				 background:"#fff",
 				 zIndex:"10"
@@ -830,17 +832,54 @@ export default {
 		let rows=row.addressType.split(":").pop(":").trim();
 		row.addressType=rows.split(" ").shift(" ").trim();
 	},
+	// ss(){
+	//   var ws= new WebSocket('ws://127.0.0.1:21380')
+	//   let Preview={
+	// 	"appcation_no":"GW-23092329",
+	// 	"application_date":"2018-01-09 10:20:33",
+	// 	"capoperator":"0003871", 
+	// 	"queryreason":"01",
+	// 	"infos":[
+	// 		{"applicant_name":"张三",
+	// 		"card_type":"0",
+	// 		"card_no":"130638198301020031",
+	// 		"applicant_type":"1",
+	// 		"sex":"M",
+	// 		"birth":"1988-02-19"}
+	// 		]
+	//   }
+	//   let data='Preview:'+JSON.stringify(Preview)
+	//   console.log(data)
+	//   ws.onopen= function(){
+	// 	  ws.send(data)
+	//   }
+	//   ws.onmessage= el => {
+	// 	  this.as=el.data
+	// 	  console.log(this.as)
+	//   }
+	//     Weburl.onmessage = el => {
+    //     	console.log(el.data)
+    //   }
+	//}
   },
   components:{
 	  formMessage
   },
+  watch:{
+	  as:function(val){
+		  this.as=val
+		  console.log(val)
+		  }
+  },
   mounted() {
+	//   this.ss()
 	this.getlist();
 	this.getJxsInfo()
 	this.getPhoneCode();
 	this.getmessage_note();
     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
    	this.$refs.abc.style.height= h+"px";
+	 
   }
 };
 </script>

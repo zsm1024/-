@@ -168,20 +168,7 @@ export default {
     debugger;
       this.addlists = [];
       this.b = [];
-      
-      this.multipleSelection.forEach(f => {
-        this.addlists.push(f.id);
-      });
       this.multipleSelection.forEach((f, i) =>{
-        
-        // if(f.turnStatus ||f.turnStatus != null|| f.coStatus||f.coStatus != null|| f.backCaseStatus||f.backCaseStatus != null||f.leaveStatus||f.leaveStatus != null||this.multipleSelection[i].lockFlag == "Y" ){
-        //   if(f.leaveStatus=='申请中'){
-        //    this.$alert("请选未申请的案件！", "提示", {
-        //     confirmButtonText: "确定",
-        //     type: "warning",
-        //     center: "true"
-        //   });
-        // }else
          if((f.lockFlag == "Y"&&f.leaveTime&&f.leaveTime!=null&&f.leaveStatus=='申请中')||(f.leaveStatus&&f.leaveStatus != null)){
                this.$alert("请选未申请的案件！", "提示", {
                 confirmButtonText: "确定",
@@ -195,7 +182,10 @@ export default {
                   center: "true"
                 });
           }else{
-                let para = {
+             this.addlists.push(f.id);
+              }
+              if(this.addlists.length== this.multipleSelection.length){
+                 let para = {
                   missionIds: this.addlists,
                   leaveTime: this.times
                 };
