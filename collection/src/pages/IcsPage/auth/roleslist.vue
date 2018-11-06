@@ -40,7 +40,7 @@
                 :data="treedata" 
                 node-key="id" 
                 show-checkbox
-                check-strictly 
+
                 :expand-on-click-node="false"
                 highlight-current
                 ref="tree"
@@ -49,6 +49,7 @@
                 >
 
         </el-tree>
+                        <!-- check-strictly  -->
     </el-form-item>
    
    
@@ -114,7 +115,7 @@ export default {
             return false;
         }
         var ids = this.$refs.tree.getCheckedKeys();
-       
+
         let para = {
             name: this.form.name,
             description:this.form.description,

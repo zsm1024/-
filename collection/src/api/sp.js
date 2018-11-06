@@ -37,3 +37,26 @@ export function ApprovalList(params){
       params: params
     })
   }
+  export function listCoInfo(params){
+    return fetch({
+      url: '/approval/listCoInfo',
+      method: 'get',
+      params: params
+    })
+  }
+  export function addCoInfo(params){
+    const data = params;
+    return fetch({
+      url: '/approval/addCoInfo',
+      method: 'post',
+      data
+    })
+  }
+  export function deleteCoInfo(params) {
+    
+     return fetch({
+         url: '/approval/deleteCoInfo/'+params.applyId+"/"+params.coUid,
+         method: 'delete',
+         
+     })
+ }

@@ -136,7 +136,7 @@ export default {
     },
     //获取列表
     getlists() {
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-190;
+        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-250;
 				this.heights=h;
         let para = {
         page: this.page,

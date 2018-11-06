@@ -170,6 +170,7 @@ export default {
   methods: {
     dayChange(val){  
       this.messageforms.repaymentDay=val;
+      // this.messageforms.repaymentDay=this.messageforms.repaymentDay?Moment(this.messageforms.repaymentDay).format('YYYY-MM-DD'):""
     },
     dataChange(val){
       this.messageforms.repaymentDay=val
@@ -292,13 +293,11 @@ export default {
 			if(row.edit=!row.edit){
 			
 			}else{ 
-      // row.isPass=0
 			let para ={
         id:row.id,
-        // isPass:0,
         repaymentMoney:row.repaymentMoney,
         repaymentPeople:row.repaymentPeople,
-        repaymentDay:this.messageforms.repaymentDay?Moment(this.messageforms.repaymentDay).format('YYYY-MM-DD'):"",
+        repaymentDay:row.repaymentDay?Moment(row.repaymentDay).format('YYYY-MM-DD'):"",
         remarks:row.remarks
       } 
       //  this.getwolist() 

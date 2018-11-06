@@ -11,9 +11,9 @@
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item>
-      <!-- <el-button type="primary" size="mini" @click="dialogs" >新增协办人</el-button> -->
-      <!-- v-if="isShow!=N" -->
-      <el-table :data="lists.coVoList"  id="coId" >
+      <el-button type="primary" size="mini" @click="dialogs"
+      v-if="lists.isShow!='N'" >新增协办人</el-button>
+      <el-table :data="coVoList"  id="coId" >
         <!-- v-if="lists.isShow!='N'" -->
         <el-table-column  prop="coQueueName" label="协办队列">
           <template slot-scope="scope">
@@ -41,12 +41,13 @@
             <el-date-picker placeholder="请选择" type="date" v-model="scope.row.coTime" style="width:150px"  @change="coTimeChange"></el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column   label="操作">
+        <el-table-column   label="操作"  v-if="lists.isShow!='N'" >
             <template slot-scope="scope">
               <el-button
-                @click.native.prevent="deleteListRow(scope.$index, lists.coVoList)"
+                @click.native.prevent="deleteListRow(scope.row.coUid, lists.applyId)"
                 type="text"
-                size="small">
+                size="small"
+                AddCoForm>
                 移除
               </el-button>
           </template>
@@ -55,7 +56,6 @@
     </el-form-item>
     <el-dialog title="协办人员" :visible.sync="dialogFormVisible">
         <el-form :model="AddCoForm" ref="AddCoForm">
-          <!-- @change="getMessagesPro" -->
                  <el-form-item label="协办队列" prop="CoList" :label-width="formLabelWidth">
                     <el-select placeholder="请选择"  v-model="AddCoForm.CoList"  style="width:300px"  clearable >
                        <el-option  v-for="item in listsLeft" :key="item.id" :label="item.queueName" :value="item.id"></el-option>
@@ -77,7 +77,7 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
         <el-button @click="cancleaddUserInfo">取 消</el-button>
-        <el-button  type="primary" @click.native.prevent="choice('AddCoForm')">确 定</el-button>
+        <el-button  type="primary" @click.native.prevent="choice(AddCoForm)">确 定</el-button>
       </div>			
     </el-dialog>
     <el-form-item label="备注:(不超过2000字)">
@@ -100,7 +100,6 @@
       <span>{{lists.nowCollector}}</span>
     </el-form-item>
     <el-form-item label="留案到期日:" label-width="120px">
-      <!-- <span >{{lists.leaveTime}}</span> -->
        <input  v-if="lists.isShow=='N'" :value="lists.leaveTime" disabled/>
        <el-date-picker  v-else type="date"  v-model="lists.leaveTime" @change="changeTime"></el-date-picker>
     </el-form-item>
@@ -109,8 +108,6 @@
     </el-form-item> 
     <el-form-item style="padding:10px ">
       <el-button type="primary" size="small" :disabled="disable" @click="approve">提交</el-button>
-      <!-- <el-button type="primary" size="small" :disabled="disable" @click="refuse">拒绝</el-button>
-      <el-button type="primary" size="small" :disabled="disable" @click="close">关闭</el-button> -->
       <el-button type="primary" size="small" style="margin-left:10px"  @click="goback">返回</el-button>
     </el-form-item>      
   </el-form>
@@ -168,7 +165,7 @@
   </section>
 </template>
 <script>
-import { Approvalfind, Approvalapply } from "@/api/sp";
+import { Approvalfind, Approvalapply, listCoInfo, addCoInfo,deleteCoInfo } from "@/api/sp";
 import { positionUser } from "@/api/task";
 import Moment from "moment/moment";
 import { authlist, authlistRight } from "@/api/basedata";
@@ -176,6 +173,9 @@ import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
 export default {
   data() {
     return {
+      coVoList: [],
+      icsId: "",
+      applyId: "",
       formLabelWidth: "120px",
       dialogFormVisible: false,
       disable: false,
@@ -231,56 +231,45 @@ export default {
       this.$refs["AddCoForm"].resetFields();
     },
     choice(AddCoForm) {
-      this.lists.coVoList.push({
-        coQueueId: "53b0d5b9da284e749b8ae90b798c5994",
-        coQueueName: "实地北区队列",
-        coTime: this.AddCoForm.CoTimes,
-        coUser: "1222261",
-        coUserName: this.AddCoForm.CoPerson,
-        positionName: this.AddCoForm.CoGw
+      let para = {
+        applyId: this.applyId,
+        icsId: this.icsId,
+        queueId: this.AddCoForm.CoList,
+        coTime: this.AddCoForm.CoTimes
+          ? Moment(this.AddCoForm.CoTimes).format("YYYY-MM-DD")
+          : "9999-01-01",
+        coUser: this.AddCoForm.CoPerson
+      };
+
+      addCoInfo(para).then(res => {
+        this.$refs.AddCoForm.validate(valid => {
+          if (valid) {
+            if (res.data.success) {
+              this.$message({
+                type: "success",
+                message: "添加成功！"
+              });
+              this.getCoInfo();
+              this.dialogFormVisible = false;
+              this.$refs["AddCoForm"].resetFields();
+            } else {
+              this.$message({
+                type: "success",
+                message: res.data.message
+              });
+            }
+          } else {
+            this.dialogFormVisible = true;
+            this.$refs.AddCoForm.validate(valid => {
+              if (valid) {
+                alert("submit!");
+              } else {
+                return false;
+              }
+            });
+           }
+        });
       });
-      this.dialogFormVisible = false;
-      // let para ={
-      //          cityCde:this.AdduserForm.cityNme,
-      //          userId:this.AdduserForm.username
-      //       };
-      //       this.$refs[AdduserForm].validate((valid) => {
-      //           if(valid){
-      //             userCityInsert(para).then(res =>{
-      //               if(res.data.success){
-      //                   this.$message({
-      //                       type: 'success',
-      //                       message: '添加成功！'
-      //                   })
-      //                   this.lists.unshift(
-      //                   {
-      //                   "cityCde":this.$refs['AdduserForm'].model.cityNme,
-      //                    "userId":this.$refs['AdduserForm'].model.stateCode
-      // 			},
-
-      //               );
-      //                this.addUserInfos=false;
-      // 		this.$refs['AdduserForm'].resetFields();
-      // 		this.getList()
-      //               }else{
-      //                   this.$message({
-      //                       type: 'error',
-      //                       message: '添加失败，请联系管理员'
-      //                   })
-
-      //               }
-      //               })
-      //           }else{
-      //               this.addUserInfos=true;
-      //               this.$refs.AdduserForm.validate((valid) => {
-      //                   if (valid) {
-      //                   alert('submit!');
-      //                   } else {
-      //                       return false;
-      //                   }
-      //               });
-      //           }
-      //       });
     },
     //协办到期日
     coTimeChange(val) {
@@ -374,9 +363,13 @@ export default {
     approve() {
       this.lists.leaveTime = this.leaveTimeChange;
       this.lists.isReal = "T";
+
+      this.lists.coVoList = this.coVoList;
       if (this.lists.coVoList.length > 0) {
         this.lists.coVoList.forEach(el => {
-          el.coTime = el.coTime ? Moment(el.coTime).format("YYYY-MM-DD") : "";
+          el.coTime = el.coTime
+            ? Moment(el.coTime).format("YYYY-MM-DD")
+            : "";
         });
       }
       this.lists.remarks = this.inputs;
@@ -471,14 +464,42 @@ export default {
         this.authlistRight = data;
       });
     },
-    deleteListRow(index, rows) {
-      rows.splice(index, 1);
+    deleteListRow(rows,item) {
+      let para ={
+        coUid:rows,
+        applyId:item
+      }
+      deleteCoInfo(para).then(res=>{
+        if(res.data.success){
+          this.$message({
+              type: "success",
+              message: "删除成功！"
+            });
+             this.getCoInfo();
+        }else{
+         this.$message.error(res.data.message)
+        }
+      })
+      // rows.splice(index, 1);
+    },
+    //获取协办列表
+    getCoInfo() {
+      let para = {
+        id: this.id
+      };
+      listCoInfo(para).then(el => {
+        let data = el.data.result.coVoList;
+        this.coVoList = data;
+        this.icsId = el.data.result.icsId;
+        this.applyId = el.data.result.applyId;
+      });
     }
   },
   mounted() {
     this.getLists();
     this.getLeftTree();
     this.goalgetMessage();
+    this.getCoInfo();
   }
 };
 </script>

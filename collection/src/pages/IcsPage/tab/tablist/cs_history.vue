@@ -188,11 +188,11 @@
       			});
 				},
 				handleSizeChangeTrail(val) {
-				this.pagesize = val;
+				this.pagesizeTrail = val;
 				this.getmessage_trail();
 			},
 			handleCurrentChangeTrail(val) {
-				this.page = val;
+				this.pageTrail = val;
 				this.getmessage_trail();
 			},
 				getmessage_trail() {

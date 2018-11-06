@@ -269,7 +269,7 @@ export default {
       let h =
         (window.innerHeight ||
           document.documentElement.clientHeight ||
-          document.body.clientHeight) - 190;
+          document.body.clientHeight) -500;
         this.heights = h;
 
     },
@@ -470,13 +470,10 @@ export default {
     this.listShow();
     this.getDl_AllList();
     this.getuserInfos()
-    // this.getTaskUser1();
-
-    // this.getTaskUser();
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||
-        document.body.clientHeight) - 210;
+        document.body.clientHeight) - 350;
     this.heights = h;
     // console.log(this.heights)
     // this.$refs.abc.style.height= h+"px";
@@ -498,10 +495,6 @@ td {
   line-height: 23px !important;
   background: #f0f0f0;
 }
-/* .el-table .cell {
-  padding: 0 !important;
-  white-space: nowrap;
-} */
 .checkmore .el-select__tags{max-width:100%!important}
 </style>
 
