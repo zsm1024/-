@@ -1,6 +1,7 @@
 <template>
 	<section ref="abcd" style="overflow-y: auto;" id="cslists">
-		<el-button type="primary"  @click='openDilog' style="margin-bottom:9px!important;padding:10px 15px!important">分单</el-button>	
+		<el-button type="primary"  @click='openDilog' style="margin-bottom:9px!important;padding:10px 15px!important">分单</el-button>
+		<el-button type="primary"  @click='detain' style="margin-bottom:9px!important;padding:10px 15px!important">同步扣款情况</el-button>	
 			<span class="T1">新增逾期案件:<b>{{total}}</b></span>
 			<span class="T1">转队列案件:<b>{{totaltwo}}</b></span>
 			<span class="T1">预审出队列案件:<b>{{totalthr}}</b></span>		
@@ -18,25 +19,6 @@
                     >
 					</el-table-column>
 				</el-table>
-				<!-- <el-table :data="lists" max-height="170" border  v-loading="listLoading" style="width: 100%;" stripe :default-expand-all="true">											<el-table-column type="expand" >						
-						<template slot-scope="props">
-							<el-form  inline class="demo-table-expand" style="text-align:left;min-height:20px;line-height:20px">
-         						<el-form-item  style="min-height:20px;line-height20px">
-           							备注: {{ props.row.afpRecord }}
-          						</el-form-item>							
-							</el-form>
-						</template>
-					</el-table-column>		
-					<el-table-column 
-                        :prop="col.field" 
-                        :label="col.title" 
-                        v-for="(col, index) in cols" 
-                        :key="index"                      
-                        align="center"
-						:width="col.width"
-                        >
-					</el-table-column>
-				</el-table> -->
 
 				<!--工具条-->
 				<el-col :span="24" class="toolbar">					
@@ -44,9 +26,6 @@
 					</el-pagination>
 				</el-col>
 			</el-collapse-item>
-			<!-- <el-collapse-item title="特殊备注" name="4">
-				<span>{{spMarks}}</span>
-			</el-collapse-item> -->
 			 <el-collapse-item title="转队列案件" name="2">
 				<el-table :data="liststwo" border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe >									
 					<el-table-column 
@@ -88,8 +67,7 @@
 
 <script>
 
-// import { getcmsdetails,getcmsthr } from "@/api/tablist";
-import {listOut,listInput,listUpdate,listSend } from "@/api/sendList";
+import {listOut,listInput,listUpdate,listSend ,updateOverdue} from "@/api/sendList";
 
 export default {
 		data() {
@@ -101,16 +79,6 @@ export default {
                     {title:'合同号',field:'applicationNumber'},                  
                     {title:'逾期天数',field:'overdueDays'},
                     {title:'还款日',field:'datePayment'},
-                    // {title:'处理人',field:'handlePerson',width:"70"},
-                    // {title:'承诺金额',field:'amountCommitment',width:"70"},
-                    // {title:'实地状态',field:'fieldStatus',width:"70"},
-                    // {title:'实地日期',field:'fieldDate',width:"70"},
-                    // {title:'特殊案件标识',field:'specialIdentification',width:"70"},
-                    // {title:'代购标识',field:'purchasingLabel',width:"70"},
-                    // {title:'代购人姓名',field:'nameAgent',width:"70"},
-                    // {title:'代购人身份证',field:'purchasingId',width:"90"},
-                    // {title:'催收备注',field:'afpRecord',width:"220"},
-                    //  {title:'特殊备注',field:'spRecord',width:"70"},
                 
                 ],
 				total: 0,
@@ -125,10 +93,6 @@ export default {
                     {title:'合同号',field:'applicationNumber'},                  
                     {title:'逾期天数',field:'overdueDays'},
                     {title:'还款日',field:'datePayment'},
-                    // {title:'核销额',field:'writeAmount',width:"70"},
-                    // {title:'到期金额',field:'dueAmount',width:"70"},
-                    // {title:'豁免日期',field:'exemptionDate',width:"70"},
-                    // {title:'豁免人',field:'exemptionUser',width:"70"},
                 ],
 				totaltwo: 0,
 				pagetwo:1,
@@ -256,6 +220,18 @@ export default {
 							message:'已取消分单'
 						})
 					});
+			},
+			detain(){
+				updateOverdue().then(res =>{
+					if(res.data.success){
+						this.$message({
+							type: 'success',
+							message: res.data.message
+              		})
+					}else{
+						this.$message.error(res.data.message)
+					}
+				})
 			}
 
 		},

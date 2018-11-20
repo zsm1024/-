@@ -122,30 +122,6 @@ export default {
           {title:'经销商',field:'dealer',width:120},
           {title:'贷款产品',field:'loanProducts',width:120},  
           {title:'核销状态',field:'isnodis'},
-            // {title:'借款人',field:'name',width: "60"},
-            // {title:'合同号',field:'applicationNumber',width: "80"},
-            // {title:'职业',field:'occupation',width: "60"},
-            // {title:'逾期天数',field:'overdueDays',width: "80"},
-            // {title:'逾期金额',field:'sumOverdue',width: "80"},
-            // {title:'经销商',field:'dealer',width: "160"},
-            // {title:'贷款产品',field:'loanProducts',width: "90"},
-            // {title:'车型',field:'loanCar',width: "160"},           
-            // {title:'省份',field:'province',width: "60"},
-            // {title:'城市',field:'city',width: "60"},
-            // {title:'最近行动代码',field:'actSign',width: "60"},
-            // {title:'岗位ID',field:'position',width: "60"},
-            // {title:'处理人',field:'realUser',width: "60"},
-            // {title:'用户ID',field:'username',width: "60"},
-            // {title:'最近行动时间',field:'inputTime',width: "120"},
-            // {title:'贷款金额',field:'loanAmount',width: "60"},
-            // {title:'未偿本金',field:'residualAmount',width: "60"},
-            // {title:'首付比例',field:'firstRatio',width: "60"},
-            // // {title:'承诺兑现标识',field:'mark',width: "60"},
-            // {title:'核销状态',field:'isnodis',width: "60"},
-
-
-
-
         ],
         total: 0,
         page: 1,
@@ -204,6 +180,10 @@ export default {
             this.total = res.data.result.recordsTotal;
       
       this.lists = res.data.result.data;
+      this.lists.forEach(element => {
+        element.overdueDays=parseInt(element.overdueDays)
+        
+      });
             this.cols = this.cols;
             this.listLoading = false;
         //NProgress.done();

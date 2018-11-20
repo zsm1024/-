@@ -245,28 +245,6 @@ export default {
         this.listLoading = false;
       });
     }
-
-    // cancelhostList(){
-    //     this.addlists=[];
-    //     this.multipleSelection.forEach(f =>{
-    //            this.addlists.push(f.willSendCompany);
-    //         });
-    //     let para={
-    //         approveOperation:"refused",
-    //          willSendCompanys:this.addlists.toString(),
-    //     }
-    //     if(this.addlists.length==0){
-    //          this.$alert('请选择用户ID或代管案件！','提示',{
-    //                 confirmButtonText:'确定',
-    //                 type:'warning',
-    //                 center:'true'
-    //           })
-    //     }else{
-    //          approveSendCaseApp(para).then( res=>{
-    //             this.listShow()
-    //          })
-    //     }
-    // },
   },
   mounted() {
     this.listShow();

@@ -81,7 +81,7 @@
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left" disabled></el-table-column>
-       <el-table-column show-overflow-tooltip  sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :key="index" align="center" >
+       <el-table-column show-overflow-tooltip  sortable :prop="cols.field" :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
 		</el-table-column>     
    </el-table>
    <!--工具条-->
@@ -149,8 +149,8 @@ export default {
         { title: "约会日期", field: "appointmentTime", width: "80" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
-        { title: "最近行动代码", field: "actSign", width: "140" },
-        { title: "最近行动时间", field: "inputTime", width: "140" },
+        { title: "最近行动代码", field: "actSign", width: "160" },
+        { title: "最近行动时间", field: "inputTime", width: "160" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
         { title: "未偿本金", field: "residualAmount", width: "90" },
         { title: "派单时间", field: "createTime", width: "120" },
@@ -340,32 +340,6 @@ export default {
             this.listShow();
           });
          }
-        //  if (
-        //  this.AdduserForms.stateCode == "" ||
-        //   this.AdduserForms.areaList == "" ||
-        //   this.addlists.length == 0 ||
-        //   this.times == "" ||
-        //   this.AdduserForms.remarks ==""
-        // ) {
-        //   this.$alert("请检查队列、岗位、人员、日期、备注是否填写完整！", "提示", {
-        //     confirmButtonText: "确定",
-        //     type: "warning",
-        //     center: "true"
-        //   });
-        // } else {
-        //   coMissionApp(para).then(res => {
-        //     this.AdduserForms.stateCode = "";
-        //     this.AdduserForms.areaList = "";
-        //      this.AdduserForms.remarks =="";
-        //     this.times = "";
-        //     this.coTime = "";
-        //     this.addlists = [];
-        //     this.NoUse = false;
-        //     this.coVoList=[];
-        //     this.allList=[];
-        //     this.listShow();
-        //   });
-        // }
       }
     },
     handleCurrentChange(val) {

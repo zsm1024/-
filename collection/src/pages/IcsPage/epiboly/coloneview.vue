@@ -110,7 +110,7 @@
 					{ title: '用户ID', field: 'processer', width: "130" },
 					{ title: '派单时间', field: 'createTime', width: "150" },	
 					{ title: '派案到期日', field: 'deadTimeOfTheSendCase', width: "130" },
-          { title: '委托金额', field: 'entrustMoney', width: "130" },
+          			{ title: '委托金额', field: 'entrustMoney', width: "130" },
 					{ title: '委托逾期天数', field: 'entrustOverDueDays', width: "100" },
 					{ title: '委托逾期金额', field: 'overdueReceivables', width: "100" }, 
 					{ title: '约会日期', field: 'appointmentTime', width: "80" },
@@ -193,7 +193,13 @@
 				this.listLoading = true;				//NProgress.start();
 				listOutsource(para).then((res) => {
 					let data=res.data.result;					
-					 this.datas=data.data;					 
+					this.datas=data.data;	
+					this.datas.forEach(element => {
+
+						element.entrustOverDueDays=parseInt(element.entrustOverDueDays)
+				
+							
+					});					 
 					 this.total=data.recordsTotal;
 					  this.listLoading = false;
 					//NProgress.done();

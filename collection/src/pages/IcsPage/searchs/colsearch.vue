@@ -175,7 +175,6 @@
 				});
 				this.listsArray=this.listsArray.toString()
 				let as =this.listPath + "/wo/exportFile?appNums=" +this.listsArray;
-				console.log(as)
 				window.open(this.listPath + "/wo/exportFile?appNums=" +this.listsArray )
 			},
 		getAppNumAlls(){

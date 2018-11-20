@@ -30,3 +30,11 @@ export function listSend(params) {
     params: params
   })
 }
+export function updateOverdue(params) {
+  const data = params;
+  return fetch({
+      url: '/distributionRules/updateOverdue',
+      method: 'put',
+      data
+  })
+}

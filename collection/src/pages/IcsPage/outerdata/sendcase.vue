@@ -39,8 +39,8 @@
            <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 130px;" @change="dataChanges" ></el-date-picker>  
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">派案</el-button>
-        <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">退案</el-button>
+        <el-button type="primary" size="small" :disabled="postDisable" @click="hostList()" style="padding:7px 9px">派案</el-button>
+        <el-button type="primary" size="small" :disabled="backDisable" @click="cancelhostList()" style="padding:7px 9px">退案</el-button>
        </el-form-item>
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中..." >
@@ -83,6 +83,8 @@ import {
 export default {
   data() {
     return {
+      postDisable:false,
+      backDisable:false,
       escrowTime: "",
       heights: 0,
       datas: [],
@@ -187,6 +189,8 @@ export default {
       };
     },
     getlists() {
+      this.backDisable=true
+      this.postDisable=true
       // this.restaurants=this.userList;
       // this.file=this.userLists;
       this.listShow();
@@ -225,6 +229,7 @@ export default {
       this.multipleSelection = val;
     },
     hostList() {
+      this.postDisable=true
       this.addlists = [];
       this.multipleSelection.forEach(f => {
         this.addlists.push({
@@ -258,13 +263,14 @@ export default {
           // status:"1",
         };
         if (
-          (this.itemsId==""||this.times=="") ||this.addlists.length == 0
+          this.itemsId==""||this.times==""||this.times==undefined||this.addlists.length == 0
         ) {
           this.$alert("请选择派案公司、到期日和或外派案件！", "提示", {
             confirmButtonText: "确定",
             type: "warning",
             center: "true"
           });
+          this.postDisable=false
         } else {
           sendTheCaseApp(para).then(res => {
             this.listShow();
@@ -281,6 +287,7 @@ export default {
           center: "true"
         });
       }
+      this.postDisable=false
     },
     handleCurrentChange(val) {
       this.pages = val;
@@ -304,11 +311,15 @@ export default {
         username: this.filters.processer
       };
       this.listLoading = true;
+      this.backDisable=true
+      this.postDisable=true
       SendList(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
         this.total = data.recordsTotal;
         this.listLoading = false;
+        this.backDisable=false
+        this.postDisable=false
       });
 
       //     isOs:"1"
@@ -335,6 +346,7 @@ export default {
     },
     cancelhostList() {
       this.backlists = [];
+      this.backDisable=true
       this.multipleSelection.forEach(f => {
         this.backlists.push(f.id);
       });
@@ -357,6 +369,7 @@ export default {
             type: "warning",
             center: "true"
           });
+          this.backDisable=false
         } else {
           backCaseApp(para).then(res => {
             this.listShow();
@@ -368,6 +381,7 @@ export default {
           type: "warning",
           center: "true"
         });
+        this.backDisable=false
       }
     },
     toggleSelection() {

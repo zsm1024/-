@@ -237,670 +237,765 @@
 
 <script>
 //import $ from 'jquery'
-import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,delAddress,recordAdd,addMessage,jxsInfo,getdeal,colHistory_note} from "@/api/tablist";
-import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
-import formMessage from './form_message';
-import {PhoneCodeListAll} from "@/api/basedata";
+import {
+  tab_view,
+  addInfo,
+  addAddress,
+  delPhoneInfo,
+  updatePhoneInfo,
+  updateAddress,
+  delAddress,
+  recordAdd,
+  addMessage,
+  jxsInfo,
+  getdeal,
+  colHistory_note
+} from "@/api/tablist";
+import { isCodeNum, isPhoneNum, isChinaName } from "@/utils/validate";
+import formMessage from "./form_message";
+import { PhoneCodeListAll} from "@/api/basedata";
 export default {
-  data() {	 
-    	return {
-			floatForm:{
-				 background:"#fff",
-				 zIndex:"10"
-	 		},
-			classObject: {
-				active: true,
-				'text-danger': false
-			},
-			activeNames:["1","2","3","4","5","6",'7',"8","9","10",'11'],
-			items: [],
-			marks:"",
-			phoneList:[],
-			addressList:[],	
-			PhoneCodeList:[],
-			jxsName:"",	
-			JXSNAME:"",
-			dealerName:"",
-			JRZY:"",
-			ET:'',
-			dealerName:"",
-			cols:[
-				{title:'角色',field:'roleName',width:"70"},
-            	{title:'姓名',field:'name',width:"80"}, 
-            	{title: '关系', field: 'relationship', width: "50" },         
-            	{title:'电话',field:'phone',width:"140"},
-            	{title: '电话类型', field: 'phoneType', width: "90" },
-            	{title: '电话码', field: 'phoneNum', width: "90" },	
-            	{title:'信息来源',field:'infoSource',width:"60"},
-            	{title:'有效性',field:'effectiveness',width:"60"},
-			],
-			dialogStatus: '',
-			cols1:[
-				{title:'角色',field:'roleName',width:"70"},
-            	{title:'姓名',field:'name',width:"80"},
-				{title:'关系', field: 'relationship', width: "50" }, 
-				{title:'省',field:'province',width:"60"},
-				{title:'市',field:'city',width:"60"},     
-				{title:'地址',field:'address',width:"200"},				
-				{title: '地址类型', field: 'addressType', width: "70" },
-				{title:'所有权类型',field:'propertyType',width:"60"},
-            	{title:'信息来源',field:'infoSource',width:"60"},
-				{title:'有效性',field:'effectiveness',width:"60"},
-				
-			],
-			baseinfo:[
-				{ title: '角色名', field: 'roleName', width: "60" },
-				{ title: '姓名', field: 'name', width: "80" },
-				// { title: '拼音', field: 'pinyin', width: "80" },
-				{ title: '职业', field: 'occupation', width: "80" },
-				{ title: '单位名称', field: 'unitName', width: "110" },
-				{ title: '性别', field: 'sex', width: "45" },
-				{ title: '证件类型', field: 'documentType', width: "90"},
-				{ title: '证件号码', field: 'documentNum', width: "145"},
-				{ title: '出生日期', field: 'birthDate', width: "80"}
-			],
-			callback:{
-				phoneType:'',
-				roleName:'',
-			},		
-			id:this.$store.state.navTabs.tabId,	
-			remarkopen: false,
-			messageopen: false,
-			addUserInfos:false,
-			addWorkInfos:false,
-			 formLabelWidth: '120px',
-			//备注弹出层
-			remarkform: {
-				remarks:'',
-			},
+  data() {
+    return {
+      floatForm: {
+        background: "#fff",
+        zIndex: "10"
+      },
+      classObject: {
+        active: true,
+        "text-danger": false
+      },
+      activeNames: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+      items: [],
+      marks: "",
+      phoneList: [],
+      addressList: [],
+      PhoneCodeList: [],
+      jxsName: "",
+      JXSNAME: "",
+      dealerName: "",
+      JRZY: "",
+      ET: "",
+      dealerName: "",
+      cols: [
+        { title: "角色", field: "roleName", width: "70" },
+        { title: "姓名", field: "name", width: "80" },
+        { title: "关系", field: "relationship", width: "50" },
+        { title: "电话", field: "phone", width: "140" },
+        { title: "电话类型", field: "phoneType", width: "90" },
+        { title: "电话码", field: "phoneNum", width: "90" },
+        { title: "信息来源", field: "infoSource", width: "60" },
+        { title: "有效性", field: "effectiveness", width: "60" }
+      ],
+      dialogStatus: "",
+      cols1: [
+        { title: "角色", field: "roleName", width: "70" },
+        { title: "姓名", field: "name", width: "80" },
+        { title: "关系", field: "relationship", width: "50" },
+        { title: "省", field: "province", width: "60" },
+        { title: "市", field: "city", width: "60" },
+        { title: "地址", field: "address", width: "200" },
+        { title: "地址类型", field: "addressType", width: "70" },
+        { title: "所有权类型", field: "propertyType", width: "60" },
+        { title: "信息来源", field: "infoSource", width: "60" },
+        { title: "有效性", field: "effectiveness", width: "60" }
+      ],
+      baseinfo: [
+        { title: "角色名", field: "roleName", width: "60" },
+        { title: "姓名", field: "name", width: "80" },
+        // { title: '拼音', field: 'pinyin', width: "80" },
+        { title: "职业", field: "occupation", width: "80" },
+        { title: "单位名称", field: "unitName", width: "110" },
+        { title: "性别", field: "sex", width: "45" },
+        { title: "证件类型", field: "documentType", width: "90" },
+        { title: "证件号码", field: "documentNum", width: "145" },
+        { title: "出生日期", field: "birthDate", width: "80" }
+      ],
+      callback: {
+        phoneType: "",
+        roleName: ""
+      },
+      id: this.$store.state.navTabs.tabId,
+      remarkopen: false,
+      messageopen: false,
+      addUserInfos: false,
+      addWorkInfos: false,
+      formLabelWidth: "120px",
+      //备注弹出层
+      remarkform: {
+        remarks: ""
+      },
 
-			//用户信息弹出层
-			AdduserForm:{
-				roleName:"",
-				name:"",
-				relationship:"",
-				phone:"",
-				phoneType:"",
-				phoneNum:"",
-				infoSource:"ICS",
-				effectiveness:"Y",	
-			},
-			AddWorkForm:{
-				roleName:"",
-				name:"",
-				relationship:"",
-				province:"",
-				city:"",
-				address:"",
-				addressType:"",
-				propertyType:"",
-				infoSource:"ICS",
-				effectiveness:"Y",	
-			},							
-	
-			phonerules: {
-			    roleName: [
-                    { required: true, message: '请输入角色', trigger: 'blur' }
-                ],
-                name: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                ],
-                relationship: [
-                    { required: true, message: '请输入关系', trigger: 'blur' }
-                ],
-                phone: [
-                    { required: true, message: '请输入电话', trigger: 'blur' }
-                ],
-                phoneType: [
-                    { required: true, message: '请输入电话类型', trigger: 'blur' }
-                ],
-                // phoneNum: [
-                //     { required: true, message: '请输入电话码', trigger: 'blur' }
-                // ],
-            },
-            addressrules:{
-                roleName: [
-                    { required: true, message: '请输入角色', trigger: 'blur' }
-                ],
-                name: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                ],
-                relationship: [
-                    { required: true, message: '请输入关系', trigger: 'blur' }
-				],
-				 province: [
-                    { required: true, message: '请输入省名', trigger: 'blur' }
-				],
-				 city: [
-                    { required: true, message: '请输入市名', trigger: 'blur' }
-				],
-                address: [
-                    { required: true, message: '请输入地址', trigger: 'blur' }
-				],				
-                addressType: [
-                    { required: true, message: '请输入地址类型', trigger: 'blur' }
-                ],
-               
-            }
+      //用户信息弹出层
+      AdduserForm: {
+        roleName: "",
+        name: "",
+        relationship: "",
+        phone: "",
+        phoneType: "",
+        phoneNum: "",
+        infoSource: "ICS",
+        effectiveness: "Y"
+      },
+      AddWorkForm: {
+        roleName: "",
+        name: "",
+        relationship: "",
+        province: "",
+        city: "",
+        address: "",
+        addressType: "",
+        propertyType: "",
+        infoSource: "ICS",
+        effectiveness: "Y"
+      },
+
+      phonerules: {
+        roleName: [{ required: true, message: "请输入角色", trigger: "blur" }],
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        relationship: [
+          { required: true, message: "请输入关系", trigger: "blur" }
+        ],
+        phone: [{ required: true, message: "请输入电话", trigger: "blur" }],
+        phoneType: [
+          { required: true, message: "请输入电话类型", trigger: "blur" }
+        ]
+        // phoneNum: [
+        //     { required: true, message: '请输入电话码', trigger: 'blur' }
+        // ],
+      },
+      addressrules: {
+        roleName: [{ required: true, message: "请输入角色", trigger: "blur" }],
+        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        relationship: [
+          { required: true, message: "请输入关系", trigger: "blur" }
+        ],
+        province: [{ required: true, message: "请输入省名", trigger: "blur" }],
+        city: [{ required: true, message: "请输入市名", trigger: "blur" }],
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
+        addressType: [
+          { required: true, message: "请输入地址类型", trigger: "blur" }
+        ]
+      }
     };
   },
   methods: {
-	  //电话信息
- 		choice(AdduserForm){			
- 			let para ={
-    			roleName:this.AdduserForm.roleName,
-				name:this.AdduserForm.name,
-				relationship:this.AdduserForm.relationship,
-				phone:this.AdduserForm.phone,
-				phoneType:this.AdduserForm.phoneType,
-				phoneNum:this.AdduserForm.phoneNum,
-				infoSource:'ICS',
-				effectiveness:"Y",
-				afpId: this.$route.params.id,
-				
-            };
-            this.$refs[AdduserForm].validate((valid) => {
-                if(valid){
-                    addInfo(para).then(res =>{
-                    if(res.data.success){
-                        this.$message({
-                            type: 'success',
-                            message: '添加成功！'
-                        })
-                        this.items.customerPhones.unshift(
-                        {"roleName":this.$refs['AdduserForm'].model.roleName,"name":this.$refs['AdduserForm'].model.name,"relationship":this.$refs['AdduserForm'].model.relationship,
-                        "phone":this.$refs['AdduserForm'].model.phone,
-                        "phoneType":this.$refs['AdduserForm'].model.phoneType,"phoneNum":this.$refs['AdduserForm'].model.phoneNum,                                         
-                        "infoSource":"ICS","effectiveness":"Y","edit":false},	
-                        
-                    );
-                    this.addUserInfos=false;
-                    this.$refs['AdduserForm'].resetFields();
-                    }else{
-                        this.$message({
-                            type: 'error',
-                            message: '添加失败，请联系管理员'
-                        })
-                        
-                    }   		   		
-                    })
-                }else{   		
-                    this.addUserInfos=true;
-                    this.$refs.AdduserForm.validate((valid) => {
-                        if (valid) {				
-                        alert('submit!');
-                        } else {
-                            return false;
-                        }
-                    });
-                } 
-            });  	
-		},
-		//备注方法
-		getmessage_note() {
-				let paras = {
-					missionId:this.$route.params.id,					
-				};
+    //电话信息
+    choice(AdduserForm) {
+      let para = {
+        roleName: this.AdduserForm.roleName,
+        name: this.AdduserForm.name,
+        relationship: this.AdduserForm.relationship,
+        phone: this.AdduserForm.phone,
+        phoneType: this.AdduserForm.phoneType,
+        phoneNum: this.AdduserForm.phoneNum,
+        infoSource: "ICS",
+        effectiveness: "Y",
+        afpId: this.$route.params.id
+      };
+      this.$refs[AdduserForm].validate(valid => {
+        if (valid) {
+          addInfo(para).then(res => {
+            if (res.data.success) {
+              this.$message({
+                type: "success",
+                message: "添加成功！"
+              });
+              this.items.customerPhones.unshift({
+                roleName: this.$refs["AdduserForm"].model.roleName,
+                name: this.$refs["AdduserForm"].model.name,
+                relationship: this.$refs["AdduserForm"].model.relationship,
+                phone: this.$refs["AdduserForm"].model.phone,
+                phoneType: this.$refs["AdduserForm"].model.phoneType,
+                phoneNum: this.$refs["AdduserForm"].model.phoneNum,
+                infoSource: "ICS",
+                effectiveness: "Y",
+                edit: false
+              });
+              this.addUserInfos = false;
+              this.$refs["AdduserForm"].resetFields();
+            } else {
+              this.$message({
+                type: "error",
+                message: "添加失败，请联系管理员"
+              });
+            }
+          });
+        } else {
+          this.addUserInfos = true;
+          this.$refs.AdduserForm.validate(valid => {
+            if (valid) {
+              alert("submit!");
+            } else {
+              return false;
+            }
+          });
+        }
+      });
+    },
+    //备注方法
+    getmessage_note() {
+      let paras = {
+        missionId: this.$route.params.id
+      };
 
-     		colHistory_note(paras).then(res => {			 
-				let data = res.data.result;
-				if(data==null){
-					return false;
-				}else{
-					this.marks=data.remarks;	
-				}					
-					// this.item.push(data);			
-      		});
-		},
-		remarkopenList(){
-			this.getmessage_note()
-			this.remarkopen=true;
-			this.remarkform.remarks=this.marks
-		},
-		confirmremarkopen(remarkform) {
-			this.getmessage_note()
-				this.remarkopen=false;
-				let para ={
-					remarks:this.remarkform.remarks,
-					id:this.$route.params.id
-				}
-				this.$refs[remarkform].validate((valid) => {
-                if(valid){
-                    addMessage(para).then(res =>{
-						
-                        if(res.data.success){
-                            this.$message({
-                                type: 'success',
-                                message: '添加成功！'
-                            })
-                            // this.items.customerAddresses.unshift(
-                            // {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
-                            // "address":this.$refs['AddWorkForm'].model.address,
-                            // "addressType":this.$refs['AddWorkForm'].model.addressType,                  
-                            // "infoSource":"WCMS","effectiveness":"Y","edit":false},	
-                            
-                            // );
-						this.remarkopen=false;
-						
-						// this.$refs['remarkform'].resetFields();
-						this.getmessage_note()
-                        }else{
-                            this.$message({
-                            type: 'error',
-                            message: '添加失败，请联系管理员'
-                            })
-                        }   		   		
-                    })
-                }else{   		
-                    this.remarkopen=true;
-                    this.$refs.remarkform.validate((valid) => {
-                        if (valid) {                       
-                        alert('submit!');
-                        } else {
-                            return false;
-                        }
-                    });
-                } 
-            }); 
-				this.$message({
-					type:'success',
-					message:'保存成功',
-				});
+      colHistory_note(paras).then(res => {
+        let data = res.data.result;
+        if (data == null) {
+          return false;
+        } else {
+          this.marks = data.remarks;
+        }
+        // this.item.push(data);
+      });
+    },
+    remarkopenList() {
+      this.getmessage_note();
+      this.remarkopen = true;
+      this.remarkform.remarks = this.marks;
+    },
+    confirmremarkopen(remarkform) {
+      this.getmessage_note();
+      this.remarkopen = false;
+      let para = {
+        remarks: this.remarkform.remarks,
+        id: this.$route.params.id
+      };
+      this.$refs[remarkform].validate(valid => {
+        if (valid) {
+          addMessage(para).then(res => {
+            if (res.data.success) {
+              this.$message({
+                type: "success",
+                message: "添加成功！"
+              });
+              // this.items.customerAddresses.unshift(
+              // {"roleName":this.$refs['AddWorkForm'].model.roleName,"name":this.$refs['AddWorkForm'].model.name,"relationship":this.$refs['AddWorkForm'].model.relationship,
+              // "address":this.$refs['AddWorkForm'].model.address,
+              // "addressType":this.$refs['AddWorkForm'].model.addressType,
+              // "infoSource":"WCMS","effectiveness":"Y","edit":false},
 
-		},
-		 //地址信息
-		 address(AddWorkForm){			
- 			let para ={
-    			roleName:this.AddWorkForm.roleName,
-				name:this.AddWorkForm.name,
-				relationship:this.AddWorkForm.relationship,
-				province:this.AddWorkForm.province,
-				city:this.AddWorkForm.city,
-				address:this.AddWorkForm.address,
-				addressType:this.AddWorkForm.addressType,
-				propertyType:this.AddWorkForm.propertyType,
-				infoSource:'ICS',
-				effectiveness:"Y",
-				afpId: this.$route.params.id,
-			};
-            this.$refs[AddWorkForm].validate((valid) => {
-				
-                if(valid){
-                    addAddress(para).then(res =>{
-                        if(res.data.success){
-                            this.$message({
-                                type: 'success',
-                                message: '添加成功！'
-							})
-                            this.items.customerAddresses.unshift(
-							{"roleName":this.$refs['AddWorkForm'].model.roleName,
-							"name":this.$refs['AddWorkForm'].model.name,
-							"relationship":this.$refs['AddWorkForm'].model.relationship,
-							"province":this.$refs['AddWorkForm'].model.province,
-							"city":this.$refs['AddWorkForm'].model.city,
-                            "address":this.$refs['AddWorkForm'].model.address,
-							"addressType":this.$refs['AddWorkForm'].model.addressType, 
-							"propertyType":this.$refs['AddWorkForm'].model.propertyType,                                          
-							"infoSource":"ICS","effectiveness":"Y","edit":false,"id":res.data.result
-							},	                          
-							);
-                        this.addWorkInfos=false;
-                        this.$refs['AddWorkForm'].resetFields();
-                        }else{
-                            this.$message({
-                            type: 'error',
-                            message: '添加失败，请联系管理员'
-                            })
-                        }   		   		
-                    })
-                }else{   		
-                    this.addWorkInfos=true;
-                    this.$refs.AddWorkForm.validate((valid) => {
-                        if (valid) {
-                        
-                        alert('submit!');
-                        } else {
-                            return false;
-                        }
-                    });
-                } 
-            });    	
- 		},
-		deleteRow(index, rows, datas) {
-			let para ={
-				id:rows.id,
-			}
-			this.$confirm('确定删除信息吗？','提示',{
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type:'warning'
-			}).then(() => {
-				delPhoneInfo(para).then(res =>{
-			
-					if(res.data.success){
-						datas.splice(index, 1);
-						this.$message({
-							type: 'success',
-							message: '删除成功！'
-						})
-					}else{
-						this.$message({
-							type: 'error',
-							message: '删除失败，请联系管理员！'
-						})
-					}
-				});
-				
-			}).catch(() =>{
-				this.$message({
-					type: 'info',
-					message: '已取消删除'
-				});
-			});
+              // );
+              this.remarkopen = false;
 
-			
-		},
-		deleteAdress(index, rows, datas) {
-				let para ={
-				id:rows.id,
-			}
-			this.$confirm('确定删除信息吗？','提示',{
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type:'warning'
-			}).then(() => {
-				delAddress(para).then(res =>{
-			
-					if(res.data.success){
-						datas.splice(index, 1);
-						this.$message({
-							type: 'success',
-							message: '删除成功！'
-						})
-					}else{
-						this.$message({
-							type: 'error',
-							message: '删除失败，请联系管理员！'
-						})
-					}
-				});
-				
-			}).catch(() =>{
-				this.$message({
-					type: 'info',
-					message: '已取消删除'
-				});
-			});
-		},
-		ring(phoneNum,row,){
-			window.frames['']
-			var pattern="-";
-			phoneNum=phoneNum.replace(new RegExp(pattern),"");
-			// let a=phoneNum;
-			// a.replace(/(^\s*)|(\s*$)/g, "");
-			// console.log(phoneNum.length)
-			// console.log(a.length);
-			// phoneNum=phoneNum.replace(/\s+/g,"")
-			// phoneNum="0"+a;
-			localStorage.removeItem("CJPhone");
-			localStorage.setItem("phoneNum","0"+phoneNum);
-			localStorage.setItem("CJPhone",phoneNum);
-			this.$refs.CJlist.PhoneCtr();
-			var user=localStorage.getItem("userName");
-			let phoneNumVal="0"+phoneNum
-			document.getElementById("frame2").contentWindow.telNumVal(phoneNumVal);
-			// initParam(user)
-			document.getElementById("frame2").contentWindow.clickCallOut("0","0"+phoneNum,this.appNum,row.name);
-			// clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
-		},	
-		ring1(phoneNum,row,){
-			var pattern="-";			
-			phoneNum=phoneNum.replace(new RegExp(pattern),"");
-			// phoneNum=phoneNum;	
-			localStorage.removeItem("CJPhone");
-			localStorage.setItem("phoneNum",phoneNum);
-			localStorage.setItem("CJPhone",phoneNum);
-			this.$refs.CJlist.PhoneCtr();
-			var user=localStorage.getItem("userName");
-			document.getElementById("frame2").contentWindow.telNumVal(phoneNum);
-			document.getElementById("frame2").contentWindow.clickCallOut("0",phoneNum,this.appNum,row.name);
-        	// initParam(user)
-			// clickCallOut("0",phoneNum,row.name,this.applicationNumbers)			
-		},	
-		phoneEdit(row){
-			let para = row
-			
-			if(row.edit=!row.edit){
-			
-			}else{
-				updatePhoneInfo(para).then(res =>{
-						if(res.data.success){
-							this.$message({
-								type: 'success',
-								message: '编辑成功'
-							})
-						}else{
-							this.$message({
-								type: 'error',
-								message: '编辑失败，请联系管理员！'
-							})
-						}
-				});
-				
-				
-			}
-			//row.edit=!row.edit;
-		
-		},
-		
-		addressEdit(row){
-			let para = row
-			if(row.edit=!row.edit){
-			
-			}else{
-				updateAddress(para).then(res =>{
-						if(res.data.success){
-							this.$message({
-								type: 'success',
-								message: '编辑成功！'
-							})
-						}else{
-							this.$message({
-								type: 'error',
-								message: '编辑失败，请联系管理员！'
-							})
-						}
-				});
-				
-				
-			}
-		},
-		//短信方法
-		confirmmessage() {
-				this.messageopen=false;
-				this.$message({
-					type:'success',
-					message:'保存成功',
-				});
-		},
-		
-		//添加客户信息方法
-		addUserInfo(){
-			this.addUserInfos=false;
-			this.$refs['AdduserForm'].resetFields();
-		},
-		//添加客户地址信息方法
-		addWorkInfo(){
-			this.addWorkInfos=false;
-			this.$refs['AddWorkForm'].resetFields();
-		},
-		// slibceshi(){
-           
-		// 	let para = {
-		// 		missionId: this.$route.params.id
-		// 	};
-		// 	tab_view(para).then(res => {
-		// 		 let data = res.data.result;			
-		// 		 this.items = data;								
-		// 		this.items.customerPhones = this.items.customerPhones.map(v => {
-                   
-		// 			this.$set(v, 'edit', false)
-		// 			return v;
-					
-		// 		});
-				
-		// 		this.items.customerAddresses = this.items.customerAddresses.map(v => {
-		// 			this.$set(v, 'edit', false)
-		// 			return v
-		// 		})
-		// 		this.remarkform.remarks = this.items.remarks;
-		// 		// this.cols=data.cols;
-        //         // this.cols1=data.cols1; 
-		// 		this.height=document.documentElement.clientHeight-400;       
-		// 	});
-        // },	
-		getlist() {
-			let para = {
-				missionId: this.$route.params.id
-			};
-			tab_view(para).then(res => {
-				 let data = res.data.result;			
-				 this.items = data;	
-				 this.appNum=data.appNum;	
-				
-				this.items.customerPhones = this.items.customerPhones.map(v => {
-					this.$set(v, 'edit', false)
-					return v;
-					
-				});
-				
-				this.items.customerAddresses = this.items.customerAddresses.map(v => {
-					this.$set(v, 'edit', false)
-					return v
-				})
-				this.remarkform.remarks = this.items.remarks;
-				// this.cols=data.cols;
-                // this.cols1=data.cols1; 
-				this.height=document.documentElement.clientHeight-400;       
-			});
-			getdeal(para).then(res =>{
-				let data =res.data.result;
-				this.ET=data.et;			
-			})
-   },
-	//经销商信息
-	getJxsInfo(){
-		let para = {
-			missionId: this.$route.params.id
-		};
-			jxsInfo(para).then(res =>{
-				if(res.data.success){
-				let data =res.data.result;
-				this.JRZY="金融专员";
-				this.jxsName=data.name;
-				this.dealerName=data.dealerName;
-				this.JXSNAME="名称"
-				data.phone.forEach(element => {
-					this.phoneList.push({"phone":element.phone,"name":"电话"})
-				});
-				data.address.forEach(element => {					
-					 this.addressList.push({"address":element,"name":"地址"})
-				});
-				}
-				
-				// console.log(data.address)
-			})
-	},
-	//  getCodeAll().then(res => {
-	// 			 console.log(res)
+              // this.$refs['remarkform'].resetFields();
+              this.getmessage_note();
+            } else {
+              this.$message({
+                type: "error",
+                message: "添加失败，请联系管理员"
+              });
+            }
+          });
+        } else {
+          this.remarkopen = true;
+          this.$refs.remarkform.validate(valid => {
+            if (valid) {
+              alert("submit!");
+            } else {
+              return false;
+            }
+          });
+        }
+      });
+      this.$message({
+        type: "success",
+        message: "保存成功"
+      });
+    },
+    //地址信息
+    address(AddWorkForm) {
+      let para = {
+        roleName: this.AddWorkForm.roleName,
+        name: this.AddWorkForm.name,
+        relationship: this.AddWorkForm.relationship,
+        province: this.AddWorkForm.province,
+        city: this.AddWorkForm.city,
+        address: this.AddWorkForm.address,
+        addressType: this.AddWorkForm.addressType,
+        propertyType: this.AddWorkForm.propertyType,
+        infoSource: "ICS",
+        effectiveness: "Y",
+        afpId: this.$route.params.id
+      };
+      this.$refs[AddWorkForm].validate(valid => {
+        if (valid) {
+          addAddress(para).then(res => {
+            if (res.data.success) {
+              this.$message({
+                type: "success",
+                message: "添加成功！"
+              });
+              this.items.customerAddresses.unshift({
+                roleName: this.$refs["AddWorkForm"].model.roleName,
+                name: this.$refs["AddWorkForm"].model.name,
+                relationship: this.$refs["AddWorkForm"].model.relationship,
+                province: this.$refs["AddWorkForm"].model.province,
+                city: this.$refs["AddWorkForm"].model.city,
+                address: this.$refs["AddWorkForm"].model.address,
+                addressType: this.$refs["AddWorkForm"].model.addressType,
+                propertyType: this.$refs["AddWorkForm"].model.propertyType,
+                infoSource: "ICS",
+                effectiveness: "Y",
+                edit: false,
+                id: res.data.result
+              });
+              this.addWorkInfos = false;
+              this.$refs["AddWorkForm"].resetFields();
+            } else {
+              this.$message({
+                type: "error",
+                message: "添加失败，请联系管理员"
+              });
+            }
+          });
+        } else {
+          this.addWorkInfos = true;
+          this.$refs.AddWorkForm.validate(valid => {
+            if (valid) {
+              alert("submit!");
+            } else {
+              return false;
+            }
+          });
+        }
+      });
+    },
+    deleteRow(index, rows, datas) {
+      let para = {
+        id: rows.id
+      };
+      this.$confirm("确定删除信息吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delPhoneInfo(para).then(res => {
+            if (res.data.success) {
+              datas.splice(index, 1);
+              this.$message({
+                type: "success",
+                message: "删除成功！"
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败，请联系管理员！"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    deleteAdress(index, rows, datas) {
+      let para = {
+        id: rows.id
+      };
+      this.$confirm("确定删除信息吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delAddress(para).then(res => {
+            if (res.data.success) {
+              datas.splice(index, 1);
+              this.$message({
+                type: "success",
+                message: "删除成功！"
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败，请联系管理员！"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    ring(phoneNum, row) {
+      window.frames[""];
+      var pattern = "-";
+      phoneNum = phoneNum.replace(new RegExp(pattern), "");
+      // let a=phoneNum;
+      // a.replace(/(^\s*)|(\s*$)/g, "");
+      // console.log(phoneNum.length)
+      // console.log(a.length);
+      // phoneNum=phoneNum.replace(/\s+/g,"")
+      // phoneNum="0"+a;
+      localStorage.removeItem("CJPhone");
+      localStorage.setItem("phoneNum", "0" + phoneNum);
+      localStorage.setItem("CJPhone", phoneNum);
+      this.$refs.CJlist.PhoneCtr();
+      var user = localStorage.getItem("userName");
+      let phoneNumVal = "0" + phoneNum;
+      document.getElementById("frame2").contentWindow.telNumVal(phoneNumVal);
+      // initParam(user)
+      document
+        .getElementById("frame2")
+        .contentWindow.clickCallOut("0", "0" + phoneNum, this.appNum, row.name);
+      // clickCallOut("0","0"+phoneNum,row.name,this.applicationNumbers)
+    },
+    ring1(phoneNum, row) {
+      var pattern = "-";
+      phoneNum = phoneNum.replace(new RegExp(pattern), "");
+      // phoneNum=phoneNum;
+      localStorage.removeItem("CJPhone");
+      localStorage.setItem("phoneNum", phoneNum);
+      localStorage.setItem("CJPhone", phoneNum);
+      this.$refs.CJlist.PhoneCtr();
+      var user = localStorage.getItem("userName");
+      document.getElementById("frame2").contentWindow.telNumVal(phoneNum);
+      document
+        .getElementById("frame2")
+        .contentWindow.clickCallOut("0", phoneNum, this.appNum, row.name);
+      // initParam(user)
+      // clickCallOut("0",phoneNum,row.name,this.applicationNumbers)
+    },
+    phoneEdit(row) {
+      let para = row;
+
+      if ((row.edit = !row.edit)) {
+      } else {
+        updatePhoneInfo(para).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "编辑成功"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "编辑失败，请联系管理员！"
+            });
+          }
+        });
+      }
+      //row.edit=!row.edit;
+    },
+
+    addressEdit(row) {
+      let para = row;
+      if ((row.edit = !row.edit)) {
+      } else {
+        updateAddress(para).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "编辑成功！"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "编辑失败，请联系管理员！"
+            });
+          }
+        });
+      }
+    },
+    //短信方法
+    confirmmessage() {
+      this.messageopen = false;
+      this.$message({
+        type: "success",
+        message: "保存成功"
+      });
+    },
+
+    //添加客户信息方法
+    addUserInfo() {
+      this.addUserInfos = false;
+      this.$refs["AdduserForm"].resetFields();
+    },
+    //添加客户地址信息方法
+    addWorkInfo() {
+      this.addWorkInfos = false;
+      this.$refs["AddWorkForm"].resetFields();
+    },
+    // slibceshi(){
+
+    // 	let para = {
+    // 		missionId: this.$route.params.id
+    // 	};
+    // 	tab_view(para).then(res => {
+    // 		 let data = res.data.result;
+    // 		 this.items = data;
+    // 		this.items.customerPhones = this.items.customerPhones.map(v => {
+
+    // 			this.$set(v, 'edit', false)
+    // 			return v;
+
+    // 		});
+
+    // 		this.items.customerAddresses = this.items.customerAddresses.map(v => {
+    // 			this.$set(v, 'edit', false)
+    // 			return v
+    // 		})
+    // 		this.remarkform.remarks = this.items.remarks;
+    // 		// this.cols=data.cols;
+    //         // this.cols1=data.cols1;
+    // 		this.height=document.documentElement.clientHeight-400;
+    // 	});
+    // },
+    getlist() {
+      let para = {
+        missionId: this.$route.params.id
+      };
+      tab_view(para).then(res => {
+        let data = res.data.result;
+        this.items = data;
+        this.appNum = data.appNum;
+
+        this.items.customerPhones = this.items.customerPhones.map(v => {
+          this.$set(v, "edit", false);
+          return v;
+        });
+
+        this.items.customerAddresses = this.items.customerAddresses.map(v => {
+          this.$set(v, "edit", false);
+          return v;
+        });
+        this.remarkform.remarks = this.items.remarks;
+        // this.cols=data.cols;
+        // this.cols1=data.cols1;
+        this.height = document.documentElement.clientHeight - 400;
+      });
+      getdeal(para).then(res => {
+        let data = res.data.result;
+        this.ET = data.et;
+      });
+    },
+    //经销商信息
+    getJxsInfo() {
+      let para = {
+        missionId: this.$route.params.id
+      };
+      jxsInfo(para).then(res => {
+        if (res.data.success) {
+          let data = res.data.result;
+          this.JRZY = "金融专员";
+          this.jxsName = data.name;
+          this.dealerName = data.dealerName;
+          this.JXSNAME = "名称";
+          data.phone.forEach(element => {
+            this.phoneList.push({ phone: element.phone, name: "电话" });
+          });
+          data.address.forEach(element => {
+            this.addressList.push({ address: element, name: "地址" });
+          });
+        }
+
+        // console.log(data.address)
+      });
+    },
+    //  getCodeAll().then(res => {
+    // 			 console.log(res)
     //              var arrpush = [];
     //              res.data.result.forEach(function(value,index){
     //                 arrpush.push(value.actCode+"-"+value.actNotes);
     //              })
     //              this.getdaima = arrpush;
-              
-	// 		});
-	//获取电话码
-	getPhoneCode(){
-		PhoneCodeListAll().then(res =>{
-			let data =res.data.result;
-			this.PhoneCodeList =data;
-		})
-	},
-	//客户基本信息中英文
-	tableRowClassNames(row,rowIndex){
-		row.documentType=row.documentType.split(" ").shift(" ").trim()
-		row.sex=row.sex.split("(").shift("(").trim()
-	},
-	tableRowClassNameCustom(row,rowIndex){
-		row.phoneType=row.phoneType.split(" ").shift(" ").trim();
-		// let reg=/[a-zA-Z]/g;
-		// console.log(row.relationship.replace(reg," ").trim())
-		// row.relationship=row.relationship.replace(reg," ").trim()
-	},
-	tableRowClassNameAddress(row,rowIndex){
-		let rows=row.addressType.split(":").pop(":").trim();
-		row.addressType=rows.split(" ").shift(" ").trim();
-		// let reg=/[a-zA-Z]/g;
-		// console.log(row.relationship.replace(reg," ").trim());
-		// row.relationship=row.relationship.replace(reg," ").trim()
-	},
-// 	c(s){
-// 		console.log(s.value.length)
-//     // if(s.value.length > 3){
-//     //     return s.value = s.value.substr(0, 3), alert('最大字符数为3');
-//     // }
-//     // return !0;
-// }
+
+    // 		});
+    //获取电话码
+    getPhoneCode() {
+      PhoneCodeListAll().then(res => {
+        let data = res.data.result;
+        this.PhoneCodeList = data;
+      });
+    },
+    //客户基本信息中英文
+    tableRowClassNames(row, rowIndex) {
+      row.documentType = row.documentType
+        .split(" ")
+        .shift(" ")
+        .trim();
+      row.sex = row.sex
+        .split("(")
+        .shift("(")
+        .trim();
+    },
+    tableRowClassNameCustom(row, rowIndex) {
+      row.phoneType = row.phoneType
+        .split(" ")
+        .shift(" ")
+        .trim();
+    },
+    tableRowClassNameAddress(row, rowIndex) {
+      let rows = row.addressType
+        .split(":")
+        .pop(":")
+        .trim();
+      row.addressType = rows
+        .split(" ")
+        .shift(" ")
+        .trim();
+    },
+  
   },
-  components:{
-	  formMessage
+  components: {
+    formMessage
   },
   mounted() {
-	this.getlist();
-	this.getJxsInfo()
-	this.getPhoneCode();
-	this.getmessage_note();
-    let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
-   	this.$refs.abc.style.height= h+"px";
+	this.findType()
+    this.getlist();
+    this.getJxsInfo();
+    this.getPhoneCode();
+    this.getmessage_note();
+    let h =
+      (window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight) - 270;
+    this.$refs.abc.style.height = h + "px";
   }
 };
 </script>
 <style>
-	h4{background: #eef1f6;padding: 10px;border: 1px solid #dfe6ec;font-weight: bold;}
-	table{width: 100%;text-align: center;}
-	tr{width: 100%;}
-	td{border-right: 1px solid #dfe6ec;border-bottom: 1px solid #dfe6ec;height:23px!important;line-height: 23px!important;background: #f0f0f0;}	
-	.useraddress{width: 150px;}
-	.el-collapse-item__header{font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
-	.abc{height: 500px!important; }
-	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2,.el-col .el-icon-time{cursor: pointer; color: #20a0ff;margin-left: 5px;}
-	.el-col .el-icon-upload2:hover{color: #4db3ff;}
-	.el-col .el-icon-edit:hover{color: #4db3ff;}
-	.el-col .el-icon-message:hover{color:#4db3ff}
-	.el-col .el-icon-time:hover{color:#4db3ff}
-	.changecolor{color: red;}
-	.el-tabs--border-card>.el-tabs__content{padding: 0!important}
-	.el-collapse-item__content{padding:5px!important}
-	.el-form-item__label{padding: 5px 0!important}
-	.el-form-item__content{line-height: 24px!important}
-  	.table-expand label { width:90px!important;text-align:el-pagination__rightwrapper;}
-  	.table-expand .el-form-item {margin: 0 0 0 2px!important; min-width:220px!important;color: #269aff!important;}
-  	/* .el-table .cell{padding: 0!important;white-space:nowrap!important}; */
-	.floatForm{position: fixed;bottom: 0;right:0}
-	::-webkit-scrollbar{width:2px;height:12px }
-	::-webkit-scrollbar-track{background-color:#fff;border-radius: 8px}
- 	::-webkit-scrollbar-thumb{background-color:#bee1eb;border-radius: 8px}
-	::-webkit-scrollbar-thumb:active {background-color:#bee1eb} 
-	.el-button{padding: 2px!important;font-size: 13px!important}
-	.el-table th{height: 0px!important}
-	#bottomFrom{position: fixed;bottom: 30px}
-	/* #jxs td{display:inline-block;min-width: 120px} */
-	#titleTr td{background:#eef1f6}
-	.el-table::after,.el-table::before{background-color: transparent!important}
-	#addWorkInfos .el-form-item,#addUserInfos .el-form-item{margin-bottom: 22px} 
-	#addWorkInfos .addWorkInfos{top:66%;left:11px } 
-	#addWorkInfos button,#addUserInfos button{padding:8px }
-	.inputInner .el-input__inner{margin-left: 0px!important}
-	.tips{font-size: 12px;color: red}
+h4 {
+  background: #eef1f6;
+  padding: 10px;
+  border: 1px solid #dfe6ec;
+  font-weight: bold;
+}
+table {
+  width: 100%;
+  text-align: center;
+}
+tr {
+  width: 100%;
+}
+td {
+  border-right: 1px solid #dfe6ec;
+  border-bottom: 1px solid #dfe6ec;
+  height: 23px !important;
+  line-height: 23px !important;
+  background: #f0f0f0;
+}
+.useraddress {
+  width: 150px;
+}
+.el-collapse-item__header {
+  font-size: 13px !important;
+  font-weight: bold !important;
+  background: #dfe6ec !important;
+  border: 1px solid #f0f0f0;
+}
+.abc {
+  height: 500px !important;
+}
+.el-col .el-icon-edit,
+.el-col .el-icon-message,
+.el-col .el-icon-upload2,
+.el-col .el-icon-time {
+  cursor: pointer;
+  color: #20a0ff;
+  margin-left: 5px;
+}
+.el-col .el-icon-upload2:hover {
+  color: #4db3ff;
+}
+.el-col .el-icon-edit:hover {
+  color: #4db3ff;
+}
+.el-col .el-icon-message:hover {
+  color: #4db3ff;
+}
+.el-col .el-icon-time:hover {
+  color: #4db3ff;
+}
+.changecolor {
+  color: red;
+}
+.el-tabs--border-card > .el-tabs__content {
+  padding: 0 !important;
+}
+.el-collapse-item__content {
+  padding: 5px !important;
+}
+.el-form-item__label {
+  padding: 5px 0 !important;
+}
+.el-form-item__content {
+  line-height: 24px !important;
+}
+.table-expand label {
+  width: 90px !important;
+  text-align: el-pagination__rightwrapper;
+}
+.table-expand .el-form-item {
+  margin: 0 0 0 2px !important;
+  min-width: 220px !important;
+  color: #269aff !important;
+}
+/* .el-table .cell{padding: 0!important;white-space:nowrap!important}; */
+.floatForm {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+::-webkit-scrollbar {
+  width: 2px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #bee1eb;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: #bee1eb;
+}
+.el-button {
+  padding: 2px !important;
+  font-size: 13px !important;
+}
+.el-table th {
+  height: 0px !important;
+}
+#bottomFrom {
+  position: fixed;
+  bottom: 30px;
+}
+/* #jxs td{display:inline-block;min-width: 120px} */
+#titleTr td {
+  background: #eef1f6;
+}
+.el-table::after,
+.el-table::before {
+  background-color: transparent !important;
+}
+#addWorkInfos .el-form-item,
+#addUserInfos .el-form-item {
+  margin-bottom: 22px;
+}
+#addWorkInfos .addWorkInfos {
+  top: 66%;
+  left: 11px;
+}
+#addWorkInfos button,
+#addUserInfos button {
+  padding: 8px;
+}
+.inputInner .el-input__inner {
+  margin-left: 0px !important;
+}
+.tips {
+  font-size: 12px;
+  color: red;
+}
 </style>

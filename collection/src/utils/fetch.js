@@ -3,11 +3,9 @@ import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 var baseApi=window.g.api;
-if(process.env.NODE_ENV=="api"){
-  baseApi=process.env.BASE_API;
-}
-console.log(baseApi);
-// export {Module} from '../../static/js/path'
+// if(process.env.NODE_ENV=="api"){
+  // baseApi=process.env.BASE_API;
+// }
 // 创建axios实例
 const service = axios.create({
   // baseURL:Module,

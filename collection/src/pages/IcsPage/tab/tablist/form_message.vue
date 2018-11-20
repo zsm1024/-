@@ -1,13 +1,12 @@
 <template>
-<section>
+<section ref="childMsg">
 	<el-row>
 		<el-col :span="24" id="el-icons">	
 			<i class="el-icon-message" @click="messageOpen">短信</i>
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
-			<!-- <i class="el-icon-edit" @click="visitList">外访记录</i>			  -->
+			<i class="el-icon-edit" @click="checkPreview">征信查询</i>	
 		</el-col>
 	</el-row>
-	<!-- <div>{{callback.roleName}}</div> -->
 	<div id="tables">    
 		<el-form ref="mainform" :rules="rules" :model="mainform" label-width="65px"   id="FixForm" inline >		
  		<el-col id="lists">
@@ -15,7 +14,6 @@
 				<el-select v-model="mainform.actSign" filterable clearable>
 					<el-option v-for="code in getdaima" :key="code" :value="code"></el-option>
 				</el-select>
-			<!-- <v-select v-model="mainform.daima"  multiple :options="getdaima"></v-select> -->
 		</el-form-item>	
 		<el-form-item label="承诺金额" prop="allowance" >
 			<el-input v-model="mainform.allowance" clearable></el-input>
@@ -28,25 +26,16 @@
 		<el-form-item label="联系人" prop="linkman">
 			<el-autocomplete v-model="mainform.linkman"  :fetch-suggestions="querySearch1" size="small"  placeholder="请选择联系人"  @select="handleSelect" class="autoInput">
 			</el-autocomplete>
-			<!-- <el-select v-model="mainform.linkman" filterable clearable placeholder="请选择联系人">
-				<el-option v-for="types in getname" :key="types" :value="types"></el-option>
-			</el-select> -->
-				<!-- <v-select v-model="mainform.name" :options="getname"></v-select> -->
 		</el-form-item>
 		<el-form-item label="联系方式"  prop="linkInfomation">
 			<el-autocomplete v-model="mainform.linkInfomation"  :fetch-suggestions="querySearch2" size="small"  placeholder="请选择联系人"  @select="handleSelect" class="autoInput">
 			</el-autocomplete>
-				<!-- <v-select v-model="mainform.fangshi" :options="getfangshi"></v-select> -->
-				<!-- <el-select v-model="mainform.linkInfomation" filterable clearable>
-					<el-option v-for="list in getfangshi" :key="list" :value="list"></el-option>
-				</el-select> -->
 		</el-form-item>	
 								
 		<el-form-item label="约会日期" prop="appointmentTime" >
 				<el-date-picker type="date" placeholder="选择约会时间" v-model="mainform.appointmentTime" style="width: 100%;" @change="dataChange"></el-date-picker>
 		</el-form-item>	
 		</el-col>
-		<!--  -->
 		<el-col id="bzt">			
 			<el-form-item label="备注" prop="afpRecord" style="justify-content: space-around;display:flex">
 				<span class="tips">(不超过2000字)</span>
@@ -62,25 +51,21 @@
 			<el-form :model="messageform" :ref="messageform" >
 				<el-form-item label="合同号" :label-width="formLabelWidth" >
 					<el-input :value="applicationNumber" disabled style="width:300px;margin-left:5px" id="inp"></el-input>
-					<!--  -->
 				</el-form-item>
 				<el-form-item label="手机号码 " :label-width="formLabelWidth">
-					<el-autocomplete v-model="messageform.phone"  :fetch-suggestions="querySearch" size="small"  placeholder="请输入手机号码"  @select="handleSelect" class="autoInput">
+					<el-autocomplete v-model="messageform.phone" style="width:300px;margin-left:5px" :fetch-suggestions="querySearch" size="small"  placeholder="请输入手机号码"  @select="handleSelect" class="autoInput">
 					</el-autocomplete>
-					<!-- <v-select v-model="messageform.phone" :options="getMesPhone" style="width:300px"></v-select> -->
 				</el-form-item>
 				<el-form-item label="短信模板 " :label-width="formLabelWidth">
 					<el-select v-model="messageform.selectTitle" placeholder="请选择" @change="getMessage"  style="width:300px;" id="selectMes">
 						<el-option v-for="(item,index) in messageModel" :key="index" :label="item.label" :value="item.value" ></el-option>
 					</el-select>
-					<!-- <v-select v-model="messageform.template" :options="getMesTemplate" style="width:300px"></v-select> -->
 				</el-form-item>				
 				<el-form-item label="内容栏 " :label-width="formLabelWidth">
 						<el-input type="textarea" autosize v-model="messageform.messagedesc" style="width:300px;margin-left:5px"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<!-- @click="addWorkInfo" -->
 				<el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
 				<el-button type="primary" @click.native.prevent="confirmmessage('messageform')" style="padding:10px">确 定</el-button>
 			</div>
@@ -108,14 +93,9 @@
 				:multiple="true"
 				:show-file-list="fileListStatue"
 				style="display:inline-block"			
-				>
-				<!--:show-file-list="fileListStatue"  -->
-				<!-- <el-select  placeholder="请选择" style="width:300px;" id="selectMes">
-					<el-option :key="index" :label="item.label" :value="item.value" ></el-option>
-				</el-select> -->				
+				>			
 				<el-button slot="trigger" size="small" type="primary" @click="chooseFile">选取文件</el-button>
 				<el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-				<!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
 				</el-upload>
 
 				</el-form-item>
@@ -136,9 +116,6 @@
 			<el-pagination layout="total,sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize" :total="total" :page-sizes='[200,500,800,1000]' style="float:right;">
 			</el-pagination>
 		</el-col>
-				<!--:onError="uploadError"
-               :onSuccess="uploadSuccess"
-               :beforeUpload="beforeAvatarUpload"-->
 		</el-dialog>
 <!-- 外访记录 -->
 		<el-dialog :visible.sync="visitListDetial" :modal="true" :modal-append-to-body="false" :show-close='true' title="外访纪录" id="outerdialog">
@@ -165,8 +142,7 @@
           <i style="color:red">*</i> 
 					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.istrue"  @change="isaddress" >
 						<el-option v-for="(item,index) in IsTrue" :key="index" :label="item.label" :value="item.value"></el-option>
-					</el-select>
-          <!-- v-model="messageform.selectTitle" placeholder="请选择" @change="getMessage" -->			
+					</el-select>	
 				</el-form-item>	
         <el-form-item label="备注 " label-width="95px" prop="addressName"  v-if="mainformvisit.istrue=='N'">
           <i style="color:red">*</i> 
@@ -237,1079 +213,1128 @@
 </section>  
 </template>
 <script>
-import { tab_view,recordAdd,getCodeAll,getNextMissonId,messageDialog,messageTemplate,messageSend,ListFilses,role,delet } from "@/api/tablist";
-import {RecordsFind,RecordsFindlist} from "@/api/visit"
-import visitList from "../tablist/visit_list"
-import {path} from '@/config'
-import{findByType,AddresssfindByType,AddresssfindAddress,VisitRecords,getFileType} from "@/api/basedata"
-export default{
-	props:['callback'],	
-	data(){				
-		return{
-			// fileListType:'',
-			disable:false,
-			total: 0,
-			visittotal:0,
-			page: 1,
-			visitpages:1,
-			visitpagesize:20,
-			pagesize:200,			
-			fileListStatue:true,
-            tosubtext:'确认',
-			disabledto: false,
-			disabledNex:false,
-			disablelist:true,
-			items: [],
-			phoneListNums:[],
-			messageModel:[],
-			messageTemplate:[],
-			formLabelWidth:'120px',
-			times:'',
-			allDate:"",
-			userList:[],
-			userList1:[],
-			userList2:[],
-			UserArr:[],
-			TypeArr:[],
-			fileListType:[
-				// {title:'外访记录照片',field:'type',width:"70"},
-				// {title:'客户面催照片',field:'createUser',width:"70"},				
-				// {title:'外访信函', field: 'createTime', wdth: "50" }, 
-				// {title:'其他',field:'name',width:"60"},	
-			],
-			addressType:[],
-			datas:[],
-			templateId:'',
-			phone:'',
-			// UserArrList:[],		
-			selectCont:'',
-			state:"",
-			 applicationNumber:'',
-			 sort:"1",
-			fileList:{
-				fileType:""
-      },
-      nextId:"",
-			messageform: {
-				// contractNum:this.applicationNumber,
-				template:'',
-				phone:"",
-				messagedesc: '',
-				selectTitle:"",
-			},
-			cols:[
-				{title:'附件类型',field:'fileType',width:"70"},
-				{title:'上传用户ID',field:'createUser',width:"70"},				
-				{title:'上传时间', field: 'createTime', width: "50" }, 
-				{title:'附件名称',field:'name',width:"60"},				
-			],
-			col:[
-				{title:'日期',field:'outsideTime',width:"70"},
-				{title:'地址类型',field:'addressType',width:"70"},				
-				{title:'地址', field: 'address', width: "50" }, 
-				{title:'地址是否存在',field:'addressReal',width:"60"},
-				{title:'备注',field:'addressRemarks',width:"70"},
-				{title:'是否有人应门',field:'callReal',width:"70"},				
-				{title:'见到对象', field: 'seeIt', width: "50" }, 
-				{title:'地址情况',field:'cusAddressSituation',width:"60"},
-				{title:'房屋所有人', field: 'ownerHource', width: "50" }, 
-				{title:'工作情况',field:'cusWorkSituation',width:"60"},
-				{title:'控制车辆人',field:'carControl',width:"60"},					
-			],
-			mainform: {
-					actSign: '',
-					allowance: '',
-					allDate: '',
-					linkman:"",
-					// {
-					// 	type:"",
-					// 	data:this.callback.roleName,
-					// },
-					linkInfomation:'',
-					appointmentTime: '',
-					afpRecord:'',					
-			},
-			messageopen: false,
-			encloopen:false,
-			visitListDetial:false,
-			getdaima: [],
-			getname: [],
-			getfangshi:[],
-			getMesTemplate: [],	
-			getMesPhone: [],
-			visitListsRecords:[],	
-            //备注弹出层
-			// remarkform: {
-			// 	remarks:'',
-			// },
-            rules: {
-                    actSign: [
-                        { required: true, message: '请输入行动代码', trigger: 'blur' }
-                    ],
-                
-                    // allowance:[
-                    //     {required: true, message: '请输入承诺金额', trigger: 'blur',}
-                    // ],
-                    // allDate:[
-                    //     { required: true,  message: '请选择承诺日期', trigger: 'blur',type:'date'}
-                    // ],
-                    linkman: [
-                        { required: true, message: '请填写联系人', trigger: 'blur' }
-                    ],
-                    linkInfomation: [
-                        { required: true, message: '请填写联系方式', trigger: 'blur' }
-                    ],	
-                    appointmentTime:[
-                        { required: true,  message: '请选择约会日期'}
-                    ],
-                    afpRecord:[
-                        { required: true, message: '请填写备注', trigger: 'blur' }
-                    ],			
-				},
-				//http://10.50.132.72:18081/ics/files/upload
-				importFileUrl:"",
-				downLoadPath:"",
-				filelist:[],
-				upLoadData:{
-					icsId:this.$route.params.id,	
-					username:localStorage.getItem("userName"),
-					fileType:""
-				},
-	timesvisit:"",
-	  IsTrue:"",
-	  channel:"",
-      addressStn:[],
-      houseStn:[],
-      workStn:[],
-      carStn:[],
-      roleName:"",
-      type:"",
-      address:[],
-      addressType:[],
-      addressTypes:[],
-      formLabelWidth:'60px',
-      mainformvisit: {
-          appointmentTime: '',
-          addressType:"",
-          address:"",
-          istrue:"",
-          addressName:"",
-          isanswer:"",
-          isperson:"",
-        //   :"",
-          addressStn:"",
-          houseStn:"",
-          workStn:"",
-          carStn:""
-
-      },
-      IsTrue:[
-        {"label":"Y","value":"Y"},
-        {"label":"N","value":"N"},
+import {
+  tab_view,
+  recordAdd,
+  getCodeAll,
+  getNextMissonId,
+  messageDialog,
+  messageTemplate,
+  messageSend,
+  ListFilses,
+  role,
+  delet
+} from "@/api/tablist";
+import { getCustomerCredit } from "@/api/auth";
+import Cookies from "js-cookie";
+import { RecordsFind, RecordsFindlist } from "@/api/visit";
+import visitList from "../tablist/visit_list";
+import { path } from "@/config";
+import {
+  findByType,
+  AddresssfindByType,
+  AddresssfindAddress,
+  VisitRecords,
+  getFileType
+} from "@/api/basedata";
+export default {
+  props: ["callback"],
+  data() {
+    return {
+      websock: null,
+      backMsg: "",
+      datas: "",
+      tips: "",
+      // fileListType:'',
+      disable: false,
+      total: 0,
+      visittotal: 0,
+      page: 1,
+      visitpages: 1,
+      visitpagesize: 20,
+      pagesize: 200,
+      fileListStatue: true,
+      tosubtext: "确认",
+      disabledto: false,
+      disabledNex: false,
+      disablelist: true,
+      items: [],
+      phoneListNums: [],
+      messageModel: [],
+      messageTemplate: [],
+      formLabelWidth: "120px",
+      times: "",
+      allDate: "",
+      userList: [],
+      userList1: [],
+      userList2: [],
+      UserArr: [],
+      TypeArr: [],
+      fileListType: [
+        // {title:'外访记录照片',field:'type',width:"70"},
+        // {title:'客户面催照片',field:'createUser',width:"70"},
+        // {title:'外访信函', field: 'createTime', wdth: "50" },
+        // {title:'其他',field:'name',width:"60"},
       ],
-       IsTrue1:[],
-		addressName:[],
-		pageEn:10,
-		pageSizeEn:10
-		  
-	}
-			
-	},
-	methods:{
-		//路径配置
-		PathList(){
-		// let obj=new	Path();
-		this.importFileUrl=path.api+"/files/upload";
-		this.downLoadPath=path.api;
-		// console.log(obj.uploadPath)
-		},
-		
-		fileListTypesChange(val){
-			this.upLoadData.fileType=val;
-		},
-		changesub(){
-			if(this. mainformvisit.addressStn==""||this. mainformvisit.houseStn==""||this. mainformvisit.workStn==""||this. mainformvisit.carStn==""){
-				this.disablelist=true;
-			}else{
-			this.disablelist=false;
-			}
-		},
-		handleCurrentChange(val) {
-                this.pages = val;
-				this.encloOpen();
-			},
-			visithandleCurrentChange(val) {
-                this.visitpage = val;
-				// this.encloOpen();
-            },
-            handleSizeChange(val) {
-			this.pagesize = val  
-			// this.encloOpen();     
-			},
-			 visithandleSizeChanges(val) {
-			this.visitpagesizes = val  
-			// this.encloOpen();     
-			},
-		querySearch(querySt,cb){
-		  let data =this.restaurants;
-		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
-          cb(results) 
-      },    
-	  querySearch1(querySt,cb){
-		  let data =this.restaurants1;
-		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
-          cb(results) 
-	  },
-	    querySearch2(querySt,cb){
-		  let data =this.restaurants2;
-		  let results = querySt ? data.filter(this.createFilter(querySt)) :data;
-        cb(results) 
-	  },
-	   createFilter(querySt){
-          return(item) =>{
-               return (item.value.toLowerCase().indexOf(querySt.toLowerCase()) ===0)
-          }
+      addressType: [],
+      datas: [],
+      templateId: "",
+      phone: "",
+      // UserArrList:[],
+      selectCont: "",
+      state: "",
+      applicationNumber: "",
+      sort: "1",
+      fileList: {
+        fileType: ""
       },
-    //   createFilter1(querySt){
-    //       return(item) =>{
-    //            return (item.value.toLowerCase().indexOf(querySt.toLowerCase()) ===0)
-    //       }
-    //   },
-		 dataChange(val){			
-		   this.times=val;
+      nextId: "",
+      messageform: {
+        // contractNum:this.applicationNumber,
+        template: "",
+        phone: "",
+        messagedesc: "",
+        selectTitle: ""
+      },
+      cols: [
+        { title: "附件类型", field: "fileType", width: "70" },
+        { title: "上传用户ID", field: "createUser", width: "70" },
+        { title: "上传时间", field: "createTime", width: "50" },
+        { title: "附件名称", field: "name", width: "60" }
+      ],
+      col: [
+        { title: "日期", field: "outsideTime", width: "70" },
+        { title: "地址类型", field: "addressType", width: "70" },
+        { title: "地址", field: "address", width: "50" },
+        { title: "地址是否存在", field: "addressReal", width: "60" },
+        { title: "备注", field: "addressRemarks", width: "70" },
+        { title: "是否有人应门", field: "callReal", width: "70" },
+        { title: "见到对象", field: "seeIt", width: "50" },
+        { title: "地址情况", field: "cusAddressSituation", width: "60" },
+        { title: "房屋所有人", field: "ownerHource", width: "50" },
+        { title: "工作情况", field: "cusWorkSituation", width: "60" },
+        { title: "控制车辆人", field: "carControl", width: "60" }
+      ],
+      mainform: {
+        actSign: "",
+        allowance: "",
+        allDate: "",
+        linkman: "",
+        // {
+        // 	type:"",
+        // 	data:this.callback.roleName,
+        // },
+        linkInfomation: "",
+        appointmentTime: "",
+        afpRecord: ""
+      },
+      messageopen: false,
+      encloopen: false,
+      visitListDetial: false,
+      getdaima: [],
+      getname: [],
+      getfangshi: [],
+      getMesTemplate: [],
+      getMesPhone: [],
+      visitListsRecords: [],
+      //备注弹出层
+      // remarkform: {
+      // 	remarks:'',
+      // },
+      rules: {
+        actSign: [
+          { required: true, message: "请输入行动代码", trigger: "blur" }
+        ],
 
-	  },
-	   dataChange1(val){			
-		   this.allDate=val;
-	  },
-		onSubmit(mainform) {
-            // var self = this;
-            // var num = 10;
-            // var timer = setInterval(function() {
-            //     num--
-            //     self.tosubtext = num+'s后点击';
-            //     self.disabledto = true;
-            //     if(num ===0){
-            //         self.tosubtext = '确定';
-            //         self.disabledto = false;
-            //         clearInterval(timer);
-            //     }
-            // },1000)
-			let para ={
-    			actSign:this.mainform.actSign.split("-").shift("-"),
-				allowance:this.mainform.allowance,
-				allDate:this.allDate,
-				linkman:this.mainform.linkman,
-				linkInfomation:this.mainform.linkInfomation,
-				appointmentTime:this.times,
-				afpRecord:this.mainform.afpRecord,
-				missionId: this.$route.params.id,
-				userId: localStorage.getItem("UserId")				
-			};
-			this.$refs[mainform].validate((valid) => {
-					
-				if (valid) {	
-					this.disabledto=true;
-					recordAdd(para).then(res =>{
-				// console.log(res)			
-						if(res.data.success){	
-						this.$refs['mainform'].resetFields();
-							this.$notify({
-                                type:'success',
-								message:'提交成功',
-								duration:1000,
-							});							
-							setTimeout(()=>{
-								this.disabledto=false;
-							},1000)                            
-						}else{
-							this.$refs['mainform'].resetFields();
-							this.$notify({
-								type: 'error',
-								message: '提交失败，请联系管理员！',
-								duration:1000,
-							});
-							setTimeout(()=>{
-								this.disabledto=false;
-							},1000)
-						}				
-					});
-				} else {
-					return false;
-				}
-			});
-			localStorage.removeItem("CJPhone");
+        // allowance:[
+        //     {required: true, message: '请输入承诺金额', trigger: 'blur',}
+        // ],
+        // allDate:[
+        //     { required: true,  message: '请选择承诺日期', trigger: 'blur',type:'date'}
+        // ],
+        linkman: [{ required: true, message: "请填写联系人", trigger: "blur" }],
+        linkInfomation: [
+          { required: true, message: "请填写联系方式", trigger: "blur" }
+        ],
+        appointmentTime: [{ required: true, message: "请选择约会日期" }],
+        afpRecord: [{ required: true, message: "请填写备注", trigger: "blur" }]
+      },
+      //http://10.50.132.72:18081/ics/files/upload
+      importFileUrl: "",
+      downLoadPath: "",
+      filelist: [],
+      upLoadData: {
+        icsId: this.$route.params.id,
+        username: localStorage.getItem("userName"),
+        fileType: ""
+      },
+      timesvisit: "",
+      IsTrue: "",
+      channel: "",
+      addressStn: [],
+      houseStn: [],
+      workStn: [],
+      carStn: [],
+      roleName: "",
+      type: "",
+      address: [],
+      addressType: [],
+      addressTypes: [],
+      formLabelWidth: "60px",
+      mainformvisit: {
+        appointmentTime: "",
+        addressType: "",
+        address: "",
+        istrue: "",
+        addressName: "",
+        isanswer: "",
+        isperson: "",
+        //   :"",
+        addressStn: "",
+        houseStn: "",
+        workStn: "",
+        carStn: ""
+      },
+      IsTrue: [{ label: "Y", value: "Y" }, { label: "N", value: "N" }],
+      IsTrue1: [],
+      addressName: [],
+      pageEn: 10,
+      pageSizeEn: 10
+    };
+  },
+  methods: {
+    //路径配置
+    PathList() {
+      // let obj=new	Path();
+      this.importFileUrl = path.api + "/files/upload";
+      this.downLoadPath = path.api;
+      // console.log(obj.uploadPath)
+    },
+
+    fileListTypesChange(val) {
+      this.upLoadData.fileType = val;
+    },
+    changesub() {
+      if (
+        this.mainformvisit.addressStn == "" ||
+        this.mainformvisit.houseStn == "" ||
+        this.mainformvisit.workStn == "" ||
+        this.mainformvisit.carStn == ""
+      ) {
+        this.disablelist = true;
+      } else {
+        this.disablelist = false;
+      }
+    },
+    handleCurrentChange(val) {
+      this.pages = val;
+      this.encloOpen();
+    },
+    visithandleCurrentChange(val) {
+      this.visitpage = val;
+      // this.encloOpen();
+    },
+    handleSizeChange(val) {
+      this.pagesize = val;
+      // this.encloOpen();
+    },
+    visithandleSizeChanges(val) {
+      this.visitpagesizes = val;
+      // this.encloOpen();
+    },
+    querySearch(querySt, cb) {
+      let data = this.restaurants;
+      let results = querySt ? data.filter(this.createFilter(querySt)) : data;
+      cb(results);
+    },
+    querySearch1(querySt, cb) {
+      let data = this.restaurants1;
+      let results = querySt ? data.filter(this.createFilter(querySt)) : data;
+      cb(results);
+    },
+    querySearch2(querySt, cb) {
+      let data = this.restaurants2;
+      let results = querySt ? data.filter(this.createFilter(querySt)) : data;
+      cb(results);
+    },
+    createFilter(querySt) {
+      return item => {
+        return item.value.toLowerCase().indexOf(querySt.toLowerCase()) === 0;
+      };
+    },
+    dataChange(val) {
+      this.times = val;
+    },
+    dataChange1(val) {
+      this.allDate = val;
+    },
+    onSubmit(mainform) {
+      let para = {
+        actSign: this.mainform.actSign.split("-").shift("-"),
+        allowance: this.mainform.allowance,
+        allDate: this.allDate,
+        linkman: this.mainform.linkman,
+        linkInfomation: this.mainform.linkInfomation,
+        appointmentTime: this.times,
+        afpRecord: this.mainform.afpRecord,
+        missionId: this.$route.params.id,
+        userId: localStorage.getItem("UserId")
+      };
+      this.$refs[mainform].validate(valid => {
+        if (valid) {
+          this.disabledto = true;
+          recordAdd(para).then(res => {
+            // console.log(res)
+            if (res.data.success) {
+              this.$refs["mainform"].resetFields();
+              this.$notify({
+                type: "success",
+                message: "提交成功",
+                duration: 1000
+              });
+              setTimeout(() => {
+                this.disabledto = false;
+              }, 1000);
+            } else {
+              this.$refs["mainform"].resetFields();
+              this.$notify({
+                type: "error",
+                message: "提交失败，请联系管理员！",
+                duration: 1000
+              });
+              setTimeout(() => {
+                this.disabledto = false;
+              }, 1000);
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+      localStorage.removeItem("CJPhone");
       localStorage.removeItem("REefresh");
-      localStorage.removeItem(this.$route.params.id)
-		},
-	
-        getlists(){	
-             getCodeAll().then(res => {
-                 var arrpush = [];
-                 res.data.result.forEach(function(value,index){
-                    arrpush.push(value.actCode+"-"+value.actNotes);
-                 })
-                 this.getdaima = arrpush;
-              
-			});
-		
-			// let asd=this.callback;
-			// this.callback.forEach(element =>{
-			// 	console.log(element)
-			// })
-			
-        },
-		onSubmitnext(mainform) {
+      localStorage.removeItem(this.$route.params.id);
+    },
 
-			this.$refs[mainform].validate((valid) => {
-        	let NextIndex=parseInt(localStorage.getItem("currentRow"));
-			let TotalNum=parseInt(localStorage.getItem("total"));
-			let  CJBZ="";
-			CJBZ+=localStorage.getItem("CJPhone");
-			if(NextIndex>=TotalNum){
-				this.sort="1",
-				localStorage.setItem("currentRow","1");
-			}else{
-				this.sort=NextIndex+1;
-				localStorage.setItem("currentRow",this.sort);				
-			}
-            let para ={
-    			actSign:this.mainform.actSign.split("-").shift("-"),
-				allowance:this.mainform.allowance,
-				allDate:this.allDate,
-				linkman:this.mainform.linkman,
-				linkInfomation:this.mainform.linkInfomation,
-				appointmentTime:this.times,
-				afpRecord:this.mainform.afpRecord,
-				missionId: this.$route.params.id,
-				userId: localStorage.getItem("UserId"),
-				id:this.$route.params.id,
-				type:localStorage.getItem("nextNum"),
-				sort:this.sort,
-			};
-				if (valid) {
-					this.disabledNex=true;
-          getNextMissonId(para).then(res => {	
-             this.nextId = res.data.result;
-						 this.$router.push( this.nextId);
-						 localStorage.setItem(this.nextId,this.nextId)						 
-					});
-					recordAdd(para).then(res =>{
-						
-						// console.log(res)				
-						if(res.data.success){	
-						this.$refs['mainform'].resetFields();
-							this.$notify({
-                type:'success',
-								message:'提交成功',
-								duration:1000,
-							});							
-      setTimeout(()=>{
-								this.disabledNex=false;
-							},1000)
-							localStorage.removeItem("REefresh");
-              localStorage.removeItem(this.nextId,this.nextId);
-               localStorage.removeItem(this.$route.params.id)
-						}else{
-							this.$refs['mainform'].resetFields();
-							this.$notify({
-								type: 'error',
-								message: '提交失败，请联系管理员！',
-								duration:1000,
-							});
-							 setTimeout(()=>{
-								this.disabledNex=false;
-							},1000);
-						}				
-					});				
-					// this.$message({
-					// 	type:'success',
-					// 	message:'提交成功，处理下一条',
-                    // });
-				} else {
-					return false;
-				}
-			});
-			localStorage.removeItem("CJPhone");
-			
-        },
-			callParent(){
-				let para = {
-					missionId: this.$route.params.id
-				};
-				tab_view(para).then( res =>{
-					let data =res.data.result;
-          this.lists=data;
-         
-					this.phoneListNums=data.customerPhones;
-					this.applicationNumber=data.applicationNumber;					
-					this.UserArr.splice(0,this.UserArr.length);
-					this.TypeArr.splice(0,this.TypeArr.length)
-					this.phoneListNums.forEach(el =>{
-					this.UserArr.push(el.roleName)
-					});					
-					data.customerAddresses.forEach(el =>{
-						this.addressType.push(el.addressType.split(" ").shift())
-          });
-					this.phoneListNums.forEach(el =>{
-						this.TypeArr.push(el.phoneType.split(" ").shift())
-          });
-					this.userList2=(this.TypeArr.concat(this.addressType))
-					this.unique(this.UserArr,this.getname);
-          this.unique(this.userList2,this.getfangshi)
-				});
-			},
-			// concatList(arr,item){
-			// 	this.unique(arr)
-			// 	arr.forEach(el =>{
-			// 		item.push({"value":el})
-			// 	})
-			// },
-			 unique(arr,item){
-				let res =[];
-				let json= {};
-				for(let i =0;i<arr.length;i++){
-					if(!json[arr[i]]){
-						res.push(arr[i]);
-						json[arr[i]]=1;
-					}
-				}
-
-				item.splice(0,item.length);
-
-				res.forEach(el =>{
-					item.push({"value":el})
-				})
-				//  for(let j= 0;j<res.length;j++){
-
-			 	// item.push({"value":res[j]})
-				//  }
-				// res.forEach(re=>{
-				// 	console.log(re[0])				
-				// 	
-						
-				// });				
-				// return res;	
-			},
-			//短信方法	
-		cancle(){
-			this.messageopen=false;
-			let a="";
-			this.messageform.messagedesc=a;
-			this.messageform.selectTitle=a;
-			this.userList=[];
-		},
-		 messageOpen(){
-			this.messageopen=true;  
-			 this.callParent();
-			 let pList=[];
-			//   this.userList=[];
-			 messageDialog().then( res =>{				
-				let data =res.data.result;
-				 this.messageModel.splice(0,this.messageModel.length)
-				 data.forEach(e =>{
-					this.messageModel.push({"lable":e.id,"value":e.title,"channel":e.channel})
-					this.messageTemplate.push({"lable":e.id,"value":e.title,"channel":e.channel});					
-				 });	
-			});
-   function trimSpace(array){
-			 for(var i = 0 ;i<array.length;i++)
-			 {
-	      if(array[i].phone == null||array[i].phone =="")
-	      {
-	        array.splice(i,1);
-	        i= i-1;                  
-	      }
-			 }
-			 return array;
-}
-       this.phoneListNums=trimSpace(this.phoneListNums) 
-       console.log(this.phoneListNums)
-			 this.phoneListNums.forEach(e =>{
-				 if(//e.infoSource=="CMS"&&e.roleName=="主借人"&&
-				 e.effectiveness=="Y"){
-					 e.phone=e.phone.replace(/\s+/g,"");
-					 this.userList.push({"value":e.phone+'-'+e.roleName})
-					 pList.push(e.phone)
-				 }else{
-					 return;
-				 }				
-			 })
-			  this.messageform.phone=pList[0]+"-主借人"
-			  this.messageform.messagedesc="";
-			
-			// this.messageform.selectTitle="";
-			
-		 },
-		encloOpen(){
-			// let paras={
-			// 	username:localStorage.getItem("userName")
-			// }
-			// role(paras).then(res=>{
-			// 	console.log(res)
-			// });
-				this.encloopen=true;
-				this.listrefresh();
-				let para={
-					icsId:this.$route.params.id,
-					page:this.pageEn,
-					pageSize:this.pageSizeEn
-				}
-				getFileType(para).then(res=>{
-					let data=res.data.result
-					this.fileListType=data
-				})
-				
-		},
-		listrefresh(){
-			this.fileListStatue=true;
-			let para={
-					icsId:this.$route.params.id,
-					page:this.page,
-					pageSize:this.pagesize
-				}
-				ListFilses(para).then(res=>{
-					let data=res.data.data;
-					this.datas=data;					
-					this.total=res.data.recordsTotal;
-				})
-		},
-		getMessage(item){
-			// console.log(this.messageModel.label)			
-			this.messageTemplate.forEach(val =>{
-				 if(val.value===item){
-					 this.templateId=val.lable;	
-					 this.channel=val.channel;				
-				 }else{
-					 return;
-				 }
-			});
-			let para={
-				channel:this.channel,
-				templateId:this.templateId,
-				contractNum:this.applicationNumber,
-				phone:this.messageform.phone.split("-").shift("-")
-				}
-				// messageTemplate
-				 messageTemplate(para).then(res =>{
-					 let data =res.data.result
-					 this.messageform.messagedesc=data.smsContent;
-				 });		
-		},
-			confirmmessage(messageform) {			
-				let phoneNum =this.messageform.phone.split('-').shift("-");
-				// this.messageopen=false;
-				let para={
-					channel:this.channel,
-					phone:phoneNum,
-					smsContent:this.messageform.messagedesc,
-					missionId: this.$route.params.id,
-					linkman:this.messageform.phone.split('-').pop("-")
-				}
-
-				 
-			// 	this.messageform.selectTitle="";
-				if(this.messageform.messagedesc==""){
-					this.$message("请确认您的信息是否填写完整！")
-					// this.$alert('请确认您的信息是否填写完整！','提示',{
-					// 	confirmButtonText:'确定',
-					// 	callback: action =>{
-					// 		this.message({
-					// 			type:'warning',
-					// 			closeOnClickModal:"true"
-					// 		})
-					// 	}
-						
-					// })
-			}else{
-				messageSend(para).then(res =>{
-					if(res.data.success){
-						this.$message({
-                            type:'success',
-                            message:'短信已发送！',
-                        });
-					}else{
-						this.$message({
-                            type:'warning',
-                            message:'短信未发送！',
-                        });
-					}
-					//  console.log(res)
-				 });
-				 this.messageopen=false;
-				 let a="";
-				//   console.log(this.messageform.messagedesc)
-				this.messageform.messagedesc=a;
-				this.messageform.selectTitle=a;
-				this.userList=[];
-			}
-				// resetFields()
-				// this.$message({
-				// 	type:'success',shi
-				// 	message:'保存成功',
-				// });
-		},
-		handleSelect(item){
-		},
-		PhoneCtr(){
-			let nums=localStorage.getItem("CJPhone");
-			this.mainform.afpRecord+=nums;
-		},
-		//催记暂存
-	CJStore(){
-		let REefresh={
-			actSign:this.mainform.actSign,
-			allowance:this.mainform.allowance,
-			allDate:this.allDate,
-			linkman:this.mainform.linkman,
-			linkInfomation:this.mainform.linkInfomation,
-			appointmentTime:this.times,
-			afpRecord:this.mainform.afpRecord,
-			RowId:this.$route.params.id,
-		}			
-    localStorage.setItem("REefresh",JSON.stringify(REefresh));
-    localStorage.setItem(this.$route.params.id,this.$route.params.id)
-		this.$message({
-            type:'success',
-            message:'暂存成功！',
+    getlists() {
+      getCodeAll().then(res => {
+        var arrpush = [];
+        res.data.result.forEach(function(value, index) {
+          arrpush.push(value.actCode + "-" + value.actNotes);
         });
-	},
+        this.getdaima = arrpush;
+      });
+    },
+    onSubmitnext(mainform) {
+      this.$refs[mainform].validate(valid => {
+        let NextIndex = parseInt(localStorage.getItem("currentRow"));
+        let TotalNum = parseInt(localStorage.getItem("total"));
+        let CJBZ = "";
+        CJBZ += localStorage.getItem("CJPhone");
+        if (NextIndex >= TotalNum) {
+          (this.sort = "1"), localStorage.setItem("currentRow", "1");
+        } else {
+          this.sort = NextIndex + 1;
+          localStorage.setItem("currentRow", this.sort);
+        }
+        let para = {
+          actSign: this.mainform.actSign.split("-").shift("-"),
+          allowance: this.mainform.allowance,
+          allDate: this.allDate,
+          linkman: this.mainform.linkman,
+          linkInfomation: this.mainform.linkInfomation,
+          appointmentTime: this.times,
+          afpRecord: this.mainform.afpRecord,
+          missionId: this.$route.params.id,
+          userId: localStorage.getItem("UserId"),
+          id: this.$route.params.id,
+          type: localStorage.getItem("nextNum"),
+          sort: this.sort
+        };
+        if (valid) {
+          this.disabledNex = true;
+          getNextMissonId(para).then(res => {
+            this.nextId = res.data.result;
+            this.$router.push(this.nextId);
+            localStorage.setItem(this.nextId, this.nextId);
+          });
+          recordAdd(para).then(res => {
+            // console.log(res)
+            if (res.data.success) {
+              this.$refs["mainform"].resetFields();
+              this.$notify({
+                type: "success",
+                message: "提交成功",
+                duration: 1000
+              });
+              setTimeout(() => {
+                this.disabledNex = false;
+              }, 1000);
+              localStorage.removeItem("REefresh");
+              localStorage.removeItem(this.nextId, this.nextId);
+              localStorage.removeItem(this.$route.params.id);
+            } else {
+              this.$refs["mainform"].resetFields();
+              this.$notify({
+                type: "error",
+                message: "提交失败，请联系管理员！",
+                duration: 1000
+              });
+              setTimeout(() => {
+                this.disabledNex = false;
+              }, 1000);
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+      localStorage.removeItem("CJPhone");
+    },
+    callParent() {
+      let para = {
+        missionId: this.$route.params.id
+      };
+      tab_view(para).then(res => {
+        let data = res.data.result;
+        this.lists = data;
+        this.phoneListNums = data.customerPhones;
+		this.applicationNumber = data.applicationNumber;
+        this.UserArr.splice(0, this.UserArr.length);
+        this.TypeArr.splice(0, this.TypeArr.length);
+        this.phoneListNums.forEach(el => {
+          this.UserArr.push(el.roleName);
+        });
+        data.customerAddresses.forEach(el => {
+          this.addressType.push(el.addressType.split(" ").shift());
+        });
+        this.phoneListNums.forEach(el => {
+          this.TypeArr.push(el.phoneType.split(" ").shift());
+        });
+        this.userList2 = this.TypeArr.concat(this.addressType);
+        this.unique(this.UserArr, this.getname);
+        this.unique(this.userList2, this.getfangshi);
+      });
+    },
+    unique(arr, item) {
+      let res = [];
+      let json = {};
+      for (let i = 0; i < arr.length; i++) {
+        if (!json[arr[i]]) {
+          res.push(arr[i]);
+          json[arr[i]] = 1;
+        }
+      }
 
-	NoRefresh(){
-		let REefresh={
-			actSign:this.mainform.actSign,
-			allowance:this.mainform.allowance,
-			allDate:this.allDate,
-			linkman:this.mainform.linkman,
-			linkInfomation:this.mainform.linkInfomation,
-			appointmentTime:this.times,
-			afpRecord:this.mainform.afpRecord,
-			RowId:this.$route.params.id,
-		}		
-		//localStorage.setItem("REefresh",JSON.stringify(REefresh))
-		var RowIds=localStorage.getItem(this.$route.params.id);
-		if(localStorage.getItem("REefresh")!=""){
-			var FreshList=JSON.parse(localStorage.getItem("REefresh"));
-			if(RowIds==FreshList.RowId){
-				this.mainform.actSign=FreshList.actSign,
-				this.mainform.allowance=FreshList.allowance,
-				this.mainform.allDate=FreshList.allDate,
-				this.mainform.linkman=FreshList.linkman,
-				this.mainform.linkInfomation=FreshList.linkInfomation,
-				this.mainform.appointmentTime=FreshList.appointmentTime,
-				this.mainform.afpRecord=FreshList.afpRecord
-			// console.log(typeof(this.mainform.appointmentTime))						
-			}else{
-				return false;
-			}
-		}
-	},
-	//文件上传部分
-	chooseFile(){
-		this.fileListStatue=true;
-	},
-		 // 上传成功后的回调
-		submitUpload() {
-			if(this.fileList.fileListType==""){
-				this.$message({
-                    type:'error',
-                    message:'请选择附件类型！',
-				});
-			}else{
-				this.upLoadData.fileListType=this.fileList.fileListType;
-				// console.log(this.upLoadData.fileListType)
-				this.$refs.upload.submit();
-			}
-			// 			
-			// console.log(this.$refs.upload);
-		  },
-		handleRemove(file,fileList){
-			// console.log(file,fileList)
-		},
-		handlePreview(file){
-			//  console.log(file)
-		},
-		handleChange(file,fileList){			
+      item.splice(0, item.length);
 
-		},
-		beforeUpload:function(file){
-			const isLt2M = file.size / 1024 / 1024 < 100
-		if (!isLt2M) {
-			alert('上传模板大小不能超过 100MB!')
-		}
-		return isLt2M
-			
-		}, 
-			// 上传错误
-		uploadError (response, file, fileList) {
+      res.forEach(el => {
+        item.push({ value: el });
+      });
+    },
+    //短信方法
+    cancle() {
+      this.messageopen = false;
+      let a = "";
+      this.messageform.messagedesc = a;
+      this.messageform.selectTitle = a;
+      this.userList = [];
+    },
+    messageOpen() {
+      this.messageopen = true;
+      this.callParent();
+      let pList = [];
+      //   this.userList=[];
+      messageDialog().then(res => {
+        let data = res.data.result;
+        this.messageModel.splice(0, this.messageModel.length);
+        data.forEach(e => {
+          this.messageModel.push({
+            lable: e.id,
+            value: e.title,
+            channel: e.channel
+          });
+          this.messageTemplate.push({
+            lable: e.id,
+            value: e.title,
+            channel: e.channel
+          });
+        });
+      });
+      function trimSpace(array) {
+        for (var i = 0; i < array.length; i++) {
+          if (array[i].phone == null || array[i].phone == "") {
+            array.splice(i, 1);
+            i = i - 1;
+          }
+        }
+        return array;
+      }
+      this.phoneListNums = trimSpace(this.phoneListNums);
+      this.phoneListNums.forEach(e => {
+        if (
+          //e.infoSource=="CMS"&&e.roleName=="主借人"&&
+          e.effectiveness == "Y"
+        ) {
+          e.phone = e.phone.replace(/\s+/g, "");
+          this.userList.push({ value: e.phone + "-" + e.roleName });
+          pList.push(e.phone);
+        } else {
+          return;
+        }
+      });
+      this.messageform.phone = pList[0] + "-主借人";
+      this.messageform.messagedesc = "";
+    },
+    encloOpen() {
+      this.encloopen = true;
+      this.listrefresh();
+      let para = {
+        icsId: this.$route.params.id,
+        page: this.pageEn,
+        pageSize: this.pageSizeEn
+      };
+      getFileType(para).then(res => {
+        let data = res.data.result;
+        this.fileListType = data;
+      });
+    },
+    listrefresh() {
+      this.fileListStatue = true;
+      let para = {
+        icsId: this.$route.params.id,
+        page: this.page,
+        pageSize: this.pagesize
+      };
+      ListFilses(para).then(res => {
+        let data = res.data.data;
+        this.datas = data;
+        this.total = res.data.recordsTotal;
+      });
+    },
+    getMessage(item) {
+      this.messageTemplate.forEach(val => {
+        if (val.value === item) {
+          this.templateId = val.lable;
+          this.channel = val.channel;
+        } else {
+          return;
+        }
+      });
+      let para = {
+        channel: this.channel,
+        templateId: this.templateId,
+        contractNum: this.applicationNumber,
+        phone: this.messageform.phone.split("-").shift("-")
+      };
+      messageTemplate(para).then(res => {
+        let data = res.data.result;
+        this.messageform.messagedesc = data.smsContent;
+      });
+    },
+    confirmmessage(messageform) {
+      let phoneNum = this.messageform.phone.split("-").shift("-");
+      let para = {
+        channel: this.channel,
+        phone: phoneNum,
+        smsContent: this.messageform.messagedesc,
+        missionId: this.$route.params.id,
+        linkman: this.messageform.phone.split("-").pop("-")
+      };
 
-			console.log('上传失败，请重试！')
-		},
-		uploadSuccess (response, file, fileList) {
-			
-			console.log('上传文件', response)
-			if(response.success==true){
-				this.$message({
-                    type:'success',
-                    message:'上传成功！',
-				});
-				this.listrefresh()
-				  this.fileListStatue=false;
-				  this.$refs.upload.clearFiles()
-			}else{
-				this.$message({
-                    type:'danger',
-                    message:'上传失败！',
-				});
-				this.listrefresh()
-			}			
-		},
-		downLoad(item){
-			// console.log(item)
-			window.open(this.downLoadPath+"/files/download?path="+item.path);//文件中心地址
-			this.listrefresh()
-		},
-		deleteList(item){
-			let para={
-				id:item.id
-			}
-			delet(para).then(res=>{
-				if(res.data.success==true){
-					this.$message({
-					showClose: true,
-					message:'删除成功！',	
-                    type:'success',
-                   
-				});
-				this.listrefresh()
-				}else{
-					this.$message({
-					showClose: true,
-					message:res.data.message,
-                    type:'error',
-                   
-				});
-					this.listrefresh()
-				}
-				 
-				// console.log(res)
-			})
-			// console.log(item)
-			
-		},
-		visitList(){
-			this.visitListDetial=true;
-			let para={
-				id:this.$route.params.id
-			}
-			RecordsFind(para).then(res=>{
-				// console.log(res)
-			});
-			this.getvisitlist();
-		},
-		getvisitlist(){
-			let paras={
-				missionId:this.$route.params.id,
-				page:this.visitpages,
-				pageSize:this.visitpagesize
-			}
-			RecordsFindlist(paras).then(res=>{
-				let data=res.data.result.data
-				this.visittotal=this.recordsTotal;
-				this.visitListsRecords=data;
-			})
-		},
-		
-//外访记录
-	dataChangevisit(val){			
-		this.timesvisit=val;
+      if (this.messageform.messagedesc == "") {
+        this.$message("请确认您的信息是否填写完整！");
+      } else {
+        messageSend(para).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "短信已发送！"
+            });
+          } else {
+            this.$message({
+              type: "warning",
+              message: "短信未发送！"
+            });
+          }
+        });
+        this.messageopen = false;
+        let a = "";
+        this.messageform.messagedesc = a;
+        this.messageform.selectTitle = a;
+        this.userList = [];
+      }
+    },
+    handleSelect(item) {},
+    PhoneCtr() {
+      let nums = localStorage.getItem("CJPhone");
+      this.mainform.afpRecord += nums;
+    },
+    //催记暂存
+    CJStore() {
+      let REefresh = {
+        actSign: this.mainform.actSign,
+        allowance: this.mainform.allowance,
+        allDate: this.allDate,
+        linkman: this.mainform.linkman,
+        linkInfomation: this.mainform.linkInfomation,
+        appointmentTime: this.times,
+        afpRecord: this.mainform.afpRecord,
+        RowId: this.$route.params.id
+      };
+      localStorage.setItem("REefresh", JSON.stringify(REefresh));
+      localStorage.setItem(this.$route.params.id, this.$route.params.id);
+      this.$message({
+        type: "success",
+        message: "暂存成功！"
+      });
+    },
+
+    NoRefresh() {
+      let REefresh = {
+        actSign: this.mainform.actSign,
+        allowance: this.mainform.allowance,
+        allDate: this.allDate,
+        linkman: this.mainform.linkman,
+        linkInfomation: this.mainform.linkInfomation,
+        appointmentTime: this.times,
+        afpRecord: this.mainform.afpRecord,
+        RowId: this.$route.params.id
+      };
+      var RowIds = localStorage.getItem(this.$route.params.id);
+      if (localStorage.getItem("REefresh") != "") {
+        var FreshList = JSON.parse(localStorage.getItem("REefresh"));
+        if (RowIds == FreshList.RowId) {
+          (this.mainform.actSign = FreshList.actSign),
+            (this.mainform.allowance = FreshList.allowance),
+            (this.mainform.allDate = FreshList.allDate),
+            (this.mainform.linkman = FreshList.linkman),
+            (this.mainform.linkInfomation = FreshList.linkInfomation),
+            (this.mainform.appointmentTime = FreshList.appointmentTime),
+            (this.mainform.afpRecord = FreshList.afpRecord);
+        } else {
+          return false;
+        }
+      }
+    },
+    //文件上传部分
+    chooseFile() {
+      this.fileListStatue = true;
+    },
+    // 上传成功后的回调
+    submitUpload() {
+      if (this.fileList.fileListType == "") {
+        this.$message({
+          type: "error",
+          message: "请选择附件类型！"
+        });
+      } else {
+        this.upLoadData.fileListType = this.fileList.fileListType;
+        this.$refs.upload.submit();
+      }
+    },
+    handleRemove(file, fileList) {
+      // console.log(file,fileList)
+    },
+    handlePreview(file) {
+      //  console.log(file)
+    },
+    handleChange(file, fileList) {},
+    beforeUpload: function(file) {
+      const isLt2M = file.size / 1024 / 1024 < 100;
+      if (!isLt2M) {
+        alert("上传模板大小不能超过 100MB!");
+      }
+      return isLt2M;
+    },
+    // 上传错误
+    uploadError(response, file, fileList) {
+      console.log("上传失败，请重试！");
+    },
+    uploadSuccess(response, file, fileList) {
+      console.log("上传文件", response);
+      if (response.success == true) {
+        this.$message({
+          type: "success",
+          message: "上传成功！"
+        });
+        this.listrefresh();
+        this.fileListStatue = false;
+        this.$refs.upload.clearFiles();
+      } else {
+        this.$message({
+          type: "danger",
+          message: "上传失败！"
+        });
+        this.listrefresh();
+      }
+    },
+    downLoad(item) {
+      window.open(this.downLoadPath + "/files/download?path=" + item.path); //文件中心地址
+      this.listrefresh();
+    },
+    deleteList(item) {
+      let para = {
+        id: item.id
+      };
+      delet(para).then(res => {
+        if (res.data.success == true) {
+          this.$message({
+            showClose: true,
+            message: "删除成功！",
+            type: "success"
+          });
+          this.listrefresh();
+        } else {
+          this.$message({
+            showClose: true,
+            message: res.data.message,
+            type: "error"
+          });
+          this.listrefresh();
+        }
+      });
+    },
+    visitList() {
+      this.visitListDetial = true;
+      let para = {
+        id: this.$route.params.id
+      };
+      RecordsFind(para).then(res => {
+        // console.log(res)
+      });
+      this.getvisitlist();
+    },
+    getvisitlist() {
+      let paras = {
+        missionId: this.$route.params.id,
+        page: this.visitpages,
+        pageSize: this.visitpagesize
+      };
+      RecordsFindlist(paras).then(res => {
+        let data = res.data.result.data;
+        this.visittotal = this.recordsTotal;
+        this.visitListsRecords = data;
+      });
+    },
+
+    //外访记录
+    dataChangevisit(val) {
+      this.timesvisit = val;
     },
     getMessagesvisit(val) {
-      this.IsTrue=val;
+      this.IsTrue = val;
     },
-    isanswer(val){
-      if(val=="N"){
-        this.mainformvisit.isperson=""
+    isanswer(val) {
+      if (val == "N") {
+        this.mainformvisit.isperson = "";
       }
-	},
-	isaddress(val){
-		if(val=="Y"){
-			this.mainformvisit.addressName=""
-		} 	
-	},
-	addressNames(val){
-		if(val!=""&&this.mainformvisit.istrue=="N"){
-			this.disablelist=false;
-		}
-	},
-
-   getaddress(){
-     let para={
-       type:"object"
-     }
-     let paras0={
-      type:"address_status"
-    }
-    let paras={
-      type:"house_owner"
-    }
-    let paras1={
-      type:"work_status"
-    }
-    let paras2={
-      type:"car_control"
-    }
-    let paras3={
-      type:"address_remarks"
-    }
-    findByType(para).then(res=>{
-      let data=res.data.result;
-      this.isperson=data
-    });
-     findByType(paras0).then(res=>{
-      let data=res.data.result;
-      this.addressStn=data
-    });
-    findByType(paras).then(res=>{
-      let data=res.data.result;
-      this.houseStn=data
-    });
-     findByType(paras1).then(res=>{
-      let data=res.data.result;
-      this.workStn=data
-    });
-     findByType(paras2).then(res=>{
-      let data=res.data.result;
-      this.carStn=data
-    });
-    findByType(paras3).then(res=>{
-      let data=res.data.result;
-      this.addressName=data
-    });
-   },
-   getaddressType(){
-
-     let para={
-       	missionId: this.$route.params.id
-	 } 
-     AddresssfindByType(para).then(res=>{
-       let data=res.data.result;
-       this.addressTypes=data;
-     })
-   },
-   changeAddressType(val){
-     this.roleName=val.split("-").shift();
-     this.type=val.split("-").pop();
-     this.address=[];
-     let para={
-       missionId: this.$route.params.id,
-       roleName:this.roleName,
-       type:this.type
-     }
-     AddresssfindAddress(para).then(res=>{
-       let data=res.data.result
-       this.address=data;
-      for(let a=0;a<this.address.length;a++){
-        this.mainformvisit.address=this.address[0]
+    },
+    isaddress(val) {
+      if (val == "Y") {
+        this.mainformvisit.addressName = "";
       }
-     });
-     
-   },
-   canclevisit(){  
-	   this.visitListDetial=false;
-     this.$refs.mainformvisit.resetFields();
-   },
-   submitMsg(){
-	   if(this.mainformvisit.istrue=="N"){
-			let para={
-				missionId: this.$route.params.id,
-				outsideTime:this.timesvisit,
-				addressType:this.mainformvisit.addressType,
-				address:this.mainformvisit.address,
-				addressReal:this.mainformvisit.istrue,
-				addressRemarks:this.mainformvisit.addressName,
-			  } 	
-			  if((this.timesvisit==""||this.timesvisit==undefined)||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.addressName==""){
-				  this.$notify({
-					title:"提示:",
-                    type:'warning',
-					message:'请将内容填写完整！',
-					position:"top-left"
-				});
-			  }else{
-				  this.disablelist=false;
-				  VisitRecords(para).then(res=>{
-					  this.getvisitlist()
-					  this.$refs.mainformvisit.resetFields();
-				    // console.log(res)
-				  })				
-			  }
-	   }else{
-		   if(this.mainformvisit.isanswer=="N"){
-			   let para={
-				missionId: this.$route.params.id,
-				outsideTime:this.timesvisit,
-				addressType:this.mainformvisit.addressType,
-				address:this.mainformvisit.address,
-				addressReal:this.mainformvisit.istrue,
-				// addressRemarks:this.mainformvisit.addressName,
-				callReal:this.mainformvisit.isanswer,
-				seeIt:"",
-				// seeItS:this.mainformvisit.ispersons,
-				// :this.mainformvisit.,
-				cusAddressSituation:this.mainformvisit.addressStn,
-				ownerHource:this.mainformvisit.houseStn,
-				cusWorkSituation:this.mainformvisit.workStn,
-				carControl:this.mainformvisit.carStn
-			  }  
-			   if(this.timesvisit==""||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.isanswer==""||this.mainformvisit.addressStn==""||this.mainformvisit.houseStn==""||this.mainformvisit.workStn==""||this.mainformvisit.carStn==""){
-				  this.$notify({
-                    title:"提示:",
-                    type:'warning',
-					message:'请将内容填写完整！',
-					position:"top-left"
-				});
-			  }else{
-				  this.disablelist=false;
-				  VisitRecords(para).then(res=>{
-					  this.getvisitlist()
-					  this.$refs.mainformvisit.resetFields();
-				    // console.log(res)
-				  })				
-			  }
-		   }else{
-			   let para={
-				missionId: this.$route.params.id,
-				outsideTime:this.timesvisit,
-				addressType:this.mainformvisit.addressType,
-				address:this.mainformvisit.address,
-				addressReal:this.mainformvisit.istrue,
-				// addressRemarks:this.mainformvisit.addressName,
-				callReal:this.mainformvisit.isanswer,
-				seeIt:this.mainformvisit.isperson,
-				// seeItS:this.mainformvisit.ispersons,
-				// :this.mainformvisit.,
-				cusAddressSituation:this.mainformvisit.addressStn,
-				ownerHource:this.mainformvisit.houseStn,
-				cusWorkSituation:this.mainformvisit.workStn,
-				carControl:this.mainformvisit.carStn
-			  } 
-			  if((this.timesvisit==""||this.timesvisit==undefined)||this.mainformvisit.addressType==""||this.mainformvisit.address==""||this.mainformvisit.istrue==""||this.mainformvisit.isanswer==""||this.mainformvisit.isperson==""||this.mainformvisit.addressStn==""||this.mainformvisit.houseStn==""||this.mainformvisit.workStn==""||this.mainformvisit.carStn==""){
-				  this.$notify({
-                   title:"提示:",
-                    type:'warning',
-					message:'请将内容填写完整！',
-					position:"top-left"
-				});
-			  }else{
-				  this.disablelist=false;
-				  VisitRecords(para).then(res=>{
-					  this.getvisitlist()
-					  this.$refs.mainformvisit.resetFields();
-				    // console.log(res)
-				  })
-				
-			  }
-		   }
-		   	
-			  
-	   }
-	  
-    //  let para={
-    //       missionId: this.$route.params.id,
-    //       outsideTime:this.timesvisit,
-    //       addressType:this.mainformvisit.addressType,
-    //       address:this.mainformvisit.address,
-    //       addressReal:this.mainformvisit.istrue,
-    //       addressRemarks:this.mainformvisit.addressName,
-    //       callReal:this.mainformvisit.isanswer,
-    //       seeIt:this.mainformvisit.isperson,
-    //       // seeItS:this.mainformvisit.ispersons,
-    //       :this.mainformvisit.,
-    //       cusAddressSituation:this.mainformvisit.addressStn,
-    //       ownerHource:this.mainformvisit.houseStn,
-    //       cusWorkSituation:this.mainformvisit.workStn,
-    //       carControl:this.mainformvisit.carStn
-    //   }
-    
-   }
+    },
+    addressNames(val) {
+      if (val != "" && this.mainformvisit.istrue == "N") {
+        this.disablelist = false;
+      }
+    },
 
+    getaddress() {
+      let para = {
+        type: "object"
+      };
+      let paras0 = {
+        type: "address_status"
+      };
+      let paras = {
+        type: "house_owner"
+      };
+      let paras1 = {
+        type: "work_status"
+      };
+      let paras2 = {
+        type: "car_control"
+      };
+      let paras3 = {
+        type: "address_remarks"
+      };
+      findByType(para).then(res => {
+        let data = res.data.result;
+        this.isperson = data;
+      });
+      findByType(paras0).then(res => {
+        let data = res.data.result;
+        this.addressStn = data;
+      });
+      findByType(paras).then(res => {
+        let data = res.data.result;
+        this.houseStn = data;
+      });
+      findByType(paras1).then(res => {
+        let data = res.data.result;
+        this.workStn = data;
+      });
+      findByType(paras2).then(res => {
+        let data = res.data.result;
+        this.carStn = data;
+      });
+      findByType(paras3).then(res => {
+        let data = res.data.result;
+        this.addressName = data;
+      });
+    },
+    getaddressType() {
+      let para = {
+        missionId: this.$route.params.id
+      };
+      AddresssfindByType(para).then(res => {
+        let data = res.data.result;
+        this.addressTypes = data;
+      });
+    },
+    changeAddressType(val) {
+      this.roleName = val.split("-").shift();
+      this.type = val.split("-").pop();
+      this.address = [];
+      let para = {
+        missionId: this.$route.params.id,
+        roleName: this.roleName,
+        type: this.type
+      };
+      AddresssfindAddress(para).then(res => {
+        let data = res.data.result;
+        this.address = data;
+        for (let a = 0; a < this.address.length; a++) {
+          this.mainformvisit.address = this.address[0];
+        }
+      });
+    },
+    canclevisit() {
+      this.visitListDetial = false;
+      this.$refs.mainformvisit.resetFields();
+    },
+    submitMsg() {
+      if (this.mainformvisit.istrue == "N") {
+        let para = {
+          missionId: this.$route.params.id,
+          outsideTime: this.timesvisit,
+          addressType: this.mainformvisit.addressType,
+          address: this.mainformvisit.address,
+          addressReal: this.mainformvisit.istrue,
+          addressRemarks: this.mainformvisit.addressName
+        };
+        if (
+          this.timesvisit == "" ||
+          this.timesvisit == undefined ||
+          this.mainformvisit.addressType == "" ||
+          this.mainformvisit.address == "" ||
+          this.mainformvisit.istrue == "" ||
+          this.mainformvisit.addressName == ""
+        ) {
+          this.$notify({
+            title: "提示:",
+            type: "warning",
+            message: "请将内容填写完整！",
+            position: "top-left"
+          });
+        } else {
+          this.disablelist = false;
+          VisitRecords(para).then(res => {
+            this.getvisitlist();
+            this.$refs.mainformvisit.resetFields();
+            // console.log(res)
+          });
+        }
+      } else {
+        if (this.mainformvisit.isanswer == "N") {
+          let para = {
+            missionId: this.$route.params.id,
+            outsideTime: this.timesvisit,
+            addressType: this.mainformvisit.addressType,
+            address: this.mainformvisit.address,
+            addressReal: this.mainformvisit.istrue,
+            // addressRemarks:this.mainformvisit.addressName,
+            callReal: this.mainformvisit.isanswer,
+            seeIt: "",
+            // seeItS:this.mainformvisit.ispersons,
+            // :this.mainformvisit.,
+            cusAddressSituation: this.mainformvisit.addressStn,
+            ownerHource: this.mainformvisit.houseStn,
+            cusWorkSituation: this.mainformvisit.workStn,
+            carControl: this.mainformvisit.carStn
+          };
+          if (
+            this.timesvisit == "" ||
+            this.mainformvisit.addressType == "" ||
+            this.mainformvisit.address == "" ||
+            this.mainformvisit.istrue == "" ||
+            this.mainformvisit.isanswer == "" ||
+            this.mainformvisit.addressStn == "" ||
+            this.mainformvisit.houseStn == "" ||
+            this.mainformvisit.workStn == "" ||
+            this.mainformvisit.carStn == ""
+          ) {
+            this.$notify({
+              title: "提示:",
+              type: "warning",
+              message: "请将内容填写完整！",
+              position: "top-left"
+            });
+          } else {
+            this.disablelist = false;
+            VisitRecords(para).then(res => {
+              this.getvisitlist();
+              this.$refs.mainformvisit.resetFields();
+              // console.log(res)
+            });
+          }
+        } else {
+          let para = {
+            missionId: this.$route.params.id,
+            outsideTime: this.timesvisit,
+            addressType: this.mainformvisit.addressType,
+            address: this.mainformvisit.address,
+            addressReal: this.mainformvisit.istrue,
+            // addressRemarks:this.mainformvisit.addressName,
+            callReal: this.mainformvisit.isanswer,
+            seeIt: this.mainformvisit.isperson,
+            // seeItS:this.mainformvisit.ispersons,
+            // :this.mainformvisit.,
+            cusAddressSituation: this.mainformvisit.addressStn,
+            ownerHource: this.mainformvisit.houseStn,
+            cusWorkSituation: this.mainformvisit.workStn,
+            carControl: this.mainformvisit.carStn
+          };
+          if (
+            this.timesvisit == "" ||
+            this.timesvisit == undefined ||
+            this.mainformvisit.addressType == "" ||
+            this.mainformvisit.address == "" ||
+            this.mainformvisit.istrue == "" ||
+            this.mainformvisit.isanswer == "" ||
+            this.mainformvisit.isperson == "" ||
+            this.mainformvisit.addressStn == "" ||
+            this.mainformvisit.houseStn == "" ||
+            this.mainformvisit.workStn == "" ||
+            this.mainformvisit.carStn == ""
+          ) {
+            this.$notify({
+              title: "提示:",
+              type: "warning",
+              message: "请将内容填写完整！",
+              position: "top-left"
+            });
+          } else {
+            this.disablelist = false;
+            VisitRecords(para).then(res => {
+              this.getvisitlist();
+              this.$refs.mainformvisit.resetFields();
+              // console.log(res)
+            });
+          }
+        }
+      }
+    },
+	//征信查询
+    threadPoxi() {
+      var s = {};
+      s.USERNAME =localStorage.getItem("userName");
+      s.TOKEN = Cookies.get("Admin-Token");
+      s.SYSTYPE = "2";
+      const agentData = "CONN " + JSON.stringify(s);
+      if (this.websock.readyState == this.websock.OPEN) {
+        this.websocketsend(agentData);
+      } else {
+        this.initWebSocket();
+        let that = this;
+        setTimeout(function() {
+          that.websocketsend(agentData);
+        }, 500);
+      }
+      // else if(this.websock.readyState==this.websock.COMMECTING){
+      //   let that =this
+      //   setTimeout(function(){
+      //     that.websocketsend(datas)
+      //   },500)
 
-	// 	// 上传错误
-	// 	uploadError (response, file, fileList) {
-	// 		console.log(response)
-	// 		console.log(file)
-	// 		console.log(fileList)
-	// 	console.log('上传失败，请重试！')
-	// 	},
-	// 	// 上传前对文件的大小的判断
-	// 	beforeAvatarUpload (file) {
-	// 	const extension = file.name.split('.')[1] === 'xls'
-	// 	const extension2 = file.name.split('.')[1] === 'xlsx'
-	// 	const extension3 = file.name.split('.')[1] === 'doc'
-	// 	const extension4 = file.name.split('.')[1] === 'docx'
-	// 	const isLt2M = file.size / 1024 / 1024 < 10
-	// 	if (!extension && !extension2 && !extension3 && !extension4) {
-	// 		alert('上传模板只能是 xls、xlsx、doc、docx 格式!')
-	// 	}
-	// 	if (!isLt2M) {
-	// 		alert('上传模板大小不能超过 10MB!')
-	// 	}
-	// 	return extension || extension2 || extension3 || extension4 && isLt2M
-	// 	},
-	// 	submitUpload() {
-    //     this.$refs.upload.submit();
-    //   },
-	},
-// 	components:{
-// 	  visitList
-//   },
-  beforeMount(){
-	  	
+      // }
+    },
+    initWebSocket() {
+      const uri = window.g.ws;
+      this.websock = new WebSocket(uri);
+      this.websock.onmessage = this.websocketonmessage;
+      this.websock.onclose = this.websocketclose;
+    },
+    websocketonmessage(e) {
+      const redata = JSON.parse(e.data);
+      this.backMsg = JSON.parse(e.data);
+    },
+    websocketsend(agentData) {
+      this.websock.send(agentData);
+    },
+    websocketclose(e) {
+      console.log(e);
+    },
+    checkPreview() {
+		let para = {
+        appNum:this.$parent.appNum
+      }
+      getCustomerCredit(para).then(res=>{
+        this.datas=res.data.Preview
+      const datas = "Preview " + JSON.stringify(this.datas);
+      if (this.backMsg.Type == "ConnOK") {
+        let that = this;
+        that.websocketsend(datas);
+        // if(this.backMsg.Type=="SEARCH_FAIL"){
+		// 	this.$message({ 
+		// 	type: "error",        
+        //     message:this.backMsg.Msg,
+            
+        //   });
+        // }
+        // that.threadPoxi()
+      } else {
+      this.threadPoxi();
+		  this.websocketsend(datas);
 		
-  },
-	mounted() {
-  this.callParent();
-	this.getlists();	
-	this.PathList();
-	this.restaurants=this.userList;
-	this.restaurants1=this.getname;
-	this.restaurants2=this.getfangshi;
-	this.getaddress();
-	this.getaddressType();
-	this.NoRefresh();   
+	  }
+	})
     }
-}
+  },
+  created() {
+    this.initWebSocket();
+  },
+  beforeMount() {},
+  mounted() { 
+	this.threadPoxi();
+    this.callParent();
+    this.getlists();
+    this.PathList();
+    this.restaurants = this.userList;
+    this.restaurants1 = this.getname;
+    this.restaurants2 = this.getfangshi;
+    this.getaddress();
+    this.getaddressType();
+    this.NoRefresh();
+  },
+  watch: {
+    backMsg(curval) {
+      if (curval.Type == "SEARCH_FAIL") {		  
+			this.$message({
+            showClose: true,
+            message:curval.Msg,
+            type: "error"
+          });
+      }
+    }
+  }
+};
 </script>
-<style>	
-	#tables{display: flex;justify-content: space-between;min-height: 100px}
-	 #tables .el-input{height: 24px}
-	#FixForm .el-form-item{margin: 0px 5px 13px;}
-	#bzt {width: 53%}
-	#lists{width:45%;font-size: 13px;margin-left: 10px}
-	#lists .el-form-item__label{font-size: 13px!important}
-	#FixForm .el-form-item__content{width:150px!important }
-	#bzt .el-form-item__content{width: 98%!important} 
-	#bzt .el-button{padding: 5px;margin: 5px;font-size: 13px}
-	.dropdown-menu{display: block;min-height: 100px!important}
-	.el-input__inner{margin-left: 5px;height: 24px!important}
-	#el-icons{font-size: 13px!important;margin-top: 5px!important}
-	#inp .el-input__inner{margin-left: 0!important};
-	#selectMes .el-input{height: 24px!important} 
-	#FixForm .el-form-item{margin-bottom: 5px!important}
-	#MsgDialog .el-form-item{margin-bottom: 15px!important}
-	.tips{font-size: 12px;color: red}
-	#fileUpload .el-dialog--small{width:97%!important;max-height:700px;overflow: auto!important;top:2%!important};
-	#fileUpload .el-dialog__body{padding: 10px 20px!important;}
-	#uploadFile .el-button{padding: 2px!important;font-size: 13px!important}
-	#outerdialog .el-dialog--small{width:97%!important;max-height:700px;overflow: auto!important;top:2%!important}
-	#outerdialog .el-form-item__content{width:165px!important }
-	#outerdialog .el-input__inner,#selectMess .el-input__inner{height: 30px!important}
-	@media screen and (max-width:1250px) {
-	/* #FixForm{display:flex} */
-		#bzt {width: 45%}
-		#lists{width:52%;font-size: 13px;margin-left: 10px}
-		#FixForm .el-form-item__content{width:125px!important}
-		#bzt .el-form-item__content{width: 98%!important}
-	} 
+<style>
+#tables {
+  display: flex;
+  justify-content: space-between;
+  min-height: 100px;
+}
+#tables .el-input {
+  height: 24px;
+}
+#FixForm .el-form-item {
+  margin: 0px 5px 13px;
+}
+#bzt {
+  width: 53%;
+}
+#lists {
+  width: 45%;
+  font-size: 13px;
+  margin-left: 10px;
+}
+#lists .el-form-item__label {
+  font-size: 13px !important;
+}
+#FixForm .el-form-item__content {
+  width: 150px !important;
+}
+#bzt .el-form-item__content {
+  width: 98% !important;
+}
+#bzt .el-button {
+  padding: 5px;
+  margin: 5px;
+  font-size: 13px;
+}
+.dropdown-menu {
+  display: block;
+  min-height: 100px !important;
+}
+.el-input__inner {
+  margin-left: 5px;
+  height: 24px !important;
+}
+#el-icons {
+  font-size: 13px !important;
+  margin-top: 5px !important;
+}
+#inp .el-input__inner {
+  margin-left: 0 !important;
+}
+#selectMes .el-input {
+  height: 24px !important;
+}
+#FixForm .el-form-item {
+  margin-bottom: 5px !important;
+}
+#MsgDialog .el-form-item {
+  margin-bottom: 15px !important;
+}
+.tips {
+  font-size: 12px;
+  color: red;
+}
+#fileUpload .el-dialog--small {
+  width: 97% !important;
+  max-height: 700px;
+  overflow: auto !important;
+  top: 2% !important;
+}
+#fileUpload .el-dialog__body {
+  padding: 10px 20px !important;
+}
+#uploadFile .el-button {
+  padding: 2px !important;
+  font-size: 13px !important;
+}
+#outerdialog .el-dialog--small {
+  width: 97% !important;
+  max-height: 700px;
+  overflow: auto !important;
+  top: 2% !important;
+}
+#outerdialog .el-form-item__content {
+  width: 165px !important;
+}
+#outerdialog .el-input__inner,
+#selectMess .el-input__inner {
+  height: 30px !important;
+}
+@media screen and (max-width: 1250px) {
+  /* #FixForm{display:flex} */
+  #bzt {
+    width: 45%;
+  }
+  #lists {
+    width: 52%;
+    font-size: 13px;
+    margin-left: 10px;
+  }
+  #FixForm .el-form-item__content {
+    width: 125px !important;
+  }
+  #bzt .el-form-item__content {
+    width: 98% !important;
+  }
+}
 </style>

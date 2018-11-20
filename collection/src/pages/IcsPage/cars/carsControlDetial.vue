@@ -26,7 +26,7 @@
 				</div>			
 			</el-collapse-item>
             <el-collapse-item title="控制车辆信息" name="2" style="position:relative"  >
-                <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subCarInfo('carForm')">提交</el-button>
+                <el-button class="filter-item" style="position:absolute;top:3px;left:140px"  type="primary" size="mini" @click="subCarInfo('carForm')">提交</el-button>
                 <table :model="carForm" ref="carForm" >
                   <tbody  class="legal" v-loading="listLoadings">
                     <tr>
@@ -124,93 +124,9 @@
                     </tr>
                   </tbody>
                 </table>
-               <!-- <el-form :inline="true" :model="carForm" ref="carForm" :rules="rules" label-width="90px" id="controlinfos" class="controlinfos" v-loading="listLoadings" >
-              <el-form-item label="车辆来源" prop="comefrom" >
-                <el-select v-model="carForm.comefrom"  clearable placeholder="车辆来源"  style="width:230px" >
-							    <el-option v-for="(item,index) in comefrom" :key="index"  :label="item.val " :value="item.val "></el-option>
-						    </el-select>
-              </el-form-item> 
-                    <el-form-item label="控车机构" prop="company">
-                      <el-select v-model="carForm.company"  clearable placeholder="控车机构"  style="width:230px" >
-							            <el-option v-for="(item,index) in restaurants" :key="index"  :label="item.nickname " :value="item.nickname "></el-option>
-                      </el-select> -->
-                      <!-- <el-autocomplete v-model="carForm.company" clearable :fetch-suggestions="querySearch" size="small"  placeholder="请输入控车机构"  @select="handleSelect" class="autoInput" style="width:150px">
-                      </el-autocomplete> -->
-                        <!-- <el-input v-model="carForm.company" placeholder="控车机构" clearable></el-input> -->
-                    <!-- </el-form-item>
-                    <el-form-item label="控车日期" prop="time">
-                        <el-date-picker style="width:230px" v-model="carForm.time" type="date" placeholder="请选择" @change="timechange">
-					</el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="控车省市"  prop="province">
-                        <el-input v-model="carForm.province" placeholder="控车省市" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="寻找方式" prop="province">
-                        <el-select  v-model="carForm.search" placeholder="请选择方式" style="width:230px">
-							<el-option v-for="(item,index) in findway" :key="index"  :label="item.val " :value="item.val "></el-option>					
-						</el-select>
-                    </el-form-item>
-                    <el-form-item label="车辆状态" prop="province">
-                        <el-input v-model="carForm.statius" placeholder="车辆状态" clearable ></el-input>
-                    </el-form-item> 
-                    <el-form-item label="控车时逾期天数" prop="province">
-                        <el-input v-model="carForm.overdueDay" placeholder="控车时逾期天数" clearable  ></el-input>
-                    </el-form-item>
-                    <el-form-item label="变现情况" prop="province">
-                        <el-select   v-model="carForm.realize" placeholder="变现情况" style="width:230px">
-                            	<el-option v-for="(item,index) in realizeType" :key="index"  :label="item.val " :value="item.val "></el-option>	
-						        </el-select>
-                    </el-form-item> 
-                    <el-form-item label="车型" prop="province" >
-                        <el-input v-model="carForm.cartype" placeholder="车型" clearable  ></el-input>
-                    </el-form-item>
-                    <el-form-item label="车牌号" prop="province">
-                        <el-input v-model="carForm.carnum" placeholder="车牌号" clearable  ></el-input>
-                    </el-form-item>
-                    <el-form-item label="车身颜色" prop="province">
-                        <el-input v-model="carForm.carcolor" placeholder="车身颜色" clearable></el-input>
-                    </el-form-item>
-                    <el-form-item label="公里数" prop="province">
-                        <el-input v-model="carForm.cardrive" placeholder="公里数" clearable ></el-input>
-                    </el-form-item>
-                    <el-form-item label="车架号" prop="province">
-                        <el-input v-model="carForm.carframe" placeholder="车架号" clearable readonly ></el-input>
-                    </el-form-item>
-                    <el-form-item label="发动机号" prop="province">
-                        <el-input v-model="carForm.motor" placeholder="发动机号" clearable readonly ></el-input>
-                    </el-form-item>
-                    <el-form-item label="车辆登记日/合同签订日" prop="province">
-                         <el-date-picker style="width:230px" v-model="carForm.cartime" type="date" value-format="yyyy-MM-dd" placeholder="请选择" @change="signTime"></el-date-picker>
-                    </el-form-item>  
-                    <el-form-item label="车辆价格(发票价)" prop="province">
-                        <el-input v-model="carForm.price" placeholder="车辆价格(发票价)" clearable  ></el-input>
-                    </el-form-item>
-                    <el-form-item label="车辆出险情况" prop="province">
-                        <el-input v-model="carForm.danger" placeholder="车辆出险情况" clearable  ></el-input>
-                    </el-form-item>
-                     <el-form-item label="车辆是否查封" prop="province">
-                      <el-select v-model="carForm.receive"  placeholder="车辆是否查封" style="width:230px">
-                        <el-option label="是" value="是"></el-option>
-                        <el-option label="否" value="否"></el-option>                           
-                      </el-select> 
-                    </el-form-item>
-                    <el-form-item label="证件类型" prop="province">
-                        <el-select v-model="carForm.idtype" multiple  placeholder="证件类型" style="width:230px;min-height:54px">
-                          <el-option v-for="(item,index) in document" :key="item.key"  :label="item.val" :value="item.val" @change="typechange"></el-option>
-						            </el-select>
-                    </el-form-item>
-                    <el-form-item label="售后维修情况" prop="province">
-                        <el-input v-model="carForm.sale" type="textarea" placeholder="售后维修情况" clearable style="width:230px" ></el-input>
-                    </el-form-item>                  
-                    
-                   <el-form-item label="客户遗留物品" prop="province">
-                      <el-input v-model="carForm.leave" placeholder="客户遗留物品" clearable type="textarea" style="width:230px"></el-input>
-                  </el-form-item>                                                                        
-                </el-form-item>
-             </el-form>  -->
             </el-collapse-item>	
             <el-collapse-item  title="送车信息" name="3" style="position:relative">
-                <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="addSendCar" >添加</el-button>
+                <el-button class="filter-item" style="position:absolute;top:3px;left:100px"  type="primary" size="mini" @click="addSendCar" >添加</el-button>
                 <el-table :data="visitListsRecords"  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope" >
@@ -251,7 +167,7 @@
 		</el-dialog>
             </el-collapse-item>
              <el-collapse-item  title="车辆停放信息" name="4" style="position:relative">
-                <el-button class="filter-item" style="position:absolute;top:10px;left:135px"  type="primary" size="mini" @click="addParkingCar" >添加</el-button>
+                <el-button class="filter-item" style="position:absolute;top:3px;left:135px"  type="primary" size="mini" @click="addParkingCar" >添加</el-button>
                 <el-table :data="parkList"  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope">
@@ -305,7 +221,7 @@
 		        </el-dialog>
             </el-collapse-item>	
             <el-collapse-item title="变现信息" name="5" style="position:relative">
-                 <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="subReal" >确认</el-button>
+                 <el-button class="filter-item" style="position:absolute;top:3px;left:100px"  type="primary" size="mini" @click="subReal" >确认</el-button>
                  <table v-loading="listLoading5" :model="realize">
                     <tbody class="legal">
                       <tr>
@@ -374,7 +290,7 @@
                
             </el-collapse-item>
             <el-collapse-item title="放车信息" name="6" style="position:relative">
-                 <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="subStop" >确认</el-button>
+                 <el-button class="filter-item" style="position:absolute;top:3px;left:100px"  type="primary" size="mini" @click="subStop" >确认</el-button>
                  <table v-loading="listLoading5" :model="stop">
                    <tbody class="legal">
                      <tr>
@@ -415,7 +331,7 @@
                 
             </el-collapse-item>
             <el-collapse-item  title="费用明细" name="7" style="position:relative">
-                <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" @click="addcost" >添加</el-button>
+                <el-button class="filter-item" style="position:absolute;top:3px;left:100px"  type="primary" size="mini" @click="addcost" >添加</el-button>
                 <el-table :data="lists"  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope">
@@ -435,10 +351,6 @@
                 <el-input  v-show="scope.row.edit" size="small" v-if="col.field!='paymentInstitution'" v-model="scope.row[col.field]"></el-input>            
 						    <span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span> 
                 <span v-show="scope.row.edit" v-if="col.field=='paymentInstitution'" >{{ scope.row[col.field] }}</span> 
-                 <!-- <el-select  v-show="scope.row.edit" v-if="col.field=='whetherPay'" v-model="scope.row[col.field]" placeholder="请选择方式">
-							  <el-option label="已支付" value="已支付"></el-option>
-								<el-option label="待支付" value="待支付"></el-option>
-							</el-select>        						   -->
             </template>
 				</el-table-column>
 			</el-table>
@@ -683,24 +595,44 @@ export default {
     moneytime(val) {
       this.realize.time = val;
     },
-    countNum(){ 
-    let startTime = new Date(Date.parse(this.AddparkCarInfo.indate.replace(/-/g,   "/"))).getTime();     
-    let endTime = new Date(Date.parse(this.AddparkCarInfo.outdate.replace(/-/g,   "/"))).getTime();     
-    let dates = Math.abs((startTime - endTime))/(1000*60*60*24);
-    this.AddparkCarInfo.storageDays=dates+1    
+    inchange(date) {
+      this.inChange = "";
+      if (date) {
+        var srcd = new Date(date);
+        this.inChange =
+          srcd.getFullYear() +
+          "-" +
+          (srcd.getMonth() + 1) +
+          "-" +
+          srcd.getDate();
+      }
     },
-   
+    outchange(date) {
+      this.outChange = "";
+      if (date) {
+        var src = new Date(date);
+        this.outChange =
+          src.getFullYear() + "-" + (src.getMonth() + 1) + "-" + src.getDate();
+      }
+    },
+    countNum() {
+      var startTime = new Date(
+        Date.parse(this.AddparkCarInfo.indate.replace(/-/g, "/"))
+      ).getTime();
+      var endTime = new Date(Date.parse(this.AddparkCarInfo.outdate.replace(/-/g, "/"))).getTime();
+      var dates = Math.abs(startTime - endTime) / (1000 * 60 * 60 * 24);
+      this.AddparkCarInfo.storageDays = dates + 1;
+    },
     getInDate(val) {
       this.AddparkCarInfo.indate = val;
-      if(this.AddparkCarInfo.outdate){
-        this.countNum()
-        
+      if (this.AddparkCarInfo.outdate) {
+        this.countNum();
       }
     },
     getOutDate(val) {
       this.AddparkCarInfo.outdate = val;
-      if(this.AddparkCarInfo.indate){
-        this.countNum()
+      if (this.AddparkCarInfo.indate) {
+        this.countNum();
       }
     },
     visithandleCurrentChange(val) {
@@ -734,7 +666,6 @@ export default {
       };
       this.listLoading1 = true;
       getCustomerOsBasic(para).then(res => {
-
         let data = res.data.result;
         this.details = data;
         this.listLoading1 = false;
@@ -816,8 +747,8 @@ export default {
     },
     subCarInfo(carForm) {
       let para = {
-        id:this.controlCarid,
-        icsId:this.controlCaricsId,
+        id: this.controlCarid,
+        icsId: this.controlCaricsId,
         vehicleSource: this.carForm.comefrom,
         vehicleControlMechanism: this.carForm.company,
         vehicleControlDate: this.carForm.time,
@@ -838,38 +769,44 @@ export default {
         afterSale: this.carForm.sale,
         documentTypeArray: this.carForm.idtype,
         customerLegacy: this.carForm.leave,
-        vehicleSealed: this.carForm.receive,
+        vehicleSealed: this.carForm.receive
         // documentType:""
       };
 
-        if(this.carForm.comefrom==null||this.carForm.comefrom==""||this.carForm.company==null||this.carForm.company==""||this.carForm.time==undefined||this.carForm.time==""){
-           this.$message({
-              type: "error",
-              message: "请填写必填信息！"
+      if (
+        this.carForm.comefrom == null ||
+        this.carForm.comefrom == "" ||
+        this.carForm.company == null ||
+        this.carForm.company == "" ||
+        this.carForm.time == undefined ||
+        this.carForm.time == ""
+      ) {
+        this.$message({
+          type: "error",
+          message: "请填写必填信息！"
+        });
+      } else {
+        updateOsControlVehicle(para).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: "success",
+              message: "编辑成功！"
             });
-        }else{
-          updateOsControlVehicle(para).then(res => {
-                  if (res.data.success) {
-                      this.$message({
-                        type: "success",
-                        message: "编辑成功！"
-                      });
-                      this.getcontrolCar();
-                      this.costDetail();
-                    } else {
-                      this.$message({
-                        type: "error",
-                        message:res.data.message
-                      });
-                    }                    
-              });
-        }
-       
+            this.getcontrolCar();
+            this.costDetail();
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message
+            });
+          }
+        });
+      }
     },
     //送车信息
     sendCar() {
       let paras = {
-        id:this.$route.params.id,
+        id: this.$route.params.id,
         page: this.visitpages,
         pageSize: this.visitpagesize
       };
@@ -892,7 +829,7 @@ export default {
               type: "success",
               message: "编辑成功！"
             });
-             this.sendCar()
+            this.sendCar();
             this.costDetail();
           } else {
             this.$message({
@@ -920,7 +857,7 @@ export default {
                 type: "success",
                 message: "删除成功！"
               });
-               this.sendCar()
+              this.sendCar();
               this.costDetail();
             } else {
               this.$message({
@@ -1013,9 +950,8 @@ export default {
       row.indate=row.indate? Moment(row.indate).format("YYYY-MM-DD") : "";
       row.outdate=row.outdate? Moment(row.outdate).format("YYYY-MM-DD") : "";
       if ((row.edit = !row.edit)) {
-        
       } else {
-        updateParkingInformation(para).then(res => {         
+        updateParkingInformation(para).then(res => {
           if (res.data.success) {
             this.$message({
               type: "success",
@@ -1213,7 +1149,7 @@ export default {
     subStop() {
       let para = {
         id: this.stopListid,
-        vehicleReleaseMode:this.stop.notice,
+        vehicleReleaseMode: this.stop.notice,
         icsId: this.stopListicsId,
         pickUpDate: this.stop.time,
         pickUpName: this.stop.name,
@@ -1222,7 +1158,7 @@ export default {
         handover: this.stop.place,
         kilometre: this.stop.distance,
         vehicleState: this.stop.statius,
-        saleSigned:this.stop.deal,       
+        saleSigned: this.stop.deal,
         remarks: this.stop.marks
       };
       updateOsCarRelease(para).then(res => {
@@ -1368,22 +1304,21 @@ export default {
   },
   mounted() {
     this.getlists();
-   this.getcontrolCar();
+    this.getcontrolCar();
     this.gettype();
     this.sendCar();
     this.ParkingCar();
     this.getrealizeList();
     this.getstopList();
     this.costDetail();
-     this.getconpany()
+    this.getconpany();
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||
         document.body.clientHeight) - 105;
     this.$refs.abcd.style.height = h + "px";
-  },
-}
-
+  }
+};
 </script>
 
 <style>
@@ -1394,17 +1329,21 @@ export default {
 .ht_table .tds {
   color: #000;
 }
- #controlinfos .el-input{width: 230px}
+#controlinfos .el-input {
+  width: 230px;
+}
 .legal .el-date-editor .el-input__inner {
   margin-top: 5px;
 }
-.legal td{padding: 0 1px}
- .legal .el-date-editor.el-input {
+.legal td {
+  padding: 0 1px;
+}
+.legal .el-date-editor.el-input {
   width: 160px;
-} 
+}
 .legal input {
   height: 30px;
   margin-top: 2px;
-  width:100%
+  width: 100%;
 }
 </style>

@@ -167,7 +167,11 @@
 				ControlVehicle(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
-					this.cols = this.cols;
+                    this.cols = this.cols;
+                    this.lists.forEach(element => {
+                        element.overdueDays=parseInt(element.overdueDays)                    
+                        
+                    });
 					this.listLoading = false;
 					//NProgress.done();
 				});

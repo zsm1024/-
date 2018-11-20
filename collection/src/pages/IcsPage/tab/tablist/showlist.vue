@@ -123,12 +123,10 @@
 									<td class="tds">所在城市</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.city}}</td>
 									<td class="tds">所在区县</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.counties}}</td> -->
 								</tr>
-								<tr>
 								<tr><td class="tds">故障描述</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_gzms}}</td></tr>
 								<tr><td class="tds">初步诊断</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_cbzd}}</td></tr>
 								
 									<!-- <td class="tds">地址</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_dz}}</td> -->
-								</tr>
 								<tr>
 									<td class="tds">修理类别</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_xllb}}</td>
 									<td class="tds">状态</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_zt}}</td>

@@ -101,11 +101,6 @@
 			  </tr>				  								
 		  </tbody>
 	  </table>
-	  <!-- <el-form  inline class="expand">
-		  	<el-form-item  v-for=" a in userInfo" :key="a.title" :lable="a.title" style="margin:0">
-				<label style="min-width:270px:270px;display:inline-block"><span class="titles">{{a.title}}:</span><span class="lable">{{a.field}}</span></label>	
-			</el-form-item>
-	  </el-form>			 -->
   </el-collapse-item>
   <el-collapse-item name="3" title="送修人信息">
 	  <table class="ht_table">
@@ -164,11 +159,6 @@
 
 		  </tbody>
 	  </table>
-	  <!-- <el-form  inline class="expand">
-		  	<el-form-item  v-for=" a in repairInfo" :key="a.title" :lable="a.title" style="margin:0">
-				<label style="min-width:270px;display:inline-block"><span class="titles">{{a.title}}:</span><span class="lable">{{a.field}}</span></label>	
-			</el-form-item>
-	  </el-form>			 -->
   </el-collapse-item> 
 </el-collapse>		
 </template>
@@ -180,25 +170,6 @@ export default {
         activeNames:["1","2","3","4","5"], 
 		items: [],
 		carInfo:[],
-		// carInfoTitle:[
-		// 		{ title: '车牌号', field: '鲁BU5E62' },
-        //         { title: '厂牌', field: '长城' },
-        //         { title: '底盘号', field: 'LGWEF3A53CF119444' },
-        //         { title: '车系', field: 'H6' },
-        //         { title: '发动机号', field: 'SLX1513' },
-        //         { title: '车辆颜色', field: '雅致银' },
-        //         { title: '购车日期', field: '2017-02-14' },
-        //         { title: '领证日期', field: '2012-02-14' },
-        //         { title: '首保日期', field: '2015-03-14' }, 
-        //         { title: '首次接待', field: '孙艳' },
-        //         { title: '下次保养日期', field: '2017-03-27' },
-        //         { title: '下次保养里程', field: '41000' },
-        //         { title: '首次来厂日期', field: '2017-06-15' }, 
-        //         { title: '最近修理日期', field: '2017-07-15' }, 
-        //         { title: '首次到店', field: '2017-06-15' },
-        //         { title: '最近到店', field: '2017-06-15' },
-        //         { title: '加装说明', field: '奥术大师多请问我小窗口从上课文在笑口常开阿伟去玩了看情况外科' },
-		// ],
 		maintenanceRepairInfo:[],
 		maintenanceRecord:[],
 		customerBasic:[],
@@ -212,10 +183,8 @@ export default {
 			};
 			
 			repair(para).then(res => {
-				console.log(res)
 				let data =res.data.result;			
 				this.items=data;
-				console.log(data)
 				this.carInfo=data.carInfo;
 				this.customerBasic=data.customerBasic;
 				this.maintenanceRepairInfo=data.maintenanceRepairInfo;

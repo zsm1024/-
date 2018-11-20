@@ -1,35 +1,5 @@
 <template>
 <section ref="abc" style="height:100%;overflow:hidden">
-    <!-- <el-form :model="filters" inline>
-        <el-form-item>
-			<el-input v-model="filters.name" placeholder="当事人" clearable style="width:120px"></el-input>
-	  </el-form-item>
-	  <el-form-item>
-			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:120px"></el-input>
-		</el-form-item>
-		<el-form-item>
-			<el-input v-model="filters.dueStart" placeholder="逾期天数"  clearable style="width:50px"></el-input>至
-            <el-input v-model="filters.dueEnd" placeholder="逾期天数"  clearable style="width:50px"></el-input>
-		</el-form-item>
-          <el-form-item>
-            <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:120px"></el-input>           
-        </el-form-item>
-        <el-form-item>
-            <el-date-picker v-model="value6" 
-					type="daterange" 
-					range-separator="至" 				
-					placeholder="请选择约会时间区域" 				
-					@change="dataChange"
-					>
-					</el-date-picker> -->
-            <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
-        <!-- </el-form-item>
-        <el-form-item>
-            <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
-        </el-form-item>
-    </el-form> -->
-    
-    <!-- @selection-change="handleSelectionChange" -->
     <el-form inline >        
         <el-form-item label="预派案公司">
            <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入派案公司"  @select="handleSelect" class="autoInput" style="width:150px" clearable >
@@ -64,14 +34,6 @@
                 <el-button type="primary" style="padding:10px 15px" @click="cancel()">确 定</el-button> 
             </el-form-item>
          </el-form>
-    <!-- <el-table :data="addList" border height="400" @selection-change="handleSelectionChange" ref="multipleTable">
-      <el-table-column  type="selection" aline="center" ></el-table-column>
-       <el-table-column v-for="(item,index) in cols1" :key="index" :prop="item.field" :label="item.title" aline="center" ></el-table-column>
-    </el-table>
-  <div slot="footer" class="dialog-footer">
-    <el-button style="padding:10px 15px"  >取 消</el-button>
-   <el-button type="primary" style="padding:10px 15px" @click="addChange()">确 定</el-button> 
-  </div> -->
 </el-dialog>  
 </section>
 </template>
@@ -242,7 +204,6 @@ export default {
         deadTimeOfTheSendCase: this.times
         // status:"1",
       };
-      console.log(para);
       if (this.items == "" || this.addlists.length == 0) {
         this.$alert("请选择派案公司、到期日和或外派案件！", "提示", {
           confirmButtonText: "确定",
@@ -274,24 +235,19 @@ export default {
         willSendCompany: localStorage.getItem("willSendCompany"),
         page: this.page,
         pageSize: this.pagesize
-        // name:this.filters.name,
-        // applicationNumber:this.filters.applicationNumber,
-        // overdueDays:this.filters.overdueDays,
-        // appointmentTime:this.filters.appointmentTime,
-        // startTime:this.times1,
-        // endTime:this.times2	,
-        // username:this.filters.processer,
       };
       this.listLoading = true;
       SendListdetail(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
+        this.datas.forEach(element => {
+						element.overdueDays=parseInt(element.overdueDays)
+
+							
+					});	
         this.total = data.recordsTotal;
         this.listLoading = false;
       });
-      //  let paras={
-      //     isOs:"1"
-      //  }
       getTaskHostUser().then(res => {
         this.userList = [];
         let data = res.data.result;

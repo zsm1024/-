@@ -20,25 +20,6 @@
 					>
 					</el-date-picker>
 				</el-form-item>
-				<!-- <el-form-item>
-					<el-input v-model="filters.appointmentTime" placeholder="开始时间"  clearable></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="filters.appointmentTime" placeholder="结束时间"  clearable></el-input>
-				</el-form-item> -->
-				<!-- <el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="filters.Cnum" placeholder="合同号"></el-input>
-				</el-form-item> -->
-                <!-- <el-form-item>
-					<el-select v-model="formInline.region" placeholder="请选择" @change="handleOptionChange">
-                    <el-option label="合同号" value="合同号"></el-option>
-                    <el-option label="派单时间" value="派单时间"></el-option>
-                    <el-option label="当事人"  value="当事人间"></el-option>
-                    </el-select>
-				</el-form-item> -->
 				<el-form-item>
 					<el-button type="primary" @click="getUsers" size="mini">查询</el-button>
 				</el-form-item>				
@@ -98,8 +79,8 @@
 					{ title: '逾期天数', field: 'overdueDays', width: "75" },
 					{ title: '逾期金额', field: 'overdueTotal', width: "80" },  
 					{ title: '约会日期', field: 'appointmentTime', width: "80" },
-					{ title: '最近行动代码', field: 'actSign', width: "120" },
-					{ title: '最近行动时间', field: 'inputTime', width: "150" },					
+					{ title: '最近行动代码', field: 'actSign', width: "160" },
+					{ title: '最近行动时间', field: 'inputTime', width: "160" },					
            			{ title: '贷款车型', field: 'car', width: "150" },
 					{ title: '省份', field: 'province', width: "50" },
 					{ title: '城市', field: 'city', width: "50" },
@@ -175,24 +156,14 @@
 					startTime:this.times1,
 					endTime:this.times2												
 				};
-				//NProgress.start();
 				getEscrow(para).then((res) => {
 					let data=res.data.result;					
-					 this.datas=data.data;					 
+					 this.datas=data.data;
+					  this.datas.forEach(element => {
+						element.overdueDays=parseInt(element.overdueDays)							
+					});						 
 					 this.total=data.recordsTotal;
-					// this.cols = data.cols;
-					//  this.datas = res;
-					//  console.log(users)
-					//  console.log(data)
-					// this.total = res.data.total;
-					// this.users = res.data.users;
-					 
-					//  this.total = res.data.recordsTotal;
-					// let data=res.data.result.data;
-					  
-					//  this.cols = res.data.cols;
 					  this.listLoading = false;
-					//NProgress.done();
 				});
 			},
 				getNowFormatDate() {

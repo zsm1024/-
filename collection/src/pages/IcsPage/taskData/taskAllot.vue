@@ -52,7 +52,7 @@
       <!--       -->
    <el-table :data="datas"  style="width:100% ;margin-top:5px;" highlight-current-row border :max-height="this.heights"  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" :key="index" align="center" >
+       <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
 		</el-table-column>
         
    </el-table>
@@ -93,8 +93,8 @@ export default {
         { title: "约会日期", field: "appointmentTime", width: "150" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
-        { title: "最近行动代码", field: "actSign", width: "140" },
-        { title: "最近行动时间", field: "inputTime", width: "140" },
+        { title: "最近行动代码", field: "actSign", width: "160" },
+        { title: "最近行动时间", field: "inputTime", width: "160" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
         { title: "未偿本金", field: "residualAmount", width: "90" },
         { title: "派单时间", field: "createTime", width: "150" },
@@ -207,6 +207,10 @@ export default {
       getTaskHostList(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
+        this.datas.forEach(element => {
+						element.overdueDays=parseInt(element.overdueDays)
+							
+					});	
         this.total = data.recordsTotal;
         this.listLoading = false;
       });

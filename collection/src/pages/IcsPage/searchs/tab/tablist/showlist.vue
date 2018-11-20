@@ -51,8 +51,6 @@
 								<td class="tds">车辆数</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_cs}}</td>
 								<td class="tds">客户类型</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_khlx}}</td>
 								<td class="tds">所在行业</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_szhy}}</td>
-								<!-- <td class="tds">性别</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.kh_xl}}</td> -->
-								<!-- <td class="tds">民族</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.nation}}</td>				 -->
 							</tr>
 							<tr>
 											
@@ -100,9 +98,6 @@
 									<td class="tds">手机号码</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_xsj}}</td>
 								</tr>
 								<tr>				 
-									<!-- <td class="tds">出生日期</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.birthDate}}</td> -->
-									<!-- <td class="tds">驾驶证号码</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.driverNum}}</td> -->
-									
 									<td class="tds">家庭电话</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_jtdh}}</td>
 									<td class="tds">办公电话</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_bgdh}}</td>
 										<td class="tds">地址</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_dz}}</td>
@@ -112,16 +107,11 @@
 										<td class="tds">进站日期</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_jzrq}}</td>
 										<td class="tds">交车日期</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_jcrq}}</td>
 										<td class="tds">累计里程</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_xslc}}</td>
-										<td class="tds">服务类型</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_fwlx}}</td>
-									<!-- <td class="tds">所在省份</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.province}}</td>
-									<td class="tds">所在城市</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.city}}</td>
-									<td class="tds">所在区县</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.counties}}</td> -->
+										<td class="tds">服务类型</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_fwlx}}</td>							
 								</tr>
 								<tr>
 								<tr><td class="tds">故障描述</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_gzms}}</td></tr>
 								<tr><td class="tds">初步诊断</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_cbzd}}</td></tr>
-								
-									<!-- <td class="tds">地址</td><td colspan="7" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_dz}}</td> -->
 								<tr>
 									<td class="tds">修理类别</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_xllb}}</td>
 									<td class="tds">状态</td><td colspan="3" style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_zt}}</td>
@@ -149,15 +139,7 @@
 									<td class="tds">站长</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.fwz_zz}}</td>
 									<td class="tds">站长手机</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.fwz_zzsj}}</td>
 									<td class="tds">业务电话</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.fwz_ywdh}}</td>
-								</tr>
-								<!-- <tr>
-									
-									<td class="tds">服务开始时间</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_jcrq}}</td>
-									<td class="tds">服务结束时间</td><td style="color:#269aff!important;font-size: 13px">{{wbInfo.wx_jzrq}}</td> 
-									
-								</tr> -->
-								
-								
+								</tr>													
 							</tbody>
 						</table>
   					</el-collapse-item>
@@ -213,25 +195,6 @@ export default {
         let data = res.data.result;
         this.wbInfo = data;
       });
-      // 	var indexlink = "showdetail";
-      // 	var label = '维保信息详情';
-      // 	this.$store.state.listdetail.tabdetailId=row.index;
-
-      // 	this.$store.state.listdetail.activeTabdetailName = "showdetail";
-      // 	console.log(this.$store.state.listdetail)
-      // 	let component = resolve => require([`@/pages/searchs/tab/tablist/${indexlink}`], resolve)
-      // 	// console.log(${indexlink})
-      // 	if (this.$store.state.listdetail.tabListdetail.filter(f => f.name == indexlink) != 0) {
-      // 		this.$store.state.listdetail.tabListdetail = this.$store.state.listdetail.tabListdetail.filter(f => f.name != indexlink);
-      // 	}
-      // 	this.$store.state.listdetail.tabListdetail.push({
-      // 			label: label,
-      // 			name: indexlink,
-      // 			disabled: false,
-      // 			closable: true,
-      // 			component: component
-      // 		})
-      // 		console.log(this.$store.state.listdetail.tabListdetail)
     },
     handleSizeChange(val) {
       this.pagesize = val;
@@ -244,15 +207,11 @@ export default {
     //获取列表
     getlists() {
       let para = {
-        // page: this.page,
-        // pageSize: this.pagesize,
         icsId: this.$route.params.id
       };
       this.listLoading = true;
-      //NProgress.start();
       repair(para).then(res => {
         let data = res.data.result;
-        // this.total = data.data.length;
         this.lists = data;
         this.listLoading = false;
       });

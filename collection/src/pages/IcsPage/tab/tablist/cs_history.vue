@@ -209,11 +209,11 @@
       			});
 				},
 			handleSizeChangeCode(val) {
-				this.pagesize = val;
+				this.pagesizeCode = val;
 				this.getmessage_code();
 			},
 			handleCurrentChangeCode(val) {
-				this.page = val;
+				this.pageCode = val;
 				this.getmessage_code();
 			},
 				getmessage_code() {

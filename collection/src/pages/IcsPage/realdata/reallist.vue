@@ -96,6 +96,10 @@
 				getOnTheSpotQueueMissionList(para).then((res) => {
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
+					this.lists.forEach(element => {
+						element.count=parseInt(element.count);
+						element.countDate=parseInt(element.countDate)																
+					});
 					// this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();

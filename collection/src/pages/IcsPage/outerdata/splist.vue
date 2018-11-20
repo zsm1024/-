@@ -126,6 +126,9 @@ export default {
         listApproveOsCase(para).then((res) => {
             let data =res.data.result;           
             this.datas=data.data;
+            this.datas.forEach(element => {
+                element.caseAmount=parseInt(element.caseAmount)               
+            });
             this.total=data.recordsTotal;
             this.listLoading = false;
         });

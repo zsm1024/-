@@ -3,6 +3,7 @@
 	<el-row>
 		<el-col :span="24" id="el-icons">	
 			<i class="el-icon-message" @click="messageOpen">短信</i>
+			<i class="el-icon-edit" @click="checkPreview">征信查询</i>	
 			<!-- <i class="el-icon-upload2">{{callback.roleName}}</i>  -->
 		</el-col>
 	</el-row>
@@ -87,10 +88,16 @@
 </template>
 <script>
 import { tab_view,recordAdd,getCodeAll,getNextMissonId,messageDialog,messageTemplate,messageSend } from "@/api/tablist";
+import { getCustomerCredit } from "@/api/auth";
+import Cookies from "js-cookie";
 export default{
 	props:['callback'],	
 	data(){				
 		return{
+			websock: null,
+      		backMsg: "",
+     		datas: "",
+     	 	tips: "",
             tosubtext:'确认',
             disabledto: false,
 			items: [],
@@ -146,13 +153,6 @@ export default{
                     actSign: [
                         { required: true, message: '请输入行动代码', trigger: 'blur' }
                     ],
-                
-                    // allowance:[
-                    //     {required: true, message: '请输入承诺金额', trigger: 'blur',}
-                    // ],
-                    // allDate:[
-                    //     { required: true,  message: '请选择承诺日期', trigger: 'blur',type:'date'}
-                    // ],
                     linkman: [
                         { required: true, message: '请填写联系人', trigger: 'blur' }
                     ],
@@ -464,17 +464,107 @@ export default{
 		},
 		handleSelect(item){
 		},
+			//征信查询
+	// getCheckInfo(){
+    //   let para = {
+    //     appNum:"GW-A044749000"
+    //   }
+    //   getCustomerCredit(para).then(res=>{
+    //     this.datas=res.data.Preview
+    //     console.log(res.data.Preview)
+
+    //   })
+    // },
+    threadPoxi() {
+      var s = {};
+      s.USERNAME = "admin";
+      s.TOKEN = "4dc8e5f0-bd92-4a4d-94af-c7be14a73f26";
+      s.SYSTYPE = "2";
+      const agentData = "CONN " + JSON.stringify(s);
+      if (this.websock.readyState == this.websock.OPEN) {
+        this.websocketsend(agentData);
+      } else {
+        this.initWebSocket();
+        let that = this;
+        setTimeout(function() {
+          that.websocketsend(agentData);
+        }, 500);
+      }
+      // else if(this.websock.readyState==this.websock.COMMECTING){
+      //   let that =this
+      //   setTimeout(function(){
+      //     that.websocketsend(datas)
+      //   },500)
+
+      // }
+    },
+    initWebSocket() {
+      const uri = window.g.ws;
+      this.websock = new WebSocket(uri);
+      this.websock.onmessage = this.websocketonmessage;
+      this.websock.onclose = this.websocketclose;
+    },
+    websocketonmessage(e) {
+      const redata = JSON.parse(e.data);
+      this.backMsg = JSON.parse(e.data);
+    },
+    websocketsend(agentData) {
+      this.websock.send(agentData);
+    },
+    websocketclose(e) {
+      console.log(e);
+    },
+    checkPreview() {
+		 let para = {
+        appNum:this.$parent.appNum
+      }
+      getCustomerCredit(para).then(res=>{
+        this.datas=res.data.Preview
+      const datas = "Preview " + JSON.stringify(this.datas);
+      if (this.backMsg.Type == "ConnOK") {
+        let that = this;
+        that.websocketsend(datas);
+        // if(this.backMsg.Type=="SEARCH_FAIL"){
+		// 	this.$message({ 
+		// 	type: "error",        
+        //     message:this.backMsg.Msg,
+            
+        //   });
+        // }
+        // that.threadPoxi()
+      } else {
+        this.threadPoxi();
+		this.websocketsend(datas);
+		
+	  }
+	})
+    }
 		
 	},
+	created() {
+    this.initWebSocket();
+  },
 	mounted() {
+	  this.threadPoxi();
+      Cookies.get("Admin-Token");
 	  this.getlists();
 	  this.callParent();
 	  this.restaurants=this.userList;
 	  this.restaurants1=this.getname;
 	  this.restaurants2=this.getfangshi;
-
-
+	},
+	 watch: {
+    backMsg(curval) {
+		console.log(curval)
+      if (curval.Type == "SEARCH_FAIL") {		  
+			this.$message({
+            showClose: true,
+            message:curval.Msg,
+            type: "error"
+          });
+      }
     }
+  }
 }
 </script>
 <style>	

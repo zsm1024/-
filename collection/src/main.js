@@ -14,11 +14,9 @@ import Validator from 'vue-validator'
 import './permission' // 权限
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
-import * as socketApi from './api/socket'
 if(process.env.NODE_ENV=="development"){
     Mock.bootstrap();
 }
-Vue.prototype.socketApi = socketApi
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(iView);

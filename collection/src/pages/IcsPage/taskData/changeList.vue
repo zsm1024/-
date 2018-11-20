@@ -55,7 +55,7 @@
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :key="index" align="center" >
+       <el-table-column sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
 		</el-table-column>     
    </el-table>
    <!--工具条-->
@@ -137,8 +137,8 @@ export default {
         { title: "约会日期", field: "appointmentTime", width: "80" },
         { title: "省份", field: "province", width: "50" },
         { title: "城市", field: "city", width: "50" },
-        { title: "最近行动代码", field: "actSign", width: "120" },
-        { title: "最近行动时间", field: "inputTime", width: "120" },
+        { title: "最近行动代码", field: "actSign", width: "160" },
+        { title: "最近行动时间", field: "inputTime", width: "160" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
         { title: "未偿本金", field: "residualAmount", width: "90" },
         { title: "派单时间", field: "createTime", width: "120" },
@@ -273,44 +273,6 @@ export default {
           });
         }
       }
-        // if (
-
-        //   this.multipleSelection[i].lockFlag != "null" ||
-        //   this.multipleSelection[i].lockFlag == "Y"
-        // ) {
-        //   this.b.push(this.multipleSelection[i].lockFlag);
-        // }
-     // }
-      // if (this.b.indexOf("N", 0) == -1) {
-      //   let para = {
-      //     turnUser: this.AdduserForms.stateCode,
-      //     missionIds: this.addlists,
-      //     // escrowTime: this.times,
-      //     // status:"1",
-      //     queueId: this.AdduserForms.areaList
-      //   };
-      //   if (
-      //     this.AdduserForms.stateCode == "" ||
-      //     this.AdduserForms.areaList == "" ||
-      //     this.addlists.length == 0
-      //   ) {
-      //     this.$alert("请选择用户ID或转队列案件！", "提示", {
-      //       confirmButtonText: "确定",
-      //       type: "warning",
-      //       center: "true"
-      //     });
-      //   } else {
-      //     // turnQueue(para).then(res => {
-      //     //   this.listShow();
-      //     // });
-      //   }
-      // } else {
-      //   this.$alert("请选未申请的案件！", "提示", {
-      //     confirmButtonText: "确定",
-      //     type: "warning",
-      //     center: "true"
-      //   });
-      // }
     },
     handleCurrentChange(val) {
       this.pages = val;
@@ -344,19 +306,6 @@ export default {
       sysPositionslistAll().then(res => {
         this.options = res.data.result;
       });
-
-      //  getTaskHostUser().then((res) => {
-      //      this.userList=[];
-      //      let data =res.data.result;
-      //      this.a=data;
-      //      this.a.forEach(el => {
-      //          this.userList.push({"value":el.nickname,"id":el.id})
-      //      });
-      //     this.restaurants=this.userList;
-      //     this.file=this.userLists;
-      //     //  this.datas=data.data;
-      //     // this.total=data.recordsTotal;
-      // })
     },
     handleSelect(item) {
       this.items = item.value;
@@ -373,26 +322,16 @@ export default {
       let para = {
         id: this.itemsId
       };
-      //    cancelEscrow(para).then(res =>{
-      //        this.cancelhost=false;
-      //        this.userLists.splice(0,this.userLists.length)
-      //        this.getlists();
-      //    })
     }
   },
   mounted() {
     this.listShow();
     this.getDl_AllList();
-    // this.getTaskUser1();
-
-    // this.getTaskUser();
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||
         document.body.clientHeight) - 210;
     this.heights = h;
-    // console.log(this.heights)
-    // this.$refs.abc.style.height= h+"px";
   }
 };
 </script>

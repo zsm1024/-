@@ -59,7 +59,7 @@
                     <td><span>一审判决/调解时间</span></td>
                     <td><el-date-picker v-model="legalInfo.trialMediationTime" readonly type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>                    
                     <td><span>第二次开庭时间</span></td>
-                    <td><el-date-picker v-model="legalInfo.secondCourtTime"type="date" readonly value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
+                    <td><el-date-picker v-model="legalInfo.secondCourtTime" type="date" readonly value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker></td>
                 </tr>
                 <tr>
                     

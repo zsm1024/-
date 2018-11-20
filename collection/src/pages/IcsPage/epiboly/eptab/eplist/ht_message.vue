@@ -58,15 +58,6 @@
 				</div>
 				
 			</el-collapse-item>
-			<!-- <el-collapse-item title="还款账号列表" name="2">
-				<div>
-					<el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>					
-					<el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" align="center" >
-					</el-table-column>
-
-					</el-table>
-				</div>
-			</el-collapse-item>			 -->
 		</el-collapse>
 	</section>
 </template>

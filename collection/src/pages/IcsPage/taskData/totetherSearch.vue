@@ -88,8 +88,8 @@
 					{ title: '逾期天数', field: 'overdueDays', width: "75" },
 					{ title: '逾期金额', field: 'overdueTotal', width: "80" },  
 					{ title: '约会日期', field: 'appointmentTime', width: "80" },
-					{ title: '最近行动代码', field: 'actSign', width: "120" },
-					{ title: '最近行动时间', field: 'inputTime', width: "150" },					
+					{ title: '最近行动代码', field: 'actSign', width: "160" },
+					{ title: '最近行动时间', field: 'inputTime', width: "160" },					
            			{ title: '贷款车型', field: 'car', width: "150" },
 					{ title: '省份', field: 'province', width: "50" },
 					{ title: '城市', field: 'city', width: "50" },
@@ -168,21 +168,13 @@
 				//NProgress.start();
 				listRestByCo(para).then((res) => {
 					let data=res.data.result;					
-					 this.datas=data.data;					 
+					 this.datas=data.data;	
+					 this.datas.forEach(element => {
+						element.overdueDays=parseInt(element.overdueDays)
+							
+					});					 
 					 this.total=data.recordsTotal;
-					// this.cols = data.cols;
-					//  this.datas = res;
-					//  console.log(users)
-					//  console.log(data)
-					// this.total = res.data.total;
-					// this.users = res.data.users;
-					 
-					//  this.total = res.data.recordsTotal;
-					// let data=res.data.result.data;
-					  
-					//  this.cols = res.data.cols;
 					  this.listLoading = false;
-					//NProgress.done();
 				});
 			},
 				getNowFormatDate() {

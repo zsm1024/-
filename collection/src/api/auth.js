@@ -221,3 +221,10 @@ export function refreshSub(params) {
         params: params
     })
 }
+export function getCustomerCredit(params) {
+    return fetch({
+        url: '/customerBasics/getCustomerCredit',
+        method: 'get',
+        params: params
+    })
+}

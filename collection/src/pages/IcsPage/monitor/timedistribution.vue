@@ -16,7 +16,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border align="center">
+		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" :default-sort="{prop:'overdueDays',order:'asccending'}" stripe border align="center">
 			<el-table-column type="selection" width="55" align="center">
 			</el-table-column>
 			<el-table-column label="操作"  align="center" >
@@ -100,6 +100,9 @@
                     
 					this.total = res.data.result.recordsTotal;
 					this.lists = res.data.result.data;
+					this.lists.forEach(element => {
+						element.overdueDays=parseInt(element.overdueDays)						
+					});
 					this.cols = this.cols;
 					this.listLoading = false;
 					//NProgress.done();

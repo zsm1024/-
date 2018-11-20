@@ -189,11 +189,11 @@
       			});
 				},
 				handleSizeChangeTrail(val) {
-				this.pagesize = val;
+				this.pagesizeTrail = val;
 				this.getmessage_trail();
 			},
 			handleCurrentChangeTrail(val) {
-				this.page = val;
+				this.pageTrail = val;
 				this.getmessage_trail();
 			},
 				getmessage_trail() {
@@ -210,11 +210,11 @@
       			});
 				},
 			handleSizeChangeCode(val) {
-				this.pagesize = val;
+				this.pagesizeCode = val;
 				this.getmessage_code();
 			},
 			handleCurrentChangeCode(val) {
-				this.page = val;
+				this.pageCode = val;
 				this.getmessage_code();
 			},
 				getmessage_code() {

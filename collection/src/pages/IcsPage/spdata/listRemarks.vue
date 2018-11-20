@@ -172,12 +172,21 @@ export default {
               this.getLists();
               window.history.back()
             }else{
-            this.$alert(' 审批失败！','提示',{
+              // if(this.lists.station=="协办"){
+                this.$alert(res.data.message,'提示',{
                     confirmButtonText:'确定',
                     type:'warning',
                     center:'true'
               })
-            }
+            //   }else{
+            //      this.$alert("审批失败！",'提示',{
+            //         confirmButtonText:'确定',
+            //         type:'warning',
+            //         center:'true'
+            //   })
+            // }
+              }
+           
          
           });
         }

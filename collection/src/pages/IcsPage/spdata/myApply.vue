@@ -4,10 +4,10 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
         <el-form-item>
-					<el-input v-model="filters.name" placeholder="申请人" style="width:130px" clearable></el-input>
+					<el-input v-model="filters.name" placeholder="当事人" style="width:130px" clearable></el-input>
 				</el-form-item>
         <el-form-item>
-					<el-input v-model="filters.overdueDays" placeholder="逾期天数"  style="width:130px" clearable></el-input>
+					<el-input v-model="filters.applicant" placeholder="申请人"  style="width:130px" clearable></el-input>
 				</el-form-item>
         <el-form-item>
 					<el-input v-model="filters.applicationNumber" placeholder="合同号"  style="width:130px" clearable></el-input>
@@ -82,21 +82,6 @@ export default {
             {title:'申请人',field:'applicant'},
             {title:'创建日期',field:'createTime'},
             {title:'最后提交日',field:'updateTime'},
-            // {title:'处理人',field:'realUser'},
-            // {title:'用户ID',field:'username'},
-            // {title:'最近行动代码',field:'actSign',width:100},
-            // {title:'最近行动时间',field:'inputTime'},
-            // {title:'贷款金额',field:'loanAmount'},
-            // {title:'未偿本金',field:'residualAmount'},           
-            // {title:'职业',field:'occupation',width:100},
-            // {title:'首付比例',field:'firstRatio'},
-            // // {title:'承诺兑现标识',field:'mark'},
-            // {title:'省份',field:'province',width:80},
-            // {title:'城市',field:'city',width:80},
-            //  {title:'车型',field:'loanCar',width:160}, 
-            // {title:'经销商',field:'dealer',width:120},
-            // {title:'贷款产品',field:'loanProducts',width:120},  
-            // {title:'核销状态',field:'isnodis'},
         ],
         total: 0,
         page: 1,

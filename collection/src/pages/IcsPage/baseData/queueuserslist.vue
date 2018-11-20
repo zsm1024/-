@@ -134,6 +134,7 @@ export default {
               message: "请在正确的范围内填写权重！"
             });
           } else {
+           // if(row)
             updateWeight(para).then(res => {
               if (res.data.success) {
                 this.$message({
@@ -182,32 +183,6 @@ export default {
             message: "已取消删除"
           });
         });
-      // this.$confirm('确定删除信息吗？','提示',{
-      // 	confirmButtonText: "确定",
-      // 	cancelButtonText: "取消",
-      //     type:'warning'
-      // }).then(() => {
-      // 	    delInfo(para).then(res =>{
-
-      // 		    if(res.data.success){
-      // 			    datas.splice(index, 1);
-      // 			    this.$message({
-      // 				    type: 'success',
-      // 				    message: '删除成功！'
-      // 			    })
-      // 		    }else{
-      // 			    this.$message({
-      // 				    type: 'error',
-      // 				    message: '删除失败，请联系管理员！'
-      // 			    })
-      // 		    }
-      // 	    });
-
-      //     }).catch(() =>{
-      // 	    this.$message({
-      // 		    type: 'info',
-      // 		    message: '已取消删除'
-      // 	    });
     },
     addUsers(item) {
       if (this.queueId == "") {

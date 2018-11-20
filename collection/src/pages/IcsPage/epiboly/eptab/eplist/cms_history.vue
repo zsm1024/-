@@ -1,69 +1,9 @@
 <template>
 	<section ref="abc" style="overflow-y: auto;" id="cslist">
 		<el-collapse v-model="activeNames" accordion >
-			<!-- <el-collapse-item title="催收历史明细表" name="1">
-				<el-table :data="lists" border  v-loading="listLoading" style="width: 100%;" stripe :default-expand-all="true">											<el-table-column type="expand" >						
-						<template slot-scope="props">
-							<el-form  inline class="demo-table-expand" style="text-align:left;min-height:20px;line-height:20px">
-         						<el-form-item  style="min-height:20px;line-height20px;margin-bottom:0px!important">
-           							备注: {{ props.row.afpRecord }}
-          						</el-form-item>							
-							</el-form>
-						</template>
-					</el-table-column>		
-					<el-table-column 
-                        :prop="col.field" 
-                        :label="col.title" 
-                        v-for="(col, index) in cols" 
-                        :key="index"                      
-                        align="center"
-						:width="col.width"
-                        >
-					</el-table-column>
-				</el-table>
-				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[5,10, 20, 50, 100,500]"   :total="total"   style="float:right;">
-					</el-pagination>
-				</el-col>
-			</el-collapse-item> -->
 			<el-collapse-item title="特殊备注" name="1">
 				<span>{{spMarks}}</span>
-			</el-collapse-item>
-			 <!-- <el-collapse-item title="费用减免明细表" name="2">
-				<el-table :data="liststwo"  border highlight-current-row v-loading="listLoadingtwo" style="width: 100%;" stripe>									
-					<el-table-column 
-                        :prop="col.field" 
-                        :label="col.title" 
-                        v-for="(col, index) in colstwo" 
-                        :key="index" 
-                        align="center"
-                    >
-					</el-table-column>
-				</el-table>
-				<el-col :span="24" class="toolbar">					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangetwo" @size-change="handleSizeChangetwo" :page-size="pagesizetwo" :page-sizes="[5,10, 20, 50, 100]"   :total="totaltwo"   style="float:right;">
-					</el-pagination>
-				</el-col>
-
-			</el-collapse-item> -->
-			 <!-- <el-collapse-item title="罚息减免明细表" name="3">
-				<el-table :data="liststhr"  border highlight-current-row v-loading="listLoadingthr" style="width: 100%;" stripe>									
-					<el-table-column 
-                        :prop=" col.field" 
-                        :label=" col.title" 
-                        v-for="(col, index) in colsthr" 
-                        :key="index" 
-                        align="center"
-                    >
-					</el-table-column>
-				</el-table>
-				<el-col :span="24" class="toolbar">
-					
-					<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChangethr" @size-change="handleSizeChangethr" :page-size="pagesizethr" :page-sizes="[5,10, 20, 50, 100,500,1000]"   :total="totalthr"   style="float:right;">
-					</el-pagination>
-				</el-col>
-
-			</el-collapse-item> -->
+			</el-collapse-item>			
 		</el-collapse>
 	</section>
 </template>

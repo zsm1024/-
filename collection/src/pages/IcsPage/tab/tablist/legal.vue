@@ -1,7 +1,7 @@
 <template>
 <el-collapse v-model="activeNames" accordion>	
     <el-collapse-item name="1" title="诉讼案件信息"  style="position:relative">	
-        <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="subListInfo('legalInfo')" :disabled="NoUsed">提交</el-button>
+        <el-button class="filter-item" style="position:absolute;top:3px;left:140px"  type="primary" size="mini" @click="subListInfo('legalInfo')" :disabled="NoUsed">提交</el-button>
         <!-- @click="subCarInfo('legalInfo')"		 -->
         
         <table ref="legalInfo" :model="legalInfo" >
@@ -109,7 +109,7 @@
         </table>
     </el-collapse-item>
         <el-collapse-item  title="诉讼费用" name="2" style="position:relative">
-            <el-button class="filter-item" style="position:absolute;top:10px;left:100px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsFee" >添加</el-button>
+            <el-button class="filter-item" style="position:absolute;top:3px;left:100px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsFee" >添加</el-button>
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="FeeList"  >
                 <el-table-column label="操作"  align="center" width="100"> 
 					<template slot-scope="scope" >
@@ -171,7 +171,7 @@
 		    </el-dialog>
     </el-collapse-item>
           <el-collapse-item  title="诉讼事件管理" name="3" style="position:relative">
-           <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini" :disabled="NoUsed" @click="addSsEvent" >添加</el-button>
+           <el-button class="filter-item" style="position:absolute;top:3px;left:150px"  type="primary" size="mini" :disabled="NoUsed" @click="addSsEvent" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="EventList"  >
                  <!-- -->
@@ -215,7 +215,7 @@
 		    </el-dialog>
     </el-collapse-item>
           <el-collapse-item  title="评估拍卖管理" name="4" style="position:relative">
-            <el-button class="filter-item" style="position:absolute;top:10px;left:150px"  type="primary" size="mini":disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
+            <el-button class="filter-item" style="position:absolute;top:3px;left:150px"  type="primary" size="mini" :disabled="NoUsed"  @click="addSsInfo" >添加</el-button>
              <!-- @click="addSendCar" -->
             <el-table  border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe :data="InfoList"  >
                  <!-- -->

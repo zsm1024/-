@@ -1,7 +1,6 @@
 <template>
 	<section  ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">	
 		<el-collapse v-model="activeNames">	
-			<!-- <el-button>查询征信影像</el-button> -->
 			<el-collapse-item name="10" title="客户基本信息">				
 				<template slot-scope="title" >
                     <el-table :data="items.customerSimpleList" border stripe  :row-class-name="tableRowClassNames"> 
@@ -12,30 +11,33 @@
                 </template>
 			</el-collapse-item>
 			<el-collapse-item name="2" title="客户电话信息" id="asd" style="position:relative"> 
-				<el-button class="filter-item"   type="primary" style=" position:absolute;top:14px;left:125px"   @click="addUserInfos = true">添加</el-button>
-				<el-table :data="items.customerPhones" border stripe :row-class-name="tableRowClassNameCustom" >
-					<el-table-column label="操作"  align="center" width="70"> 
-						<!-- width="95" -->
+				<el-button class="filter-item"   type="primary" style=" position:absolute;top:3px;left:125px"   @click="addUserInfos = true">添加</el-button>
+				<el-table id="CusInfo" :data="items.customerPhones" border :row-class-name="tableRowClassNameCustom" >
+					<el-table-column label="操作"   width="70"> 
 						<template slot-scope="scope">
-							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='phoneEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
 							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteRow(scope.$index, scope.row,items.customerPhones)"> 移除</el-button>
 						</template>
 					</el-table-column>
 					<el-table-column :prop="cols.field"  :label="cols.title" v-for="(cols, index) in cols" :key="index" align="center" :width="cols.width" show-overflow-tooltip >
 						<template slot-scope="scope">
-							<!-- v-if="cols.field!='effectiveness' &&scope.row.infoSource!='CMS' && cols.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit" v-if="scope.row.infoSource!='CMS'&&(cols.field=='relationship'||cols.field=='phone')" size="small" v-model="scope.row[cols.field]" class="inputInner"></el-input>
-							 <span v-show="scope.row.edit" v-if="(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'||(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols.field] }}</span>
-							 <!-- <span v-show="!scope.row.edit" v-if="(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS')||cols.field=='infoSource'" >{{ scope.row[cols.field] }}</span> -->
-							<span style="display:inline-block;padding:0 15px" v-show="!scope.row.edit"  :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}
-								<i v-if="cols.field=='phone'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring(scope.row.phone,scope.row)"></i>
-								<i v-if="cols.field=='name'" class="fa fa-mobile fa-2x" style="color:#20a0ff;margin-left: 5px;cursor: pointer;" @click="ring1(scope.row.phone,scope.row)"></i>								
-								</span>
-								<el-select v-show="scope.row.edit" v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="请选择">
+							<el-select  v-if="cols.field=='roleName'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)">
+								<el-option
+									v-for="item in roleTypes" :key="item.id" :label="item.val" :value="item.val"
+								></el-option>
+							</el-select>
+							<el-select  v-if="cols.field=='relationship'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)">
+								<el-option
+									v-for="item in relations" :key="item.id" :label="item.val" :value="item.val"
+								></el-option>
+							</el-select>								
+							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='roleName'&&cols.field!='effectiveness'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" icon="ios-phone-portrait" @on-click="ring(scope.row.phone,scope.row)" @on-blur="phoneEdit(scope.row)"/>
+							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" icon="ios-phone-portrait" @on-click="ring1(scope.row.phone,scope.row)" @on-blur="phoneEdit(scope.row)"/>
+							<Input v-if="scope.row.infoSource!='CMS'&&cols.field!='effectiveness'&&cols.field=='phoneType'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" @on-blur="phoneEdit(scope.row)" />
+							 <span  v-if="(cols.field!='phoneNum'&&cols.field!='roleName'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols.field!='relationship')||cols.field=='infoSource'||(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource!='CMS'&&cols.field!='relationship'&&cols.field!='roleName')"   :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}</span>
+								<el-select  v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="" @change="SelectChange(scope.row)" >
 								<el-option v-for="(item,index) in PhoneCodeList"  :key="index" :value="item.phoneNotes  +'('+ item.phoneCode + ')'"></el-option>
 							</el-select>
-							<!-- ring(scope.row.phoneNum) -->
-							<el-select v-show="scope.row.edit" v-if="cols.field=='effectiveness'" v-model="scope.row[cols.field]" placeholder="请选择活动区域">
+							<el-select  v-if="cols.field=='effectiveness'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
 							</el-select>
@@ -43,60 +45,46 @@
 					</el-table-column>
 				</el-table>				
 			</el-collapse-item>	
-			 <!--  @click.native.prevent="deleteRow(scope.$index, tableData4)"-->
-			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
-				<el-button class="filter-item" style="  position:absolute;top:14px;left:125px"  type="primary"  @click="addWorkInfos = true">添加</el-button>	
-				<el-table :data="items.customerAddresses" border stripe :row-class-name="tableRowClassNameAddress" >
-					<el-table-column label="操作" align="center"  width="70">
-						<template slot-scope="scope" >
-							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
-							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, scope.row,items.customerAddresses)"> 移除</el-button>
-						</template>
-					</el-table-column>
-					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width" show-overflow-tooltip >
-						<template slot-scope="scope">
-							<!-- v-if="cols1.field!='effectiveness' &&scope.row.infoSource!='CMS'&& cols1.field!='infoSource'" -->
-							<el-input  v-show="scope.row.edit"  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner"></el-input>
-							<span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span>
-							<!-- <span v-show="scope.row.edit" v-if="(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')||cols1.field=='infoSource'" >{{ scope.row[cols1.field] }}</span> -->
-							<span v-show="!scope.row.edit" :class="{changecolor:scope.row['effectiveness']=='N'}">{{ scope.row[cols1.field] }}</span>
-							<el-select v-show="scope.row.edit" v-if="cols1.field=='effectiveness'" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
-								<el-option label="Y" value="Y"></el-option>
-								<el-option label="N" value="N"></el-option>
-							</el-select>
-						</template>
-					</el-table-column>			
-				</el-table>				
+						<el-collapse-item name="6" title="逾期基本信息">
+				<el-form :data="items" inline class="table-expand">
+					<el-form-item label="逾期日期:" >
+						<span>{{items.overdueDate}}</span>
+					</el-form-item>
+					<el-form-item label="本次逾期天数:">
+						<span>{{items.overdueDays}}</span>
+						<!-- <span>{{items.ThisOverdueDay}}</span> -->
+					</el-form-item>
+					<el-form-item label="本期逾期天数:">
+						<span>{{items.overdueDaysperiod}}</span>
+						<!-- <span>{{items.ThisCurrentdDay}}</span> -->
+					</el-form-item>
+					<el-form-item label="月应还款金额:">
+						<span>{{items.monthlyRepayment}}</span>
+					</el-form-item>
+					<el-form-item label="逾期本金总计:" >
+						<span>{{items.sumOverdue}}</span>
+					</el-form-item>
+					<el-form-item label="到期利息总计:">
+						<span>{{items.totalDue}}</span>
+					</el-form-item>
+					<el-form-item label="逾期还款总额:" >
+						<span>{{items.totalPayment}}</span>
+					</el-form-item>
+					<el-form-item label="逾期利息:" >
+						<span>{{items.overdueInterest}}</span>
+					</el-form-item>
+					<el-form-item label="逾期费用:" >
+						<span>{{items.overdueMoney}}</span>
+					</el-form-item>
+					<el-form-item label="逾期应收总计:">
+						<span>{{items.overdueTotal}}</span>
+					</el-form-item>
+					<el-form-item label="ET结算金额:">
+						<span>{{ET}}</span>
+					</el-form-item>
+				</el-form>				
 			</el-collapse-item>	
-			<el-collapse-item name="11" title="经销商基本信息">
-				<table style="border-collapse:collapse" id="jxs">
-					<tr id="titleTr">
-						<td>{{JRZY}}</td>
-						<td style="background:#eef1f6">{{JXSNAME}}</td>
-						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
-						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6" >{{address.name}} </td>
-						<td>放款行</td>					
-					</tr>
-					<tr>
-						<td>{{dealerName}}</td>
-						<td>{{jxsName}}</td>
-						<td v-for="phone in phoneList" :key="phone.index">{{phone.phone}} </td>
-						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>
-						<td>{{bankName}}</td>	
-					</tr>
-				</table>
-				<!-- <label v-for="phone in phoneList" :key="phone.index">
-					<span>电话</span>
-					<span>{{phone}}</span>	
-				</label>		 -->
-				<!-- <template slot-scope="title" >
-                    <el-table :data="items.customerSimpleList" border stripe > 			
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
-						</el-table-column>			
-					</el-table>
-                </template> -->
-			</el-collapse-item>				
-			<el-collapse-item name="5" title="合同基本信息">
+				<el-collapse-item name="5" title="合同基本信息">
 				<el-form :data="items" inline class="table-expand">
 					
 					<el-form-item label="申请号:" >
@@ -141,50 +129,64 @@
 					</el-form-item>
 				</el-form>				
 			</el-collapse-item>	
-			<el-collapse-item name="6" title="逾期基本信息">
-				<el-form :data="items" inline class="table-expand">
-					<el-form-item label="逾期日期:" >
-						<span>{{items.overdueDate}}</span>
-					</el-form-item>
-					<el-form-item label="本次逾期天数:">
-						<span>{{items.overdueDays}}</span>
-						<!-- <span>{{items.ThisOverdueDay}}</span> -->
-					</el-form-item>
-					<el-form-item label="本期逾期天数:">
-						<span>{{items.overdueDaysperiod}}</span>
-						<!-- <span>{{items.ThisCurrentdDay}}</span> -->
-					</el-form-item>
-					<el-form-item label="月应还款金额:">
-						<span>{{items.monthlyRepayment}}</span>
-					</el-form-item>
-					<el-form-item label="逾期本金总计:" >
-						<span>{{items.sumOverdue}}</span>
-					</el-form-item>
-					<el-form-item label="到期利息总计:">
-						<span>{{items.totalDue}}</span>
-					</el-form-item>
-					<el-form-item label="逾期还款总额:" >
-						<span>{{items.totalPayment}}</span>
-					</el-form-item>
-					<el-form-item label="逾期利息:" >
-						<span>{{items.overdueInterest}}</span>
-					</el-form-item>
-					<el-form-item label="逾期费用:" >
-						<span>{{items.overdueMoney}}</span>
-					</el-form-item>
-					<el-form-item label="逾期应收总计:">
-						<span>{{items.overdueTotal}}</span>
-					</el-form-item>
-					<el-form-item label="ET结算金额:">
-						<span>{{ET}}</span>
-					</el-form-item>
-				</el-form>				
-			</el-collapse-item>	
+
 			<el-collapse-item name="8" title="备注" style="position:relative">			
-                     <el-button type="primary" size="mini" v-on:click="remarkopenList" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
+                     <el-button type="primary" size="mini" v-on:click="remarkopenList" style="position:absolute;top:3px;left:70px" >编辑</el-button>					 
 				<p style="word-break:break-all">{{marks}}</p>											
-			</el-collapse-item>							
-		</el-collapse>		
+			</el-collapse-item>
+						<el-collapse-item name="11" title="经销商基本信息">
+				<table style="border-collapse:collapse" id="jxs">
+					<tr id="titleTr">
+						<td>{{JRZY}}</td>
+						<td style="background:#eef1f6">{{JXSNAME}}</td>
+						<td v-for="(phone ,index) in phoneList" :key="index" style="background:#eef1f6">{{phone.name}}{{index+1}}</td>	
+						<td v-for="address in addressList" :key="address.index" style="background:#eef1f6" >{{address.name}} </td>
+						<td>放款行</td>					
+					</tr>
+					<tr>
+						<td>{{dealerName}}</td>
+						<td>{{jxsName}}</td>
+						<td v-for="phone in phoneList" :key="phone.index">{{phone.phone}} </td>
+						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>
+						<td>{{bankName}}</td>	
+					</tr>
+				</table>
+				<!-- <label v-for="phone in phoneList" :key="phone.index">
+					<span>电话</span>
+					<span>{{phone}}</span>	
+				</label>		 -->
+				<!-- <template slot-scope="title" >
+                    <el-table :data="items.customerSimpleList" border stripe > 			
+						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
+						</el-table-column>			
+					</el-table>
+                </template> -->
+			</el-collapse-item>								
+
+			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
+				<el-button class="filter-item" style="  position:absolute;top:3px;left:125px"  type="primary"  @click="addWorkInfos = true">添加</el-button>	
+				<el-table :data="items.customerAddresses" border stripe :row-class-name="tableRowClassNameAddress" >
+					<el-table-column label="操作" align="center"  width="70">
+						<template slot-scope="scope" >
+							<!-- <el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button> -->
+							<el-button type="danger" size="mini" v-if=" scope.row.infoSource!='CMS'"  @click.native.prevent="deleteAdress(scope.$index, scope.row,items.customerAddresses)"> 移除</el-button>
+						</template>
+					</el-table-column>
+					<el-table-column :prop="cols1.field" :label="cols1.title"  v-for="(cols1, index) in cols1" :key="index" align="center" :width="cols1.width" show-overflow-tooltip >
+						<template slot-scope="scope">
+							<!-- &&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='propertyType') -->
+							<!-- <Input  v-if="scope.row.infoSource!='CMS'" size="small" v-model="scope.row[cols1.field]" class="inputInner"/> -->
+							<Input  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner" @on-blur="addressEdit(scope.row)"/>
+							<span  v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span>
+							<el-select  v-if="cols1.field=='effectiveness'" @change="addressEdit(scope.row)" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
+								<el-option label="Y" value="Y"></el-option>
+								<el-option label="N" value="N"></el-option>
+							</el-select>
+						</template>
+					</el-table-column>			
+				</el-table>				
+			</el-collapse-item>			
+		</el-collapse>	
 		<el-dialog title="备注" :visible.sync="remarkopen" :show-close='false' id="remarkopen">
 			<el-form :model="remarkform" ref='remarkform'>
 				<el-form-item label="备注内容" :label-width="formLabelWidth">
@@ -201,28 +203,33 @@
 		<el-dialog title="新增客户电话信息" :visible.sync="addUserInfos"  id="addUserInfos" :show-close='false'>
 			<el-form :model="AdduserForm" ref="AdduserForm" :rules="phonerules" :data='items.customerPhones'>
 				<el-form-item label="角色：" prop="roleName" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.roleName" style="width:300px"></el-input>
+					<el-select v-model="AdduserForm.roleName" placeholder="角色" style="width:300px"> 
+						<el-option
+							v-for="item in roleTypes" :key="item.id" :label="item.val" :value="item.val"
+						></el-option>
+					</el-select>
 				</el-form-item>
 				<el-form-item label="姓名：" prop="name" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.name" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="关系：" prop="relationship" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.relationship" style="width:300px"></el-input>
+					<el-select v-model="AdduserForm.relationship" placeholder="关系" style="width:300px"> 
+						<el-option
+							v-for="item in relations" :key="item.id" :label="item.val" :value="item.val"
+						></el-option>
+					</el-select>
 				</el-form-item>
 				<el-form-item label="电话：" prop="phone" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.phone" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="电话类型：" prop="phoneType" :label-width="formLabelWidth">
-					<!-- <el-select v-model="AdduserForm.phoneType" style="width:300px">
-							<el-option v-for="(item,index) in items.customerPhones"  :key="index" :value="item.phoneType"></el-option>
-					</el-select> -->
+
 					<el-input v-model="AdduserForm.phoneType" style="width:300px"></el-input>
 				</el-form-item>
 				<el-form-item label="电话码：" prop="phoneNum" :label-width="formLabelWidth">
 					<el-select v-model="AdduserForm.phoneNum" style="width:300px">
 							<el-option v-for="(item,index) in PhoneCodeList"  :key="index" :value="item.phoneCode +'('+ item.phoneNotes + ')'"></el-option>
 					</el-select>
-					<!-- <el-input v-model="AdduserForm.phoneNum" style="width:300px"> </el-input> -->
 				</el-form-item>
 				<el-form-item label="信息来源：" :label-width="formLabelWidth">
 					<el-input disabled  v-model="AdduserForm.infoSource" style="width:300px"></el-input>
@@ -287,11 +294,12 @@ import { tab_view,addInfo,addAddress,delPhoneInfo,updatePhoneInfo,updateAddress,
 import { isCodeNum, isPhoneNum,isChinaName } from "@/utils/validate";
 import formMessage from '../tablist/form_message';
 import {clickCallOut,initParam} from '../../../../../ngcc/softPhone';
-import {PhoneCodeListAll} from "@/api/basedata";
+import {PhoneCodeListAll, findByType } from "@/api/basedata";
 export default {
   data() {	 
     	return {
-			as:"",
+			roleTypes:[],
+			relations:[],
 			floatForm:{
 				 background:"#fff",
 				 zIndex:"10"
@@ -699,15 +707,11 @@ export default {
 		},	
 		phoneEdit(row){
 			let para = row
-			
-			if(row.edit=!row.edit){
-			
-			}else{
 				updatePhoneInfo(para).then(res =>{
 						if(res.data.success){
 							this.$message({
 								type: 'success',
-								message: '编辑成功'
+								message: '电话信息编辑成功'
 							})
 						}else{
 							this.$message({
@@ -716,23 +720,15 @@ export default {
 							})
 						}
 				});
-				
-				
-			}
-			//row.edit=!row.edit;
 		
 		},
-		
 		addressEdit(row){
 			let para = row
-			if(row.edit=!row.edit){
-			
-			}else{
 				updateAddress(para).then(res =>{
 						if(res.data.success){
 							this.$message({
 								type: 'success',
-								message: '编辑成功！'
+								message: '地址信息编辑成功！'
 							})
 						}else{
 							this.$message({
@@ -741,9 +737,6 @@ export default {
 							})
 						}
 				});
-				
-				
-			}
 		},
 		//短信方法
 		confirmmessage() {
@@ -832,57 +825,41 @@ export default {
 		let rows=row.addressType.split(":").pop(":").trim();
 		row.addressType=rows.split(" ").shift(" ").trim();
 	},
-	// ss(){
-	//   var ws= new WebSocket('ws://127.0.0.1:21380')
-	//   let Preview={
-	// 	"appcation_no":"GW-23092329",
-	// 	"application_date":"2018-01-09 10:20:33",
-	// 	"capoperator":"0003871", 
-	// 	"queryreason":"01",
-	// 	"infos":[
-	// 		{"applicant_name":"张三",
-	// 		"card_type":"0",
-	// 		"card_no":"130638198301020031",
-	// 		"applicant_type":"1",
-	// 		"sex":"M",
-	// 		"birth":"1988-02-19"}
-	// 		]
-	//   }
-	//   let data='Preview:'+JSON.stringify(Preview)
-	//   console.log(data)
-	//   ws.onopen= function(){
-	// 	  ws.send(data)
-	//   }
-	//   ws.onmessage= el => {
-	// 	  this.as=el.data
-	// 	  console.log(this.as)
-	//   }
-	//     Weburl.onmessage = el => {
-    //     	console.log(el.data)
-    //   }
-	//}
+	  findType() {
+      let para = {
+        type: "role_type"
+      };
+      findByType(para).then(res => {
+        let data = res.data.result;
+		this.roleTypes = data
+      });
+	  let paras = {
+		  type:"relation"
+	  }
+	  findByType(paras).then(res => {
+        let data = res.data.result;
+		this.relations = data
+      });
+    }
   },
   components:{
 	  formMessage
   },
-  watch:{
-	  as:function(val){
-		  this.as=val
-		  console.log(val)
-		  }
-  },
   mounted() {
-	//   this.ss()
+	  this.findType()
 	this.getlist();
 	this.getJxsInfo()
 	this.getPhoneCode();
 	this.getmessage_note();
     let h = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-270;
    	this.$refs.abc.style.height= h+"px";
-	 
   }
 };
 </script>
+<style scoped>
+		#CusInfo .el-input{min-height:0;height:25px!important}
+</style>
+
 <style>
 	h4{background: #eef1f6;padding: 10px;border: 1px solid #dfe6ec;font-weight: bold;}
 	table{width: 100%;text-align: center;}
@@ -903,7 +880,6 @@ export default {
 	.el-form-item__content{line-height: 24px!important}
   	.table-expand label { width:90px!important;text-align:el-pagination__rightwrapper;}
   	.table-expand .el-form-item {margin: 0 0 0 2px!important; min-width:220px!important;color: #269aff!important;}
-  	/* .el-table .cell{padding: 0!important;white-space:nowrap!important}; */
 	.floatForm{position: fixed;bottom: 0;right:0}
 	::-webkit-scrollbar{width:2px;height:12px }
 	::-webkit-scrollbar-track{background-color:#fff;border-radius: 8px}
@@ -912,7 +888,6 @@ export default {
 	.el-button{padding: 2px!important;font-size: 13px!important}
 	.el-table th{height: 0px!important}
 	#bottomFrom{position: fixed;bottom: 30px}
-	/* #jxs td{display:inline-block;min-width: 120px} */
 	#titleTr td{background:#eef1f6}
 	.el-table::after,.el-table::before{background-color: transparent!important}
 	#addWorkInfos .el-form-item,#addUserInfos .el-form-item{margin-bottom: 22px} 
@@ -920,4 +895,7 @@ export default {
 	#addWorkInfos button,#addUserInfos button{padding:8px }
 	.inputInner .el-input__inner{margin-left: 0px!important}
 	.tips{font-size: 12px;color: red}
+	.ivu-input{text-align:center;font-size:14px;color:#1f2d3d}
+	.ivu-input-icon{font-size:24px!important;color:#20a0ff;cursor: pointer;}
+	#CusInfo .el-input{min-height:0!important;height:25px!important}
 </style>

@@ -150,16 +150,6 @@ export default {
 
     },  
     getTaskUser(){
-        //  getTaskHostUser().then((res) => {
-        //      this.userList=[];
-        //      let data =res.data.result;
-        //      data.forEach(el => {
-        //          this.userList.push({"value":el.nickname,"id":el.id})
-        //      });
-        //      this.restaurants=this.userList;
-        //     //  this.datas=data.data;
-        //     // this.total=data.recordsTotal;
-        // })
     },
      handleSelectionChange(val){        
             this.multipleSelection=val;
@@ -170,17 +160,8 @@ export default {
         this.multipleSelection.forEach(f =>{
                this.addlists.push(f.id);           
             });            
-            // for(let i=0;i< this.multipleSelection.length;i++){
-            //     if( this.multipleSelection[i].lockFlag!=null){
-            //         b.push(this.multipleSelection[i].lockFlag)                  
-            //     }
-            // }
-            // console.log(b)
-            //   if(b.length==0){
                       let para={
-            // userId:this.itemsId,
                         missionIds:this.addlists,
-                        // status:"2",
                         delayTime: this.times
                     }
                     if(this.escrowTime==""|| this.addlists.length==0){          
@@ -202,13 +183,6 @@ export default {
                             this.addlists=[];
                         }) 
                     }
-            //    }else{
-            //        this.$alert('请选未申请的案件！','提示',{
-            //                     confirmButtonText:'确定',
-            //                     type:'warning',
-            //                     center:'true'
-            //             })
-            //    }   
     },
     handleCurrentChange(val) {
         this.pages = val;
@@ -232,9 +206,12 @@ export default {
             username:this.filters.processer,																
         };
         delayList(para).then((res) => {
-            console.log(res)
             let data =res.data.result;
             this.datas=data.data;
+            this.datas.forEach(element => {
+				element.overdueDays=parseInt(element.overdueDays)
+							
+			});	
             this.total=data.recordsTotal;
             this.listLoading = false;
         })

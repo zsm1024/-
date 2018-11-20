@@ -44,7 +44,7 @@
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-       <el-table-column sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :key="index" align="center" >
+       <el-table-column sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
 		</el-table-column>     
    </el-table>
    <!--工具条-->
@@ -63,14 +63,6 @@
                 <el-button type="primary" style="padding:10px 15px" @click="cancel()">确 定</el-button> 
             </el-form-item>
          </el-form>
-    <!-- <el-table :data="addList" border height="400" @selection-change="handleSelectionChange" ref="multipleTable">
-      <el-table-column  type="selection" aline="center" ></el-table-column>
-       <el-table-column v-for="(item,index) in cols1" :key="index" :prop="item.field" :label="item.title" aline="center" ></el-table-column>
-    </el-table>
-  <div slot="footer" class="dialog-footer">
-    <el-button style="padding:10px 15px"  >取 消</el-button>
-   <el-button type="primary" style="padding:10px 15px" @click="addChange()">确 定</el-button> 
-  </div> -->
 </el-dialog>  
 </section>
 </template>
@@ -108,18 +100,18 @@ export default {
         { title: "用户ID", field: "processer", width: "60" },
         { title: "代管人", field: "escrowUser", width: "60" },
         { title: "代管到期日", field: "escrowTime", width: "80" },
-        { title: "姓名", field: "name", width: "60" },
+        { title: "姓名", field: "name" },
         { title: "合同号", field: "applicationNumber", width: "80" },
         { title: "职业", field: "occupation", width: "90" },
-        { title: "逾期天数", field: "overdueDays", width: "75" },
+        { title: "逾期天数", field: "overdueDays"},
         { title: "逾期金额", field: "overdueTotal", width: "80" },
         { title: "贷款产品", field: "loanProducts", width: "150" },
         { title: "贷款车型", field: "car", width: "150" },
         { title: "约会日期", field: "appointmentTime", width: "80" },
-        { title: "省份", field: "province", width: "50" },
-        { title: "城市", field: "city", width: "50" },
-        { title: "最近行动代码", field: "actSign", width: "120" },
-        { title: "最近行动时间", field: "inputTime", width: "120" },
+        { title: "省份", field: "province" },
+        { title: "城市", field: "city" },
+        { title: "最近行动代码", field: "actSign", width: "160" },
+        { title: "最近行动时间", field: "inputTime", width: "160" },
         { title: "贷款金额", field: "loanAmount", width: "90" },
         { title: "未偿本金", field: "residualAmount", width: "90" },
         { title: "派单时间", field: "createTime", width: "120" },

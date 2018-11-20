@@ -30,7 +30,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
+		<el-table :data="lists"  :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
 			<el-table-column type="selection"  align="center">
 			</el-table-column>
 			<el-table-column fixed label="操作"  align="center">
@@ -85,7 +85,7 @@ export default {
             {title:'处理人',field:'realUser'},
             {title:'用户ID',field:'username'},
             {title:'最近行动代码',field:'actSign',width:100},
-            {title:'最近行动时间',field:'inputTime'},
+            {title:'最近行动时间',field:'inputTime',width:160},
             {title:'贷款金额',field:'loanAmount'},
             {title:'未偿本金',field:'residualAmount'},           
             {title:'职业',field:'occupation',width:100},
@@ -155,6 +155,10 @@ export default {
       getMissionListByUser(para).then(res => {         
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
+      this.lists.forEach(element => {
+        element.overdueDays=parseInt(element.overdueDays)
+        
+      });
             this.cols = this.cols;
             this.listLoading = false;
         //NProgress.done();

@@ -51,27 +51,11 @@
 						<td v-for="address in addressList" :key="address.index">{{address.address}} </td>	
 					</tr>
 				</table>
-				<!-- <label v-for="phone in phoneList" :key="phone.index">
-					<span>电话</span>
-					<span>{{phone}}</span>	
-				</label>		 -->
-				<!-- <template slot-scope="title" >
-                    <el-table :data="items.customerSimpleList" border stripe > 			
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
-						</el-table-column>			
-					</el-table>
-                </template> -->
 			</el-collapse-item>	
 			<el-collapse-item name="8" title="备注" style="position:relative">			
                      <el-button type="primary" size="mini" v-on:click="remarkopenList" style="position:absolute;top:13px;left:70px" >编辑</el-button>					 
 				<p style="word-break:break-all">{{marks}}</p>											
 			</el-collapse-item>	
-            <!-- <el-collapse-item name="8" title="备注">							
-				<p> -->
-                     <!-- <el-button type="primary" size="mini" v-show="items.overdueDays>0" style="margin: 0 0 10px 10px;" v-on:click="remarkopen = true" >编辑</el-button> -->
-                    <!-- {{marks}} -->
-                <!-- </p>
-			</el-collapse-item>					 -->
 			<el-collapse-item name="5" title="合同基本信息">
 				<el-form :data="items" inline class="table-expand">
 					

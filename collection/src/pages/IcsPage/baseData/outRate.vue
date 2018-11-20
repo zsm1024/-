@@ -23,7 +23,7 @@
 			</el-col>
 
 			<el-dialog title="新增规则信息" :visible.sync="addUserInfos" >
-			<el-form :model="AdduserForm" ref="AdduserForm">
+			<el-form :model="AdduserForm" ref="AdduserForm" :rules="rules">
 				 <!-- :rules="phonerules" -->
 				<el-form-item label="起始委托逾期天数" prop="entrustOverdueDaysStart" :label-width="formLabelWidth">
 					<el-input v-model="AdduserForm.entrustOverdueDaysStart" style="width:300px"></el-input>
@@ -95,6 +95,11 @@
 					widthdrawMoneyModel:"",
 					widthdrawCarModel:""
 			},
+			rules: {
+				rate: [
+                    { required: true, message: '请输入代理费比例', trigger: 'blur' }
+				],
+            },
             }
         },
         methods:{
@@ -198,8 +203,9 @@
                 widthdrawMoneyModel:this.AdduserForm.widthdrawMoneyModel,
                 widthdrawCarModel:this.AdduserForm.widthdrawCarModel,						
 			};
-            this.$refs[AdduserForm].validate((valid) => {
-                if(valid){
+            // this.$refs[AdduserForm].validate((valid) => {
+                // if(valid){
+			if(this.AdduserForm.rate&&(this.AdduserForm.widthdrawMoneyModel||this.AdduserForm.widthdrawCarModel)){
                   rateinsert(para).then(res =>{
                     if(res.data.success){
                         this.$message({
@@ -231,19 +237,13 @@
                         
                     }   		   		
                     })
-                }else{   		
-                    this.addUserInfos=true;
-                    this.$refs.AdduserForm.validate((valid) => {
-                        if (valid) {				
-                        alert('submit!');
-                        } else {
-                            return false;
-                        }
-                    });
-                } 
-			}); 
-				
-		},
+				 }else{  
+					this.$message({
+                        type: 'error',
+                        message: '请填写费率比例、收车模式或者收款模式'
+                    }) 		
+                 }			
+		 }
         },
         mounted() {
             this.getlists();

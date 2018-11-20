@@ -530,3 +530,32 @@ export function updateAreaState(params){
       data
     })
   }
+  export function ApprovalCount(params) {
+    return fetch({
+      url: '/approval/getApprovalCount',
+      method: 'get',
+      params: params
+    })
+  }
+  export function getSendCaseCount(params) {
+    return fetch({
+      url: '/approval/getSendCaseCount',
+      method: 'get',
+      params: params
+    })
+  }
+  export function getUnReadApplyCount(params) {
+    return fetch({
+      url: '/approval/getUnReadApplyCount',
+      method: 'get',
+      params: params
+    })
+  }
+  export function updateApplyNewsFlag(params) {
+    const data = params;
+    return fetch({
+      url: '/approval/updateApplyNewsFlag',
+      method: 'put',
+      data
+    })
+  }

@@ -22,8 +22,6 @@
 			<el-table :data="liststwo" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
 				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in colstwo" :key="index" align="center" :width="col.width" sortable :fixed="col.fixed">
 				</el-table-column>
-				<!-- <el-table-column :prop="cola.field" :label="cola.title" v-for="(cola, index) in colstwo" :key="index" align="center" :width="cola.width" sortable :fixed="cola.fixed">
-				</el-table-column> -->
 			</el-table>
 
 			<!--工具条-->

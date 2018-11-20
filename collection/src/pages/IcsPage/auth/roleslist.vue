@@ -40,7 +40,7 @@
                 :data="treedata" 
                 node-key="id" 
                 show-checkbox
-
+                :check-strictly="true"
                 :expand-on-click-node="false"
                 highlight-current
                 ref="tree"
@@ -49,7 +49,7 @@
                 >
 
         </el-tree>
-                        <!-- check-strictly  -->
+                        <!--   -->
     </el-form-item>
    
    

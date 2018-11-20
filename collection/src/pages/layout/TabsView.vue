@@ -11,8 +11,9 @@
 <script>
 export default {
   computed: {
-    visitedViews() {
-      return this.$store.state.app.visitedViews.slice(-5)
+        visitedViews() {
+
+      return this.$store.state.app.visitedViews
     }
   },
   methods: {
@@ -61,6 +62,9 @@ export default {
     display: inline-block;
     vertical-align: top;
     margin-left: 10px;
+    white-space: nowrap;
+    width: 75%;
+    height:50px;
     .tabs-view {
       margin-left: 10px;
     }

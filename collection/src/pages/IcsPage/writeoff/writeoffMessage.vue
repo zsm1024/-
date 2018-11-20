@@ -18,7 +18,7 @@
 				</div>			
 			</el-collapse-item>
     	<el-collapse-item title="核销后还款" name="2" style="position:relative">
-			  <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="addInfos(details)">提交</el-button>
+			  <el-button class="filter-item" style="position:absolute;top:3px;left:140px"  type="primary" size="mini" @click="addInfos(details)">提交</el-button>
 			  <table  class="ht_table"  ref="writeoff" :model="writeoff">
 				<tr>
 					
@@ -81,7 +81,7 @@
       <el-dialog title="新增还款登记" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false'>
 			<el-form :model="messageforms" ref="messageforms" >
         <el-form-item label="还款金额" :label-width="formLabelWidth" >
-					<el-input v-model="messageforms.repaymentMoney" style="width:300px;margin-left:5px" id="inp"></el-input>
+					<el-input v-model="messageforms.repaymentMoney"  style="width:300px;margin-left:5px" id="inp"></el-input>
 				</el-form-item>
         <el-form-item label="还款人" :label-width="formLabelWidth" >
 					<el-input v-model="messageforms.repaymentPeople"  style="width:300px;margin-left:5px" id="inp"></el-input>
@@ -190,8 +190,9 @@ export default {
     confirmmessage(messageforms){
       if(this.messageforms.reviewer=='zhangsong'){
         this.messageforms.reviewer=1222328
-      }
-      let para={
+      } 
+      if(typeof(Number(this.messageforms.repaymentMoney))==="number"&&(Number(this.messageforms.repaymentMoney)!==Infinity)&&!isNaN(Number(this.messageforms.repaymentMoney))){
+        let para={
         icsId:this.$route.params.id,
         repaymentMoney:this.messageforms.repaymentMoney,
         repaymentPeople:this.messageforms.repaymentPeople,
@@ -215,6 +216,13 @@ export default {
         })
       }      
       })
+      }else{
+        this.$message({
+          type: "warning",
+          message:"请输入正确的文本格式！"
+        })
+      }
+      
     },
     cancle(messageforms){
       this.messageforms={}

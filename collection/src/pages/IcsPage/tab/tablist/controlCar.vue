@@ -31,7 +31,7 @@ export default {
       getOsControlVehicleD(para).then(res=> {
           this.carlist =res.data.result;							
          this.carlist.forEach(el => {
-           el.pickUpDate=el.pickUpDate ? moment(el.pickUpDate).format('YYYY-MM-DD'):""
+           el.pickUpDate=el.pickUpDate?Moment(el.pickUpDate).format('YYYY-MM-DD'):""
          });
       })
     }

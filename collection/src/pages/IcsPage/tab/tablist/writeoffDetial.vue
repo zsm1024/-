@@ -18,7 +18,6 @@
 				</div>			
 			</el-collapse-item>
           <el-collapse-item title="核销后还款" name="2" style="position:relative">
-			  <!-- <el-button class="filter-item" style="position:absolute;top:10px;left:140px"  type="primary" size="mini" @click="addInfos">提交</el-button> -->
 			  <table  class="ht_table"  ref="writeoff" :model="writeoff">
 				<tr>
 					
@@ -35,17 +34,13 @@
 					<td class="tds">合同利率</td><td>{{details.rate}}</td>
 					<td class="tds">核销后是否追偿</td>
 					<td colspan="3">
-						<!-- <select v-model="details.isRecourse"  placeholder="核销后是否追偿" >
-							<option label="是" value="是"></option>
-							<option label="否" value="否"></option>  
-            			</select>  -->
 						<input type="text" readonly v-model="details.isRecourse">
 					</td>
 				</tr>
 				<tr>
 					<td class="tds">催收状态</td><td colspan="5">
             		<span>曾进行过的催收状态</span>
-						<el-checkbox-group v-model="writeoff.b" @change="changes">
+						<el-checkbox-group v-model="writeoff.b" @change="changes" readonly>
 							<el-checkbox v-for="(col,index ) in coList" :label="col.name" readonly :value="col.field" :key="index"></el-checkbox>
 						</el-checkbox-group>
 					</td>
@@ -53,17 +48,10 @@
 				<tr>
 					<td class="tds">核销原因</td>
 					<td colspan="5">
-						<el-input  v-model="writeoff.c" readonly type="textarea"></el-input>
+						<el-input   readonly v-model="writeoff.c"  type="textarea"></el-input>
 					</td>
 				</tr>
 			  </table>
-				<!-- <div>
-					<el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>					
-					<el-table-column :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" align="center" >
-					</el-table-column>
-
-					</el-table>
-				</div> -->
 			</el-collapse-item>
       </el-collapse>
   </section>

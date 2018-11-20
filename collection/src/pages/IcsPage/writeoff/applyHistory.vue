@@ -21,13 +21,6 @@
 
 		<!--列表-->
 		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
-			<!-- <el-table-column type="selection"  align="center">
-			</el-table-column> -->
-			<el-table-column fixed label="操作"  align="center" width="90">
-				<template slot-scope="scope">
-					<router-link class="a-href" :to="{path:'/IcsPage/writeoff/HistoryList/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
-				</template>
-			</el-table-column>
 			
 			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" show-overflow-tooltip  v-for="(col, index) in cols" :key="index" >
 			</el-table-column>
@@ -58,6 +51,7 @@ export default {
         id:this.$route.params.id,
         lists: [],
         cols: [
+            {title:'审批状态',field:'isPass'},
             {title:'合同号',field:'applicationNumber'},
             {title:'客户姓名',field:'repaymentPeople'}, 
             {title:'还款金额',field:'repaymentMoney'},
@@ -116,6 +110,13 @@ export default {
       listReviewerHis(para).then(res => {                
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
+       this.lists.forEach(element => {
+         if(element.isPass==1){
+           element.isPass="通过"
+         }else{
+           element.isPass="关闭"
+         }
+       });
             // this.cols = this.lists;
             this.listLoading = false;
         //NProgress.done();
