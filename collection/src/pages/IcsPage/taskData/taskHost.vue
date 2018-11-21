@@ -227,7 +227,9 @@ export default {
         });
       } else {
         addhostList(para).then(res => {
-          this.listShow();
+          this.listShow()
+          this.state=""
+          this.escrowTime=""
         });
       }
     },
@@ -281,7 +283,8 @@ export default {
       this.getTaskUser1();
     },
     toggleSelection() {
-      this.cancelhost = false;
+      this.cancelhost = false
+      this.state1=""
     },
     cancel() {
       let para = {
@@ -290,6 +293,7 @@ export default {
       cancelEscrow(para).then(res => {
         this.cancelhost = false;
         this.userLists.splice(0, this.userLists.length);
+        this.state1=""
         this.getlists();
       });
     }

@@ -6,21 +6,21 @@
 			<navbar></navbar>
 			<app-main style="height:95%"></app-main>
 		</div>
-		<el-dialog :visible.sync="dialogVisible" title="������ʾ" class="BomTips" :modal="false" @close="closed" :close-on-click-modal="false">
+		<el-dialog :visible.sync="dialogVisible" title="提示" class="BomTips" :modal="false" @close="closed" :close-on-click-modal="false">
 			<p @click="approvalCountClick">
 				<router-link class="a-href" :to="{path:'/IcsPage/spdata/splist/103'}">您有{{approvalCount}}案件待审批，请及时处理</router-link>
 			</p>			 
 		</el-dialog>
-		<el-dialog :visible.sync="sendDialog" class="BomTips" :modal="false" :close-on-click-modal="false" title="�ɰ�������ʾ" @close="closed" >
+		<el-dialog :visible.sync="sendDialog" class="BomTips" :modal="false" :close-on-click-modal="false" title="派案审批提醒" @close="closed" >
 			<p @click="sendDialogClick">
 			 	<router-link class="a-href" :to="{path:'/IcsPage/outerdata/splist/127'}">您有{{applySend}}派案案件待审批，请及时处理</router-link>
 			 </p>
 		</el-dialog>
-		<el-dialog :visible.sync="unRead" class="BomTips" :modal="false" :close-on-click-modal="false"  @close="closed">				
+		<el-dialog :visible.sync="unRead" class="BomTips" :modal="false" :close-on-click-modal="false" title="提示" @close="closed">				
 			<p>您有{{unReadApply}}案件已审批通过或关闭</p>
 		</el-dialog>
 	</div>
-	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="./if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px;bottom:0"></iframe>
+	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="/if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px;bottom:0"></iframe>
 	</section>
 </template>
 
@@ -112,26 +112,14 @@ export default {
            SingleStepConfCallEx()
 	   },
 
-	   getApprovalCount(){
-			ApprovalCount().then(res=>{
+	   getApprovalCount(){		  		   
+			ApprovalCount().then(res =>{
 				if(res.data.result>0){
 					this.dialogVisible=true
 					this.approvalCount=res.data.result;
 					setTimeout(()=>{						
 						 this.closed()
 						 this.dialogVisible=false;
-					},3000)				
-				}
-			})
-	   },
-	   getgetSendCaseCount(){
-			getSendCaseCount().then(res =>{
-				if(res.data.result>0){
-					this.sendDialog=true
-					this.applySend=res.data.result
-					setTimeout(()=>{						
-						 this.closed()
-						 this.sendDialog=false;
 					},6000)				
 				}
 			})
@@ -176,8 +164,7 @@ export default {
 			   		}
 		   })
 	   },
-	    s(){
-        
+	    InterVels(){       
         setInterval(() => {
 			this.getApprovalCount()
 			this.getgetSendCaseCount()
@@ -195,7 +182,10 @@ export default {
 	
   },
 	mounted () {
-	this.s()
+	this.getApprovalCount()
+	this.getgetSendCaseCount()
+	this.getUnRead()
+	this.InterVels()	
 	this.changeNmeType()
 	//  let w = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)-210;
   //   this.$refs.right.style.width= w+"px";
@@ -234,18 +224,14 @@ export default {
 		.main-container {
 			min-height: 100%;
 			transition: margin-left 0.28s ease-out;
-			margin-left: 200px;
+			margin-left: 205px;
 		}
 	}
 	//  section{padding: 0 5px}
 	.phoneList{height:25px;background: #f0f0f0;text-align: center;z-index: 9999;position: fixed;width: 100%;bottom:3px;}
-//  .el-tabs__content{padding:0 5px!important}
-.BomTips{top: unset;left: unset;}
-
 </style>
 <style>
-.BomTips .el-dialog--small{width: 300px!important;min-height:100px;max-height:200px;background-image: linear-gradient(to top, #ace0f9 0%, #fff1eb 100%)}
-.BomTips .el-dialog__body,.BomTips .el-dialog__header {padding: 8px}
+
 /* background-color: rgba(87, 134, 234, 0.18) */
 </style>
 

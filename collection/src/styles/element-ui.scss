@@ -95,8 +95,12 @@
 }
 .controlinfos .el-form-item__label{padding: 11px 12px 0 0 }
 .el-date-editor .el-input__inner{height:25px!important}
-.el-collapse-item__header{height:25px;line-height:25px;font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
+.el-collapse-item__header{height:25px!important;line-height:25px!important;font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
 .legals .el-input__inner{height:28px!important}
 .legals .el-button{padding:7px 9px!important} 
 .sections .el-table .cell{white-space: normal!important}
 #CusInfo .el-input{min-height:0!important;height: 25px!important}
+.BomTips{top: unset!important;left: unset!important}
+.BomTips .el-dialog{position: unset;transform:unset;margin-bottom: 0}
+.BomTips .el-dialog--small{width: 300px!important;height: 110px!important;background-image: linear-gradient(to top, #ace0f9 0%, #fff1eb 100%)!important}
+.BomTips .el-dialog__body,.BomTips .el-dialog__header {padding: 8px!important}

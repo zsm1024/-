@@ -180,6 +180,7 @@ export default {
       } else {
         addAllotList(para).then(res => {
           this.listShow();
+          this.state=""
         });
       }
     },

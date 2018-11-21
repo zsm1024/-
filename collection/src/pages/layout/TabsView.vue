@@ -64,6 +64,7 @@ export default {
     margin-left: 10px;
     white-space: nowrap;
     width: 75%;
+    overflow-x: auto;
     height:50px;
     .tabs-view {
       margin-left: 10px;

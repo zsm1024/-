@@ -363,8 +363,8 @@ export default {
     approve() {
       this.lists.leaveTime = this.leaveTimeChange;
       this.lists.isReal = "T";
-
-      this.lists.coVoList = this.coVoList;
+      if(this.lists.station=="协办"){
+        this.lists.coVoList = this.coVoList;
       if (this.lists.coVoList.length > 0) {
         this.lists.coVoList.forEach(el => {
           el.coTime = el.coTime
@@ -372,6 +372,8 @@ export default {
             : "";
         });
       }
+      }
+      
       this.lists.remarks = this.inputs;
       delete this.lists.applyListDtos;
       this.lists.goalQueue = this.mainform.queueName;
