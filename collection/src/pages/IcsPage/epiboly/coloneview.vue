@@ -195,10 +195,10 @@
 					let data=res.data.result;					
 					this.datas=data.data;	
 					this.datas.forEach(element => {
-
-						element.entrustOverDueDays=parseInt(element.entrustOverDueDays)
-				
-							
+						if(element.entrustOverDueDays&&element.entrustOverDueDays!=null){
+							element.entrustOverDueDays=Number(element.entrustOverDueDays)	
+						}
+																
 					});					 
 					 this.total=data.recordsTotal;
 					  this.listLoading = false;

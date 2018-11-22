@@ -91,17 +91,17 @@
          </el-form-item>
        
         	<el-form-item label="复核人 " :label-width="formLabelWidth">
-					<el-select v-model="messageforms.reviewer" placeholder="请选择" @change="getreviewer"  style="width:300px;" id="selectMes">
-						<el-option v-for="(item,index) in messagetypes" :key="index" :label="item.username" :value="item.id" ></el-option>
+					<el-select v-model="messageforms.reviewer" ref="fhr"  placeholder="请选择" @change="getreviewer"  style="width:300px;" id="selectMes">
+						<el-option v-for="(item,index) in messagetypes" :key="index"  :label="item.username" :value="item.id" ></el-option>
 					</el-select>
 				</el-form-item>	
-        <el-form-item label="备注 " :label-width="formLabelWidth">
+        <el-form-item label="备注 "  :label-width="formLabelWidth">
 						<el-input type="textarea" autosize v-model="messageforms.remarks" style="width:300px;margin-left:5px"></el-input>
 				</el-form-item>    
       	</el-form>
          <div slot="footer" class="dialog-footer">
 				<el-button style="padding:10px" @click="cancle('messageforms')" type="primary">取 消</el-button>
-				<el-button type="primary" @click.native.prevent="confirmmessage('messageforms')" style="padding:10px">确 定</el-button>
+				<el-button type="primary" @click.native.prevent="confirmmessage(messageforms)" style="padding:10px">确 定</el-button>
 			</div>
 		</el-dialog>
         <!--工具条-->
@@ -187,10 +187,7 @@ export default {
         this.messageforms.reviewer=this.messagetypes[0].username
       })
     },
-    confirmmessage(messageforms){
-      if(this.messageforms.reviewer=='zhangsong'){
-        this.messageforms.reviewer=1222328
-      } 
+    confirmmessage(messageforms){     
       if(typeof(Number(this.messageforms.repaymentMoney))==="number"&&(Number(this.messageforms.repaymentMoney)!==Infinity)&&!isNaN(Number(this.messageforms.repaymentMoney))){
         let para={
         icsId:this.$route.params.id,
@@ -200,6 +197,11 @@ export default {
         reviewer:this.messageforms.reviewer,
         remarks:this.messageforms.remarks
       }
+      this.messagetypes.forEach(res =>{
+        if(this.messageforms.reviewer==res.id||this.messageforms.reviewer==res.username){
+         para.reviewer= res.id
+        }
+      });
       woinsert(para).then(res =>{
       if(res.data.success){
       this.messageopen=false; 

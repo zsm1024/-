@@ -169,8 +169,9 @@
 					this.lists = res.data.result.data;
                     this.cols = this.cols;
                     this.lists.forEach(element => {
+                    if(element.overdueDays&&element.overdueDays!=null){
                         element.overdueDays=parseInt(element.overdueDays)                    
-                        
+                    }
                     });
 					this.listLoading = false;
 					//NProgress.done();

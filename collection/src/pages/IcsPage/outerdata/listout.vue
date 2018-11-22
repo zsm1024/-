@@ -241,6 +241,11 @@ export default {
       listOutsource(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
+        	this.datas.forEach(element => {
+						if(element.entrustOverDueDays&&element.entrustOverDueDays!=null){
+							element.entrustOverDueDays=Number(element.entrustOverDueDays)	
+            }
+          })
         this.total = data.recordsTotal;
         this.listLoading = false;
       });

@@ -127,7 +127,9 @@ export default {
             let data =res.data.result;           
             this.datas=data.data;
             this.datas.forEach(element => {
-                element.caseAmount=parseInt(element.caseAmount)               
+                 if(element.caseAmount&&element.caseAmount!=null){
+                element.caseAmount=Number(element.caseAmount)                    
+                }        
             });
             this.total=data.recordsTotal;
             this.listLoading = false;

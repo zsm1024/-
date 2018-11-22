@@ -240,10 +240,10 @@ export default {
       SendListdetail(para).then(res => {
         let data = res.data.result;
         this.datas = data.data;
-        this.datas.forEach(element => {
-						element.overdueDays=parseInt(element.overdueDays)
-
-							
+        this.datas.forEach(element => {						
+        if(element.overdueDays&&element.overdueDays!=null){
+          element.overdueDays=Number(element.overdueDays)                    
+        } 							
 					});	
         this.total = data.recordsTotal;
         this.listLoading = false;

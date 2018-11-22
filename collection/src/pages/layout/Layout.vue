@@ -230,8 +230,5 @@ export default {
 	//  section{padding: 0 5px}
 	.phoneList{height:25px;background: #f0f0f0;text-align: center;z-index: 9999;position: fixed;width: 100%;bottom:3px;}
 </style>
-<style>
 
-/* background-color: rgba(87, 134, 234, 0.18) */
-</style>
 

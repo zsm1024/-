@@ -156,8 +156,9 @@ export default {
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
       this.lists.forEach(element => {
-        element.overdueDays=parseInt(element.overdueDays)
-        
+        if(element.overdueDays&&element.overdueDays!=null){
+          element.overdueDays=Number(element.overdueDays)                    
+        }                
       });
             this.cols = this.cols;
             this.listLoading = false;

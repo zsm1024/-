@@ -34,7 +34,7 @@
 							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" icon="ios-phone-portrait" @on-click="ring1(scope.row.phone,scope.row)" @on-blur="phoneEdit(scope.row)"/>
 							<Input v-if="scope.row.infoSource!='CMS'&&cols.field!='effectiveness'&&cols.field=='phoneType'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" @on-blur="phoneEdit(scope.row)" />
 							 <span  v-if="(cols.field!='phoneNum'&&cols.field!='roleName'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols.field!='relationship')||cols.field=='infoSource'||(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource!='CMS'&&cols.field!='relationship'&&cols.field!='roleName')"   :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}</span>
-								<el-select  v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="" @change="SelectChange(scope.row)" >
+								<el-select  v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)" >
 								<el-option v-for="(item,index) in PhoneCodeList"  :key="index" :value="item.phoneNotes  +'('+ item.phoneCode + ')'"></el-option>
 							</el-select>
 							<el-select  v-if="cols.field=='effectiveness'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)">
