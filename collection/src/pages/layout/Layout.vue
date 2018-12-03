@@ -147,8 +147,7 @@ export default {
 					},6000)				
 				}
 			})
-	   },
-	   
+	   },   
 	   approvalCountClick(item){
 		   this.dialogVisible=false
 	   },
