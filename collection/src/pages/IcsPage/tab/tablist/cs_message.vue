@@ -30,10 +30,15 @@
 									v-for="item in relations" :key="item.id" :label="item.val" :value="item.val"
 								></el-option>
 							</el-select>								
-							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='roleName'&&cols.field!='effectiveness'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" icon="ios-phone-portrait" @on-click="ring(scope.row.phone,scope.row)" @on-blur="phoneEdit(scope.row)"/>
-							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" icon="ios-phone-portrait" @on-click="ring1(scope.row.phone,scope.row)" @on-blur="phoneEdit(scope.row)"/>
+							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='roleName'&&cols.field!='effectiveness'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center"  @on-blur="phoneEdit(scope.row)"/>
+							<i v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"  class="ivu-icon ivu-icon-ios-phone-portrait" @click="ring(scope.row.phone,scope.row)"></i>
+							<!-- @on-click="ring(scope.row.phone,scope.row)" -->
+							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center"  @on-blur="phoneEdit(scope.row)"/>
+							<i v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"  class="ivu-icon ivu-icon-ios-phone-portrait" @click="ring1(scope.row.phone,scope.row)"></i>							
+							 <!-- " icon="ios-phone-portrait"  -->
 							<Input v-if="scope.row.infoSource!='CMS'&&cols.field!='effectiveness'&&cols.field=='phoneType'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" @on-blur="phoneEdit(scope.row)" />
-							 <span  v-if="(cols.field!='phoneNum'&&cols.field!='roleName'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols.field!='relationship')||cols.field=='infoSource'||(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource!='CMS'&&cols.field!='relationship'&&cols.field!='roleName')"   :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}</span>
+							<span v-if="scope.row.infoSource=='ICS'&&cols.field=='infoSource'">{{ scope.row[cols.field] }}</span>
+							<span v-if="(scope.row.infoSource=='CMS'&&cols.field!='roleName'&&cols.field!='relationship'&&cols.field!='phoneNum'&&cols.field!='effectiveness')">{{ scope.row[cols.field] }}</span>
 							 <i v-if="scope.row.infoSource=='CMS'&&cols.field=='name'" class="ivu-icon ivu-icon-ios-phone-portrait" @click="ring1(scope.row.phone,scope.row)"></i>
 							  <i v-if="scope.row.infoSource=='CMS'&&cols.field=='phone'" class="ivu-icon ivu-icon-ios-phone-portrait" @click="ring(scope.row.phone,scope.row)"></i>
 							<el-select  v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)" >
