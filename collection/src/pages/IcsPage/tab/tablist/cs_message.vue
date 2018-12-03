@@ -34,7 +34,9 @@
 							<Input v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" icon="ios-phone-portrait" @on-click="ring1(scope.row.phone,scope.row)" @on-blur="phoneEdit(scope.row)"/>
 							<Input v-if="scope.row.infoSource!='CMS'&&cols.field!='effectiveness'&&cols.field=='phoneType'&&cols.field!='phoneNum'" size="small" v-model="scope.row[cols.field]" class="inputInner" style="text-align:center" @on-blur="phoneEdit(scope.row)" />
 							 <span  v-if="(cols.field!='phoneNum'&&cols.field!='roleName'&&cols.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols.field!='relationship')||cols.field=='infoSource'||(cols.field!='phoneNum'&&cols.field!='effectiveness' && scope.row.infoSource!='CMS'&&cols.field!='relationship'&&cols.field!='roleName')"   :class="{changecolor:scope.row['effectiveness']=='N'}" >{{ scope.row[cols.field] }}</span>
-								<el-select  v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)" >
+							 <i v-if="scope.row.infoSource=='CMS'&&cols.field=='name'" class="ivu-icon ivu-icon-ios-phone-portrait" @click="ring1(scope.row.phone,scope.row)"></i>
+							  <i v-if="scope.row.infoSource=='CMS'&&cols.field=='phone'" class="ivu-icon ivu-icon-ios-phone-portrait" @click="ring(scope.row.phone,scope.row)"></i>
+							<el-select  v-if="cols.field=='phoneNum'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)" >
 								<el-option v-for="(item,index) in PhoneCodeList"  :key="index" :value="item.phoneNotes  +'('+ item.phoneCode + ')'"></el-option>
 							</el-select>
 							<el-select  v-if="cols.field=='effectiveness'" v-model="scope.row[cols.field]" placeholder="" @change="phoneEdit(scope.row)">
@@ -281,7 +283,7 @@
         <el-button @click="addWorkInfo" >取 消</el-button>
         <el-button  type="primary" @click.native.prevent="address('AddWorkForm')" >确 定</el-button>
       </div>			
-		</el-dialog>
+	</el-dialog>
 		<div id="bottomFrom">
 			<form-message ref="CJlist"></form-message>
 		</div>
@@ -868,7 +870,8 @@ export default {
 	.useraddress{width: 150px;}
 	.el-collapse-item__header{font-size:13px!important;font-weight: bold!important;background:#dfe6ec!important;border: 1px solid #f0f0f0;}
 	.abc{height: 500px!important; }
-	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2,.el-col .el-icon-time{cursor: pointer; color: #20a0ff;margin-left: 5px;}
+	.el-col .el-icon-edit,.el-col .el-icon-message,.el-col .el-icon-upload2,.el-col .el-icon-time,
+	.el-col .el-icon-picture{cursor: pointer; color: #20a0ff;margin-left: 5px;}
 	.el-col .el-icon-upload2:hover{color: #4db3ff;}
 	.el-col .el-icon-edit:hover{color: #4db3ff;}
 	.el-col .el-icon-message:hover{color:#4db3ff}
@@ -898,4 +901,5 @@ export default {
 	.ivu-input{text-align:center;font-size:14px;color:#1f2d3d}
 	.ivu-input-icon{font-size:24px!important;color:#20a0ff;cursor: pointer;}
 	#CusInfo .el-input{min-height:0!important;height:25px!important}
+	.ivu-icon-ios-phone-portrait{font-size: 24px!important;color: #20a0ff;cursor: pointer;width: 24px;font-size: 14px;height: 24px;line-height: 24px;}
 </style>

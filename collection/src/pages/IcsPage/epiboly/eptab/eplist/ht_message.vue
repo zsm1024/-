@@ -58,6 +58,17 @@
 				</div>
 				
 			</el-collapse-item>
+			<el-collapse-item title="核定授权" name="2">
+				<div>
+					<el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>					
+					<el-table-column prop="paymentDate" label="付款日期"  align="center" >
+					</el-table-column>
+					<el-table-column prop="remarks" label="备注"  align="center" >
+					</el-table-column>
+
+					</el-table>
+				</div>
+			</el-collapse-item>
 		</el-collapse>
 	</section>
 </template>
@@ -71,16 +82,8 @@ import { getdeal } from "@/api/tablist";
     data() {
 		return {
 			activeNames: ['1','2'],
-			details: [],
-			lists: [],
-			cols: [
-			{title:'更新日期',field:'updateDate'},
-            {title:'还款人',field:'repayments'},
-            {title:'银行账号',field:'bankAccount'},
-    		{title:'银行名称',field:'bankName'},
-            {title:'支行名称',field:'bankBranch'},
-
-			],
+			details:[],
+			lists:[],
 			id:this.$store.state.navTabs.tabId,
 			listLoading: false,
 		};
@@ -94,10 +97,10 @@ import { getdeal } from "@/api/tablist";
 					this.listLoading = true;
 					//NProgress.start();
 					getdeal(para).then(res => {
-						let data=res.data.result;				
-						  this.lists =data.contractBanks;						
+						let data=res.data.result;									
 						// this.cols = res.data.cols;
 						 this.details = data;
+						 this.lists.push(data)
 						this.listLoading = false;
 						//NProgress.done();
 					});
@@ -112,30 +115,6 @@ import { getdeal } from "@/api/tablist";
 </script>
 
 <style>
-	/* .el-row {
-		border:1px solid #dfe6ec;
-	}
-	.bg-white{
-		text-align: left;
-		padding: 0;
-	}
-	.bg-purple {
-
-		background: #d3dce6;
-		text-align: center;
-	
-	}
-
-	.grid-content {
-		font-size: 10px;
-    	border-radius: 1px;
-   		min-height: 28px;
-		line-height: 28px;
-  	}
-	.el-col-4{
-		padding: 0;
-	} */
-	 /* #ht_table{border-collapse: collapse;border:none} */
 	.ht_table td{color:#269aff;font-size: 13px } 
 	.ht_table .tds{color: #000;} 
 </style>

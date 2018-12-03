@@ -34,9 +34,8 @@
 			</el-table-column>
 			<el-table-column type="index" width="30" fixed="left" align="center">
 			</el-table-column>
-			<el-table-column sortable :prop="cols.field" sortable :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
-			</el-table-column>
-		
+			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width"  v-for="(cols, index) in cols" :key="index" align="center" >
+			</el-table-column>		
 		</el-table>
         
 		<!--工具条-->

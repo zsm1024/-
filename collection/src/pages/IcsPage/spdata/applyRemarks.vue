@@ -169,7 +169,7 @@ import { Approvalfind, Approvalapply, listCoInfo, addCoInfo,deleteCoInfo } from 
 import { positionUser } from "@/api/task";
 import Moment from "moment/moment";
 import { authlist, authlistRight } from "@/api/basedata";
-import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
+import { getAuthUser, getAuthtree, sysPositionslistAll,getUser } from "@/api/auth";
 export default {
   data() {
     return {
@@ -279,7 +279,7 @@ export default {
       this.AddCoForm.CoTimes = val;
     },
     colChange(val) {
-      this.colchange = val.coUserName;
+      //this.colchange = val.coUserName;
       val.coUser = val.coUserName;
     },
     goalChange(val) {
@@ -346,7 +346,7 @@ export default {
         this.mainform.positionId = data.position;
         this.goalForm.positionId = data.position;
         this.leaveTimeChange = data.leaveTime;
-        this.colchange = data.coUser;
+        // this.colchange = data.coUser;
         if (data.isShow != "Y") {
           this.disable = true;
         }
@@ -367,6 +367,15 @@ export default {
         this.lists.coVoList = this.coVoList;
       if (this.lists.coVoList.length > 0) {
         this.lists.coVoList.forEach(el => {
+          this.listsLeft.forEach(item =>{
+            if(el.coQueueName==item.queueName){
+              el.coQueueId=item.id
+            }
+          });
+          let para = el.coUserName
+          getUser(para).then(res =>{
+            el.coUser=res.data.result.id
+          })
           el.coTime = el.coTime
             ? Moment(el.coTime).format("YYYY-MM-DD")
             : "";
@@ -381,8 +390,9 @@ export default {
       this.lists.goalCollector = this.mainform.goalCollector;
       this.lists.turnUser = this.goalForm.goalCollector;
       // this.lists.coTime=this.mainform.coTime?Moment(this.mainform.coTime).format('YYYY-MM-DD'):"";
-      this.lists.coUser = this.colchange;
+      //this.lists.coUser = this.colchange;
       let para = this.lists;
+
       if (this.lists.remarks == " ") {
         this.$alert("请填写备注！", "提示", {
           confirmButtonText: "确定",
@@ -390,21 +400,21 @@ export default {
           center: "true"
         });
       } else {
-        Approvalapply(para).then(res => {
-          if (res.data.success == true) {
-            this.$message({
-              type: "success",
-              message: "提交完成！"
-            });
-            this.getLists();
-          } else {
-            this.$alert(" 提交失败！", "提示", {
-              confirmButtonText: "确定",
-              type: "warning",
-              center: "true"
-            });
-          }
-        });
+            Approvalapply(para).then(res => {
+              if (res.data.success == true) {
+                this.$message({
+                  type: "success",
+                  message: "提交完成！"
+                });
+               this.getLists();
+              } else {
+                this.$alert(" 提交失败！", "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                  center: "true"
+                });
+              }
+            });              
       }
     },
     approveturn() {
@@ -492,6 +502,17 @@ export default {
       listCoInfo(para).then(el => {
         let data = el.data.result.coVoList;
         this.coVoList = data;
+         this.coVoList.forEach(el => {
+          this.listsLeft.forEach(item =>{
+            if(el.coQueueName==item.queueName){
+              el.coQueueId=item.id
+            }
+          });
+          let para = el.coUserName
+          getUser(para).then(res =>{
+            el.coUser=res.data.result.id
+          })
+        });
         this.icsId = el.data.result.icsId;
         this.applyId = el.data.result.applyId;
       });

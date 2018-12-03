@@ -8,8 +8,8 @@
 			<el-input v-model="filters.applicationNumber" placeholder="合同号"  clearable style="width:120px"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-input v-model="filters.startDueDays" placeholder="逾期天数"  clearable style="width:80px"></el-input>至
-            <el-input v-model="filters.endDueDays" placeholder="逾期天数"  clearable style="width:80px"></el-input>
+			<el-input v-model="filters.startDueDays" placeholder="委托逾期天数"  clearable style="width:120px"></el-input>至
+            <el-input v-model="filters.endDueDays" placeholder="委托逾期天数"  clearable style="width:120px"></el-input>
 		</el-form-item>
           <el-form-item>
             <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:120px"></el-input>           

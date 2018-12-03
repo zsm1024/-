@@ -4,9 +4,13 @@
 		<el-col :span="24" id="el-icons">	
 			<i class="el-icon-message" @click="messageOpen">短信</i>
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
-			<i class="el-icon-edit" @click="checkPreview">征信查询</i>	
+			<i class="el-icon-edit" @click="checkPreview">征信查询</i>
+       <i class="el-icon-picture" @click="ImgPreview">影像件预览</i>
 		</el-col>
 	</el-row>
+  <div class="images" v-viewer="options">
+        <img v-for="item in imgUrlList " :key="item.code" :src="item.url" alt="图片">
+  </div>
 	<div id="tables">    
 		<el-form ref="mainform" :rules="rules" :model="mainform" label-width="65px"   id="FixForm" inline >		
  		<el-col id="lists">
@@ -225,6 +229,7 @@ import {
   role,
   delet
 } from "@/api/tablist";
+import { getACSDataMirror } from "@/api/basedata";
 import { getCustomerCredit } from "@/api/auth";
 import Cookies from "js-cookie";
 import { RecordsFind, RecordsFindlist } from "@/api/visit";
@@ -241,6 +246,7 @@ export default {
   props: ["callback"],
   data() {
     return {
+      imgUrlList: [],
       websock: null,
       backMsg: "",
       datas: "",
@@ -270,12 +276,7 @@ export default {
       userList2: [],
       UserArr: [],
       TypeArr: [],
-      fileListType: [
-        // {title:'外访记录照片',field:'type',width:"70"},
-        // {title:'客户面催照片',field:'createUser',width:"70"},
-        // {title:'外访信函', field: 'createTime', wdth: "50" },
-        // {title:'其他',field:'name',width:"60"},
-      ],
+      fileListType: [],
       addressType: [],
       datas: [],
       templateId: "",
@@ -320,10 +321,6 @@ export default {
         allowance: "",
         allDate: "",
         linkman: "",
-        // {
-        // 	type:"",
-        // 	data:this.callback.roleName,
-        // },
         linkInfomation: "",
         appointmentTime: "",
         afpRecord: ""
@@ -338,20 +335,10 @@ export default {
       getMesPhone: [],
       visitListsRecords: [],
       //备注弹出层
-      // remarkform: {
-      // 	remarks:'',
-      // },
       rules: {
         actSign: [
           { required: true, message: "请输入行动代码", trigger: "blur" }
         ],
-
-        // allowance:[
-        //     {required: true, message: '请输入承诺金额', trigger: 'blur',}
-        // ],
-        // allDate:[
-        //     { required: true,  message: '请选择承诺日期', trigger: 'blur',type:'date'}
-        // ],
         linkman: [{ required: true, message: "请填写联系人", trigger: "blur" }],
         linkInfomation: [
           { required: true, message: "请填写联系方式", trigger: "blur" }
@@ -599,7 +586,7 @@ export default {
         let data = res.data.result;
         this.lists = data;
         this.phoneListNums = data.customerPhones;
-		this.applicationNumber = data.applicationNumber;
+        this.applicationNumber = data.applicationNumber;
         this.UserArr.splice(0, this.UserArr.length);
         this.TypeArr.splice(0, this.TypeArr.length);
         this.phoneListNums.forEach(el => {
@@ -1137,10 +1124,10 @@ export default {
         }
       }
     },
-	//征信查询
+    //征信查询
     threadPoxi() {
       var s = {};
-      s.USERNAME =localStorage.getItem("userName");
+      s.USERNAME = localStorage.getItem("userName");
       s.TOKEN = Cookies.get("Admin-Token");
       s.SYSTYPE = "2";
       const agentData = "CONN " + JSON.stringify(s);
@@ -1178,37 +1165,53 @@ export default {
       console.log(e);
     },
     checkPreview() {
-		let para = {
-        appNum:this.$parent.appNum
-      }
-      getCustomerCredit(para).then(res=>{
-        this.datas=res.data.Preview
-      const datas = "Preview " + JSON.stringify(this.datas);
-      if (this.backMsg.Type == "ConnOK") {
-        let that = this;
-        that.websocketsend(datas);
-        // if(this.backMsg.Type=="SEARCH_FAIL"){
-		// 	this.$message({ 
-		// 	type: "error",        
-        //     message:this.backMsg.Msg,
-            
-        //   });
-        // }
-        // that.threadPoxi()
-      } else {
-      this.threadPoxi();
-		  this.websocketsend(datas);
-		
-	  }
-	})
-    }
+      let para = {
+        appNum: this.$parent.appNum
+      };
+      getCustomerCredit(para).then(res => {
+        this.datas = res.data.Preview;
+        const datas = "Preview " + JSON.stringify(this.datas);
+        if (this.backMsg.Type == "ConnOK") {
+          let that = this;
+          that.websocketsend(datas);
+          // if(this.backMsg.Type=="SEARCH_FAIL"){
+          // 	this.$message({
+          // 	type: "error",
+          //     message:this.backMsg.Msg,
+
+          //   });
+          // }
+          // that.threadPoxi()
+        } else {
+          this.threadPoxi();
+          this.websocketsend(datas);
+        }
+      });
+    },
+    ImgPreview(){
+            const viewer = this.$el.querySelector(".images").$viewer
+            let para = {
+                appNum:this.$parent.appNum
+            }
+            getACSDataMirror(para).then(res =>{
+              if(res.data.success){
+                 this.imgUrlList=res.data
+              }else{
+                this.$message({
+          	      type: "error",
+                  message:res.data.message,
+                });
+              }
+            })
+            viewer.show();
+        }
   },
   created() {
     this.initWebSocket();
   },
   beforeMount() {},
-  mounted() { 
-	this.threadPoxi();
+  mounted() {
+    this.threadPoxi();
     this.callParent();
     this.getlists();
     this.PathList();
@@ -1221,12 +1224,12 @@ export default {
   },
   watch: {
     backMsg(curval) {
-      if (curval.Type == "SEARCH_FAIL") {		  
-			this.$message({
-            showClose: true,
-            message:curval.Msg,
-            type: "error"
-          });
+      if (curval.Type == "SEARCH_FAIL") {
+        this.$message({
+          showClose: true,
+          message: curval.Msg,
+          type: "error"
+        });
       }
     }
   }

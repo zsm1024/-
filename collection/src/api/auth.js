@@ -228,3 +228,9 @@ export function getCustomerCredit(params) {
         params: params
     })
 }
+export function getUser(params) {
+    return fetch({
+        url: '/users/getUser/'+params,
+        method: 'get',
+    })
+}

@@ -559,3 +559,10 @@ export function updateAreaState(params){
       data
     })
   }
+  export function getACSDataMirror(params) {
+    return fetch({
+      url: '/customerBasics/getACSDataMirror',
+      method: 'get',
+      params: params
+    })
+  }

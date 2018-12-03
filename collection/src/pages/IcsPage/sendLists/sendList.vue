@@ -1,7 +1,9 @@
 <template>
 	<section ref="abcd" style="overflow-y: auto;" id="cslists">
 		<el-button type="primary"  @click='openDilog' style="margin-bottom:9px!important;padding:10px 15px!important">分单</el-button>
-		<el-button type="primary"  @click='detain' style="margin-bottom:9px!important;padding:10px 15px!important">同步扣款情况</el-button>	
+		<el-button type="primary"  @click='detain' 
+     style="margin-bottom:9px!important;padding:10px 15px!important">同步扣款情况</el-button>
+	<!-- v-loading.fullscreen.lock="fullscreenLoading"	 -->
 			<span class="T1">新增逾期案件:<b>{{total}}</b></span>
 			<span class="T1">转队列案件:<b>{{totaltwo}}</b></span>
 			<span class="T1">预审出队列案件:<b>{{totalthr}}</b></span>		
@@ -86,6 +88,7 @@ export default {
 				page: 1,
 				id:this.$route.params.id,
 				listLoading:false,
+				fullscreenLoading:false,
 				liststwo: [],
 				colstwo: [
                      {title:'主借人',field:'borrower'},
@@ -222,14 +225,25 @@ export default {
 					});
 			},
 			detain(){
-				updateOverdue().then(res =>{
+				 const loading = this.$loading({
+					lock: true,
+					text: '同步扣款中。。。',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+					});
+				//this.fullscreenLoading = true;
+				updateOverdue().then(res =>{										
 					if(res.data.success){
+						// this.fullscreenLoading = false;
 						this.$message({
 							type: 'success',
 							message: res.data.message
-              		})
+					  })
+					   loading.close();
 					}else{
+						// this.fullscreenLoading = false;
 						this.$message.error(res.data.message)
+						 loading.close();
 					}
 				})
 			}

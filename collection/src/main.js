@@ -5,6 +5,7 @@ import App from './App';
 import router from './router';
 import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
+import 'viewerjs/dist/viewer.css'
 import 'element-ui/lib/theme-default/index.css';
 import store from './store';
 import Mock from './mock';
@@ -13,6 +14,7 @@ import 'font-awesome/css/font-awesome.css'
 import Validator from 'vue-validator'
 import './permission' // 权限
 import iView from 'iview';
+import Viewer from 'v-viewer'
 import 'iview/dist/styles/iview.css';
 if(process.env.NODE_ENV=="development"){
     Mock.bootstrap();
@@ -20,6 +22,7 @@ if(process.env.NODE_ENV=="development"){
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(iView);
+Vue.use(Viewer)
 Vue.use(VueResource);
 Vue.component('v-select', vSelect);
 Vue.use(Validator)

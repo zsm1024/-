@@ -9,7 +9,7 @@
 					<el-input v-model="filters.applicationNumber" placeholder="合同号" style="width:140px"  clearable>></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.overdueDays" placeholder="逾期天数" style="width:140px"  clearable></el-input>
+					<el-input v-model="filters.entrustOverDueDays" placeholder="委托逾期天数" style="width:140px"  clearable></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker v-model="value6" 
@@ -21,22 +21,6 @@
 					>
 					</el-date-picker>
 				</el-form-item>
-				<!-- <el-form-item>
-					<el-input v-model="filters.startTime" placeholder="开始时间"  clearable></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="filters.endTime" placeholder="结束时间"  clearable></el-input>
-				</el-form-item> -->
-				<!-- <el-form-item>
-					<el-input v-model="filters.Cnum" placeholder="电话号码"></el-input>
-				</el-form-item> -->
-                <!-- <el-form-item>
-					<el-select v-model="formInline.region" placeholder="请选择" @change="handleOptionChange">
-                    <el-option label="合同号" value="合同号"></el-option>
-                    <el-option label="派单时间" value="派单时间"></el-option>
-                    <el-option label="当事人"  value="当事人间"></el-option>
-                    </el-select>
-				</el-form-item> -->
 				<el-form-item>
 					<el-button type="primary" @click="getUsers" size="mini" style="padding:10px 15px">查询</el-button>
 				</el-form-item>				
@@ -51,16 +35,6 @@
 				</template>
 				
 			</el-table-column>
-			<!-- <el-table-column label="标记" width="60" fixed="left"  align="center" >
-				<template slot-scope="scope">
-						<span  @click="setCurrent(this.rowsIndes)"></span>
-						<el-button type="danger" size="mini"  @click="sings(scope.$index)"> 标记</el-button>
-						
-					 <! <span @click="sings">标记</span> -->
-				<!-- </template>
-			</el-table-column> --> 
-			<!-- <el-table-column type="index" width="30" fixed="left" align="center"> 
-			</el-table-column> -->
 			<el-table-column sortable :prop="cols.field" :label="cols.title" :width="cols.width" show-overflow-tooltip v-for="(cols, index) in cols" :key="index" align="center" >
 			</el-table-column>
 		 
@@ -96,7 +70,7 @@
 				filters: {					
 					name: '',
 					applicationNumber:"",
-					overdueDays:"",
+					entrustOverDueDays:"",
 					startTime:"",
 					endTime:"",
 					phone:""
@@ -186,7 +160,7 @@
 					queueId:"119",
 					name:this.filters.name,
 					applicationNumber:this.filters.applicationNumber,
-					overdueDays:this.filters.overdueDays,
+					entrustOverDueDays:this.filters.entrustOverDueDays,
 					startTime:this.times1,
 					endTime:this.times2
 				};

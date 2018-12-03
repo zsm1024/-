@@ -28,8 +28,7 @@
         </el-table>
 
         <!--工具条-->
-        <el-col :span="24" class="toolbar">
-            
+        <el-col :span="24" class="toolbar">           
             <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"  style="float:right;">
             </el-pagination>
         </el-col>

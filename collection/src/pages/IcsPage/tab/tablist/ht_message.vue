@@ -67,7 +67,7 @@
 					</el-table>
 				</div>
 			</el-collapse-item>
-			<el-collapse-item title="核定授权" name="2">
+			<el-collapse-item title="核定授权" name="3">
 				<div>
 					<el-table :data="lists" highlight-current-row v-loading="listLoading"  style="width: 100%;" stripe>					
 					<el-table-column prop="paymentDate" label="付款日期"  align="center" >
@@ -90,7 +90,7 @@ import { getdeal } from "@/api/tablist";
  export default {
     data() {
 		return {
-			activeNames: ['1','2'],
+			activeNames: ['1','2',"3"],
 			details: [],
 			lists: [],
 			cols: [

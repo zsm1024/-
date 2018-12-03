@@ -849,7 +849,7 @@ export default {
     formMessage
   },
   mounted() {
-	this.findType()
+	//this.findType()
     this.getlist();
     this.getJxsInfo();
     this.getPhoneCode();

@@ -49,7 +49,6 @@
                 >
 
         </el-tree>
-                        <!--   -->
     </el-form-item>
    
    
@@ -115,7 +114,7 @@ export default {
             return false;
         }
         var ids = this.$refs.tree.getCheckedKeys();
-
+       
         let para = {
             name: this.form.name,
             description:this.form.description,
