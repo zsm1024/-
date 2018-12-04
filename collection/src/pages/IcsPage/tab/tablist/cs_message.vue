@@ -777,7 +777,11 @@ export default {
 					return v;
 					
 				});
-				
+				this.items.customerPhones.forEach(el =>{
+					if(el.roleName=="主借人"){
+						el.relationship="本人"
+					}
+				})				
 				this.items.customerAddresses = this.items.customerAddresses.map(v => {
 					this.$set(v, 'edit', false)
 					return v
