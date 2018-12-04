@@ -76,7 +76,7 @@
        </el-table>
         <!-- <el-input type="textarea"  v-model="allList" placeholder="备注" style="width: 380px;"></el-input>  -->
        <el-form-item label="备注:">
-      <el-input type="textarea"  v-model="AdduserForms.remarks" :maxlength="2000" placeholder="备注且不能超过2000字" style="width: 380px;"></el-input>  
+      <el-input type="textarea"  v-model="AdduserForms.remarks" :rows="1" :maxlength="2000" placeholder="备注且不能超过2000字" style="width: 380px;"></el-input>  
     </el-form-item>
     </el-form>                       
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">

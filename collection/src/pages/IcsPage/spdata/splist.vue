@@ -24,15 +24,25 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
-				</el-form-item>
-			
+          <el-button type="primary" size="mini" @click="approveList" >批量批准</el-button> 
+          <el-button type="primary" size="mini" @click="refuseList" >批量拒绝</el-button> 
+				</el-form-item>		
 			</el-form>
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
-			<el-table-column type="selection"  align="center">
-			</el-table-column>
+		<el-table :data="lists" id="SPList" :max-height="heights" :default-expand-all="true" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
+			<el-table-column type="expand" >						
+						<template slot-scope="props">
+							<el-form id="Mark" inline class="demo-table-expand">
+         						<el-form-item>
+           							 备注：{{ props.row.remarks }}
+          						</el-form-item>							
+							</el-form>
+						</template>
+					</el-table-column>
+      <el-table-column type="selection"  align="center">
+			</el-table-column>     
 			<el-table-column label="操作"  align="center" width="90">
 				<template slot-scope="scope">
 					<router-link class="a-href" :to="{path:'/IcsPage/spdata/splist/listRemarks/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
@@ -49,7 +59,6 @@
 			<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100,500,1000]"   :total="total"   style="float:right;">
 			</el-pagination>
 		</el-col>	
-		<!-- <router-link class="a-href" :to="{path:'/spdata/splist/listRemarks'}"><span>处理</span></router-link> -->
 	</section>
 </template>
 
@@ -101,12 +110,8 @@ export default {
         sessionStorage.setItem(id,id)				
 			  },
 			handleCurrentChanges(val) {
-				// console.log(val)
         		this.currentRow = val;
       		},
-    // localNumber(){
-      
-    // },
     dataChange(val){			
 				this.times2=val.split("至").pop();
 				this.times1=val.split("至").shift();
@@ -122,43 +127,60 @@ export default {
     },
     //获取列表
     getlists() {
-        let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-250;
-				this.heights=h;
+        
         let para = {
         page: this.page,
         name: this.filters.name,
         applicationNumber: this.filters.applicationNumber,
         applicant:this.filters.applicant,
-        // overdueDays: this.filters.overdueDays,
-        // inputTime: this.filters.inputTime,
         pageSize: this.pagesize,
-        
-        // userId:this.id,
          startTime:this.times1,
 				 endTime:this.times2	
       };
        this.listLoading = true;
-      //NProgress.start();
       ApprovalList(para).then(res => {                
       this.total = res.data.result.recordsTotal;     
       this.lists = res.data.result.data;
-            // this.cols = this.lists;
              this.listLoading = false;
-        //NProgress.done();
       });
     },
-
     //全选单选多选
     selsChange: function(sels) {
       this.sels = sels;
+    },
+    approveList(){
+      if(this.sels.length!=0){
+        let para = {
+          s:"Y",
+          sels:this.sels
+        }
+        console.log(para)
+      }
+      
+    },
+    refuseList(){
+      if(this.sels.length!=0){
+        let para = {
+          s:"N",
+          sels:this.sels
+        }
+        console.log(para)
+      }
     }
   },
-  mounted() {
+  created(){
+    let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-180;
+		this.heights=h;
     this.getlists();
   }
-};
+}
 </script>
 
 <style >
-
+#SPList .el-table__expand-icon{height: unset}
+#SPList .el-form-item__content{line-height: unset}
+#Mark{text-align: left}
+#Mark .el-form-item__label{padding:unset}
+#Mark .el-form-item{margin-left: 12px}
+/* .el-table__row td:first-child, thead th:first-child{display: none} */
 </style>

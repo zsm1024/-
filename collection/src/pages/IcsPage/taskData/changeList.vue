@@ -21,14 +21,11 @@
 					@change="dataChange"
 					>
 					</el-date-picker>
-            <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
         </el-form-item>
         <el-form-item>
             <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px" >查询</el-button>
         </el-form-item>
     </el-form>
-    
-    <!-- @selection-change="handleSelectionChange" -->
      <el-form :model="AdduserForms" ref="AdduserForm" inline>
         <el-form-item label="请选择:" id="city_pre" >
              <el-select v-model="AdduserForms.areaList" placeholder="请选择队列" @change="getMessage1" >
@@ -41,18 +38,11 @@
             <el-option v-for="item in options1" :key="item.id" :label="item.nickname" :value="item.id"></el-option>
           </el-select>
 		</el-form-item>      
-        <!-- <el-form-item label="协办人姓名"> -->
-           <!-- <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入协办人姓名"  @select="handleSelect" class="autoInput" style="width:150px">
-            </el-autocomplete> -->
-      <!-- </el-form-item> -->
-       <!-- <el-form-item label="协办到期日">
-           <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
-      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUser">转换队列</el-button>
-        <!-- <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">取消</el-button> -->
        </el-form-item>
-    </el-form>                       
+    </el-form>
+     <el-input type="textarea" :rows="1" :maxlength="2000" placeholder="备注且不能超过2000字" style="width: 500px" v-model="Cotextarea"></el-input>                     
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
        <el-table-column sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
@@ -74,14 +64,6 @@
                 <el-button type="primary" style="padding:10px 15px" @click="cancel()">确 定</el-button> 
             </el-form-item>
          </el-form>
-    <!-- <!-- <el-table :data="addList" border height="400" @selection-change="handleSelectionChange" ref="multipleTable">
-      <el-table-column  type="selection" aline="center" ></el-table-column>
-       <el-table-column v-for="(item,index) in cols1" :key="index" :prop="item.field" :label="item.title" aline="center" ></el-table-column>
-    </el-table> -->
-  <!-- <div slot="footer" class="dialog-footer">
-    <el-button style="padding:10px 15px"  >取 消</el-button>
-   <el-button type="primary" style="padding:10px 15px" @click="addChange()">确 定</el-button> 
-  </div> --> 
 </el-dialog>  
 </section>
 </template>
@@ -98,6 +80,7 @@ import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
 export default {
   data() {
     return {
+      Cotextarea:"",
       escrowTime: "",
       heights: 0,
       datas: [],
@@ -225,7 +208,7 @@ export default {
       let h =
         (window.innerHeight ||
           document.documentElement.clientHeight ||
-          document.body.clientHeight) - 210;
+          document.body.clientHeight) - 320;
       this.heights = h;
 
     },
@@ -254,14 +237,15 @@ export default {
          let para = {
            turnUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,
-          queueId: this.AdduserForms.areaList
+          queueId: this.AdduserForms.areaList,
+          remarks:this.Cotextarea
          }
          if (
           this.AdduserForms.stateCode == "" ||
           this.AdduserForms.areaList == "" ||
-          this.addlists.length == 0
+          this.addlists.length == 0||this.Cotextarea==""
         ) {
-          this.$alert("请选择用户ID或转队列案件！", "提示", {
+          this.$alert("请检查信息是否填写完整！", "提示", {
             confirmButtonText: "确定",
             type: "warning",
             center: "true"
@@ -270,6 +254,11 @@ export default {
           this.NoUser=true;
           turnQueue(para).then(res => {
             this.listShow();
+            this.AdduserForms.stateCode = "" ;
+            this.AdduserForms.areaList="";
+            this.AdduserForms.positionId="";
+            this.addlists=[]
+            this.Cotextarea=""
           });
         }
       }
@@ -324,13 +313,13 @@ export default {
       };
     }
   },
-  mounted() {
-    this.listShow();
+  created(){
     this.getDl_AllList();
+    this.listShow();
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||
-        document.body.clientHeight) - 210;
+        document.body.clientHeight) - 280;
     this.heights = h;
   }
 };
@@ -350,9 +339,5 @@ td {
   line-height: 23px !important;
   background: #f0f0f0;
 }
-/* .el-table .cell {
-  padding: 0 !important;
-  white-space: nowrap;
-} */
 </style>
 
