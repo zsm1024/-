@@ -33,7 +33,7 @@
 		<el-table :data="lists" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
 			<el-table-column type="selection"  align="center">
 			</el-table-column>
-			<el-table-column fixed label="操作"  align="center" width="90">
+			<el-table-column label="操作"  align="center" width="90">
 				<template slot-scope="scope">
 					<router-link class="a-href" :to="{path:'/IcsPage/spdata/splist/listRemarks/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
 				</template>
@@ -82,6 +82,7 @@ export default {
             {title:'申请人',field:'applicant'},
             {title:'创建日期',field:'createTime'},
             {title:'最后提交日',field:'updateTime'},
+            {title:'备注',field:'applicant'},
         ],
         total: 0,
         page: 1,

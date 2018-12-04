@@ -162,9 +162,6 @@
 	.p_marks .marks{
 		margin-left: 10px;
 	}
-	.cslist .el-table__expanded-cell{
-		padding: 0;
-	}
 	.el-table__expand-icon{height:24px!important}
 	/* .BZ{min-height: 30px;} */
 	.cslist .el-form-item{width: 100%;text-align: left;margin: 0;}

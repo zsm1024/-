@@ -228,8 +228,5 @@ export default {
 </script>
 
 <style>
-#cslist .el-table__expanded-cell{padding: 0;}
-#cslist	.el-form-item__content{line-height: 20px;margin-left: 10px}
- #cslist .el-form-item__label{padding: 0;}
 .el-table__expand-icon{height:24px!important}
 </style>

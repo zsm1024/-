@@ -263,9 +263,6 @@ export default {
 
 <style>
 .T1{margin-left: 20px;font-size: 14px;}
-#cslists .el-table__expanded-cell{padding: 0;}
-#cslists .el-form-item__content{line-height: 20px;margin-left: 10px}
-#cslists .el-form-item__label{padding: 0;}
 .el-table__expand-icon{height:24px!important}
 .el-collapse-item__header {font-size: 13px!important;font-weight: bold!important;background: #dfe6ec!important;border: 1px solid #f0f0f0;}
 </style>
