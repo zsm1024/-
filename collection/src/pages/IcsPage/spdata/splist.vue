@@ -24,8 +24,8 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
-          <el-button type="primary" size="mini" @click="approveList" >批量批准</el-button> 
-          <el-button type="primary" size="mini" @click="refuseList" >批量拒绝</el-button> 
+          <!-- <el-button type="primary" size="mini" @click="approveList" >批量批准</el-button> 
+          <el-button type="primary" size="mini" @click="refuseList" >批量拒绝</el-button>  -->
 				</el-form-item>		
 			</el-form>
 		</el-col>
@@ -148,25 +148,25 @@ export default {
     selsChange: function(sels) {
       this.sels = sels;
     },
-    approveList(){
-      if(this.sels.length!=0){
-        let para = {
-          s:"Y",
-          sels:this.sels
-        }
-        console.log(para)
-      }
+    // approveList(){
+    //   if(this.sels.length!=0){
+    //     let para = {
+    //       s:"Y",
+    //       sels:this.sels
+    //     }
+    //     console.log(para)
+    //   }
       
-    },
-    refuseList(){
-      if(this.sels.length!=0){
-        let para = {
-          s:"N",
-          sels:this.sels
-        }
-        console.log(para)
-      }
-    }
+    // },
+    // refuseList(){
+    //   if(this.sels.length!=0){
+    //     let para = {
+    //       s:"N",
+    //       sels:this.sels
+    //     }
+    //     console.log(para)
+    //   }
+    // }
   },
   created(){
     let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-180;
