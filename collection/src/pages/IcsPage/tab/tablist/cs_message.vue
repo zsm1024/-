@@ -479,7 +479,12 @@ export default {
                         "phoneType":this.$refs['AdduserForm'].model.phoneType,"phoneNum":this.$refs['AdduserForm'].model.phoneNum,                                         
                         "infoSource":"ICS","effectiveness":"Y","edit":false},	
                         
-                    );
+					);
+					this.items.customerPhones.forEach(res =>{
+						if(this.items.customerPhones.roleName=="主借人"){
+							this.items.customerPhones.relationship="本人"
+						}
+					})
                     this.addUserInfos=false;
                     this.$refs['AdduserForm'].resetFields();
                     }else{
