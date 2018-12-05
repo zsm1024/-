@@ -24,23 +24,12 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
-          <!-- <el-button type="primary" size="mini" @click="approveList" >批量批准</el-button> 
-          <el-button type="primary" size="mini" @click="refuseList" >批量拒绝</el-button>  -->
 				</el-form-item>		
 			</el-form>
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists" id="SPList" :max-height="heights" :default-expand-all="true" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
-			<el-table-column type="expand" >						
-						<template slot-scope="props">
-							<el-form id="Mark" inline class="demo-table-expand">
-         						<el-form-item>
-           							 备注：{{ props.row.remarks }}
-          						</el-form-item>							
-							</el-form>
-						</template>
-					</el-table-column>
+		<el-table :data="lists" id="SPList" :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
       <el-table-column type="selection"  align="center">
 			</el-table-column>     
 			<el-table-column label="操作"  align="center" width="90">
@@ -91,7 +80,6 @@ export default {
             {title:'申请人',field:'applicant'},
             {title:'创建日期',field:'createTime'},
             {title:'最后提交日',field:'updateTime'},
-            {title:'备注',field:'applicant'},
         ],
         total: 0,
         page: 1,
@@ -148,25 +136,6 @@ export default {
     selsChange: function(sels) {
       this.sels = sels;
     },
-    // approveList(){
-    //   if(this.sels.length!=0){
-    //     let para = {
-    //       s:"Y",
-    //       sels:this.sels
-    //     }
-    //     console.log(para)
-    //   }
-      
-    // },
-    // refuseList(){
-    //   if(this.sels.length!=0){
-    //     let para = {
-    //       s:"N",
-    //       sels:this.sels
-    //     }
-    //     console.log(para)
-    //   }
-    // }
   },
   created(){
     let h=(window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)-180;
