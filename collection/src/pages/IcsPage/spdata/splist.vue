@@ -24,8 +24,8 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
-          <el-button type="primary" size="mini" @click="approveList" >批量批准</el-button> 
-          <el-button type="primary" size="mini" @click="refuseList" >批量拒绝</el-button> 
+          <el-button type="primary" size="mini" @click="ListApply('Y')" >批量批准</el-button> 
+          <el-button type="primary" size="mini" @click="ListApply('N')" >批量拒绝</el-button> 
 				</el-form-item>		
 			</el-form>
 		</el-col>
@@ -65,7 +65,7 @@
 <script>
 //import NProgress from 'nprogress'
 import { getMissionListByUser } from "@/api/monitor";
- import { ApprovalList } from "@/api/sp";
+ import { ApprovalList,applies } from "@/api/sp";
 export default {
   data() {
     return {
@@ -148,24 +148,16 @@ export default {
     selsChange: function(sels) {
       this.sels = sels;
     },
-    approveList(){
+    ListApply(item){
       if(this.sels.length!=0){
-        let para = {
-          s:"Y",
-          sels:this.sels
-        }
-        console.log(para)
-      }
-      
-    },
-    refuseList(){
-      if(this.sels.length!=0){
-        let para = {
-          s:"N",
-          sels:this.sels
-        }
-        console.log(para)
-      }
+         this.sels.forEach(el =>{
+          el["isReal"]=item
+        });
+        let para =this.sels
+         applies(para).then(res =>{
+           console.log(res)
+         })
+      }     
     }
   },
   created(){

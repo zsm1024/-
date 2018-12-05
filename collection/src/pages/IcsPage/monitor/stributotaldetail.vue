@@ -17,36 +17,7 @@
 					@change="dataChange"
 					>
 					</el-date-picker>
-					<!-- <el-input v-model="filters.inputTime" placeholder="最近行动时间"  clearable></el-input> -->
 				</el-form-item>
-        <!-- <el-form-item>
-					<el-input v-model="filters.job" placeholder="岗位"></el-input>
-				</el-form-item>
-        <el-form-item> -->
-					<!-- <el-input v-model="filters.queue" placeholder="任务队列"></el-input>
-				</el-form-item>
-        <el-form-item>
-					<el-input v-model="filters.name" placeholder="当事人"></el-input>
-				</el-form-item>
-
-        <el-form-item>
-					<el-input v-model="filters.money" placeholder="合同号"></el-input>
-				</el-form-item>
-        <el-form-item> -->
-        <!-- <el-select v-model="filters.province" placeholder="请选择省份">
-          <el-option value="河北省" label="河北省">
-            
-          </el-option>
-        </el-select>
-        <el-select v-model="filters.city" placeholder="请选择城市">
-          <el-option value="保定市" label="保定市">
-            
-          </el-option>
-        </el-select>
-        <el-select v-model="filters.area" placeholder="请选择区域">
-          <el-option value="南市区" label="南市区">
-            
-          </el-option> -->
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
 				</el-form-item>

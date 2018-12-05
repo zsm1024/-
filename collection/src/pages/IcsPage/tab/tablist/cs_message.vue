@@ -158,21 +158,11 @@
 						<td>{{bankName}}</td>	
 					</tr>
 				</table>
-				<!-- <label v-for="phone in phoneList" :key="phone.index">
-					<span>电话</span>
-					<span>{{phone}}</span>	
-				</label>		 -->
-				<!-- <template slot-scope="title" >
-                    <el-table :data="items.customerSimpleList" border stripe > 			
-						<el-table-column :prop="baseinfo.field" :label="baseinfo.title"  v-for="(baseinfo, index) in baseinfo" :key="index"   align="center" :width="baseinfo.width">
-						</el-table-column>			
-					</el-table>
-                </template> -->
 			</el-collapse-item>								
 
 			<el-collapse-item name="3" title="客户地址信息" style="position:relative">
 				<el-button class="filter-item" style="  position:absolute;top:3px;left:125px"  type="primary"  @click="addWorkInfos = true">添加</el-button>	
-				<el-table :data="items.customerAddresses" border stripe :row-class-name="tableRowClassNameAddress" >
+				<el-table :data="items.customerAddresses" id="addressInfo" border stripe :row-class-name="tableRowClassNameAddress" >
 					<el-table-column label="操作" align="center"  width="70">
 						<template slot-scope="scope" >
 							<!-- <el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='addressEdit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button> -->
@@ -186,6 +176,10 @@
 							<Input  v-if="scope.row.infoSource!='CMS'&&(cols1.field=='relationship'||cols1.field=='province'||cols1.field=='city'||cols1.field=='address'||cols1.field=='propertyType')" size="small" v-model="scope.row[cols1.field]" class="inputInner" @on-blur="addressEdit(scope.row)"/>
 							<span  v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span>
 							<el-select  v-if="cols1.field=='effectiveness'" @change="addressEdit(scope.row)" v-model="scope.row[cols1.field]" placeholder="请选择活动区域">
+								<el-option label="Y" value="Y"></el-option>
+								<el-option label="N" value="N"></el-option>
+							</el-select>
+							<el-select  v-if="cols1.field=='addressNum'" @change="addressEdit(scope.row)" v-model="scope.row[cols1.field]" placeholder="地址码">
 								<el-option label="Y" value="Y"></el-option>
 								<el-option label="N" value="N"></el-option>
 							</el-select>
@@ -346,7 +340,8 @@ export default {
 				{title:'关系', field: 'relationship', width: "70" }, 
 				{title:'省',field:'province',width:"60"},
 				{title:'市',field:'city',width:"60"},     
-				{title:'地址',field:'address'},				
+				{title:'地址',field:'address'},	
+				{title:'地址码',field:'addressNum',width:"120"},			
 				{title: '地址类型', field: 'addressType', width: "70" },
 				{title:'所有权类型',field:'propertyType',width:"80"},
             	{title:'信息来源',field:'infoSource',width:"60"},
@@ -916,4 +911,5 @@ export default {
 	.ivu-input-icon{font-size:24px!important;color:#20a0ff;cursor: pointer;}
 	#CusInfo .el-input{min-height:0!important;height:25px!important}
 	.ivu-icon-ios-phone-portrait{font-size: 24px!important;color: #20a0ff;cursor: pointer;width: 24px;font-size: 14px;height: 24px;line-height: 24px;}
+	#addressInfo .el-input{min-height:unset!important}
 </style>

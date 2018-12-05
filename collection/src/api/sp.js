@@ -30,6 +30,14 @@ export function ApprovalList(params){
       data
     })
   }
+  export function applies(params){
+    const data = params;
+    return fetch({
+      url: '/approval/applies',
+      method: 'put',
+      data
+    })
+  }
   export function ListHistory(params){
     return fetch({
       url: '/approval/listHistory',
