@@ -4,10 +4,8 @@
 		<el-col :span="24" id="el-icons">	
 			<i class="el-icon-message" @click="messageOpen">短信</i>
 			<i class="el-icon-edit" @click="checkPreview">征信查询</i>	
-			<!-- <i class="el-icon-upload2">{{callback.roleName}}</i>  -->
 		</el-col>
 	</el-row>
-	<!-- <div>{{callback.roleName}}</div> -->
 	<div id="tables">    
 		<el-form ref="mainform" :rules="rules" :model="mainform" label-width="65px"   id="FixForm" inline >		
  		<el-col id="lists">
@@ -15,7 +13,6 @@
 				<el-select v-model="mainform.actSign" filterable clearable>
 					<el-option v-for="code in getdaima" :key="code" :value="code"></el-option>
 				</el-select>
-			<!-- <v-select v-model="mainform.daima"  multiple :options="getdaima"></v-select> -->
 		</el-form-item>	
 		<el-form-item label="承诺金额" prop="allowance" >
 			<el-input v-model="mainform.allowance" clearable></el-input>
@@ -28,18 +25,10 @@
 		<el-form-item label="联系人" prop="linkman">
 			<el-autocomplete v-model="mainform.linkman"  :fetch-suggestions="querySearch1" size="small"  placeholder="请选择联系人"  @select="handleSelect" class="autoInput">
 			</el-autocomplete>
-			<!-- <el-select v-model="mainform.linkman" filterable clearable placeholder="请选择联系人">
-				<el-option v-for="types in getname" :key="types" :value="types"></el-option>
-			</el-select> -->
-				<!-- <v-select v-model="mainform.name" :options="getname"></v-select> -->
 		</el-form-item>
 		<el-form-item label="联系方式"  prop="linkInfomation">
 			<el-autocomplete v-model="mainform.linkInfomation"  :fetch-suggestions="querySearch2" size="small"  placeholder="请选择联系人"  @select="handleSelect" class="autoInput">
 			</el-autocomplete>
-				<!-- <v-select v-model="mainform.fangshi" :options="getfangshi"></v-select> -->
-				<!-- <el-select v-model="mainform.linkInfomation" filterable clearable>
-					<el-option v-for="list in getfangshi" :key="list" :value="list"></el-option>
-				</el-select> -->
 		</el-form-item>	
 								
 		<el-form-item label="约会日期" prop="appointmentTime" >
@@ -65,20 +54,17 @@
 				<el-form-item label="手机号码 " :label-width="formLabelWidth">
 					<el-autocomplete v-model="messageform.phone"  :fetch-suggestions="querySearch" size="small"  placeholder="请输入手机号码"  @select="handleSelect" class="autoInput" style="width:300px;">
 					</el-autocomplete>
-					<!-- <v-select v-model="messageform.phone" :options="getMesPhone" style="width:300px"></v-select> -->
 				</el-form-item>
 				<el-form-item label="短信模板 " :label-width="formLabelWidth">
 					<el-select v-model="messageform.selectTitle" placeholder="请选择" @change="getMessage"  style="width:300px;" id="selectMes">
 						<el-option v-for="(item,index) in messageModel" :key="index" :label="item.label" :value="item.value" ></el-option>
 					</el-select>
-					<!-- <v-select v-model="messageform.template" :options="getMesTemplate" style="width:300px"></v-select> -->
 				</el-form-item>				
 				<el-form-item label="内容栏 " :label-width="formLabelWidth">
 						<el-input type="textarea" autosize v-model="messageform.messagedesc" style="width:300px;margin-left:5px"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<!-- @click="addWorkInfo" -->
 				<el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
 				<el-button type="primary" @click.native.prevent="confirmmessage('messageform')" style="padding:10px">确 定</el-button>
 			</div>

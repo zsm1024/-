@@ -246,6 +246,7 @@ export default {
   props: ["callback"],
   data() {
     return {
+      options:{},
       imgUrlList: [],
       websock: null,
       backMsg: "",
@@ -1323,6 +1324,7 @@ export default {
 #selectMess .el-input__inner {
   height: 30px !important;
 }
+.images{display: none}
 @media screen and (max-width: 1250px) {
   /* #FixForm{display:flex} */
   #bzt {

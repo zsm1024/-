@@ -5,6 +5,12 @@
 				<el-form-item>
 					<el-input  v-model="filters.osCompanyName" placeholder="外包公司名称" style="width:140px"></el-input>
 				</el-form-item>
+        <el-form-item>
+          <el-input  v-model="filters.appNum" placeholder="申请号" style="width:140px"></el-input>
+        </el-form-item>
+         <el-form-item>
+          <el-input  v-model="filters.customerName" placeholder="客户姓名" style="width:140px"></el-input>
+        </el-form-item>
 				<el-form-item>
            <el-select  v-model="filters.isPay" placeholder="是否已付">
 								<el-option label="是" value="1"></el-option>
@@ -15,9 +21,8 @@
 				<el-form-item>
           <el-date-picker style="width:140px" v-model="filters.payMonthStart" @change="payMonthStart" type="month" value-format="yyyy-MM-dd" placeholder="开始月份"></el-date-picker>
           <el-date-picker style="width:140px" v-model="filters.payMonthEnd" @change="payMonthEnd" type="month" value-format="yyyy-MM-dd" placeholder="结束月份"></el-date-picker>
-					<!-- <el-input v-model="filters.payMonthStart" placeholder="开始月份" style="width:140px"></el-input> -->
-          <!-- <el-input v-model="filters.payMonthEnd" placeholder="结束月份" style="width:140px"></el-input> -->
 				</el-form-item>
+        
 				<el-form-item>
 					<el-button type="primary" @click="getlists" size="mini" style="padding:10px 15px">查询</el-button>
 				</el-form-item>				
@@ -67,6 +72,7 @@ export default {
       formLabelWidth: "140px",
       cols: [
         { title: "申请号", field: "appNum",width:'180px' },
+        { title: "客户姓名", field: "customerName" },
         { title: "外包公司名称", field: "osCompanyName",width:'200px' },
         { title: "委案周期", field: "entrustCycle",width:'200px' },
         { title: "佣金方式", field: "mode" },
@@ -82,7 +88,9 @@ export default {
 					osCompanyName: '',
 					isPay:"0",
 					payMonthStart:"",
-					payMonthEnd:"",
+          payMonthEnd:"",
+          appNum:"",
+          customerName:""
 				},
     };
   },
@@ -124,7 +132,9 @@ export default {
         osCompanyName:this.filters.osCompanyName,
 				isPay:this.filters.isPay,
 				payMonthStart:this.filters.payMonthStart,
-				payMonthEnd:this.filters.payMonthEnd,
+        payMonthEnd:this.filters.payMonthEnd,
+        customerName:this.filters.customerName,
+        appNum:this.filters.appNum,
 
       };
       this.listLoading = true;

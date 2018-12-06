@@ -155,7 +155,18 @@ export default {
         });
         let para =this.sels
          applies(para).then(res =>{
-           console.log(res)
+           if(res.data.success){
+             this.getlists()
+             this.$message({
+              type: "success",
+              message:"审批成功！"
+             })
+           }else{
+              this.$message({
+              type: "error",
+              message: res.data.message
+             })
+           }
          })
       }     
     }

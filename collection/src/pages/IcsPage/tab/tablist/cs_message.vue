@@ -911,5 +911,5 @@ export default {
 	.ivu-input-icon{font-size:24px!important;color:#20a0ff;cursor: pointer;}
 	#CusInfo .el-input{min-height:0!important;height:25px!important}
 	.ivu-icon-ios-phone-portrait{font-size: 24px!important;color: #20a0ff;cursor: pointer;width: 24px;font-size: 14px;height: 24px;line-height: 24px;}
-	#addressInfo .el-input{min-height:unset!important}
+	#addressInfo .el-input{height: unset!important;min-height:unset!important}
 </style>

@@ -15,6 +15,7 @@ import Validator from 'vue-validator'
 import './permission' // 权限
 import iView from 'iview';
 import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
 import 'iview/dist/styles/iview.css';
 if(process.env.NODE_ENV=="development"){
     Mock.bootstrap();
