@@ -24,10 +24,6 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
-          <el-button type="primary" size="mini" @click="approveList" >批量批准</el-button> 
-          <el-button type="primary" size="mini" @click="refuseList" >批量拒绝</el-button> 
-				<el-form-item>
-					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
           <el-button type="primary" size="mini" @click="ListApply('Y')" >批量批准</el-button> 
           <el-button type="primary" size="mini" @click="ListApply('N')" >批量拒绝</el-button> 
 				</el-form-item>		

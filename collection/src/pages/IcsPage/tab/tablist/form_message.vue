@@ -5,7 +5,7 @@
 			<i class="el-icon-message" @click="messageOpen">短信</i>
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
 			<i class="el-icon-edit" @click="checkPreview">征信查询</i>
-      <!-- <i class="el-icon-picture" @click="ImgPreview">影像件预览</i> -->
+       <i class="el-icon-picture" @click="ImgPreview">影像件预览</i>
 		</el-col>
 	</el-row>
   <div class="images" v-viewer="options">

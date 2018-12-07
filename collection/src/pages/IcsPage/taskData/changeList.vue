@@ -42,6 +42,7 @@
         <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px" :disabled="NoUser">转换队列</el-button>
        </el-form-item>
     </el-form>
+     <el-input type="textarea" :rows="1" :maxlength="2000" placeholder="备注且不能超过2000字" style="width: 500px" v-model="Cotextarea"></el-input>                     
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
        <el-table-column sortable :prop="cols.field" :label="cols.title"   v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
@@ -79,6 +80,7 @@ import { getAuthUser, getAuthtree, sysPositionslistAll } from "@/api/auth";
 export default {
   data() {
     return {
+      Cotextarea:"",
       escrowTime: "",
       heights: 0,
       datas: [],
@@ -236,11 +238,12 @@ export default {
            turnUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,
           queueId: this.AdduserForms.areaList,
+          remarks:this.Cotextarea
          }
          if (
           this.AdduserForms.stateCode == "" ||
           this.AdduserForms.areaList == "" ||
-          this.addlists.length == 0
+          this.addlists.length == 0||this.Cotextarea==""
         ) {
           this.$alert("请检查信息是否填写完整！", "提示", {
             confirmButtonText: "确定",
@@ -255,6 +258,7 @@ export default {
             this.AdduserForms.areaList="";
             this.AdduserForms.positionId="";
             this.addlists=[]
+            this.Cotextarea=""
           });
         }
       }
