@@ -1,7 +1,5 @@
 import fetch from '@/utils/fetch'
 
-
-
 export function getcolone(params) {
     return fetch({
        url: '/missionInfos/listRest',
@@ -10,7 +8,13 @@ export function getcolone(params) {
     })
 }
 
-
+export function listRestSortByCo(params) {
+    return fetch({
+       url: '/missionInfos/listRestSortByCo',
+      method: 'get',
+      params: params
+    })
+}
 export function getcoltwo(params) {
     return fetch({
       url: '/coltwo',

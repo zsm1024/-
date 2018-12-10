@@ -60,6 +60,7 @@
                 v-model="scope.row[cols.field]"
                 placeholder
                 @change="phoneEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
                   v-for="item in roleTypes"
@@ -73,6 +74,7 @@
                 v-model="scope.row[cols.field]"
                 placeholder
                 @change="phoneEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
                   v-for="item in relations"
@@ -87,7 +89,7 @@
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)"
+                @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <i
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"
@@ -101,7 +103,7 @@
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)"
+                @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <i
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"
@@ -115,13 +117,13 @@
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)"
+                @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <span
-                v-if="scope.row.infoSource=='ICS'&&cols.field=='infoSource'"
+                v-if="scope.row.infoSource=='ICS'&&cols.field=='infoSource'" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols.field] }}</span>
               <span
-                v-if="(scope.row.infoSource=='CMS'&&cols.field!='roleName'&&cols.field!='relationship'&&cols.field!='phoneNum'&&cols.field!='effectiveness')"
+                v-if="(scope.row.infoSource=='CMS'&&cols.field!='roleName'&&cols.field!='relationship'&&cols.field!='phoneNum'&&cols.field!='effectiveness')" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols.field] }}</span>
               <i
                 v-if="scope.row.infoSource=='CMS'&&cols.field=='name'"
@@ -138,6 +140,7 @@
                 v-model="scope.row[cols.field]"
                 placeholder
                 @change="phoneEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
                   v-for="(item,index) in PhoneCodeList"
@@ -150,6 +153,7 @@
                 v-model="scope.row[cols.field]"
                 placeholder
                 @change="phoneEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option label="Y" value="Y"></el-option>
                 <el-option label="N" value="N"></el-option>
@@ -320,19 +324,20 @@
                 v-model="scope.row[cols1.field]"
                 class="inputInner"
                 @on-blur="addressEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <span
-                v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')"
+                v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols1.field] }}</span>
               <span
-                v-if="((cols1.field=='roleName'||cols1.field=='name'||cols1.field=='addressType'||cols1.field=='infoSource') && scope.row.infoSource!='CMS')"
+                v-if="((cols1.field=='roleName'||cols1.field=='name'||cols1.field=='addressType'||cols1.field=='infoSource') && scope.row.infoSource!='CMS')" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols1.field] }}</span>
               <!-- <span  v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span> -->
               <el-select
                 v-if="cols1.field=='effectiveness'"
                 @change="addressEdit(scope.row)"
                 v-model="scope.row[cols1.field]"
-                placeholder="请选择活动区域"
+                placeholder="请选择活动区域" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option label="Y" value="Y"></el-option>
                 <el-option label="N" value="N"></el-option>
@@ -341,7 +346,7 @@
                 v-if="cols1.field=='addressNum'"
                 @change="addressEdit(scope.row)"
                 v-model="scope.row[cols1.field]"
-                placeholder="地址码"
+                placeholder="地址码" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
                   v-for="item in addressNumList"
@@ -1142,6 +1147,7 @@ td {
 .changecolor {
   color: red;
 }
+.changecolor input{color:red}
 .el-tabs--border-card > .el-tabs__content {
   padding: 0 !important;
 }

@@ -107,7 +107,8 @@ export default {
       userLists: [],
       cancelhost: false,
       multipleSelection: [],
-      cols: [
+      cols: [ 
+        { title: "上次委案公司", field: "lastSendCompany", width: "120" },
         { title: "用户ID", field: "processer", width: "60" },
         { title: "预派案公司", field: "willSendCompany", width: "80" },
         { title: "派单时间", field: "createTime", width: "100" },
@@ -118,8 +119,7 @@ export default {
         { title: "委托金额", field: "entrustMoney", width: "90" },
         { title: "委托逾期金额", field: "overdueReceivables", width: "100" },
         { title: "姓名", field: "name", width: "60" },
-        { title: "申请号", field: "appNum", width: "120" },
-        { title: "上次委案公司", field: "lastSendCompany", width: "120" },
+        { title: "申请号", field: "appNum", width: "120" },     
         { title: "合同号", field: "applicationNumber", width: "80" },
         { title: "职业", field: "occupation", width: "90" },
         { title: "逾期天数", field: "overdueDays", width: "75" },

@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import Moment from "moment/moment";
 import { getOffsetDays } from "../plug/MathDate";
 import { ListLegalActionMonitor } from "@/api/legal";
 import { path } from "@/config";
@@ -147,7 +148,7 @@ export default {
         { title: "收车状态", field: "receiveCarStatus" }
       ],
       total: 0,
-      pagesize: 500,
+      pagesize: 10,
       page: 1,
       listLoading: false,
       sels: [], //列表选中列
@@ -217,43 +218,47 @@ export default {
       ListLegalActionMonitor(para).then(res => {
         this.total = res.data.result.recordsTotal;
         this.lists = res.data.result.data;
+        this.lists.forEach(res =>{
+          res.discreditTime=res.discreditTime? Moment(res.discreditTime).format("YYYY-MM-DD") : "";
+        })
         this.cols = this.cols;
         this.exportPaths = path.api;
         this.listLoading = false;
         //NProgress.done();
       });
     },
-    tableRowClassName(row, rowIndex) {
-      if (row.submissionFilingTime != null && row.submissionFilingTime) {
-        if (getOffsetDays(row.submissionFilingTime) < 7) {
-          return "expiring-date";
-        } else {
-          return "";
-        }
-	  }
-	   if (row.discreditTime != null && row.discreditTime) {
-        if (getOffsetDays(row.discreditTime) < 30) {
-          return "break-faith";
-        } else {
-          return "";
-        }
-	  }
+    tableRowClassName(row, rowIndex) {   
+      if ((row.firstCourtTime != null && row.firstCourtTime)||(row.discreditTime != null && row.discreditTime)) {
+         if(getOffsetDays(row.firstCourtTime) < 7&&getOffsetDays(row.discreditTime) <= 30){
+           return "allColor";
+         }else if(getOffsetDays(row.firstCourtTime)<7){
+           return "yColor";
+         }else if(getOffsetDays(row.discreditTime) <= 30){
+           return "bColor";
+         }
+    } 
     },
     hostListAll() {
       let paths = this.exportPaths + "/legalAction/laCaseExportAll";
       window.open(paths);
     }
   },
-  created() {
-	this.getlists();
+  mounted(){
+    this.getlists();
   }
 };
 </script>
 <style>
-.expiring-date td:nth-of-type(17) {
+.allColor td:nth-of-type(3) {
   background:yellow !important;
 }
-.break-faith td:nth-of-type(22) {
+.allColor td:nth-of-type(4) {
+  background:green !important;
+}
+.yColor td:nth-of-type(3) {
+  background:yellow !important;
+}
+.bColor td:nth-of-type(4) {
   background:green !important;
 }
 </style>
