@@ -23,7 +23,6 @@
                     clearable                   
 					>
 					</el-date-picker>
-            <!-- <el-input v-model="filters.appointmentTime" placeholder="约会日期"  clearable style="width:150px"></el-input> -->
         </el-form-item>
         <el-form-item>
             <el-button type="primary" size="small" @click="listShow()" style="padding:7px 9px">查询</el-button>
@@ -31,21 +30,8 @@
              <el-button type="primary" size="small" @click="hostListAll()" style="padding:7px 9px">全部导出</el-button>
         </el-form-item>
     </el-form>
-    <!-- <el-form inline >         -->
-      <!-- <el-form-item> -->
-       
-         <!-- <el-button type="primary" size="small" style="padding:7px 9px" @click="toggleSelection">全部导出</el-button> -->
-       <!-- </el-form-item> -->
-       <!-- </el-form-item>
-    </el-form>                        -->
    <el-table :data="datas" :max-height="heights" style="width:100% ;margin-top:5px;" highlight-current-row border  @selection-change="handleSelectionChange" @select-all="slelectall" ref="table" v-loading="listLoading"  element-loading-text="加载中..." >
-       <!-- <el-table-column label="操作"  align="center" > -->
 
-			<!-- <template  slot-scope="scope">
-                <el-button  size="mini"  @click='phoneEdit(scope.row)'>导出</el-button> -->
-				<!-- <a @click="clickDetail(scope.row)">下载</span> -->
-			<!-- </template> -->
-		<!-- </el-table-column> -->
         <el-table-column type="selection" align="center">
 			</el-table-column>
        <el-table-column  :prop="cols.field" :label="cols.title"  sortable v-for="(cols, index) in cols" show-overflow-tooltip :key="index" align="center" >

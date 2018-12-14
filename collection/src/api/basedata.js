@@ -559,6 +559,21 @@ export function updateAreaState(params){
       data
     })
   }
+  export function getUnReadNewsCount(params) {
+    return fetch({
+      url: '/missionInfos/getUnReadNewsCount',
+      method: 'get',
+      params: params
+    })
+  }
+  export function updateNewsFlag(params) {
+    const data = params;
+    return fetch({
+      url: '/missionInfos/updateNewsFlag',
+      method: 'put',
+      data
+    })
+  }
   export function getACSDataMirror(params) {
     return fetch({
       url: '/customerBasics/getACSDataMirror',
@@ -566,3 +581,27 @@ export function updateAreaState(params){
       params: params
     })
   }
+  //征信新查
+  export function creditGetStatus(params) {
+    return fetch({
+      url: '/customerBasics/creditGetStatus',
+      method: 'get',
+      params: params
+    })
+  }
+  export function searchCustomerCredit(params) {
+    return fetch({
+      url: '/customerBasics/searchCustomerCredit',
+      method: 'get',
+      params: params
+    })
+  }
+  export function creditApproval(params) {
+    const data = params;
+    return fetch({
+      url: '/customerBasics/creditApproval',
+      method: 'put',
+      data
+    })
+  }
+ 

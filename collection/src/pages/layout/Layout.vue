@@ -6,19 +6,25 @@
 			<navbar></navbar>
 			<app-main style="height:95%"></app-main>
 		</div>
+		<el-dialog :visible.sync="CounRead" id="BomTipes" class="BomTips BomTipes" :modal="false" :close-on-click-modal="false" title="外包/诉讼新进队列案件" @close="Coclosed">
+			<span style="display: inline-block;width: 100%;text-align: right;color: red;margin-right: 15;padding-right: 7px">手动关闭<i class="fa fa-level-up"></i></span>			
+			<p v-if="coNewsNum!=0">您有{{coNewsNum}}条协办的案件</p>
+			<p v-if="trunNewsNum!=0">您有{{trunNewsNum}}条转队列的案件</p>
+		</el-dialog>
 		<el-dialog :visible.sync="dialogVisible" title="提示" class="BomTips" :modal="false" @close="closed" :close-on-click-modal="false">
 			<p @click="approvalCountClick">
 				<router-link class="a-href" :to="{path:'/IcsPage/spdata/splist/103'}">您有{{approvalCount}}案件待审批，请及时处理</router-link>
 			</p>			 
 		</el-dialog>
-		<el-dialog :visible.sync="sendDialog" class="BomTips" :modal="false" :close-on-click-modal="false" title="派案审批提醒" @close="closed" >
+		<el-dialog :visible.sync="sendDialog" class="BomTips" :modal="false" :close-on-click-modal="false" title="派案审批" @close="closed" >
 			<p @click="sendDialogClick">
 			 	<router-link class="a-href" :to="{path:'/IcsPage/outerdata/splist/127'}">您有{{applySend}}派案案件待审批，请及时处理</router-link>
 			 </p>
 		</el-dialog>
-		<el-dialog :visible.sync="unRead" class="BomTips" :modal="false" :close-on-click-modal="false" title="提示" @close="closed">				
+		<el-dialog :visible.sync="unRead" class="BomTips " :modal="false" :close-on-click-modal="false" title="提示" @close="closed">				
 			<p>您有{{unReadApply}}案件已审批通过或关闭</p>
 		</el-dialog>
+		
 	</div>
 	<iframe id="frame2" ref="frame"  name="google_ads_frame2" width="160" height="600" frameborder="0" src="/if.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" style="width:99%;position:absolute;height:25px;bottom:0"></iframe>
 	</section>
@@ -27,7 +33,7 @@
 <script>
 //import $ from 'jquery'
 import { mapGetters } from 'vuex'
-import {ApprovalCount,getUnReadApplyCount,getSendCaseCount,updateApplyNewsFlag} from '@/api/basedata'
+import {ApprovalCount,getUnReadApplyCount,getSendCaseCount,updateApplyNewsFlag,updateNewsFlag,getUnReadNewsCount} from '@/api/basedata'
 import { Navbar, Sidebar, AppMain } from '@/pages/layout'
 import{initParam,doSignIn,clickSignOut,clickCallOut,clickSetIdle,clickSetBusy,clickHangup,Hold,cannel,setRetrieveHold,doConsultation,doTransfer,answer,SingleStepConfCallEx,Transfer} from '../../../ngcc/softPhone.js'
 export default {
@@ -39,6 +45,7 @@ export default {
   },
 	data(){
 		return{
+			CounRead:false,
 			unRead:false,
 			dialogVisible:false,
 			disable:true,
@@ -53,7 +60,9 @@ export default {
 			applyList:[],
 			approvalCount:"",
 			applySend:"",
-			unReadApply:""
+			unReadApply:"",
+			coNewsNum:"",
+			trunNewsNum:""
 		}
 		
 	},
@@ -136,6 +145,21 @@ export default {
 						}
 					})
 			},
+	getgetUnReadNewsCount(){
+		getUnReadNewsCount().then(res =>{
+						if(res.data.success){						
+							if(res.data.result.coNewsNum!=0||res.data.result.trunNewsNum!=0){
+								this.CounRead=true
+								this.coNewsNum=res.data.result.coNewsNum;
+								this.trunNewsNum=res.data.result.trunNewsNum
+							}
+							setTimeout(()=>{						
+								this.closed()
+								this.sendDialog=false;
+							},2400000)				
+						}
+					})
+	},
 	getUnRead(){
 			getUnReadApplyCount().then(res =>{
 				if(res.data.result>0){
@@ -164,6 +188,16 @@ export default {
 			   		}
 		   })
 	   },
+	    Coclosed(){
+		   updateNewsFlag().then(res =>{
+				   if(!res.data.success){
+					   this.$message({
+                            type: 'error',
+                            message: res.data.message
+                            })
+			   		}
+		   })
+	   },
 	    InterVels(){       
         setInterval(() => {
 			this.getApprovalCount()
@@ -181,12 +215,17 @@ export default {
     ])
 	
   },
+  created(){
+	
+  },
 	mounted () {
+	
 	this.getApprovalCount()
 	this.getgetSendCaseCount()
 	this.getUnRead()
 	this.InterVels()	
-	this.changeNmeType()
+	this.changeNmeType();
+	this.getgetUnReadNewsCount()
 	//  let w = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)-210;
   //   this.$refs.right.style.width= w+"px";
 	}

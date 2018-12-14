@@ -30,26 +30,15 @@
         </el-form-item>
     </el-form>
     <el-form :inline="true" >              
-					<!-- 
-					<el-date-picker v-model="value6" 
-					type="daterange" 
-					range-separator="至" 				
-					placeholder="请选择约会时间区域" 				
-					@change="dataChange"
-					>
-					</el-date-picker> -->
-				<!-- </el-form-item> -->
                 <el-form-item>
                     <el-autocomplete v-model="state" :fetch-suggestions="querySearch" size="small"  placeholder="请输入分配至人员姓名"  @select="handleSelect" class="autoInput" style="width:150px">
                     </el-autocomplete>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">重分配</el-button>
+                    <el-button type="primary" size="small" @click="hostList()" :disabled="NoUse" style="padding:7px 9px">重分配</el-button>
                 </el-form-item>
     </el-form>
-           
 
-      <!--       -->
    <el-table :data="datas"  style="width:100% ;margin-top:5px;" highlight-current-row border :max-height="this.heights"  @selection-change="handleSelectionChange"  v-loading="listLoading"  element-loading-text="加载中...">
        <el-table-column type="selection" align="center" fixed="left"></el-table-column>
        <el-table-column  :prop="cols.field" :label="cols.title" sortable  v-for="(cols, index) in cols" :width="cols.width" :key="index" align="center" >
@@ -68,6 +57,7 @@ import { getTaskHostList, getTaskHostUser, addAllotList } from "@/api/task";
 export default {
   data() {
     return {
+      NoUse:true,
       heights: 0,
       datas: [],
       restaurants: [],
@@ -153,6 +143,7 @@ export default {
           this.userList.push({ value: el.nickname, id: el.id });
         });
         this.restaurants = this.userList;
+        this.NoUse=false
         //  this.datas=data.data;
         // this.total=data.recordsTotal;
       });
@@ -161,6 +152,7 @@ export default {
       this.multipleSelection = val;
     },
     hostList() {
+      this.NoUse=true
       this.addlists = [];
       this.multipleSelection.forEach(f => {
         this.addlists.push(f.id);
@@ -181,6 +173,7 @@ export default {
         addAllotList(para).then(res => {
           this.listShow();
           this.state=""
+          this.NoUse=false
         });
       }
     },

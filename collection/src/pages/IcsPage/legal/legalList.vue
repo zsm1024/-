@@ -104,7 +104,7 @@
 
 <script>
 import Moment from "moment/moment";
-import { getOffsetDays } from "../plug/MathDate";
+import { getOffsetDays,getOffsetDays1 } from "../plug/MathDate";
 import { ListLegalActionMonitor } from "@/api/legal";
 import { path } from "@/config";
 export default {
@@ -148,7 +148,7 @@ export default {
         { title: "收车状态", field: "receiveCarStatus" }
       ],
       total: 0,
-      pagesize: 10,
+      pagesize: 50,
       page: 1,
       listLoading: false,
       sels: [], //列表选中列
@@ -189,7 +189,7 @@ export default {
     hostList(item) {
       this.addlists = [];
       this.multipleSelection.forEach(f => {
-        this.addlists.push(f.id);
+        this.addlists.push(f.afpId);
       });
       var ids = this.addlists.toString();
       let path12 = this.exportPaths + "/legalAction/laCaseExport?ids=" + ids;
@@ -220,6 +220,7 @@ export default {
         this.lists = res.data.result.data;
         this.lists.forEach(res =>{
           res.discreditTime=res.discreditTime? Moment(res.discreditTime).format("YYYY-MM-DD") : "";
+          res.firstCourtTime=res.firstCourtTime? Moment(res.firstCourtTime).format("YYYY-MM-DD") : "";
         })
         this.cols = this.cols;
         this.exportPaths = path.api;
@@ -227,13 +228,13 @@ export default {
         //NProgress.done();
       });
     },
-    tableRowClassName(row, rowIndex) {   
+    tableRowClassName(row, rowIndex) {  
       if ((row.firstCourtTime != null && row.firstCourtTime)||(row.discreditTime != null && row.discreditTime)) {
-         if(getOffsetDays(row.firstCourtTime) < 7&&getOffsetDays(row.discreditTime) <= 30){
+         if(getOffsetDays1(row.firstCourtTime) < 6&&getOffsetDays(row.discreditTime) >= -30){
            return "allColor";
-         }else if(getOffsetDays(row.firstCourtTime)<7){
+         }else if(getOffsetDays1(row.firstCourtTime)<0&&getOffsetDays1(row.firstCourtTime)>=-7){
            return "yColor";
-         }else if(getOffsetDays(row.discreditTime) <= 30){
+         }else if(getOffsetDays(row.discreditTime) >= -30){
            return "bColor";
          }
     } 

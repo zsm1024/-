@@ -99,6 +99,7 @@
 .sections .el-table .cell{white-space: normal!important}
 #CusInfo .el-input{min-height:0!important;height: 25px!important}
 .BomTips{top: unset!important;left: unset!important}
+#BomTipes{z-index: 2000!important;}
 .BomTips .el-dialog{position: unset;transform:unset;margin-bottom: 0}
 .BomTips .el-dialog--small{width: 300px!important;height: 110px!important;background-image: linear-gradient(to top, #ace0f9 0%, #fff1eb 100%)!important}
 .BomTips .el-dialog__body,.BomTips .el-dialog__header {padding: 8px!important}

@@ -310,6 +310,7 @@ export default {
           center: "true"
         });
       }else{
+        this.NoUse = true;
          let para = {
           // coUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,

@@ -274,8 +274,13 @@ export const constantRouterMap = [{
     children:[
       {
         path:'/IcsPage/spdata/splist/listRemarks/:id',
-        name:"审批列表",
+        name:"审批详情",
         component:_import('IcsPage/spdata/listRemarks'),
+      }, 
+      {
+        path:'/IcsPage/spdata/splist/CreditCheck/:id',
+        name:"征信审批详情",
+        component:_import('IcsPage/spdata/CreditCheck'),
       }, 
       {
         path:'/IcsPage/spdata/splist/applyRemarks/:id',

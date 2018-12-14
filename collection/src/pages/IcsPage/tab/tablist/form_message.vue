@@ -4,8 +4,9 @@
 		<el-col :span="24" id="el-icons">	
 			<i class="el-icon-message" @click="messageOpen">短信</i>
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
-			<i class="el-icon-edit" @click="checkPreview">征信查询</i>
-       <i class="el-icon-picture" @click="ImgPreview">影像件预览</i>
+			<i class="el-icon-view" @click="checkPreview">征信预览</i>
+      <i class="el-icon-edit" @click="checkSerch">征信查询</i>  
+      <i class="el-icon-picture" @click="ImgPreview">影像件预览</i>
 		</el-col>
 	</el-row>
   <div class="images" v-viewer="options">
@@ -70,7 +71,7 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
+				<el-button style="padding:10px" @click="searchCancle" type="primary">取 消</el-button>
 				<el-button type="primary" @click.native.prevent="confirmmessage('messageform')" style="padding:10px">确 定</el-button>
 			</div>
 		</el-dialog>
@@ -214,6 +215,14 @@
 				</el-pagination>
 			</el-col>
 		</el-dialog>
+    <el-dialog title="征信申请备注" :visible.sync="search" :modal="true" :modal-append-to-body="false"  :show-close='false'>
+        <h3 style="color:red;margin-bottom:12px">提示：{{this.SpMessage}}</h3>
+					<el-input v-model="SearchMarks" type="textarea"></el-input>
+			<div slot="footer" class="dialog-footer">
+				<el-button style="padding:10px" @click="searchCancle" type="primary">取 消</el-button>
+				<el-button type="primary" @click.native.prevent="submitSearch" style="padding:10px">确 定</el-button>
+			</div>
+		</el-dialog>
 </section>  
 </template>
 <script>
@@ -240,12 +249,16 @@ import {
   AddresssfindByType,
   AddresssfindAddress,
   VisitRecords,
-  getFileType
+  getFileType,
+  creditGetStatus,
+  searchCustomerCredit,
+  creditApproval
 } from "@/api/basedata";
 export default {
   props: ["callback"],
   data() {
     return {
+      SpMessage:"",
       options:{},
       imgUrlList: [],
       websock: null,
@@ -282,6 +295,7 @@ export default {
       datas: [],
       templateId: "",
       phone: "",
+      missionIds:[],
       // UserArrList:[],
       selectCont: "",
       state: "",
@@ -326,6 +340,8 @@ export default {
         appointmentTime: "",
         afpRecord: ""
       },
+      SearchMarks:"",
+      search:false,
       messageopen: false,
       encloopen: false,
       visitListDetial: false,
@@ -391,6 +407,49 @@ export default {
     };
   },
   methods: {
+    checkSerch(){
+      
+      let para={
+        appNum:this.$parent.appNum
+      }
+      creditGetStatus(para).then(res =>{
+        if(res.data.code==1){
+          this.search=true;
+          this.SpMessage=res.data.message;
+          this.missionIds.push(this.$route.params.id)          
+        }else if(res.data.code==2){
+           this.$message({            
+                message:res.data.message, 
+                type: "error",
+              });         
+        }else{
+           this.checkPreview()
+        }
+      })
+    },
+    searchCancle(){
+      this.search=false;
+      this.SearchMarks=""     
+    },
+    submitSearch(){
+      let paras ={
+            appNum:this.$parent.appNum,
+            missionIds:this.missionIds,
+            remarks:this.SearchMarks
+          }
+          creditApproval(paras).then(res =>{
+            if(res.data.success){
+              this.search=false;
+            }else{
+               this.$notify({
+                type: "error",
+                message:res.data.message,
+                duration: 1000
+              });
+            }
+          })
+
+    },
     //路径配置
     PathList() {
       // let obj=new	Path();
@@ -1189,6 +1248,30 @@ export default {
         }
       });
     },
+      SearchPreview() {
+      let para = {
+        appNum: this.$parent.appNum
+      };
+      searchCustomerCredit(para).then(res => {
+        this.datas = res.data.Preview;
+        const datas = "Search " + JSON.stringify(this.datas);
+        if (this.backMsg.Type == "ConnOK") {
+          let that = this;
+          that.websocketsend(datas);
+          // if(this.backMsg.Type=="SEARCH_FAIL"){
+          // 	this.$message({
+          // 	type: "error",
+          //     message:this.backMsg.Msg,
+
+          //   });
+          // }
+          // that.threadPoxi()
+        } else {
+          this.threadPoxi();
+          this.websocketsend(datas);
+        }
+      });
+    },
     ImgPreview(){
             const viewer = this.$el.querySelector(".images").$viewer
             let para = {
@@ -1325,6 +1408,7 @@ export default {
   height: 30px !important;
 }
 .images{display: none}
+.el-icon-view{cursor: pointer;color: #20a0ff;margin-left: 5px;}
 @media screen and (max-width: 1250px) {
   /* #FixForm{display:flex} */
   #bzt {

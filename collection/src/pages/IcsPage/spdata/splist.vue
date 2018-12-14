@@ -45,10 +45,11 @@
 			</el-table-column>     
 			<el-table-column label="操作"  align="center" width="90">
 				<template slot-scope="scope">
-					<router-link class="a-href" :to="{path:'/IcsPage/spdata/splist/listRemarks/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
+					<router-link v-if="scope.row.station!='征信'"  class="a-href" :to="{path:'/IcsPage/spdata/splist/listRemarks/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
+          <router-link v-else class="a-href" :to="{path:'/IcsPage/spdata/splist/CreditCheck/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
 				</template>
+       
 			</el-table-column>
-			
 			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" show-overflow-tooltip class="spTable" >
 			</el-table-column>
 		</el-table>

@@ -38,7 +38,7 @@
            <el-date-picker type="date" placeholder="选择日期" v-model="escrowTime" style="width: 150px;" @change="dataChanges" ></el-date-picker>  
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small" @click="hostList()" style="padding:7px 9px">代管</el-button>
+        <el-button type="primary" size="small" @click="hostList()" :disabled="NoUse" style="padding:7px 9px">代管</el-button>
         <el-button type="primary" size="small" @click="cancelhostList()" style="padding:7px 9px">取消代管</el-button>
        </el-form-item>
     </el-form>                       
@@ -77,6 +77,7 @@ import {
 export default {
   data() {
     return {
+      NoUse:true,
       escrowTime: "",
       heights: 0,
       datas: [],
@@ -171,16 +172,12 @@ export default {
       };
     },
     getlists() {
-      // this.restaurants=this.userList;
-      // this.file=this.userLists;
       this.listShow();
       let h =
         (window.innerHeight ||
           document.documentElement.clientHeight ||
           document.body.clientHeight) - 230;
       this.heights = h;
-      // this.getTaskUser();
-      // this. getTaskUser1()
     },
     getTaskUser() {
       getTaskHostUser().then(res => {
@@ -189,8 +186,7 @@ export default {
         this.a.forEach(el => {
           this.userList.push({ value: el.nickname, id: el.id });
         });
-        //  this.datas=data.data;
-        // this.total=data.recordsTotal;
+        
       });
     },
     getTaskUser1() {
@@ -200,9 +196,6 @@ export default {
         data.forEach(el => {
           this.userLists.push({ value: el.username, id: el.id });
         });
-
-        //  this.datas=data.data;
-        // this.total=data.recordsTotal;
       });
     },
     handleSelectionChange(val) {
@@ -213,6 +206,7 @@ export default {
       this.multipleSelection.forEach(f => {
         this.addlists.push(f.id);
       });
+      this.NoUse=true
       let para = {
         escrowUser: this.itemsId,
         missionIds: this.addlists,
@@ -230,6 +224,7 @@ export default {
           this.listShow()
           this.state=""
           this.escrowTime=""
+          this.NoUse=false
         });
       }
     },
@@ -270,8 +265,7 @@ export default {
         });
         this.restaurants = this.userList;
         this.file = this.userLists;
-        //  this.datas=data.data;
-        // this.total=data.recordsTotal;
+        this.NoUse=false
       });
     },
     handleSelect(item) {
