@@ -327,7 +327,7 @@
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <span
-                v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols1.field!='addressNum')" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols1.field] }}</span>
               <span
                 v-if="((cols1.field=='roleName'||cols1.field=='name'||cols1.field=='addressType'||cols1.field=='infoSource') && scope.row.infoSource!='CMS')" :class="{changecolor:scope.row['effectiveness']=='N'}"
