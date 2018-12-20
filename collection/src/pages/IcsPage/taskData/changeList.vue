@@ -233,6 +233,7 @@ export default {
           type: "warning",
           center: "true"
         });
+        this.NoUse = false;
       }else{
          let para = {
            turnUser: this.AdduserForms.stateCode,
@@ -250,6 +251,7 @@ export default {
             type: "warning",
             center: "true"
           });
+          this.NoUse = false;
         } else {
           this.NoUser=true;
           turnQueue(para).then(res => {
@@ -259,6 +261,7 @@ export default {
             this.AdduserForms.positionId="";
             this.addlists=[]
             this.Cotextarea=""
+            this.NoUse = false;
           });
         }
       }

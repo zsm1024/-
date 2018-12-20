@@ -64,7 +64,7 @@ export default {
       history.go(-1);
     },
     approve() {
-      this.lists.isReal = "T";
+      this.lists.isReal = "Y";
       this.lists.remarks = this.inputs;
       delete this.lists.applyListDtos;
       let para = this.lists;
@@ -83,6 +83,7 @@ export default {
                   message: "提交完成！"
                 });
                this.getLists();
+                window.history.back()
               } else {
                 this.$alert(" 提交失败！", "提示", {
                   confirmButtonText: "确定",

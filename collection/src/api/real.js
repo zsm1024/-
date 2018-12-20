@@ -14,3 +14,10 @@ export function UserMonitoringOnTheSpot(params) {
     params: params
   });
 }
+export function UserCoMonitoringOnTheSpot(params) {
+  return fetch({
+    url: '/userMoitoring/UserCoMonitoringOnTheSpot',
+    method: 'get',
+    params: params
+  });
+}

@@ -309,13 +309,14 @@ export default {
           type: "warning",
           center: "true"
         });
+        this.NoUse = false;
       }else{
         this.NoUse = true;
          let para = {
           // coUser: this.AdduserForms.stateCode,
           missionIds: this.addlists,
           coVoList:this.coVoList,
-          // coTime: this.times,
+          coTime: this.times,
           status: "1",
           // queueId: this.AdduserForms.areaList,
           remarks:this.AdduserForms.remarks
@@ -326,6 +327,7 @@ export default {
             type: "warning",
             center: "true"
          })
+         this.NoUse = false;
          }else{
            coMissionApp(para).then(res => {
             this.AdduserForms.stateCode = "";

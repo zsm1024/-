@@ -23,7 +23,11 @@ if(process.env.NODE_ENV=="development"){
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(iView);
-Vue.use(Viewer)
+Vue.use(Viewer,{
+  defaultOptions: {
+    zIndex: 9999
+}
+})
 Vue.use(VueResource);
 Vue.component('v-select', vSelect);
 Vue.use(Validator)

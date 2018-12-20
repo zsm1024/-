@@ -230,12 +230,15 @@ export default {
     },
     tableRowClassName(row, rowIndex) {  
       if ((row.firstCourtTime != null && row.firstCourtTime)||(row.discreditTime != null && row.discreditTime)) {
-         if(getOffsetDays1(row.firstCourtTime) < 6&&getOffsetDays(row.discreditTime) >= -30){
-           return "allColor";
-         }else if(getOffsetDays1(row.firstCourtTime)<0&&getOffsetDays1(row.firstCourtTime)>=-7){
-           return "yColor";
-         }else if(getOffsetDays(row.discreditTime) >= -30){
-           return "bColor";
+         if(getOffsetDays1(row.firstCourtTime) >=-6&&getOffsetDays1(row.firstCourtTime) <0){
+           if(getOffsetDays(row.discreditTime) <=30){
+              return "allColor";
+           }
+            return "yColor";
+         }else{
+           if(getOffsetDays(row.discreditTime) <=30){
+              return "bColor";
+           }                               
          }
     } 
     },

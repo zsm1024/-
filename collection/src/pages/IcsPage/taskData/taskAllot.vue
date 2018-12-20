@@ -169,6 +169,7 @@ export default {
           type: "warning",
           center: "true"
         });
+        this.NoUse = false;
       } else {
         addAllotList(para).then(res => {
           this.listShow();

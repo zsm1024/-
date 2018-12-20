@@ -219,6 +219,7 @@ export default {
           type: "warning",
           center: "true"
         });
+        this.NoUse = false;
       } else {
         addhostList(para).then(res => {
           this.listShow()

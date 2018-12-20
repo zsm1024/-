@@ -165,6 +165,7 @@ export default {
       this.multipleSelection = val;
     },
     hostList() {
+      this.NoUse = true;
       this.addlists = [];
       this.b = [];
       this.multipleSelection.forEach((f, i) =>{
@@ -174,6 +175,7 @@ export default {
             type: "warning",
             center: "true"
           });
+          this.NoUse = false;
         }else{
             if((f.lockFlag == "Y"&&f.leaveTime&&f.leaveTime!=null)||(f.leaveStatus&&f.leaveStatus != null)){
                this.$alert("请选未申请的案件！", "提示", {
@@ -181,12 +183,14 @@ export default {
                 type: "warning",
                 center: "true"
               });
+              this.NoUse = false;
             }else if((f.lockFlag == "Y"&&!f.leaveTime&&f.leaveTime==null)||f.turnStatus ||f.turnStatus != null||f.coStatus||f.coStatus != null|| f.backCaseStatus||f.backCaseStatus != null){
                  this.$alert("案件处于其它审批状态中不需要申请留案！", "提示", {
                   confirmButtonText: "确定",
                   type: "warning",
                   center: "true"
                 });
+                this.NoUse = false;
               }else{
                 this.addlists.push(f.id);              
               }
@@ -204,11 +208,13 @@ export default {
                     type: "warning",
                     center: "true"
                   });
+                  this.NoUse = false;
                 }else{
                   this.NoUse= true;
                   leaveTheCaseApp(para).then(res => {
                       this.listShow();
                       this.escrowTime = "";
+                      this.NoUse = false;
                     });
                 }
       } 

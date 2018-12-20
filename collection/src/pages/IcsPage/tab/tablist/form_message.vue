@@ -9,9 +9,6 @@
       <i class="el-icon-picture" @click="ImgPreview">影像件预览</i>
 		</el-col>
 	</el-row>
-  <div class="images" v-viewer="options">
-        <img v-for="item in imgUrlList " :key="item.code" :src="item.url" alt="图片">
-  </div>
 	<div id="tables">    
 		<el-form ref="mainform" :rules="rules" :model="mainform" label-width="65px"   id="FixForm" inline >		
  		<el-col id="lists">
@@ -51,7 +48,12 @@
 			</el-form-item>
 		</el-col>  
 		</el-form>							
-	</div>			
+	</div>	
+  <el-dialog title="图片预览" :visible.sync="PreImg" :modal="true" :modal-append-to-body="false"  :show-close='false'>
+    <viewer :images="images">
+      <img v-for="src in images" :src="src.url" :key="src.code" width="100" height="100" style="cursor: pointer;margin:0 2px">
+    </viewer>
+  </el-dialog>		
 	<el-dialog title="短信" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false'>
 			<el-form :model="messageform" :ref="messageform" >
 				<el-form-item label="合同号" :label-width="formLabelWidth" >
@@ -255,12 +257,14 @@ import {
   creditApproval
 } from "@/api/basedata";
 export default {
+  name:"images",
   props: ["callback"],
   data() {
     return {
+      PreImg:false,
       SpMessage:"",
       options:{},
-      imgUrlList: [],
+      images: [],
       websock: null,
       backMsg: "",
       datas: "",
@@ -1273,13 +1277,16 @@ export default {
       });
     },
     ImgPreview(){
-            const viewer = this.$el.querySelector(".images").$viewer
+      this.PreImg=true
             let para = {
                 appNum:this.$parent.appNum
             }
-            getACSDataMirror(para).then(res =>{
-              if(res.data.success){
-                 this.imgUrlList=res.data
+            getACSDataMirror(para).then(res =>{ 
+              if(res.data.success){               
+                //  =res.data.result
+                 
+                 this.images=res.data.result
+                 console.log(this.images)
               }else{
                 this.$message({
           	      type: "error",
@@ -1287,23 +1294,25 @@ export default {
                 });
               }
             })
-            viewer.show();
+            //viewer.show();
         }
   },
-  created() {
-    this.initWebSocket();
-  },
-  beforeMount() {},
-  mounted() {
+  created() { 
+    this.getaddress();
+    this.getaddressType();
     this.threadPoxi();
     this.callParent();
     this.getlists();
-    this.PathList();
+    this.initWebSocket();
+    this.ImgPreview()
+  },
+  beforeMount() {},
+  mounted() {
+   this.PathList();
     this.restaurants = this.userList;
     this.restaurants1 = this.getname;
     this.restaurants2 = this.getfangshi;
-    this.getaddress();
-    this.getaddressType();
+    
     this.NoRefresh();
   },
   watch: {
@@ -1407,7 +1416,6 @@ export default {
 #selectMess .el-input__inner {
   height: 30px !important;
 }
-.images{display: none}
 .el-icon-view{cursor: pointer;color: #20a0ff;margin-left: 5px;}
 @media screen and (max-width: 1250px) {
   /* #FixForm{display:flex} */
