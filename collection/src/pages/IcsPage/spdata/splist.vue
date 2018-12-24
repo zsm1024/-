@@ -25,7 +25,7 @@
 				<el-form-item>
 					<el-button type="primary" size="mini" @click="getlists" >查询</el-button> 
           <el-button type="primary" size="mini" @click="ListApply('Y')" >批量批准</el-button> 
-          <el-button type="primary" size="mini" @click="ListApply('N')" >批量拒绝</el-button> 
+          <!-- <el-button type="primary" size="mini" @click="ListApply('N')" >批量拒绝</el-button>  -->
 				</el-form-item>		
 			</el-form>
 		</el-col>
@@ -182,7 +182,7 @@ export default {
 
 <style >
 #SPList .el-table__expand-icon{height: unset}
-#SPList .el-form-item__content{line-height: unset}
+#SPList .el-form-item__content{line-height: unset;margin-left: 75px}
 #Mark{text-align: left}
 #Mark .el-form-item__label{padding:unset}
 #Mark .el-form-item{margin-left: 12px}

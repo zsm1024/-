@@ -19,7 +19,7 @@
             
             <el-table-column label="操作"  align="center" >
                 <template  slot-scope="scope">
-                    <router-link class="a-href" :to="{path:'/IcsPage/monitor/striusertotaldetail/'+scope.row.id}">详情</router-link>
+                    <router-link class="a-href" :to="{path:'/IcsPage/monitor/MoCoDetial/'+scope.row.id}">详情</router-link>
                     
                 </template>
             </el-table-column>

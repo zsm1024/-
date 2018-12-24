@@ -15,6 +15,11 @@ export const constantRouterMap = [{
     hidden: true
   },
   {
+  path: '/IcsPage/ImgPreve/:id',
+  component: _import('IcsPage/tab/tablist/ImgPreve'),
+  hidden: true
+  },
+  {
     path: '/404',
     component: _import('errorPage/404'),
     hidden: true
@@ -91,6 +96,12 @@ export const constantRouterMap = [{
         name: '用户任务实时分布监控',
         hidden: true,
         component: _import('IcsPage/monitor/userdistribution')
+      },
+      {
+        path: 'IcsPage/monitor/MoCoDetial/:id',
+        name: '协办任务监控详情',
+        hidden: true,
+        component: _import('IcsPage/monitor/MoCoDetial')
       },
       {
         path: 'IcsPage/monitor/stributotaldetail/:id',
@@ -328,7 +339,7 @@ export const constantRouterMap = [{
 ]
 
 export default new Router({
-  //mode: 'history', //后端支持可开
+  mode: 'history', //后端支持可开
   scrollBehavior: () => ({
     y: 0
   }),

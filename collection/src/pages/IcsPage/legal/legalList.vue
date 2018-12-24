@@ -231,12 +231,12 @@ export default {
     tableRowClassName(row, rowIndex) {  
       if ((row.firstCourtTime != null && row.firstCourtTime)||(row.discreditTime != null && row.discreditTime)) {
          if(getOffsetDays1(row.firstCourtTime) >=-6&&getOffsetDays1(row.firstCourtTime) <0){
-           if(getOffsetDays(row.discreditTime) <=30){
+           if(getOffsetDays(row.discreditTime) >=698&&getOffsetDays(row.discreditTime) <=732){
               return "allColor";
            }
             return "yColor";
          }else{
-           if(getOffsetDays(row.discreditTime) <=30){
+           if(getOffsetDays(row.discreditTime) >=698&&getOffsetDays(row.discreditTime) <=732){
               return "bColor";
            }                               
          }

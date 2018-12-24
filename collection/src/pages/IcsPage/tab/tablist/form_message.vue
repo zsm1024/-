@@ -6,7 +6,11 @@
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
 			<i class="el-icon-view" @click="checkPreview">征信预览</i>
       <i class="el-icon-edit" @click="checkSerch">征信查询</i>  
-      <i class="el-icon-picture" @click="ImgPreview">影像件预览</i>
+      <!-- <i class="el-icon-picture" @click="ImgPreview">影像件预览</i> -->
+       <!-- <span  @click="PRES">       -->
+        <router-link tag="a" target="_blank" :to="{path:'/IcsPage/ImgPreve/'+ids}">
+        <i class="el-icon-picture">影像件预览</i>
+       </router-link> 
 		</el-col>
 	</el-row>
 	<div id="tables">    
@@ -49,11 +53,11 @@
 		</el-col>  
 		</el-form>							
 	</div>	
-  <el-dialog title="图片预览" :visible.sync="PreImg" :modal="true" :modal-append-to-body="false"  :show-close='false'>
+  <!-- <el-dialog title="图片预览" :visible.sync="PreImg" :modal="true" :modal-append-to-body="false"  :show-close='false'>
     <viewer :images="images">
       <img v-for="src in images" :src="src.url" :key="src.code" width="100" height="100" style="cursor: pointer;margin:0 2px">
     </viewer>
-  </el-dialog>		
+  </el-dialog>		 -->
 	<el-dialog title="短信" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false'>
 			<el-form :model="messageform" :ref="messageform" >
 				<el-form-item label="合同号" :label-width="formLabelWidth" >
@@ -73,7 +77,7 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button style="padding:10px" @click="searchCancle" type="primary">取 消</el-button>
+				<el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
 				<el-button type="primary" @click.native.prevent="confirmmessage('messageform')" style="padding:10px">确 定</el-button>
 			</div>
 		</el-dialog>
@@ -261,6 +265,7 @@ export default {
   props: ["callback"],
   data() {
     return {
+      ids:"",
       PreImg:false,
       SpMessage:"",
       options:{},
@@ -344,6 +349,7 @@ export default {
         appointmentTime: "",
         afpRecord: ""
       },
+      searchBtn:false,
       SearchMarks:"",
       search:false,
       messageopen: false,
@@ -411,6 +417,12 @@ export default {
     };
   },
   methods: {
+    PRES(){
+      this.$router.push({path:'/IcsPage/ImgPreve',query:{id:this.$parent.appNum}})
+    },
+    // PreveImgs(item){
+    //     console.log(item.appNum)
+    // },
     checkSerch(){
       
       let para={
@@ -642,13 +654,15 @@ export default {
       });
       localStorage.removeItem("CJPhone");
     },
-    callParent() {
+    callParent() {     
       let para = {
         missionId: this.$route.params.id
       };
       tab_view(para).then(res => {
         let data = res.data.result;
         this.lists = data;
+        this.ids=data.appNum;
+        console.log(this.ids)
         this.phoneListNums = data.customerPhones;
         this.applicationNumber = data.applicationNumber;
         this.UserArr.splice(0, this.UserArr.length);
@@ -1283,10 +1297,7 @@ export default {
             }
             getACSDataMirror(para).then(res =>{ 
               if(res.data.success){               
-                //  =res.data.result
-                 
                  this.images=res.data.result
-                 console.log(this.images)
               }else{
                 this.$message({
           	      type: "error",
@@ -1294,26 +1305,27 @@ export default {
                 });
               }
             })
-            //viewer.show();
-        }
+        },
   },
   created() { 
-    this.getaddress();
-    this.getaddressType();
     this.threadPoxi();
-    this.callParent();
-    this.getlists();
-    this.initWebSocket();
-    this.ImgPreview()
+    // this.ImgPreview()
   },
   beforeMount() {},
   mounted() {
+  this.getaddress();
+  this.getaddressType();
+  this.callParent();
+  this.getlists();
+  this.initWebSocket();
    this.PathList();
     this.restaurants = this.userList;
     this.restaurants1 = this.getname;
-    this.restaurants2 = this.getfangshi;
-    
+    this.restaurants2 = this.getfangshi;   
     this.NoRefresh();
+    
+    
+    
   },
   watch: {
     backMsg(curval) {

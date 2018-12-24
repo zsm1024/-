@@ -44,7 +44,13 @@ export function getMissionListByUser(params){
         params: params
     })
 }
-
+export function getMissionListByCOUser(params){
+    return fetch({
+        url: '/userMoitoring/getMissionListByCOUser',
+        method: 'get',
+        params: params
+    })
+}
 export function getstation(params) {
     return fetch({
       url: '/getstation',
