@@ -17,6 +17,7 @@ import iView from 'iview';
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
 import 'iview/dist/styles/iview.css';
+import VueLazyLoad from 'vue-lazyload'
 if(process.env.NODE_ENV=="development"){
     Mock.bootstrap();
 }
@@ -28,6 +29,7 @@ Vue.use(Viewer,{
     zIndex: 9999
 }
 })
+Vue.use(VueLazyLoad)
 Vue.use(VueResource);
 Vue.component('v-select', vSelect);
 Vue.use(Validator)

@@ -417,12 +417,6 @@ export default {
     };
   },
   methods: {
-    PRES(){
-      this.$router.push({path:'/IcsPage/ImgPreve',query:{id:this.$parent.appNum}})
-    },
-    // PreveImgs(item){
-    //     console.log(item.appNum)
-    // },
     checkSerch(){
       
       let para={
@@ -438,6 +432,9 @@ export default {
                 message:res.data.message, 
                 type: "error",
               });         
+        }
+        else if(res.data.code==3){
+           this.SearchPreview()       
         }else{
            this.checkPreview()
         }
@@ -1271,22 +1268,21 @@ export default {
         appNum: this.$parent.appNum
       };
       searchCustomerCredit(para).then(res => {
-        this.datas = res.data.Preview;
-        const datas = "Search " + JSON.stringify(this.datas);
+        this.datas = res.data.Search;
+        const Searchdatas = "Search " + JSON.stringify(this.datas);
         if (this.backMsg.Type == "ConnOK") {
           let that = this;
-          that.websocketsend(datas);
-          // if(this.backMsg.Type=="SEARCH_FAIL"){
-          // 	this.$message({
-          // 	type: "error",
-          //     message:this.backMsg.Msg,
-
-          //   });
-          // }
-          // that.threadPoxi()
+          that.websocketsend(Searchdatas);
+          if(this.backMsg.Type=="SEARCH_FAIL"){
+          	this.$message({
+          	type: "error",
+              message:this.backMsg.Msg,
+            });
+          }
+          that.threadPoxi()
         } else {
           this.threadPoxi();
-          this.websocketsend(datas);
+          this.websocketsend(Searchdatas);
         }
       });
     },

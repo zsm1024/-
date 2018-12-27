@@ -1,10 +1,9 @@
 <template>
-    <section>
-    <viewer :images="images">
-      <img v-for="src in images" :src="src.url" :key="src.code" width="100" height="100" style="cursor: pointer;margin:0 2px">
+    <section>      
+    <viewer v-if="images.length>0"  :images="images">
+      <img class="bcImg" v-for="src in images" v-lazy="src.url" :key="src.code" width="100" height="100" style="cursor: pointer;margin:0 2px">
     </viewer>
-    </section>
-    
+    </section> 
 </template>
 <script>
 import { getACSDataMirror } from "@/api/basedata";
@@ -12,13 +11,13 @@ export default ({
     data(){
         return{
         images:[],
+        // <img v-for="src in images" :src="src.url" :key="src.code" width="100" height="100" style="cursor: pointer;margin:0 2px">
         appNums:this.$route.params.id
         }
        
     },
 methods:{       
     ImgPreview(){
-        console.log(this.$route)
                 let para = {
                     appNum:this.appNums
                 }
@@ -39,6 +38,10 @@ mounted(){
 }
 })
 </script>
+<style>
+    .bcImg{background-image: url("../../../../assets/wait.gif");background-repeat:no-repeat;background-size: 100% 100%}
+</style>
+
 
 
 
