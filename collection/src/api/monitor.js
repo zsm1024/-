@@ -72,3 +72,10 @@ export function ControlVehicle(params) {
       params: params
     })
 }
+export function digitalExport(params) {
+    return fetch({
+      url: '/userMoitoring/digitalExport',
+      method: 'get',
+      params: params
+    })
+}

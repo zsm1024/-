@@ -5,13 +5,54 @@
 				<div>
 					<table class="ht_table">	
 						<tr>
-							<td class="tds">已核销本金总额</td><td>{{details.writeOffPrincipal}}</td>
-							<td class="tds">已核销利息总额</td><td>{{details.writeOffInterest}}</td>		
-							<td class="tds">已核罚息</td><td>{{details.writeOffPenalty}}</td>							
+							<td class="tds">已核销本金总额</td>
+              <td>
+                <Input           
+                size="small"
+                v-model="details.writeOffPrincipal"
+                style="text-align:center"             
+              /> 
+              <!-- @on-blur="overdueDaysEdit(items.overdueDays)"  -->
+                <!-- {{details.writeOffPrincipal}} -->
+                </td>
+							<td class="tds">已核销利息总额</td>
+              <td>
+                <Input           
+                size="small"
+                v-model="details.writeOffInterest"
+                style="text-align:center"             
+              />
+                <!-- {{details.writeOffInterest}} -->
+                </td>		
+							<td class="tds">已核罚息</td>
+              <td>
+                <Input           
+                size="small"
+                v-model="details.writeOffPenalty"
+                style="text-align:center"             
+              />
+                </td>	
+              <!-- <td>{{details.writeOffPenalty}}</td>							 -->
 						</tr>
 						<tr>
-							<td class="tds">已核费用</td><td>{{details.writeOffFee}}</td>
-							<td class="tds">核销总额</td><td>{{details.writeOffTotalAmount}}</td>
+							<td class="tds">已核费用</td>
+              <td>
+                <Input           
+                size="small"
+                v-model="details.writeOffFee"
+                style="text-align:center"             
+              />
+                </td>	
+              <!-- <td>{{details.writeOffFee}}</td> -->
+							<td class="tds">核销总额</td>
+                <td>
+                <Input           
+                size="small"
+                v-model="details.writeOffTotalAmount"
+                style="text-align:center"             
+              />
+                </td>	
+              <!-- <td>{{details.writeOffTotalAmount}}</td> -->
 							<td class="tds">核销日期</td><td>{{details.writeOffDate}}</td>
 						</tr>
 					</table>

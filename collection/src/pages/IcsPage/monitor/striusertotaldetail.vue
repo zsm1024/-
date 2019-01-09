@@ -30,7 +30,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="lists"  :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
+		<el-table  v-if="this.haName.indexOf(isName)!=-1" :data="lists"  :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
 			<el-table-column type="selection"  align="center">
 			</el-table-column>
 			<el-table-column fixed label="操作"  align="center">
@@ -38,11 +38,20 @@
 					<router-link class="a-href" :to="{path:'/IcsPage/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
 				</template>
 			</el-table-column>
-			
-			<el-table-column sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" show-overflow-tooltip>
+      <el-table-column  sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in colsMore" :key="index" show-overflow-tooltip>
 			</el-table-column>
 		</el-table>
-
+  <el-table v-else :data="lists"  :max-height="heights" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" stripe border  @current-change="handleCurrentChanges" ref="singleTable2">
+			<el-table-column type="selection"  align="center">
+			</el-table-column>
+			<el-table-column fixed label="操作"  align="center">
+				<template slot-scope="scope">
+					<router-link class="a-href" :to="{path:'/IcsPage/tab/tabview/'+scope.row.id}"><span @click="setCurrent(scope.$index,scope.row.id)">处理</span></router-link>
+				</template>
+			</el-table-column>			
+			<el-table-column  sortable align="center" :prop="col.field" :label="col.title" :width="col.width" v-for="(col, index) in cols" :key="index" show-overflow-tooltip>
+			</el-table-column>
+		</el-table>`
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			
@@ -58,10 +67,12 @@
 <script>
 //import NProgress from 'nprogress'
 import { getMissionListByUser } from "@/api/monitor";
-
+import {findByType } from "@/api/basedata";
 export default {
   data() {
     return {
+      haName:[],
+      isName:localStorage.getItem("userName"),
       heights:0,
         value6:"",
 				times1:"",
@@ -98,6 +109,29 @@ export default {
             {title:'贷款产品',field:'loanProducts',width:120},  
             {title:'核销状态',field:'isnodis'},
         ],
+         colsMore: [
+            {title:'借款人',field:'name',width:80}, 
+            {title:'合同号',field:'applicationNumber',width:80},
+            {title:'逾期天数',field:'overdueDays',width:80},
+            {title:'逾期金额',field:'sumOverdue',width:80},
+            {title:'岗位ID',field:'position'},
+            {title:'处理人',field:'realUser'},
+            {title:'用户ID',field:'username'},
+            {title:'最近行动代码',field:'actSign',width:100},
+            {title:'最近行动时间',field:'inputTime',width:160},
+            {title:'贷款金额',field:'loanAmount'},
+            {title:'未偿本金',field:'residualAmount'},           
+            {title:'职业',field:'occupation',width:100},
+            {title:'首付比例',field:'firstRatio'},
+            {title:'省份',field:'province',width:80},
+            {title:'城市',field:'city',width:80},
+             {title:'车型',field:'loanCar',width:160}, 
+            {title:'经销商',field:'dealer',width:120},
+            {title:'贷款产品',field:'loanProducts',width:120},  
+            {title:'核销状态',field:'isnodis'},
+            {title:'征信评分',field:'digital'},
+            {title:'评分排名',field:'rankingDigital'},
+        ],
         total: 0,
         page: 1,
         pagesize: 500,
@@ -107,6 +141,17 @@ export default {
   },
 
   methods: {
+    findType() {
+    let pa = {
+        type: "credit_Nor"
+      };
+      findByType(pa).then(res => {
+        let data = res.data.result;
+        data.forEach(el =>{
+          this.haName.push(el.val)
+        });
+      });
+    },
     setCurrent(row,id) {
 				this.$refs.singleTable2.setCurrentRow(row);
 			  localStorage.setItem("nextNum","0");
@@ -170,6 +215,9 @@ export default {
     selsChange: function(sels) {
       this.sels = sels;
     }
+  },
+  created(){
+    this.findType()
   },
   mounted() {
     this.getlists();

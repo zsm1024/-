@@ -468,7 +468,6 @@ export default {
       // let obj=new	Path();
       this.importFileUrl = path.api + "/files/upload";
       this.downLoadPath = path.api;
-      // console.log(obj.uploadPath)
     },
 
     fileListTypesChange(val) {
@@ -544,7 +543,6 @@ export default {
         if (valid) {
           this.disabledto = true;
           recordAdd(para).then(res => {
-            // console.log(res)
             if (res.data.success) {
               this.$refs["mainform"].resetFields();
               this.$notify({
@@ -619,14 +617,14 @@ export default {
             localStorage.setItem(this.nextId, this.nextId);
           });
           recordAdd(para).then(res => {
-            // console.log(res)
             if (res.data.success) {
-              this.$refs["mainform"].resetFields();
+             
               this.$notify({
                 type: "success",
                 message: "提交成功",
                 duration: 1000
-              });
+              }); 
+              // this.$refs[mainform].resetFields();
               setTimeout(() => {
                 this.disabledNex = false;
               }, 1000);
@@ -634,7 +632,7 @@ export default {
               localStorage.removeItem(this.nextId, this.nextId);
               localStorage.removeItem(this.$route.params.id);
             } else {
-              this.$refs["mainform"].resetFields();
+              this.$refs[mainform].resetFields();
               this.$notify({
                 type: "error",
                 message: "提交失败，请联系管理员！",
@@ -659,7 +657,6 @@ export default {
         let data = res.data.result;
         this.lists = data;
         this.ids=data.appNum;
-        console.log(this.ids)
         this.phoneListNums = data.customerPhones;
         this.applicationNumber = data.applicationNumber;
         this.UserArr.splice(0, this.UserArr.length);
@@ -864,7 +861,9 @@ export default {
         RowId: this.$route.params.id
       };
       var RowIds = localStorage.getItem(this.$route.params.id);
-      if (localStorage.getItem("REefresh") != "") {
+      if(RowIds&&RowIds!=null){    
+      if (localStorage.getItem("REefresh") != "") { 
+        var RowIds = localStorage.getItem(this.$route.params.id);
         var FreshList = JSON.parse(localStorage.getItem("REefresh"));
         if (RowIds == FreshList.RowId) {
           (this.mainform.actSign = FreshList.actSign),
@@ -877,6 +876,7 @@ export default {
         } else {
           return false;
         }
+      } 
       }
     },
     //文件上传部分
@@ -896,10 +896,8 @@ export default {
       }
     },
     handleRemove(file, fileList) {
-      // console.log(file,fileList)
     },
     handlePreview(file) {
-      //  console.log(file)
     },
     handleChange(file, fileList) {},
     beforeUpload: function(file) {
@@ -963,7 +961,6 @@ export default {
         id: this.$route.params.id
       };
       RecordsFind(para).then(res => {
-        // console.log(res)
       });
       this.getvisitlist();
     },
@@ -1106,7 +1103,6 @@ export default {
           VisitRecords(para).then(res => {
             this.getvisitlist();
             this.$refs.mainformvisit.resetFields();
-            // console.log(res)
           });
         }
       } else {
@@ -1117,11 +1113,8 @@ export default {
             addressType: this.mainformvisit.addressType,
             address: this.mainformvisit.address,
             addressReal: this.mainformvisit.istrue,
-            // addressRemarks:this.mainformvisit.addressName,
             callReal: this.mainformvisit.isanswer,
             seeIt: "",
-            // seeItS:this.mainformvisit.ispersons,
-            // :this.mainformvisit.,
             cusAddressSituation: this.mainformvisit.addressStn,
             ownerHource: this.mainformvisit.houseStn,
             cusWorkSituation: this.mainformvisit.workStn,
@@ -1149,7 +1142,6 @@ export default {
             VisitRecords(para).then(res => {
               this.getvisitlist();
               this.$refs.mainformvisit.resetFields();
-              // console.log(res)
             });
           }
         } else {
@@ -1159,11 +1151,8 @@ export default {
             addressType: this.mainformvisit.addressType,
             address: this.mainformvisit.address,
             addressReal: this.mainformvisit.istrue,
-            // addressRemarks:this.mainformvisit.addressName,
             callReal: this.mainformvisit.isanswer,
             seeIt: this.mainformvisit.isperson,
-            // seeItS:this.mainformvisit.ispersons,
-            // :this.mainformvisit.,
             cusAddressSituation: this.mainformvisit.addressStn,
             ownerHource: this.mainformvisit.houseStn,
             cusWorkSituation: this.mainformvisit.workStn,
@@ -1193,7 +1182,6 @@ export default {
             VisitRecords(para).then(res => {
               this.getvisitlist();
               this.$refs.mainformvisit.resetFields();
-              // console.log(res)
             });
           }
         }

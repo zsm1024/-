@@ -9,8 +9,8 @@
                 <el-form-item>
                     <el-button type="primary" size="mini" @click="getlists" >查询</el-button>
                 </el-form-item>
-                <el-form-item>
-                
+                <el-form-item  >
+                	<el-button v-if="this.haName.indexOf(isName)!=-1" type="primary" size="mini" @click="zxExport" >征信导出</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -37,15 +37,17 @@
 
 <script>
 	//import NProgress from 'nprogress'
-	import { queuetotal } from '@/api/monitor';
-
+	import { queuetotal,digitalExport } from '@/api/monitor';
+	import {findByType } from "@/api/basedata";
 	export default {
 		data() {
 			return {
+				haName:[],
+      			isName:localStorage.getItem("userName"),
 				filters: {
 					queueName:'',
 				},
-			
+				exportUrl:window.g.api,
 				lists: [],
 				cols: [
                     {title:'队列名称',field:'queueName'},
@@ -69,7 +71,21 @@
 			}
 		},
 		methods: {
+			findType() {
+				let pa = {
+					type: "export_Credit"
+				};
+				findByType(pa).then(res => {
+					let data = res.data.result;
+					data.forEach(el =>{
+					this.haName.push(el.val)
+					});
+				});
+				},
+			zxExport(){
+				window.open(`${this.exportUrl}/userMoitoring/digitalExport`)
 
+			},
 			handleSizeChange(val) {
 				this.pagesize = val;
 				this.getlists();
@@ -99,6 +115,9 @@
 					//NProgress.done();
 				});
 			},		
+		},
+		created(){
+			this.findType()
 		},
 		mounted() {
             this.getlists();

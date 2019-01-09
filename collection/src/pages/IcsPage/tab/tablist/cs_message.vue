@@ -165,39 +165,85 @@
       <el-collapse-item name="6" title="逾期基本信息">
         <el-form :data="items" inline class="table-expand">
           <el-form-item label="逾期日期:">
-            <span>{{items.overdueDate}}</span>
+            <span class="Dispan">{{items.overdueDate}}</span>
           </el-form-item>
-          <el-form-item label="本次逾期天数:">
-            <span>{{items.overdueDays}}</span>
-            <!-- <span>{{items.ThisOverdueDay}}</span> -->
+          <el-form-item label="本次逾期天数:">           
+            <Input           
+                size="small"
+                v-model="items.overdueDays"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.overdueDays)" 
+              />
           </el-form-item>
           <el-form-item label="本期逾期天数:">
-            <span>{{items.overdueDaysperiod}}</span>
-            <!-- <span>{{items.ThisCurrentdDay}}</span> -->
+            <span  class="Dispan">{{items.overdueDaysperiod}}</span>
           </el-form-item>
           <el-form-item label="月应还款金额:">
-            <span>{{items.monthlyRepayment}}</span>
+            <span  class="Dispan">{{items.monthlyRepayment}}</span>
           </el-form-item>
           <el-form-item label="逾期本金总计:">
-            <span>{{items.sumOverdue}}</span>
+             <Input           
+                size="small"
+                v-model="items.sumOverdue"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.sumOverdue)" 
+              />
           </el-form-item>
           <el-form-item label="到期利息总计:">
-            <span>{{items.totalDue}}</span>
+             <Input           
+                size="small"
+                v-model="items.totalDue"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.totalDue)" 
+              />
           </el-form-item>
           <el-form-item label="逾期还款总额:">
-            <span>{{items.totalPayment}}</span>
+            <Input           
+                size="small"
+                v-model="items.totalPayment"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.totalPayment)" 
+              />
           </el-form-item>
           <el-form-item label="逾期利息:">
-            <span>{{items.overdueInterest}}</span>
+            <Input           
+                size="small"
+                v-model="items.overdueInterest"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.overdueInterest)" 
+              />
           </el-form-item>
           <el-form-item label="逾期费用:">
-            <span>{{items.overdueMoney}}</span>
+             <Input           
+                size="small"
+                v-model="items.overdueMoney"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.overdueMoney)" 
+              />
           </el-form-item>
           <el-form-item label="逾期应收总计:">
-            <span>{{items.overdueTotal}}</span>
+              <Input           
+                size="small"
+                v-model="items.overdueTotal"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(items.overdueTotal)" 
+              />
           </el-form-item>
           <el-form-item label="ET结算金额:">
-            <span>{{ET}}</span>
+            <Input           
+                size="small"
+                v-model="ET"
+                class="inputInner Edit"
+                style="text-align:center"
+                @on-blur="baseEdit(ET)" 
+              />
           </el-form-item>
         </el-form>
       </el-collapse-item>
@@ -205,7 +251,6 @@
         <el-form :data="items" inline class="table-expand">
           <el-form-item label="申请号:">
             <span>{{items.appNum}}</span>
-            <!-- <span>{{items.delyNum}}</span> -->
           </el-form-item>
           <el-form-item label="合同号:">
             <span>{{items.applicationNumber}}</span>
@@ -631,6 +676,12 @@ export default {
     };
   },
   methods: {
+    baseEdit(item){
+      console.log(item)
+    },
+    // overdueDaysEdit(item){
+    //   alert(item)
+    // },   
 	  addressNumChange(val){
 		  this.AddWorkForm.addressNum=val
 	  },
@@ -650,7 +701,6 @@ export default {
       this.$refs[AdduserForm].validate(valid => {
         if (valid) {
           addInfo(para).then(res => {
-            // debugger;
             if (res.data.success) {
               this.$message({
                 type: "success",
@@ -1219,6 +1269,8 @@ td {
 #addUserInfos button {
   padding: 8px;
 }
+.Edits{width:120px!important}
+.Dispan{display:inline-block;width:169px}
 .inputInner .el-input__inner {
   margin-left: 0px !important;
 }

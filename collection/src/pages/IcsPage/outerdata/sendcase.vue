@@ -14,6 +14,9 @@
           <el-form-item>
             <el-input v-model="filters.processer" placeholder="用户ID"  clearable style="width:120px"></el-input>           
         </el-form-item>
+         <el-form-item>
+            <el-input v-model="filters.lastSendCompany" placeholder="上次委案公司"  clearable style="width:120px"></el-input>           
+        </el-form-item>
         <el-form-item>
             <el-date-picker v-model="value6" 
 					type="daterange" 
@@ -149,7 +152,8 @@ export default {
         appointmentTime: "",
         processer: "",
         startTime: "",
-        endTime: ""
+        endTime: "",
+        lastSendCompany:""
       }
     };
   },
@@ -309,7 +313,8 @@ export default {
         appointmentTime: this.filters.appointmentTime,
         startTime: this.times1,
         endTime: this.times2,
-        username: this.filters.processer
+        username: this.filters.processer,
+        lastSendCompany:this.filters.lastSendCompany
       };
       this.listLoading = true;
       this.backDisable=true
