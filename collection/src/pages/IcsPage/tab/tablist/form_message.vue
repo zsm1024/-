@@ -862,10 +862,10 @@ export default {
       };
       var RowIds = localStorage.getItem(this.$route.params.id);
       if(RowIds&&RowIds!=null){    
-      if (localStorage.getItem("REefresh") != "") { 
+      if (localStorage.getItem("REefresh")&&  localStorage.getItem("REefresh")!=null) { 
         var RowIds = localStorage.getItem(this.$route.params.id);
-        var FreshList = JSON.parse(localStorage.getItem("REefresh"));
-        if (RowIds == FreshList.RowId) {
+        var FreshList = JSON.parse(localStorage.getItem("REefresh"));   
+         if (RowIds == FreshList.RowId) {
           (this.mainform.actSign = FreshList.actSign),
             (this.mainform.allowance = FreshList.allowance),
             (this.mainform.allDate = FreshList.allDate),
