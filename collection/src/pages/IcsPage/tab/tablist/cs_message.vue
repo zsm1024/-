@@ -2,7 +2,7 @@
   <section ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">
     <el-collapse v-model="activeNames">
       <el-collapse-item name="10" title="客户基本信息">
-        <template slot-scope="title">
+        <template >
           <el-table
             :data="items.customerSimpleList"
             border
@@ -57,8 +57,7 @@
             <template slot-scope="scope">
               <el-select
                 v-if="cols.field=='roleName'"
-                v-model="scope.row[cols.field]"
-                placeholder
+                v-model="scope.row[cols.field]"           
                 @change="phoneEdit(scope.row)"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
@@ -83,14 +82,17 @@
                   :value="item.val"
                 ></el-option>
               </el-select>
-              <Input
+              <!-- <Input
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='roleName'&&cols.field!='effectiveness'"
                 size="small"
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
                 @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
-              />
+              /> -->
+               <span
+                v-if="scope.row.infoSource=='ICS'&&(cols.field=='infoSource'||cols.field=='phone')" :class="{changecolor:scope.row['effectiveness']=='N'}"
+              >{{ scope.row[cols.field] }}</span>
               <i
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"
                 class="ivu-icon ivu-icon-ios-phone-portrait"
@@ -118,10 +120,7 @@
                 class="inputInner"
                 style="text-align:center"
                 @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
-              />
-              <span
-                v-if="scope.row.infoSource=='ICS'&&cols.field=='infoSource'" :class="{changecolor:scope.row['effectiveness']=='N'}"
-              >{{ scope.row[cols.field] }}</span>
+              />             
               <span
                 v-if="(scope.row.infoSource=='CMS'&&cols.field!='roleName'&&cols.field!='relationship'&&cols.field!='phoneNum'&&cols.field!='effectiveness')" :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols.field] }}</span>
@@ -172,8 +171,7 @@
                 size="small"
                 v-model="items.overdueDays"
                 class="inputInner Edit"
-                style="text-align:center"
-                @on-blur="baseEdit(items.overdueDays)" 
+                style="text-align:center"             
               />
           </el-form-item>
           <el-form-item label="本期逾期天数:">
@@ -188,7 +186,6 @@
                 v-model="items.sumOverdue"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(items.sumOverdue)" 
               />
           </el-form-item>
           <el-form-item label="到期利息总计:">
@@ -197,7 +194,6 @@
                 v-model="items.totalDue"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(items.totalDue)" 
               />
           </el-form-item>
           <el-form-item label="逾期还款总额:">
@@ -206,7 +202,6 @@
                 v-model="items.totalPayment"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(items.totalPayment)" 
               />
           </el-form-item>
           <el-form-item label="逾期利息:">
@@ -215,7 +210,6 @@
                 v-model="items.overdueInterest"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(items.overdueInterest)" 
               />
           </el-form-item>
           <el-form-item label="逾期费用:">
@@ -224,7 +218,6 @@
                 v-model="items.overdueMoney"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(items.overdueMoney)" 
               />
           </el-form-item>
           <el-form-item label="逾期应收总计:">
@@ -233,18 +226,17 @@
                 v-model="items.overdueTotal"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(items.overdueTotal)" 
               />
           </el-form-item>
           <el-form-item label="ET结算金额:">
             <Input           
                 size="small"
-                v-model="ET"
+                v-model="items.etTotal"
                 class="inputInner Edit"
                 style="text-align:center"
-                @on-blur="baseEdit(ET)" 
               />
           </el-form-item>
+          <el-button type="primary" :disabled="IsRight" @click="SubOverdueInfo(items)">确认修改</el-button>
         </el-form>
       </el-collapse-item>
       <el-collapse-item name="5" title="合同基本信息">
@@ -538,7 +530,9 @@ import {
   addMessage,
   jxsInfo,
   getdeal,
-  colHistory_note
+  colHistory_note,
+  getStatusByUpdateOverdue,
+  updateOverdue
 } from "@/api/tablist";
 import { isCodeNum, isPhoneNum, isChinaName } from "@/utils/validate";
 import formMessage from "../tablist/form_message";
@@ -646,7 +640,7 @@ export default {
 		effectiveness: "Y",
 		addressNum:""
       },
-
+      IsRight:true,
       phonerules: {
         roleName: [{ required: true, message: "请输入角色", trigger: "blur" }],
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -676,12 +670,28 @@ export default {
     };
   },
   methods: {
-    baseEdit(item){
-      console.log(item)
+    getStatus(){
+      let para = {
+         missionId:this.$route.params.id
+      }
+       getStatusByUpdateOverdue(para).then(res =>{
+         if(res.data.result==="是"){
+           this.IsRight=false
+         }
+       })
     },
-    // overdueDaysEdit(item){
-    //   alert(item)
-    // },   
+    SubOverdueInfo(item){
+      let para = item
+      updateOverdue(para).then(res =>{
+        if(res.data.success){
+          this.$message({
+            type:"success",
+            message:res.data.message
+          })
+        }
+      })
+      
+    },
 	  addressNumChange(val){
 		  this.AddWorkForm.addressNum=val
 	  },
@@ -930,11 +940,17 @@ export default {
     ring(phoneNum, row) {
       window.frames[""];
       var pattern = "-";
+      console.log(row)
       phoneNum = phoneNum.replace(new RegExp(pattern), "");
       localStorage.removeItem("CJPhone");
+      localStorage.removeItem("CJName");
+      localStorage.removeItem("CJPhoneNum");
       localStorage.setItem("phoneNum", "0" + phoneNum);
       localStorage.setItem("CJPhone", phoneNum);
+      localStorage.setItem("CJName", row.name);
+      localStorage.setItem("CJPhoneNum", row.phoneNum);
       this.$refs.CJlist.PhoneCtr();
+      // console.log(this.$refs.CJlist.mainform.afpRecord)
       var user = localStorage.getItem("userName");
       let phoneNumVal = "0" + phoneNum;
       document.getElementById("frame2").contentWindow.telNumVal(phoneNumVal);
@@ -1125,6 +1141,7 @@ export default {
     this.getJxsInfo();
     this.getPhoneCode();
     this.getmessage_note();
+    this.getStatus()
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||

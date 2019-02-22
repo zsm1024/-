@@ -20,6 +20,11 @@ export const constantRouterMap = [{
   hidden: true
   },
   {
+    path: '/IcsPage/SearchSome',
+    component: _import('IcsPage/tab/tablist/SearchSome'),
+    hidden: true
+  },
+  {
     path: '/404',
     component: _import('errorPage/404'),
     hidden: true
@@ -339,7 +344,7 @@ export const constantRouterMap = [{
 ]
 
 export default new Router({
-  mode: 'history', //后端支持可开
+  //mode: 'history', //后端支持可开
   scrollBehavior: () => ({
     y: 0
   }),

@@ -502,7 +502,8 @@ export default {
       listCoInfo(para).then(el => {
         let data = el.data.result.coVoList;
         this.coVoList = data;
-         this.coVoList.forEach(el => {
+        if(this.coVoList&&this.coVoList!=null){
+          this.coVoList.forEach(el => {
           this.listsLeft.forEach(item =>{
             if(el.coQueueName==item.queueName){
               el.coQueueId=item.id
@@ -513,6 +514,7 @@ export default {
             el.coUser=res.data.result.id
           })
         });
+        }        
         this.icsId = el.data.result.icsId;
         this.applyId = el.data.result.applyId;
       });

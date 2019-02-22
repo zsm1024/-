@@ -6,10 +6,11 @@
 			<i class="el-icon-upload2" @click="encloOpen">附件</i>
 			<i class="el-icon-view" @click="checkPreview">征信预览</i>
       <i class="el-icon-edit" @click="checkSerch">征信查询</i>  
-      <!-- <i class="el-icon-picture" @click="ImgPreview">影像件预览</i> -->
-       <!-- <span  @click="PRES">       -->
         <router-link tag="a" target="_blank" :to="{path:'/IcsPage/ImgPreve/'+ids}">
         <i class="el-icon-picture">影像件预览</i>
+       </router-link> 
+         <router-link tag="a" target="_blank" :to="{path:'/IcsPage/SearchSome'}">
+        <i class="el-icon-view">关键字查询</i>
        </router-link> 
 		</el-col>
 	</el-row>
@@ -18,7 +19,7 @@
  		<el-col id="lists">
 			<el-form-item label="行动代码" prop="actSign">
 				<el-select v-model="mainform.actSign" filterable clearable>
-					<el-option v-for="code in getdaima" :key="code" :value="code"></el-option>
+					<el-option v-for="(code,index) in getdaima" :key="index" :value="code"></el-option>
 				</el-select>
 		</el-form-item>	
 		<el-form-item label="承诺金额" prop="allowance" >
@@ -53,11 +54,6 @@
 		</el-col>  
 		</el-form>							
 	</div>	
-  <!-- <el-dialog title="图片预览" :visible.sync="PreImg" :modal="true" :modal-append-to-body="false"  :show-close='false'>
-    <viewer :images="images">
-      <img v-for="src in images" :src="src.url" :key="src.code" width="100" height="100" style="cursor: pointer;margin:0 2px">
-    </viewer>
-  </el-dialog>		 -->
 	<el-dialog title="短信" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false'>
 			<el-form :model="messageform" :ref="messageform" >
 				<el-form-item label="合同号" :label-width="formLabelWidth" >
@@ -130,7 +126,6 @@
 		</el-dialog>
 <!-- 外访记录 -->
 		<el-dialog :visible.sync="visitListDetial" :modal="true" :modal-append-to-body="false" :show-close='true' title="外访纪录" id="outerdialog">
-			<!-- <visitList></visitList> -->
 	<el-form ref="mainformvisit"  :model="mainformvisit"   inline >	
 
       <el-form-item label="外访日期" prop="appointmentTime" label-width="95px" >
@@ -654,6 +649,7 @@ export default {
         missionId: this.$route.params.id
       };
       tab_view(para).then(res => {
+        debugger
         let data = res.data.result;
         this.lists = data;
         this.ids=data.appNum;
@@ -827,7 +823,10 @@ export default {
     handleSelect(item) {},
     PhoneCtr() {
       let nums = localStorage.getItem("CJPhone");
-      this.mainform.afpRecord += nums;
+      let CJName = localStorage.getItem("CJName");
+      let CJPhoneNum = localStorage.getItem("CJPhoneNum");
+      let str=CJName+"-"+nums+"-"+CJPhoneNum
+      this.mainform.afpRecord += str;
     },
     //催记暂存
     CJStore() {
@@ -1190,7 +1189,8 @@ export default {
     //征信查询
     threadPoxi() {
       var s = {};
-      s.USERNAME = localStorage.getItem("userName");
+      //localStorage.getItem("userName")
+      s.USERNAME ="dhgl" ;
       s.TOKEN = Cookies.get("Admin-Token");
       s.SYSTYPE = "2";
       const agentData = "CONN " + JSON.stringify(s);
@@ -1262,10 +1262,18 @@ export default {
           let that = this;
           that.websocketsend(Searchdatas);
           if(this.backMsg.Type=="SEARCH_FAIL"){
-          	this.$message({
-          	type: "error",
-              message:this.backMsg.Msg,
-            });
+            if(this.backMsg.Msg=="ReCheckInterval"){
+              this.$message({
+                type: "error",
+                  message:"该案件七天之内只能查询一次！",
+                })
+            }else{
+              this.$message({
+          	    type: "error",
+                message:this.backMsg.Msg,
+              });
+            }
+          	
           }
           that.threadPoxi()
         } else {

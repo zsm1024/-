@@ -9,7 +9,7 @@
 					<el-input v-model="filters.applicationNumber" placeholder="合同号" style="width:140px"  clearable>></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.overdueDays" placeholder="逾期天数" style="width:140px"  clearable></el-input>
+					<el-input v-model.number="filters.overdueDays" placeholder="逾期天数" style="width:140px"  clearable></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker v-model="value6" 

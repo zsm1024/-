@@ -234,3 +234,44 @@ export function getUser(params) {
         method: 'get',
     })
 }
+//评分卡规则
+export function scoreCardRules(params) {
+    
+    return fetch({
+        url: '/scoreCardRules/query',
+        method: 'get',
+        params: params
+    })
+}
+export function scoreCardRulesInsert(params) {
+    const data = params;
+    return fetch({
+        url: '/scoreCardRules/insert',
+        method: 'post',
+        data
+    })
+}
+export function allItemName(params) {
+    
+    return fetch({
+        url: '/scoreCardRules/allItemName',
+        method: 'get',
+        params: params
+    })
+}
+export function update(params) {
+    const data = params;
+    return fetch({
+        url: '/scoreCardRules/update',
+        method: 'put',
+        data
+    })
+}
+export function scoreCardRulesDele(params) {
+    const data = params;
+    return fetch({
+        url: '/scoreCardRules/'+params.id,
+        method: 'delete',
+        data
+    })
+}

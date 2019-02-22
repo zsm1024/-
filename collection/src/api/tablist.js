@@ -270,3 +270,18 @@ export function delet(params){
     // params:params
   })
 }
+export function getStatusByUpdateOverdue(params){
+  return fetch({
+    url: '/missionInfos/getStatusByUpdateOverdue',
+    method: 'get',
+    params:params
+  })
+}
+export function updateOverdue(params){
+  const data = params
+  return fetch({
+    url: '/missionInfos/updateOverdue',
+    method: 'put',
+    data
+  })
+}

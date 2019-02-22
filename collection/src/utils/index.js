@@ -265,3 +265,30 @@
    }
    return targetObj
  }
+ //集合筛选指定值（数组）
+export function collectOnly(oriObj, keys) {
+  let tmp = []
+  oriObj.forEach(function (value) {
+    tmp.push(objectOnly(value, keys));
+  })
+  return tmp;
+}
+
+//集合去除指定值
+export function collectExcept(oriObj, keys) {
+  let tmp = []
+  oriObj.forEach(function (value) {
+    tmp.push(objectExcept(value, keys));
+  })
+  return tmp;
+}
+//集合筛选指定值（对象）
+export function objectOnly(oriObj, keys) {
+  let newObj = JSON.parse(JSON.stringify(oriObj));
+  for (const key in newObj) {
+    if (keys.indexOf(key) === -1) {
+      delete newObj[key];
+    }
+  }
+  return newObj;
+}

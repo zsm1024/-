@@ -24,7 +24,6 @@
                     :label="item.name"
                     :value="item.id"    
                 >
-
                 </el-option>
         </el-select>
     </el-form-item>
@@ -135,7 +134,7 @@
               this.form.sort = '';
               this.form.template = '';
               this.form.id = '';
-                done();
+                 done();
              },
 
             addMenuBtn(){

@@ -9,7 +9,7 @@
 					<el-input v-model="filters.applicationNumber" placeholder="合同号" style="width:140px"  clearable>></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.overdueDays" placeholder="逾期天数" style="width:140px"  clearable></el-input>
+					<el-input v-model.number="filters.overdueDays" placeholder="逾期天数" style="width:140px"  clearable></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker v-model="value6" 
@@ -92,6 +92,7 @@
 					// { title: '区域', field: 'Region', width: "80" },		
 					{ title: '核销状态', field: 'stateVerification', width: "100" },
 					{ title: '收车状态', field: 'receiveCarStatus', width: "100" },
+					{ title: '用户ID', field: 'userId', width: "100" },
 					],
 				total: 0,
 				page: 1,

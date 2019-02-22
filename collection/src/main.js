@@ -15,7 +15,6 @@ import Validator from 'vue-validator'
 import './permission' // 权限
 import iView from 'iview';
 import Viewer from 'v-viewer'
-import 'viewerjs/dist/viewer.css'
 import 'iview/dist/styles/iview.css';
 import VueLazyLoad from 'vue-lazyload'
 if(process.env.NODE_ENV=="development"){
@@ -24,11 +23,13 @@ if(process.env.NODE_ENV=="development"){
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(iView);
-Vue.use(Viewer,{
-  defaultOptions: {
-    zIndex: 9999
-}
-})
+ Vue.use(Viewer)
+ //,{
+//   defaultOptions: {
+//     zIndex: 9999,
+//     navbar:1
+// }
+// })
 Vue.use(VueLazyLoad)
 Vue.use(VueResource);
 Vue.component('v-select', vSelect);

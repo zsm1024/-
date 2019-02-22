@@ -17,9 +17,7 @@
 					</el-form>  
 				</el-col>  
 				<!--列表-->
-				<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe>
-					
-					
+				<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe>										
 					<el-table-column 
                         :prop="col.field" 
                         :label="col.title" 
