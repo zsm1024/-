@@ -45,7 +45,7 @@
           <el-input v-model="form.ChildName" auto-complete="off" style="width:300px"></el-input>
         </el-form-item>
         <el-form-item v-if="itemNums==true" label="是否为数字" :label-width="formLabelWidth">
-          <el-select v-model="form.type" placeholder="请选择" style="width:300px" @change="typeChange">
+          <el-select v-model="form.type" placeholder="请选择" disabled style="width:300px" @change="typeChange">
             <el-option v-for="item in types" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
@@ -243,7 +243,12 @@ export default {
         this.form.ChildName = "";
       } else {
         this.itemNums = true;
-        this.form.ChildName = this.form.parentName;
+        this.form.ChildName = this.form.parentName
+       for(var i=0; i<this.options.length;i++){        
+         if(this.options[i].itemName==val){
+           this.form.type = this.options[i].flag
+         }
+       }
       }
     },
     typeChange(val) {
@@ -316,7 +321,6 @@ export default {
         }
       }
       scoreCardRulesInsert(para).then(res => {
-        console.log(res);
         if (res.data.success) {
           this.$message({
             type: "success",
@@ -328,7 +332,7 @@ export default {
         } else {
           this.$message({
             type: "error",
-            message: "添加失败，请联系管理员"
+            message: res.data.message
           });
         }
       });

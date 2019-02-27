@@ -649,7 +649,6 @@ export default {
         missionId: this.$route.params.id
       };
       tab_view(para).then(res => {
-        debugger
         let data = res.data.result;
         this.lists = data;
         this.ids=data.appNum;
