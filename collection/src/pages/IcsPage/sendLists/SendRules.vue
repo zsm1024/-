@@ -441,7 +441,7 @@ export default {
           .then(() => {
             scoreCardRulesDele(para).then(res => {
               console.log(res);
-              if (res.data == "SUCCESS") {
+              if (res.data.success) {
                 this.$message({
                   type: "success",
                   message: "删除成功！"
@@ -450,7 +450,7 @@ export default {
               } else {
                 this.$message({
                   type: "error",
-                  message: "删除失败，请联系管理员！"
+                  message: res.data.message
                 });
               }
             });
