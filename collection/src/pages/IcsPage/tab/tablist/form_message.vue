@@ -543,7 +543,7 @@ export default {
               this.$notify({
                 type: "success",
                 message: "提交成功",
-                duration: 1000
+               offset: 50
               });
               setTimeout(() => {
                 this.disabledto = false;
@@ -553,7 +553,7 @@ export default {
               this.$notify({
                 type: "error",
                 message: "提交失败，请联系管理员！",
-                duration: 1000
+                offset: 50
               });
               setTimeout(() => {
                 this.disabledto = false;
@@ -617,7 +617,7 @@ export default {
               this.$notify({
                 type: "success",
                 message: "提交成功",
-                duration: 1000
+                offset: 50
               }); 
               // this.$refs[mainform].resetFields();
               setTimeout(() => {
@@ -631,7 +631,7 @@ export default {
               this.$notify({
                 type: "error",
                 message: "提交失败，请联系管理员！",
-                duration: 1000
+                offset: 50
               });
               setTimeout(() => {
                 this.disabledNex = false;
@@ -801,15 +801,17 @@ export default {
       } else {
         messageSend(para).then(res => {
           if (res.data.success) {
-            this.$message({
-              type: "success",
-              message: "短信已发送！"
-            });
+            this.$notify({
+                type: "success",
+                message: "短信已发送！",
+                offset: 50
+              }); 
           } else {
-            this.$message({
-              type: "warning",
-              message: "短信未发送！"
-            });
+             this.$notify({
+                type: "warning",
+                message: "短信未发送！",
+                offset: 50
+              }); 
           }
         });
         this.messageopen = false;
@@ -841,10 +843,11 @@ export default {
       };
       localStorage.setItem("REefresh", JSON.stringify(REefresh));
       localStorage.setItem(this.$route.params.id, this.$route.params.id);
-      this.$message({
-        type: "success",
-        message: "暂存成功！"
-      });
+       this.$notify({
+                type: "success",
+                message: "暂存成功",
+                offset: 50
+              });
     },
 
     NoRefresh() {

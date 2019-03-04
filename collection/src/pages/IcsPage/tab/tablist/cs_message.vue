@@ -2,7 +2,7 @@
   <section ref="abc" style="overflow-y: auto;" class="msgs" id="chatContainer">
     <el-collapse v-model="activeNames">
       <el-collapse-item name="10" title="客户基本信息">
-        <template >
+        <template>
           <el-table
             :data="items.customerSimpleList"
             border
@@ -57,7 +57,7 @@
             <template slot-scope="scope">
               <el-select
                 v-if="cols.field=='roleName'"
-                v-model="scope.row[cols.field]"           
+                v-model="scope.row[cols.field]"
                 @change="phoneEdit(scope.row)"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
@@ -89,9 +89,10 @@
                 class="inputInner"
                 style="text-align:center"
                 @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
-              /> -->
-               <span
-                v-if="scope.row.infoSource=='ICS'&&(cols.field=='infoSource'||cols.field=='phone')" :class="{changecolor:scope.row['effectiveness']=='N'}"
+              />-->
+              <span
+                v-if="scope.row.infoSource=='ICS'&&(cols.field=='infoSource'||cols.field=='phone')"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols.field] }}</span>
               <i
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"
@@ -105,7 +106,8 @@
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                @on-blur="phoneEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <i
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"
@@ -119,10 +121,12 @@
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
-              />             
+                @on-blur="phoneEdit(scope.row)"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
+              />
               <span
-                v-if="(scope.row.infoSource=='CMS'&&cols.field!='roleName'&&cols.field!='relationship'&&cols.field!='phoneNum'&&cols.field!='effectiveness')" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                v-if="(scope.row.infoSource=='CMS'&&cols.field!='roleName'&&cols.field!='relationship'&&cols.field!='phoneNum'&&cols.field!='effectiveness')"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols.field] }}</span>
               <i
                 v-if="scope.row.infoSource=='CMS'&&cols.field=='name'"
@@ -166,75 +170,75 @@
           <el-form-item label="逾期日期:">
             <span class="Dispan">{{items.overdueDate}}</span>
           </el-form-item>
-          <el-form-item label="本次逾期天数:">           
-            <Input           
-                size="small"
-                v-model="items.overdueDays"
-                class="inputInner Edit"
-                style="text-align:center"             
-              />
+          <el-form-item label="本次逾期天数:">
+            <Input
+              size="small"
+              v-model="items.overdueDays"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="本期逾期天数:">
-            <span  class="Dispan">{{items.overdueDaysperiod}}</span>
+            <span class="Dispan">{{items.overdueDaysperiod}}</span>
           </el-form-item>
           <el-form-item label="月应还款金额:">
-            <span  class="Dispan">{{items.monthlyRepayment}}</span>
+            <span class="Dispan">{{items.monthlyRepayment}}</span>
           </el-form-item>
           <el-form-item label="逾期本金总计:">
-             <Input           
-                size="small"
-                v-model="items.sumOverdue"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.sumOverdue"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="到期利息总计:">
-             <Input           
-                size="small"
-                v-model="items.totalDue"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.totalDue"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="逾期还款总额:">
-            <Input           
-                size="small"
-                v-model="items.totalPayment"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.totalPayment"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="逾期利息:">
-            <Input           
-                size="small"
-                v-model="items.overdueInterest"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.overdueInterest"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="逾期费用:">
-             <Input           
-                size="small"
-                v-model="items.overdueMoney"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.overdueMoney"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="逾期应收总计:">
-              <Input           
-                size="small"
-                v-model="items.overdueTotal"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.overdueTotal"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-form-item label="ET结算金额:">
-            <Input           
-                size="small"
-                v-model="items.etTotal"
-                class="inputInner Edit"
-                style="text-align:center"
-              />
+            <Input
+              size="small"
+              v-model="items.etTotal"
+              class="inputInner Edit"
+              style="text-align:center"
+            />
           </el-form-item>
           <el-button type="primary" :disabled="IsRight" @click="SubOverdueInfo(items)">确认修改</el-button>
         </el-form>
@@ -310,9 +314,17 @@
             <td>放款行</td>
           </tr>
           <tr>
-            <td>{{dealerName}}</td>
+            <td>
+              {{dealerName}}
+            </td>
             <td>{{jxsName}}</td>
-            <td v-for="phone in phoneList" :key="phone.index">{{phone.phone}}</td>
+            <td v-for="phone in phoneList" :key="phone.index">
+              {{phone.phone}}
+              <i
+                class="ivu-icon ivu-icon-ios-phone-portrait"
+                @click="JXSring(phone.phone,dealerName)"
+              ></i>
+            </td>
             <td v-for="address in addressList" :key="address.index">{{address.address}}</td>
             <td>{{bankName}}</td>
           </tr>
@@ -364,17 +376,20 @@
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <span
-                v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols1.field!='addressNum')" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS'&&cols1.field!='addressNum')"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols1.field] }}</span>
               <span
-                v-if="((cols1.field=='roleName'||cols1.field=='name'||cols1.field=='addressType'||cols1.field=='infoSource') && scope.row.infoSource!='CMS')" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                v-if="((cols1.field=='roleName'||cols1.field=='name'||cols1.field=='addressType'||cols1.field=='infoSource') && scope.row.infoSource!='CMS')"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >{{ scope.row[cols1.field] }}</span>
               <!-- <span  v-if="(cols1.field!='effectiveness' && scope.row.infoSource=='CMS')||cols1.field=='infoSource'||(cols1.field!='effectiveness' && scope.row.infoSource!='CMS')" >{{ scope.row[cols1.field] }}</span> -->
               <el-select
                 v-if="cols1.field=='effectiveness'"
                 @change="addressEdit(scope.row)"
                 v-model="scope.row[cols1.field]"
-                placeholder="请选择活动区域" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                placeholder="请选择活动区域"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option label="Y" value="Y"></el-option>
                 <el-option label="N" value="N"></el-option>
@@ -383,7 +398,8 @@
                 v-if="cols1.field=='addressNum'"
                 @change="addressEdit(scope.row)"
                 v-model="scope.row[cols1.field]"
-                placeholder="地址码" :class="{changecolor:scope.row['effectiveness']=='N'}"
+                placeholder="地址码"
+                :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
                   v-for="item in addressNumList"
@@ -478,11 +494,11 @@
           <el-input v-model="AddWorkForm.address" style="width:300px"></el-input>
         </el-form-item>
         <el-form-item label="地址码：" prop="addressNum" :label-width="formLabelWidth">
-          <el-select        
+          <el-select
             @change="addressNumChange"
             v-model="AddWorkForm.addressNum"
             placeholder="地址码"
-			style="width:300px"
+            style="width:300px"
           >
             <el-option
               v-for="item in addressNumList"
@@ -637,10 +653,10 @@ export default {
         addressType: "",
         propertyType: "",
         infoSource: "ICS",
-		effectiveness: "Y",
-		addressNum:""
+        effectiveness: "Y",
+        addressNum: ""
       },
-      IsRight:true,
+      IsRight: true,
       phonerules: {
         roleName: [{ required: true, message: "请输入角色", trigger: "blur" }],
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -663,38 +679,39 @@ export default {
         ],
         province: [{ required: true, message: "请输入省名", trigger: "blur" }],
         city: [{ required: true, message: "请输入市名", trigger: "blur" }],
-		address: [{ required: true, message: "请输入地址", trigger: "blur" }],
-		// addressNum: [{ required: true, message: "请输入地址码", trigger: "blur" }],
-        addressType: [{ required: true, message: "请输入地址类型", trigger: "blur" }],		
+        address: [{ required: true, message: "请输入地址", trigger: "blur" }],
+        // addressNum: [{ required: true, message: "请输入地址码", trigger: "blur" }],
+        addressType: [
+          { required: true, message: "请输入地址类型", trigger: "blur" }
+        ]
       }
     };
   },
   methods: {
-    getStatus(){
+    getStatus() {
       let para = {
-         missionId:this.$route.params.id
-      }
-       getStatusByUpdateOverdue(para).then(res =>{
-         if(res.data.result==="是"){
-           this.IsRight=false
-         }
-       })
-    },
-    SubOverdueInfo(item){
-      let para = item
-      updateOverdue(para).then(res =>{
-        if(res.data.success){
-          this.$message({
-            type:"success",
-            message:res.data.message
-          })
+        missionId: this.$route.params.id
+      };
+      getStatusByUpdateOverdue(para).then(res => {
+        if (res.data.result === "是") {
+          this.IsRight = false;
         }
-      })
-      
+      });
     },
-	  addressNumChange(val){
-		  this.AddWorkForm.addressNum=val
-	  },
+    SubOverdueInfo(item) {
+      let para = item;
+      updateOverdue(para).then(res => {
+        if (res.data.success) {
+          this.$message({
+            type: "success",
+            message: res.data.message
+          });
+        }
+      });
+    },
+    addressNumChange(val) {
+      this.AddWorkForm.addressNum = val;
+    },
     //电话信息
     choice(AdduserForm) {
       let para = {
@@ -712,9 +729,10 @@ export default {
         if (valid) {
           addInfo(para).then(res => {
             if (res.data.success) {
-              this.$message({
+              this.$notify({
+                message: "添加成功！",
                 type: "success",
-                message: "添加成功！"
+                offset: 50
               });
               this.items.customerPhones.unshift({
                 roleName: this.$refs["AdduserForm"].model.roleName,
@@ -735,9 +753,10 @@ export default {
               this.addUserInfos = false;
               this.$refs["AdduserForm"].resetFields();
             } else {
-              this.$message({
+              this.$notify({
+                message: "添加失败，请联系管理员！",
                 type: "error",
-                message: "添加失败，请联系管理员"
+                offset: 50
               });
             }
           });
@@ -784,16 +803,18 @@ export default {
         if (valid) {
           addMessage(para).then(res => {
             if (res.data.success) {
-              this.$message({
+              this.$notify({
+                message: "添加成功！",
                 type: "success",
-                message: "添加成功！"
+                offset: 50
               });
               this.remarkopen = false;
               this.getmessage_note();
             } else {
-              this.$message({
+              this.$notify({
+                message: "添加失败，请联系管理员！",
                 type: "error",
-                message: "添加失败，请联系管理员"
+                offset: 50
               });
             }
           });
@@ -808,6 +829,11 @@ export default {
           });
         }
       });
+      this.$notify({
+        message: "添加成功！",
+        type: "success",
+        offset: 50
+      });
       this.$message({
         type: "success",
         message: "保存成功"
@@ -821,8 +847,8 @@ export default {
         relationship: this.AddWorkForm.relationship,
         province: this.AddWorkForm.province,
         city: this.AddWorkForm.city,
-		address: this.AddWorkForm.address,
-		addressNum:this.AddWorkForm.addressNum,
+        address: this.AddWorkForm.address,
+        addressNum: this.AddWorkForm.addressNum,
         addressType: this.AddWorkForm.addressType,
         propertyType: this.AddWorkForm.propertyType,
         infoSource: "ICS",
@@ -833,9 +859,10 @@ export default {
         if (valid) {
           addAddress(para).then(res => {
             if (res.data.success) {
-              this.$message({
+              this.$notify({
+                message: "添加成功！",
                 type: "success",
-                message: "添加成功！"
+                offset: 50
               });
               this.items.customerAddresses.unshift({
                 roleName: this.$refs["AddWorkForm"].model.roleName,
@@ -843,8 +870,8 @@ export default {
                 relationship: this.$refs["AddWorkForm"].model.relationship,
                 province: this.$refs["AddWorkForm"].model.province,
                 city: this.$refs["AddWorkForm"].model.city,
-				address: this.$refs["AddWorkForm"].model.address,
-				addressNum: this.$refs["AddWorkForm"].model.addressNum,
+                address: this.$refs["AddWorkForm"].model.address,
+                addressNum: this.$refs["AddWorkForm"].model.addressNum,
                 addressType: this.$refs["AddWorkForm"].model.addressType,
                 propertyType: this.$refs["AddWorkForm"].model.propertyType,
                 infoSource: "ICS",
@@ -855,9 +882,10 @@ export default {
               this.addWorkInfos = false;
               this.$refs["AddWorkForm"].resetFields();
             } else {
-              this.$message({
+              this.$notify({
+                message: "添加失败，请联系管理员！",
                 type: "error",
-                message: "添加失败，请联系管理员"
+                offset: 50
               });
             }
           });
@@ -886,14 +914,16 @@ export default {
           delPhoneInfo(para).then(res => {
             if (res.data.success) {
               datas.splice(index, 1);
-              this.$message({
+              this.$notify({
+                message: "删除成功！",
                 type: "success",
-                message: "删除成功！"
+                offset: 50
               });
             } else {
-              this.$message({
+              this.$notify({
+                message: "删除失败，请联系管理员！",
                 type: "error",
-                message: "删除失败，请联系管理员！"
+                offset: 50
               });
             }
           });
@@ -918,14 +948,16 @@ export default {
           delAddress(para).then(res => {
             if (res.data.success) {
               datas.splice(index, 1);
-              this.$message({
+              this.$notify({
+                message: "删除成功！",
                 type: "success",
-                message: "删除成功！"
+                offset: 50
               });
             } else {
-              this.$message({
+              this.$notify({
+                message: "删除失败，请联系管理员！",
                 type: "error",
-                message: "删除失败，请联系管理员！"
+                offset: 50
               });
             }
           });
@@ -937,10 +969,16 @@ export default {
           });
         });
     },
+    JXSring(phoneNum, item) {
+      var sing = "-";
+      phoneNum = phoneNum.replace(new RegExp(sing), "");
+        document
+        .getElementById("frame2")
+        .contentWindow.clickCallOut("0", "0" + phoneNum, this.appNum, item); 
+    },
     ring(phoneNum, row) {
       window.frames[""];
       var pattern = "-";
-      console.log(row)
       phoneNum = phoneNum.replace(new RegExp(pattern), "");
       localStorage.removeItem("CJPhone");
       localStorage.removeItem("CJName");
@@ -975,14 +1013,16 @@ export default {
       let para = row;
       updatePhoneInfo(para).then(res => {
         if (res.data.success) {
-          this.$message({
+          this.$notify({
+            message: "添加成功！",
             type: "success",
-            message: "电话信息编辑成功"
+            offset: 50
           });
         } else {
-          this.$message({
+          this.$notify({
+            message: "编辑失败，请联系管理员！",
             type: "error",
-            message: "编辑失败，请联系管理员！"
+            offset: 50
           });
         }
       });
@@ -991,14 +1031,16 @@ export default {
       let para = row;
       updateAddress(para).then(res => {
         if (res.data.success) {
-          this.$message({
+          this.$notify({
+            message: "地址信息编辑成功！",
             type: "success",
-            message: "地址信息编辑成功！"
+            offset: 50
           });
         } else {
-          this.$message({
+          this.$notify({
+            message: "编辑失败，请联系管理员！",
             type: "error",
-            message: "编辑失败，请联系管理员！"
+            offset: 50
           });
         }
       });
@@ -1006,9 +1048,10 @@ export default {
     //短信方法
     confirmmessage() {
       this.messageopen = false;
-      this.$message({
+      this.$notify({
+        message: "保存成功！",
         type: "success",
-        message: "保存成功"
+        offset: 50
       });
     },
 
@@ -1141,7 +1184,7 @@ export default {
     this.getJxsInfo();
     this.getPhoneCode();
     this.getmessage_note();
-    this.getStatus()
+    this.getStatus();
     let h =
       (window.innerHeight ||
         document.documentElement.clientHeight ||
@@ -1214,7 +1257,9 @@ td {
 .changecolor {
   color: red;
 }
-.changecolor input{color:red}
+.changecolor input {
+  color: red;
+}
 .el-tabs--border-card > .el-tabs__content {
   padding: 0 !important;
 }
@@ -1286,8 +1331,13 @@ td {
 #addUserInfos button {
   padding: 8px;
 }
-.Edits{width:120px!important}
-.Dispan{display:inline-block;width:169px}
+.Edits {
+  width: 120px !important;
+}
+.Dispan {
+  display: inline-block;
+  width: 169px;
+}
 .inputInner .el-input__inner {
   margin-left: 0px !important;
 }
