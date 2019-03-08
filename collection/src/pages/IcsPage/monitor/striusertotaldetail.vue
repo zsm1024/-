@@ -130,6 +130,7 @@ export default {
             {title:'贷款产品',field:'loanProducts',width:120},  
             {title:'核销状态',field:'isnodis'},
             {title:'征信评分',field:'digital'},
+            {title:'评分卡分值',field:'scores',width:100},
             {title:'评分排名',field:'rankingDigital'},
         ],
         total: 0,

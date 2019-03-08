@@ -247,6 +247,9 @@ export default {
        for(var i=0; i<this.options.length;i++){        
          if(this.options[i].itemName==val){
            this.form.type = this.options[i].flag
+           if(this.form.type=="Y"){
+             this.IsValue=true
+           }
          }
        }
       }
