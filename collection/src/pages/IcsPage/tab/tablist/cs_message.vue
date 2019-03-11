@@ -806,7 +806,7 @@ export default {
             if (res.data.success) {
               this.$notify({
                 message: "添加成功！",
-                type: "error",
+                type: "success",
                 offset: 50
               });
               this.remarkopen = false;
