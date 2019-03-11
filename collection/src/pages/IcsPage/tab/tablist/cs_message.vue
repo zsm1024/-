@@ -728,6 +728,7 @@ export default {
       this.$refs[AdduserForm].validate(valid => {
         if (valid) {
           addInfo(para).then(res => {
+            debugger
             if (res.data.success) {
               this.$notify({
                 message: "添加成功！",
@@ -805,7 +806,7 @@ export default {
             if (res.data.success) {
               this.$notify({
                 message: "添加成功！",
-                type: "success",
+                type: "error",
                 offset: 50
               });
               this.remarkopen = false;
@@ -829,15 +830,15 @@ export default {
           });
         }
       });
-      this.$notify({
-        message: "添加成功！",
-        type: "success",
-        offset: 50
-      });
-      this.$message({
-        type: "success",
-        message: "保存成功"
-      });
+      // this.$notify({
+      //   message: "添加成功！",
+      //   type: "success",
+      //   offset: 50
+      // });
+      // this.$message({
+      //   type: "success",
+      //   message: "保存成功"
+      // });
     },
     //地址信息
     address(AddWorkForm) {
@@ -1013,11 +1014,10 @@ export default {
       let para = row;
       updatePhoneInfo(para).then(res => {
         if (res.data.success) {
-          this.$notify({
-            message: "添加成功！",
-            type: "success",
-            offset: 50
-          });
+          // this.$message({
+          //   message: "更新成功4！",
+          //   type: "success",
+          // });
         } else {
           this.$notify({
             message: "编辑失败，请联系管理员！",
@@ -1031,11 +1031,11 @@ export default {
       let para = row;
       updateAddress(para).then(res => {
         if (res.data.success) {
-          this.$notify({
-            message: "地址信息编辑成功！",
-            type: "success",
-            offset: 50
-          });
+          // this.$notify({
+          //   message: "地址信息编辑成功！",
+          //   type: "success",
+          //   offset: 50
+          // });
         } else {
           this.$notify({
             message: "编辑失败，请联系管理员！",
