@@ -6,9 +6,17 @@
         </div>
       <el-row  style="height:95%"> 
             <el-col  class="left" style="height:100%;overflow-y:auto;background: #eef1f6;width:220px" >
-                <div  v-for=" (item,$index) in listsLeft " :key="$index" @click="listRight(item,$index)" class="leftTree" :class="{'active':item.active,'unactive':!item.active}">
-                    {{item.queueName}}                   
-                </div>
+              <el-collapse v-model="activeName" accordion>
+                <el-collapse-item name="1" title="本品牌队列">
+                    <div  v-for=" (item,$index) in listsLeft " :key="$index" @click="listRight(item,$index)" class="leftTree" :class="{'active':item.active,'unactive':!item.active}">
+                      {{item.queueName}}                   
+                  </div>
+                </el-collapse-item>
+                 <el-collapse-item name="2" title="多品牌队列">
+                    <div>123</div>
+                </el-collapse-item>
+              </el-collapse>
+                
             </el-col>
             <el-col ref="right" style="margin-left:10px" >
                 <el-table :data="lists"   ref="tables" highlight-current-row v-loading="listLoading"  stripe border :height="heights" >
@@ -55,6 +63,7 @@ import {
 export default {
   data() {
     return {
+      activeName:["1"],
       id: "",
       listsLeft: [],
       itemlist: [],

@@ -1,5 +1,7 @@
 <template>
     <section ref="abc" style="overflow-y: auto;">
+      <el-collapse v-model="activeName" accordion>
+        <el-collapse-item name="1" title="本品牌规则">
 		<el-button class="filter-item"   type="primary"  size="mini" style="margin: 0 0 10px 10px;"   @click="addUserInfos=true ">添加</el-button>
         	<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
                 <el-table-column label="操作"  align="center" width="100"> 
@@ -59,7 +61,13 @@
         <el-button  type="primary" @click.native.prevent="choice('AdduserForm')">确 定</el-button>
       </div>			
 		</el-dialog>
-		
+            </el-collapse-item>
+
+      
+		<el-collapse-item title="多品牌规则" name="2">
+
+    </el-collapse-item>
+    </el-collapse>
     </section>
 </template>
 <script>
@@ -73,6 +81,7 @@ import {
 export default {
   data() {
     return {
+      activeName:["1"],
       total: 0,
       heights: 0,
       pagesize: 10,

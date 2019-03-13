@@ -1,41 +1,86 @@
 <template>
-	<el-menu class="navbar" mode="horizontal">
-		<hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-		<router-link to="/" class="homeIcon"><i class="fa fa-home fa-lg"></i></router-link>
-		<!-- <levelbar></levelbar> -->
-		<tabs-view></tabs-view>
-		<error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
+  <el-menu class="navbar" mode="horizontal">
+    <div style="width:7%">
+      <hamburger
+        class="hamburger-container"
+        :toggleClick="toggleSideBar"
+        :isActive="sidebar.opened"
+      ></hamburger>
+      <router-link to="/" class="homeIcon">
+        <i class="fa fa-home fa-lg"></i>
+      </router-link>
+    </div>
+    <div style="width:76%">
+      <tabs-view></tabs-view>
+    </div>
+    <!-- <levelbar></levelbar> -->
+    <div class="newsTip">
+      <el-dropdown trigger="click">
+        <el-badge :value="2" class="item" >
+          <el-button type="primary" class="fa fa-bell el-dropdown-link" size="small" circle ></el-button>
+        </el-badge>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item style="text-align:right">
+               <el-button                      
+                      type="warning"
+                      class="fa fa-refresh"
+                      size="mini"
+                    > &nbsp;刷新</el-button>
+          </el-dropdown-item>
+          <el-dropdown-item >
+              <router-link  class="a-href listDetials"
+                :to="{path:'/'}">车辆进站:<span>1</span></router-link>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
-        <screenfull class='screenfull'></screenfull>
-		 
-		<el-dropdown class="avatar-container" trigger="click">
-			<div class="avatar-wrapper">{{name}}<i class="el-icon-caret-bottom"></i></div>
-			 <el-dropdown-menu class="user-dropdown" slot="dropdown">
-				<router-link class='inlineBlock' to="/">
-					<el-dropdown-item>
-						首页
-					</el-dropdown-item>
-				</router-link>	
-				<el-dropdown-item divided><span @click="changeSub" style="display:block;">修改密码</span></el-dropdown-item>
-				<el-dropdown-item divided><span @click="logout" style="display:block;">退出登录</span></el-dropdown-item>
-			</el-dropdown-menu>
-		</el-dropdown>	
-	 	<el-dialog  title="修改密码" :visible.sync="cancelhost"  :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false' :close-on-click-modal="false">
-      <el-form :model="messageform" >
-				<el-form-item label="旧密码" :label-width="formLabelWidth" >
-					<el-input v-model="messageform.oldPassWord" clearable style="width:300px"></el-input>
-				</el-form-item>
-				<el-form-item label="新密码 " :label-width="formLabelWidth">
-					<el-input v-model="messageform.newPassWord" clearable style="width:300px"></el-input>
-				</el-form-item>	
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<!-- @click="addWorkInfo" -->
-				<el-button style="padding:10px" @click.native.prevent='cancleDialog' type="primary">取 消</el-button>
-				<el-button type="primary" @click.native.prevent="OkSub('messageform')" style="padding:10px">确 定</el-button>
-			</div>
-		</el-dialog>  
-	</el-menu>
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          {{name}}
+          <i class="el-icon-caret-bottom"></i>
+        </div>
+        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>首页</el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
+            <span @click="changeSub" style="display:block;">修改密码</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span @click="logout" style="display:block;">退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
+    <el-dialog
+      title="修改密码"
+      :visible.sync="cancelhost"
+      :modal="true"
+      :modal-append-to-body="false"
+      id="MsgDialog"
+      :show-close="false"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="messageform">
+        <el-form-item label="旧密码" :label-width="formLabelWidth">
+          <el-input v-model="messageform.oldPassWord" clearable style="width:300px"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码 " :label-width="formLabelWidth">
+          <el-input v-model="messageform.newPassWord" clearable style="width:300px"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <!-- @click="addWorkInfo" -->
+        <el-button style="padding:10px" @click.native.prevent="cancleDialog" type="primary">取 消</el-button>
+        <el-button
+          type="primary"
+          @click.native.prevent="OkSub('messageform')"
+          style="padding:10px"
+        >确 定</el-button>
+      </div>
+    </el-dialog>
+  </el-menu>
 </template>
 
 <script>
@@ -123,6 +168,7 @@ export default {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  display: flex;
   .hamburger-container {
     line-height: 58px;
     height: 50px;
@@ -134,27 +180,29 @@ export default {
     position: absolute;
     right: 150px;
   }
-  .screenfull {
-    position: absolute;
-    right: 133px;
-    top: 18px;
-    color: red;
-  }
+  // .screenfull {
+  //   position: absolute;
+  //   right: 133px;
+  //   top: 18px;
+  //   color: red;
+  // }
   .avatar-container {
     height: 50px;
     display: inline-block;
-    position: absolute;
-    right: 35px;
     .avatar-wrapper {
       cursor: pointer;
-      margin-top: 5px;
-      position: relative;
       .user-avatar {
         width: 40px;
         height: 40px;
         border-radius: 10px;
       }
     }
+  }
+  .newsTip {
+    width: 17%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
 }
 .homeIcon {
@@ -163,6 +211,22 @@ export default {
   font-size: 20px;
   color: #20a0ff;
 }
+.fa-bell {
+  border-radius: 36px;
+  height: 36px;
+  width: 36px;
+  position: relative;
+  margin-top: 11px;
+}
+.fa-bell:before {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.listDetials{
+  font-size: 15px;
+  span{color: red}
+  }
 </style>
 
 

@@ -1,75 +1,166 @@
 <template>
-    <section ref="abc" style="overflow-y: auto;">
-		<el-button class="filter-item"   type="primary"  size="mini" style="margin: 0 0 10px 10px;"   @click="addcodeInfos">添加</el-button>
-        	<el-table :data="lists" :max-height="heights" border highlight-current-row v-loading="listLoading" style="width: 100%;" stripe >
-                <el-table-column label="操作"  align="center" width="100"> 
-						<!-- width="95" -->
-						 <template slot-scope="scope">
-							<el-button :type="scope.row.edit?'success':'primary'" size="mini"  @click='Edit(scope.row)' >{{scope.row.edit?'完成':'编辑'}}</el-button>
-							<el-button type="danger" size="mini" @click.native.prevent="deleteRow(scope.$index, scope.row,lists)"> 移除</el-button>
-						</template>
-				</el-table-column>
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in cols" :key="index" align="center" >
-					<template slot-scope="scope">
-							<el-input  v-show="scope.row.edit" size="small" v-if="(col.field!='personChargeName'&&col.field!='directorName')" v-model="scope.row[col.field]"></el-input>
-							<el-select v-show="scope.row.edit" v-if="col.field=='directorName'" v-model="scope.row[col.field]" placeholder="请选择"  @change="getMessages3(scope.row)">
-								<el-option v-for="item in userList" :key="item.value" :label="item.value" :value="item.id"></el-option>
-							</el-select>
-							<span v-show="!scope.row.edit" >{{ scope.row[col.field] }}</span>
-							<el-select v-show="scope.row.edit" v-if="col.field=='personChargeName'" v-model="scope.row[col.field]" placeholder="请选择"  @change="getMessages2(scope.row)">
-								<el-option v-for="item in userList" :key="item.value" :label="item.value" :value="item.id"></el-option>
-							</el-select>
-						</template>
-				</el-table-column>
-			</el-table>
-			<!--工具条-->
-			<el-col :span="24" class="toolbar">				
-				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-size="pagesize" :page-sizes="[10, 20, 50, 100]"   :total="total"   style="float:right;">
-				</el-pagination>
-			</el-col>
+  <section ref="abc" style="overflow-y: auto;">
+    <el-collapse v-model="activeNames">
+      <el-collapse-item title="本品牌队列管理" name="1">
+        <el-button
+          class="filter-item"
+          type="primary"
+          size="mini"
+          style="margin: 0 0 10px 10px;"
+          @click="addcodeInfos"
+        >添加</el-button>
+        <el-table
+          :data="lists"
+          :max-height="heights"
+          border
+          highlight-current-row
+          v-loading="listLoading"
+          style="width: 100%;"
+          stripe
+        >
+          <el-table-column label="操作" align="center" width="100">
+            <!-- width="95" -->
+            <template slot-scope="scope">
+              <el-button
+                :type="scope.row.edit?'success':'primary'"
+                size="mini"
+                @click="Edit(scope.row)"
+              >{{scope.row.edit?'完成':'编辑'}}</el-button>
+              <el-button
+                type="danger"
+                size="mini"
+                @click.native.prevent="deleteRow(scope.$index, scope.row,lists)"
+              >移除</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :prop="col.field"
+            :label="col.title"
+            v-for="(col, index) in cols"
+            :key="index"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-input
+                v-show="scope.row.edit"
+                size="small"
+                v-if="(col.field!='personChargeName'&&col.field!='directorName')"
+                v-model="scope.row[col.field]"
+              ></el-input>
+              <el-select
+                v-show="scope.row.edit"
+                v-if="col.field=='directorName'"
+                v-model="scope.row[col.field]"
+                placeholder="请选择"
+                @change="getMessages3(scope.row)"
+              >
+                <el-option
+                  v-for="item in userList"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+              <span v-show="!scope.row.edit">{{ scope.row[col.field] }}</span>
+              <el-select
+                v-show="scope.row.edit"
+                v-if="col.field=='personChargeName'"
+                v-model="scope.row[col.field]"
+                placeholder="请选择"
+                @change="getMessages2(scope.row)"
+              >
+                <el-option
+                  v-for="item in userList"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--工具条-->
+        <el-col :span="24" class="toolbar">
+          <el-pagination
+            layout="total, sizes, prev, pager, next, jumper"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            :page-size="pagesize"
+            :page-sizes="[10, 20, 50, 100]"
+            :total="total"
+            style="float:right;"
+          ></el-pagination>
+        </el-col>
 
-			<el-dialog title="新增规则信息" :visible.sync="addUserInfos" >
-			<el-form :model="AdduserForm" ref="AdduserForm">
-				 <!-- :rules="phonerules" -->
-				<el-form-item label="队列名称：" prop="queueName" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.queueName" style="width:300px"></el-input>
-				</el-form-item>
-				<el-form-item label="负责人：" prop="personChargeName" :label-width="formLabelWidth">
-					<el-select  v-model="AdduserForm.personChargeName" filterable clearable  placeholder="请选择" style="width:300px" @change="getMessage">
-						<el-option v-for="rule in userList" :key="rule.id" :label="rule.value" :value="rule.id"></el-option>
-						<!-- <el-option label="N" value="N"></el-option> -->
-					</el-select>
-				</el-form-item>
-				<el-form-item label="主管：" prop="director" :label-width="formLabelWidth">
-					<el-select  v-model="AdduserForm.director" placeholder="请选择" filterable clearable style="width:300px" @change="getMessage1">
-						<el-option v-for="rule in userList" :key="rule.id" :label="rule.value" :value="rule.id"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="暂挂标识：" prop="pendingSign" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.pendingSign" style="width:300px"></el-input>
-				</el-form-item>
-				<el-form-item label="类型：" prop="queueType" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.queueType" style="width:300px"></el-input>
-				</el-form-item>
-				<el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
-					<el-input v-model="AdduserForm.state" style="width:300px" ></el-input>
-				</el-form-item>
-				<el-form-item label="分配规则：" prop="distributionId" :label-width="formLabelWidth">
-					<el-select  v-model="AdduserForm.distributionId" placeholder="请选择" style="width:300px">
-						<el-option v-for="rule in rules" :key="rule.id" :label="rule.name" :value="rule.id"></el-option>
-						<!-- <el-option label="N" value="N"></el-option> -->
-					</el-select>
-					<!-- <el-input v-model="AdduserForm.distribution"></el-input> -->
-				</el-form-item>							
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-        <el-button @click="addUserInfo">取 消</el-button>
- <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
-        <el-button  type="primary" @click.native.prevent="choice('AdduserForm')">确 定</el-button>
-      </div>			
-		</el-dialog>
-		
-    </section>
+        <el-dialog title="新增规则信息" :visible.sync="addUserInfos">
+          <el-form :model="AdduserForm" ref="AdduserForm">
+            <!-- :rules="phonerules" -->
+            <el-form-item label="队列名称：" prop="queueName" :label-width="formLabelWidth">
+              <el-input v-model="AdduserForm.queueName" style="width:300px"></el-input>
+            </el-form-item>
+            <el-form-item label="负责人：" prop="personChargeName" :label-width="formLabelWidth">
+              <el-select
+                v-model="AdduserForm.personChargeName"
+                filterable
+                clearable
+                placeholder="请选择"
+                style="width:300px"
+                @change="getMessage"
+              >
+                <el-option
+                  v-for="rule in userList"
+                  :key="rule.id"
+                  :label="rule.value"
+                  :value="rule.id"
+                ></el-option>
+                <!-- <el-option label="N" value="N"></el-option> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="主管：" prop="director" :label-width="formLabelWidth">
+              <el-select
+                v-model="AdduserForm.director"
+                placeholder="请选择"
+                filterable
+                clearable
+                style="width:300px"
+                @change="getMessage1"
+              >
+                <el-option
+                  v-for="rule in userList"
+                  :key="rule.id"
+                  :label="rule.value"
+                  :value="rule.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="暂挂标识：" prop="pendingSign" :label-width="formLabelWidth">
+              <el-input v-model="AdduserForm.pendingSign" style="width:300px"></el-input>
+            </el-form-item>
+            <el-form-item label="类型：" prop="queueType" :label-width="formLabelWidth">
+              <el-input v-model="AdduserForm.queueType" style="width:300px"></el-input>
+            </el-form-item>
+            <el-form-item label="状态：" prop="state" :label-width="formLabelWidth">
+              <el-input v-model="AdduserForm.state" style="width:300px"></el-input>
+            </el-form-item>
+            <el-form-item label="分配规则：" prop="distributionId" :label-width="formLabelWidth">
+              <el-select v-model="AdduserForm.distributionId" placeholder="请选择" style="width:300px">
+                <el-option v-for="rule in rules" :key="rule.id" :label="rule.name" :value="rule.id"></el-option>
+                <!-- <el-option label="N" value="N"></el-option> -->
+              </el-select>
+              <!-- <el-input v-model="AdduserForm.distribution"></el-input> -->
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="addUserInfo">取 消</el-button>
+            <!--       <el-button v-if="dialogStatus=='create'" type="primary" @click="create">确 定</el-button>-->
+            <el-button type="primary" @click.native.prevent="choice('AdduserForm')">确 定</el-button>
+          </div>
+        </el-dialog>
+      </el-collapse-item>
+      <el-collapse-item title="多品牌队列管理" name="2">
+      </el-collapse-item>
+    </el-collapse>
+  </section>
 </template>
 <script>
 import {
@@ -84,6 +175,7 @@ import { getTaskHostUser } from "@/api/task";
 export default {
   data() {
     return {
+      activeNames: ["1"],
       heights: 0,
       total: 0,
       pagesize: 10,
@@ -200,8 +292,8 @@ export default {
       let k = row.personCharge;
       let m = row.director;
       if ((row.edit = !row.edit)) {
-		  this.stateCode = ""
-		  this.stateCode2 = ""
+        this.stateCode = "";
+        this.stateCode2 = "";
         return;
       } else {
         if (this.stateCode == "") {
@@ -338,6 +430,5 @@ export default {
 };
 </script>
 <style>
-
 </style>
  

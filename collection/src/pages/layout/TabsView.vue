@@ -63,7 +63,7 @@ export default {
     vertical-align: top;
     margin-left: 10px;
     white-space: nowrap;
-    width: 75%;
+    width: 100%;
     overflow-x: auto;
     height:50px;
     .tabs-view {
