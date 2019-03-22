@@ -1,230 +1,518 @@
 <template>
-<section ref="childMsg">
-	<el-row>
-		<el-col :span="24" id="el-icons">	
-			<i class="el-icon-message" @click="messageOpen">短信</i>
-			<i class="el-icon-upload2" @click="encloOpen">附件</i>
-			<i class="el-icon-view" @click="checkPreview">征信预览</i>
-      <i class="el-icon-edit" @click="checkSerch">征信查询</i>  
+  <section ref="childMsg">
+    <el-row>
+      <el-col :span="24" id="el-icons">
+        <i class="el-icon-message" @click="messageOpen">短信</i>
+        <i class="el-icon-upload2" @click="encloOpen">附件</i>
+        <i class="el-icon-view" @click="checkPreview">征信预览</i>
+        <i class="el-icon-edit" @click="checkSerch">征信查询</i>
         <router-link tag="a" target="_blank" :to="{path:'/IcsPage/ImgPreve/'+ids}">
-        <i class="el-icon-picture">影像件预览</i>
-       </router-link> 
-         <router-link tag="a" target="_blank" :to="{path:'/IcsPage/SearchSome'}">
-        <i class="el-icon-view">关键字查询</i>
-       </router-link> 
-		</el-col>
-	</el-row>
-	<div id="tables">    
-		<el-form ref="mainform" :rules="rules" :model="mainform" label-width="65px"   id="FixForm" inline >		
- 		<el-col id="lists">
-			<el-form-item label="行动代码" prop="actSign">
-				<el-select v-model="mainform.actSign" filterable clearable>
-					<el-option v-for="(code,index) in getdaima" :key="index" :value="code"></el-option>
-				</el-select>
-		</el-form-item>	
-		<el-form-item label="承诺金额" prop="allowance" >
-			<el-input v-model="mainform.allowance" clearable></el-input>
-		</el-form-item>
-		<el-form-item label="承诺日期" prop="allDate">
-			<el-col >
-				<el-date-picker type="date" placeholder="选择日期" v-model="mainform.allDate" @change="dataChange1" style="width: 100%;"></el-date-picker>
-			</el-col>
-		</el-form-item>								
-		<el-form-item label="联系人" prop="linkman">
-			<el-autocomplete v-model="mainform.linkman"  :fetch-suggestions="querySearch1" size="small"  placeholder="请选择联系人"  @select="handleSelect" class="autoInput">
-			</el-autocomplete>
-		</el-form-item>
-		<el-form-item label="联系方式"  prop="linkInfomation">
-			<el-autocomplete v-model="mainform.linkInfomation"  :fetch-suggestions="querySearch2" size="small"  placeholder="请选择联系人"  @select="handleSelect" class="autoInput">
-			</el-autocomplete>
-		</el-form-item>	
-								
-		<el-form-item label="约会日期" prop="appointmentTime" >
-				<el-date-picker type="date" placeholder="选择约会时间" v-model="mainform.appointmentTime" style="width: 100%;" @change="dataChange"></el-date-picker>
-		</el-form-item>	
-		</el-col>
-		<el-col id="bzt">			
-			<el-form-item label="备注" prop="afpRecord" style="justify-content: space-around;display:flex">
-				<span class="tips">(不超过2000字)</span>
-				<el-input type="textarea" v-model="mainform.afpRecord" inline :maxlength="2000"></el-input>
-				<el-button type="primary" @click="onSubmit('mainform')" :disabled="disabledto" >{{tosubtext}}</el-button>
-				<el-button @click="onSubmitnext('mainform')" :disabled="disabledNex">确认&处理下一条</el-button>
-				<el-button type="primary" @click="CJStore">催记暂存</el-button>
-			</el-form-item>
-		</el-col>  
-		</el-form>							
-	</div>	
-	<el-dialog title="短信" :visible.sync="messageopen" :modal="true" :modal-append-to-body="false" id="MsgDialog" :show-close='false'>
-			<el-form :model="messageform" :ref="messageform" >
-				<el-form-item label="合同号" :label-width="formLabelWidth" >
-					<el-input :value="applicationNumber" disabled style="width:300px;margin-left:5px" id="inp"></el-input>
-				</el-form-item>
-				<el-form-item label="手机号码 " :label-width="formLabelWidth">
-					<el-autocomplete v-model="messageform.phone" style="width:300px;margin-left:5px" :fetch-suggestions="querySearch" size="small"  placeholder="请输入手机号码"  @select="handleSelect" class="autoInput">
-					</el-autocomplete>
-				</el-form-item>
-				<el-form-item label="短信模板 " :label-width="formLabelWidth">
-					<el-select v-model="messageform.selectTitle" placeholder="请选择" @change="getMessage"  style="width:300px;" id="selectMes">
-						<el-option v-for="(item,index) in messageModel" :key="index" :label="item.label" :value="item.value" ></el-option>
-					</el-select>
-				</el-form-item>				
-				<el-form-item label="内容栏 " :label-width="formLabelWidth">
-						<el-input type="textarea" autosize v-model="messageform.messagedesc" style="width:300px;margin-left:5px"></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
-				<el-button type="primary" @click.native.prevent="confirmmessage('messageform')" style="padding:10px">确 定</el-button>
-			</div>
-		</el-dialog>
-		<el-dialog title="附件" :visible.sync="encloopen" append-to-body="true" id="fileUpload" :modal="true" :modal-append-to-body="false" :show-close='true' :fullscreen="true">	
-			<el-form :model="fileList">
-				<el-form-item label="附件类型">
-					<el-select v-model="fileList.fileListTypes"  placeholder="请选择"   id="selectMess" @change="fileListTypesChange">
-						<el-option  v-for="(item,index) in fileListType" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item >
-						<el-upload
-				class='ensure ensureButt'
-				ref="upload"
-               :action="importFileUrl"
-               :data="upLoadData"
-               :on-preview="handlePreview"
-			   :on-change="handleChange"
-			   :on-error="uploadError"
-			   :on-success="uploadSuccess"
-			   :before-upload="beforeUpload"
-				:auto-upload="false"
-				:file-list='filelist'	
-				:multiple="true"
-				:show-file-list="fileListStatue"
-				style="display:inline-block"			
-				>			
-				<el-button slot="trigger" size="small" type="primary" @click="chooseFile">选取文件</el-button>
-				<el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-				</el-upload>
+          <i class="el-icon-picture">影像件预览</i>
+        </router-link>
+        <router-link tag="a" target="_blank" :to="{path:'/IcsPage/SearchSome'}">
+          <i class="el-icon-view">关键字查询</i>
+        </router-link>
+      </el-col>
+    </el-row>
+    <div id="tables">
+      <el-form
+        ref="mainform"
+        :rules="rules"
+        :model="mainform"
+        label-width="65px"
+        id="FixForm"
+        inline
+      >
+        <el-col id="lists">
+          <el-form-item label="行动代码" prop="actSign">
+            <el-select v-model="mainform.actSign" filterable clearable>
+              <el-option v-for="(code,index) in getdaima" :key="index" :value="code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="承诺金额" prop="allowance">
+            <el-input v-model="mainform.allowance" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="承诺日期" prop="allDate">
+            <el-col>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="mainform.allDate"
+                @change="dataChange1"
+                style="width: 100%;"
+              ></el-date-picker>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="联系人" prop="linkman">
+            <el-autocomplete
+              v-model="mainform.linkman"
+              :fetch-suggestions="querySearch1"
+              size="small"
+              placeholder="请选择联系人"
+              @select="handleSelect"
+              class="autoInput"
+            ></el-autocomplete>
+          </el-form-item>
+          <el-form-item label="联系方式" prop="linkInfomation">
+            <el-autocomplete
+              v-model="mainform.linkInfomation"
+              :fetch-suggestions="querySearch2"
+              size="small"
+              placeholder="请选择联系人"
+              @select="handleSelect"
+              class="autoInput"
+            ></el-autocomplete>
+          </el-form-item>
 
-				</el-form-item>
-			</el-form>		
-				<h4 style="padding:10px 5px;margin-top:10px">附件列表</h4>
-				<el-table :data="datas"  highlight-current-row  style="width: 100%;" id="uploadFile"  border>
-					<el-table-column label="操作"  fixed="left"  align="center" width="140" >
-						<template slot-scope="scope">
-							<el-button  size="mini" type="primary" :disabled="disable" @click="downLoad(scope.row)">下载</el-button>
-							<el-button style="margin-left: 10px;" size="mini" type="danger" :disabled="disable"  @click="deleteList(scope.row)">删除</el-button>
-						</template>				
-					</el-table-column>			
-					<el-table-column  :prop="col.field" :label="col.title"  v-for="(col, index) in cols" :key="index" align="center" >
-					</el-table-column>		 
-				</el-table>
-        <!--工具条-->
-		<el-col :span="24" class="toolbar">			
-			<el-pagination layout="total,sizes,prev, pager, next,jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange"  :current-page.sync="page" :page-size="pagesize" :total="total" :page-sizes='[200,500,800,1000]' style="float:right;">
-			</el-pagination>
-		</el-col>
-		</el-dialog>
-<!-- 外访记录 -->
-		<el-dialog :visible.sync="visitListDetial" :modal="true" :modal-append-to-body="false" :show-close='true' title="外访纪录" id="outerdialog">
-	<el-form ref="mainformvisit"  :model="mainformvisit"   inline >	
-
-      <el-form-item label="外访日期" prop="appointmentTime" label-width="95px" >
-         <i style="color:red">*</i> 
-				<el-date-picker type="date" placeholder="选择约会时间" v-model="mainformvisit.appointmentTime" style="width:150px" @change="dataChangevisit"></el-date-picker>
-		  </el-form-item>	
-      <el-form-item label="地址类型 "  label-width="95px"  prop="addressType">
-        <i style="color:red">*</i> 
-					<el-select  style="width:150px" id="selectMes" v-model="mainformvisit.addressType" @change="changeAddressType" >
-						<el-option v-for="(item,index) in addressTypes" :key="index" :label="item.nameType" :value="item.nameType"></el-option>
-					</el-select>
-				</el-form-item>	
-      <el-form-item label="地址 " label-width="95px" prop="address">
-        <i style="color:red">*</i>
-					<el-select  style="width:150px" id="selectMes" v-model="mainformvisit.address"  >
-						<el-option  v-for="(item,index) in address" :key="index" :label="item" :value="item"></el-option>
-					</el-select>
-				</el-form-item>
-        <el-form-item label="地址是否存在 " label-width="95px" prop="istrue" >
-          <i style="color:red">*</i> 
-					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.istrue"  @change="isaddress" >
-						<el-option v-for="(item,index) in IsTrue" :key="index" :label="item.label" :value="item.value"></el-option>
-					</el-select>	
-				</el-form-item>	
-        <el-form-item label="备注 " label-width="95px" prop="addressName"  v-if="mainformvisit.istrue=='N'">
-          <i style="color:red">*</i> 
-					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.addressName" @change="addressNames" >
-						<el-option v-for="(item,index) in addressName" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>	
-				</el-form-item>	
-        <span v-if="mainformvisit.istrue=='Y'" >
-            <el-form-item label="是否有人应门 " label-width="95px" prop="isanswer"  v-if="mainformvisit.istrue=='Y'">
-              <i style="color:red">*</i> 
-              <el-select   style="width:150px" id="selectMes" v-model="mainformvisit.isanswer" @change="isanswer" >
-                <el-option v-for="(item,index) in IsTrue" :key="index" :label="item.label" :value="item.value"></el-option>
-              </el-select>	
-				    </el-form-item>
-            <el-form-item label="见到对象" label-width="95px" prop="isperson" v-if="mainformvisit.isanswer!='N'">
-              <i style="color:red">*</i> 
-					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.isperson"  >
-						<el-option v-for="(item,index) in isperson" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>	
-				</el-form-item>	
-        <el-form-item label="见到对象" label-width="95px" prop="isperson"  v-if="mainformvisit.isanswer=='N'">
-          <i style="color:red">*</i> 
-					<el-select   style="width:150px" id="selectMes" v-model="mainformvisit.isperson" disabled>
-						<el-option   label=" " value=""></el-option>
-					</el-select>	
-				</el-form-item>       
-        </span> 
-        <el-form-item label="地址情况 " label-width="95px" prop="addressStn" v-if="mainformvisit.istrue=='Y'">  
-           <i style="color:red">*</i>           
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.addressStn" @change="changesub">
-						<el-option v-for="(item,index) in addressStn" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>	
-				</el-form-item>
-        <el-form-item label="房屋所有人 " label-width="95px" prop="houseStn"  v-if="mainformvisit.istrue=='Y'">  
-           <i style="color:red">*</i>           
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.houseStn" @change="changesub" >
-						<el-option v-for="(item,index) in houseStn" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>	
-				</el-form-item>
-        <el-form-item label="工作情况 " label-width="95px" prop="workStn" v-if="mainformvisit.istrue=='Y'"> 
-          <i style="color:red">*</i>        
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.workStn"  @change="changesub">
-						<el-option v-for="(item,index) in workStn" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>	
-				</el-form-item>
-        <el-form-item label="控制车辆人 " label-width="95px" prop="carStn" v-if="mainformvisit.istrue=='Y'" >  
-           <i style="color:red">*</i>           
-					<el-select   style="width:150px;" id="selectMes" v-model="mainformvisit.carStn" @change="changesub" >
-						<el-option v-for="(item,index) in carStn" :key="index" :label="item.val" :value="item.val"></el-option>
-					</el-select>	
-		</el-form-item>
-			<el-form-item label="">
-			 	<el-button style="padding:10px" type="primary" @click="canclevisit">取 消</el-button>
-				<el-button type="primary"  style="padding:10px" @click="submitMsg" :disabled="disablelist">确 定</el-button>
-			</el-form-item>      
-    </el-form>
-    		<h4 style="padding:10px 5px;margin-top:10px">外访记录列表</h4>
-				<!-- @click="addWorkInfo" -->
-				<el-table :data="visitListsRecords"  border highlight-current-row style="width: 100%;" stripe >
-				<el-table-column :prop="col.field" :label="col.title" v-for="(col, index) in col" :key="index" align="center" :width="col.width"  :fixed="col.fixed" show-overflow-tooltip>
-				</el-table-column>
-			</el-table>
-			<el-col :span="24" class="toolbar">					
-				<el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="visithandleCurrentChange" @size-change="visithandleSizeChanges" :page-size="visitpagesize" :page-sizes="[10, 20, 50, 100]"   :total="visittotal"   style="float:right;">
-				</el-pagination>
-			</el-col>
-		</el-dialog>
-    <el-dialog title="征信申请备注" :visible.sync="search" :modal="true" :modal-append-to-body="false"  :show-close='false'>
-        <h3 style="color:red;margin-bottom:12px">提示：{{this.SpMessage}}</h3>
-					<el-input v-model="SearchMarks" type="textarea"></el-input>
-			<div slot="footer" class="dialog-footer">
-				<el-button style="padding:10px" @click="searchCancle" type="primary">取 消</el-button>
-				<el-button type="primary" @click.native.prevent="submitSearch" style="padding:10px">确 定</el-button>
-			</div>
-		</el-dialog>
-</section>  
+          <el-form-item label="约会日期" prop="appointmentTime">
+            <el-date-picker
+              type="date"
+              placeholder="选择约会时间"
+              v-model="mainform.appointmentTime"
+              style="width: 100%;"
+              @change="dataChange"
+            ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col id="bzt">
+          <el-form-item
+            label="备注"
+            prop="afpRecord"
+            style="justify-content: space-around;display:flex"
+          >
+            <span class="tips">(不超过2000字)</span>
+            <el-input type="textarea" v-model="mainform.afpRecord" inline :maxlength="2000"></el-input>
+            <el-button
+              type="primary"
+              @click="onSubmit('mainform')"
+              :disabled="disabledto"
+            >{{tosubtext}}</el-button>
+            <el-button @click="onSubmitnext('mainform')" :disabled="disabledNex">确认&处理下一条</el-button>
+            <el-button type="primary" @click="CJStore">催记暂存</el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </div>
+    <el-dialog
+      title="短信"
+      :visible.sync="messageopen"
+      :modal="true"
+      :modal-append-to-body="false"
+      id="MsgDialog"
+      :show-close="false"
+    >
+      <el-form :model="messageform" :ref="messageform">
+        <el-form-item label="合同号" :label-width="formLabelWidth">
+          <el-input
+            :value="applicationNumber"
+            disabled
+            style="width:300px;margin-left:5px"
+            id="inp"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="手机号码 " :label-width="formLabelWidth">
+          <el-autocomplete
+            v-model="messageform.phone"
+            style="width:300px;margin-left:5px"
+            :fetch-suggestions="querySearch"
+            size="small"
+            placeholder="请输入手机号码"
+            @select="handleSelect"
+            class="autoInput"
+          ></el-autocomplete>
+        </el-form-item>
+        <el-form-item label="短信模板 " :label-width="formLabelWidth">
+          <el-select
+            v-model="messageform.selectTitle"
+            placeholder="请选择"
+            @change="getMessage"
+            style="width:300px;"
+            id="selectMes"
+          >
+            <el-option
+              v-for="(item,index) in messageModel"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="内容栏 " :label-width="formLabelWidth">
+          <el-input
+            type="textarea"
+            autosize
+            v-model="messageform.messagedesc"
+            style="width:300px;margin-left:5px"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button style="padding:10px" @click="cancle" type="primary">取 消</el-button>
+        <el-button
+          type="primary"
+          @click.native.prevent="confirmmessage('messageform')"
+          style="padding:10px"
+        >确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="附件"
+      :visible.sync="encloopen"
+      append-to-body="true"
+      id="fileUpload"
+      :modal="true"
+      :modal-append-to-body="false"
+      :show-close="true"
+      :fullscreen="true"
+    >
+      <el-form :model="fileList">
+        <el-form-item label="附件类型">
+          <el-select
+            v-model="fileList.fileListTypes"
+            placeholder="请选择"
+            id="selectMess"
+            @change="fileListTypesChange"
+          >
+            <el-option
+              v-for="(item,index) in fileListType"
+              :key="index"
+              :label="item.val"
+              :value="item.val"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-upload
+            class="ensure ensureButt"
+            ref="upload"
+            :action="importFileUrl"
+            :data="upLoadData"
+            :on-preview="handlePreview"
+            :on-change="handleChange"
+            :on-error="uploadError"
+            :on-success="uploadSuccess"
+            :before-upload="beforeUpload"
+            :auto-upload="false"
+            :file-list="filelist"
+            :multiple="true"
+            :show-file-list="fileListStatue"
+            style="display:inline-block"
+          >
+            <el-button slot="trigger" size="small" type="primary" @click="chooseFile">选取文件</el-button>
+            <el-button
+              style="margin-left: 10px;"
+              size="small"
+              type="success"
+              @click="submitUpload"
+            >上传到服务器</el-button>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <h4 style="padding:10px 5px;margin-top:10px">附件列表</h4>
+      <el-table :data="datas" highlight-current-row style="width: 100%;" id="uploadFile" border>
+        <el-table-column label="操作" fixed="left" align="center" width="140">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              :disabled="disable"
+              @click="downLoad(scope.row)"
+            >下载</el-button>
+            <el-button
+              style="margin-left: 10px;"
+              size="mini"
+              type="danger"
+              :disabled="disable"
+              @click="deleteList(scope.row)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :prop="col.field"
+          :label="col.title"
+          v-for="(col, index) in cols"
+          :key="index"
+          align="center"
+        ></el-table-column>
+      </el-table>
+      <!--工具条-->
+      <el-col :span="24" class="toolbar">
+        <el-pagination
+          layout="total,sizes,prev, pager, next,jumper"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :current-page.sync="page"
+          :page-size="pagesize"
+          :total="total"
+          :page-sizes="[200,500,800,1000]"
+          style="float:right;"
+        ></el-pagination>
+      </el-col>
+    </el-dialog>
+    <!-- 外访记录 -->
+    <el-dialog
+      :visible.sync="visitListDetial"
+      :modal="true"
+      :modal-append-to-body="false"
+      :show-close="true"
+      title="外访纪录"
+      id="outerdialog"
+    >
+      <el-form ref="mainformvisit" :model="mainformvisit" inline>
+        <el-form-item label="外访日期" prop="appointmentTime" label-width="95px">
+          <i style="color:red">*</i>
+          <el-date-picker
+            type="date"
+            placeholder="选择约会时间"
+            v-model="mainformvisit.appointmentTime"
+            style="width:150px"
+            @change="dataChangevisit"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="地址类型 " label-width="95px" prop="addressType">
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px"
+            id="selectMes"
+            v-model="mainformvisit.addressType"
+            @change="changeAddressType"
+          >
+            <el-option
+              v-for="(item,index) in addressTypes"
+              :key="index"
+              :label="item.nameType"
+              :value="item.nameType"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地址 " label-width="95px" prop="address">
+          <i style="color:red">*</i>
+          <el-select style="width:150px" id="selectMes" v-model="mainformvisit.address">
+            <el-option v-for="(item,index) in address" :key="index" :label="item" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地址是否存在 " label-width="95px" prop="istrue">
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px"
+            id="selectMes"
+            v-model="mainformvisit.istrue"
+            @change="isaddress"
+          >
+            <el-option
+              v-for="(item,index) in IsTrue"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="备注 "
+          label-width="95px"
+          prop="addressName"
+          v-if="mainformvisit.istrue=='N'"
+        >
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px"
+            id="selectMes"
+            v-model="mainformvisit.addressName"
+            @change="addressNames"
+          >
+            <el-option
+              v-for="(item,index) in addressName"
+              :key="index"
+              :label="item.val"
+              :value="item.val"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <span v-if="mainformvisit.istrue=='Y'">
+          <el-form-item
+            label="是否有人应门 "
+            label-width="95px"
+            prop="isanswer"
+            v-if="mainformvisit.istrue=='Y'"
+          >
+            <i style="color:red">*</i>
+            <el-select
+              style="width:150px"
+              id="selectMes"
+              v-model="mainformvisit.isanswer"
+              @change="isanswer"
+            >
+              <el-option
+                v-for="(item,index) in IsTrue"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="见到对象"
+            label-width="95px"
+            prop="isperson"
+            v-if="mainformvisit.isanswer!='N'"
+          >
+            <i style="color:red">*</i>
+            <el-select style="width:150px" id="selectMes" v-model="mainformvisit.isperson">
+              <el-option
+                v-for="(item,index) in isperson"
+                :key="index"
+                :label="item.val"
+                :value="item.val"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="见到对象"
+            label-width="95px"
+            prop="isperson"
+            v-if="mainformvisit.isanswer=='N'"
+          >
+            <i style="color:red">*</i>
+            <el-select style="width:150px" id="selectMes" v-model="mainformvisit.isperson" disabled>
+              <el-option label=" " value></el-option>
+            </el-select>
+          </el-form-item>
+        </span>
+        <el-form-item
+          label="地址情况 "
+          label-width="95px"
+          prop="addressStn"
+          v-if="mainformvisit.istrue=='Y'"
+        >
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px;"
+            id="selectMes"
+            v-model="mainformvisit.addressStn"
+            @change="changesub"
+          >
+            <el-option
+              v-for="(item,index) in addressStn"
+              :key="index"
+              :label="item.val"
+              :value="item.val"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="房屋所有人 "
+          label-width="95px"
+          prop="houseStn"
+          v-if="mainformvisit.istrue=='Y'"
+        >
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px;"
+            id="selectMes"
+            v-model="mainformvisit.houseStn"
+            @change="changesub"
+          >
+            <el-option
+              v-for="(item,index) in houseStn"
+              :key="index"
+              :label="item.val"
+              :value="item.val"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="工作情况 "
+          label-width="95px"
+          prop="workStn"
+          v-if="mainformvisit.istrue=='Y'"
+        >
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px;"
+            id="selectMes"
+            v-model="mainformvisit.workStn"
+            @change="changesub"
+          >
+            <el-option
+              v-for="(item,index) in workStn"
+              :key="index"
+              :label="item.val"
+              :value="item.val"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="控制车辆人 "
+          label-width="95px"
+          prop="carStn"
+          v-if="mainformvisit.istrue=='Y'"
+        >
+          <i style="color:red">*</i>
+          <el-select
+            style="width:150px;"
+            id="selectMes"
+            v-model="mainformvisit.carStn"
+            @change="changesub"
+          >
+            <el-option
+              v-for="(item,index) in carStn"
+              :key="index"
+              :label="item.val"
+              :value="item.val"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label>
+          <el-button style="padding:10px" type="primary" @click="canclevisit">取 消</el-button>
+          <el-button
+            type="primary"
+            style="padding:10px"
+            @click="submitMsg"
+            :disabled="disablelist"
+          >确 定</el-button>
+        </el-form-item>
+      </el-form>
+      <h4 style="padding:10px 5px;margin-top:10px">外访记录列表</h4>
+      <!-- @click="addWorkInfo" -->
+      <el-table :data="visitListsRecords" border highlight-current-row style="width: 100%;" stripe>
+        <el-table-column
+          :prop="col.field"
+          :label="col.title"
+          v-for="(col, index) in col"
+          :key="index"
+          align="center"
+          :width="col.width"
+          :fixed="col.fixed"
+          show-overflow-tooltip
+        ></el-table-column>
+      </el-table>
+      <el-col :span="24" class="toolbar">
+        <el-pagination
+          layout="total, sizes, prev, pager, next, jumper"
+          @current-change="visithandleCurrentChange"
+          @size-change="visithandleSizeChanges"
+          :page-size="visitpagesize"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="visittotal"
+          style="float:right;"
+        ></el-pagination>
+      </el-col>
+    </el-dialog>
+    <el-dialog
+      title="征信申请备注"
+      :visible.sync="search"
+      :modal="true"
+      :modal-append-to-body="false"
+      :show-close="false"
+    >
+      <h3 style="color:red;margin-bottom:12px">提示：{{this.SpMessage}}</h3>
+      <el-input v-model="SearchMarks" type="textarea"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button style="padding:10px" @click="searchCancle" type="primary">取 消</el-button>
+        <el-button type="primary" @click.native.prevent="submitSearch" style="padding:10px">确 定</el-button>
+      </div>
+    </el-dialog>
+  </section>
 </template>
 <script>
 import {
@@ -256,14 +544,14 @@ import {
   creditApproval
 } from "@/api/basedata";
 export default {
-  name:"images",
+  name: "images",
   props: ["callback"],
   data() {
     return {
-      ids:"",
-      PreImg:false,
-      SpMessage:"",
-      options:{},
+      ids: "",
+      PreImg: false,
+      SpMessage: "",
+      options: {},
       images: [],
       websock: null,
       backMsg: "",
@@ -299,7 +587,7 @@ export default {
       datas: [],
       templateId: "",
       phone: "",
-      missionIds:[],
+      missionIds: [],
       // UserArrList:[],
       selectCont: "",
       state: "",
@@ -344,9 +632,9 @@ export default {
         appointmentTime: "",
         afpRecord: ""
       },
-      searchBtn:false,
-      SearchMarks:"",
-      search:false,
+      searchBtn: false,
+      SearchMarks: "",
+      search: false,
       messageopen: false,
       encloopen: false,
       visitListDetial: false,
@@ -412,51 +700,48 @@ export default {
     };
   },
   methods: {
-    checkSerch(){
-      
-      let para={
-        appNum:this.$parent.appNum
-      }
-      creditGetStatus(para).then(res =>{
-        if(res.data.code==1){
-          this.search=true;
-          this.SpMessage=res.data.message;
-          this.missionIds.push(this.$route.params.id)          
-        }else if(res.data.code==2){
-           this.$message({            
-                message:res.data.message, 
-                type: "error",
-              });         
+    checkSerch() {
+      let para = {
+        appNum: this.$parent.appNum
+      };
+      creditGetStatus(para).then(res => {
+        if (res.data.code == 1) {
+          this.search = true;
+          this.SpMessage = res.data.message;
+          this.missionIds.push(this.$route.params.id);
+        } else if (res.data.code == 2) {
+          this.$message({
+            message: res.data.message,
+            type: "error"
+          });
+        } else if (res.data.code == 3) {
+          this.SearchPreview();
+        } else {
+          this.checkPreview();
         }
-        else if(res.data.code==3){
-           this.SearchPreview()       
-        }else{
-           this.checkPreview()
+      });
+    },
+    searchCancle() {
+      this.search = false;
+      this.SearchMarks = "";
+    },
+    submitSearch() {
+      let paras = {
+        appNum: this.$parent.appNum,
+        missionIds: this.missionIds,
+        remarks: this.SearchMarks
+      };
+      creditApproval(paras).then(res => {
+        if (res.data.success) {
+          this.search = false;
+        } else {
+          this.$notify({
+            type: "error",
+            message: res.data.message,
+            duration: 1000
+          });
         }
-      })
-    },
-    searchCancle(){
-      this.search=false;
-      this.SearchMarks=""     
-    },
-    submitSearch(){
-      let paras ={
-            appNum:this.$parent.appNum,
-            missionIds:this.missionIds,
-            remarks:this.SearchMarks
-          }
-          creditApproval(paras).then(res =>{
-            if(res.data.success){
-              this.search=false;
-            }else{
-               this.$notify({
-                type: "error",
-                message:res.data.message,
-                duration: 1000
-              });
-            }
-          })
-
+      });
     },
     //路径配置
     PathList() {
@@ -543,7 +828,7 @@ export default {
               this.$notify({
                 type: "success",
                 message: "提交成功",
-               offset: 50
+                offset: 50
               });
               setTimeout(() => {
                 this.disabledto = false;
@@ -613,12 +898,11 @@ export default {
           });
           recordAdd(para).then(res => {
             if (res.data.success) {
-             
               this.$notify({
                 type: "success",
                 message: "提交成功",
                 offset: 50
-              }); 
+              });
               // this.$refs[mainform].resetFields();
               setTimeout(() => {
                 this.disabledNex = false;
@@ -644,14 +928,14 @@ export default {
       });
       localStorage.removeItem("CJPhone");
     },
-    callParent() {     
+    callParent() {
       let para = {
         missionId: this.$route.params.id
       };
       tab_view(para).then(res => {
         let data = res.data.result;
         this.lists = data;
-        this.ids=data.appNum;
+        this.ids = data.appNum;
         this.phoneListNums = data.customerPhones;
         this.applicationNumber = data.applicationNumber;
         this.UserArr.splice(0, this.UserArr.length);
@@ -802,16 +1086,16 @@ export default {
         messageSend(para).then(res => {
           if (res.data.success) {
             this.$notify({
-                type: "success",
-                message: "短信已发送！",
-                offset: 50
-              }); 
+              type: "success",
+              message: "短信已发送！",
+              offset: 50
+            });
           } else {
-             this.$notify({
-                type: "warning",
-                message: "短信未发送！",
-                offset: 50
-              }); 
+            this.$notify({
+              type: "warning",
+              message: "短信未发送！",
+              offset: 50
+            });
           }
         });
         this.messageopen = false;
@@ -822,12 +1106,18 @@ export default {
       }
     },
     handleSelect(item) {},
-    PhoneCtr() {
-      let nums = localStorage.getItem("CJPhone");
-      let CJName = localStorage.getItem("CJName");
-      let CJPhoneNum = localStorage.getItem("CJPhoneNum");
-      let str=CJName+"-"+nums+"-"+CJPhoneNum
-      this.mainform.afpRecord += str;
+    PhoneCtr(row, type) {
+      // let nums = localStorage.getItem("CJPhone");
+      // let CJName = localStorage.getItem("CJName");
+      // let CJPhoneNum = localStorage.getItem("CJPhoneNum");
+      // let str = CJName + "-" + nums;
+      let PhoneStr = `${row.name}-${row.phone}-`;
+      let PhoneNumStr = `-${row.phoneNum}`;
+      if (type == "phone") {
+        this.mainform.afpRecord += PhoneStr;
+      } else {
+        this.mainform.afpRecord += PhoneNumStr;
+      }
     },
     //催记暂存
     CJStore() {
@@ -843,11 +1133,11 @@ export default {
       };
       localStorage.setItem("REefresh", JSON.stringify(REefresh));
       localStorage.setItem(this.$route.params.id, this.$route.params.id);
-       this.$notify({
-                type: "success",
-                message: "暂存成功",
-                offset: 50
-              });
+      this.$notify({
+        type: "success",
+        message: "暂存成功",
+        offset: 50
+      });
     },
 
     NoRefresh() {
@@ -862,22 +1152,25 @@ export default {
         RowId: this.$route.params.id
       };
       var RowIds = localStorage.getItem(this.$route.params.id);
-      if(RowIds&&RowIds!=null){    
-      if (localStorage.getItem("REefresh")&&  localStorage.getItem("REefresh")!=null) { 
-        var RowIds = localStorage.getItem(this.$route.params.id);
-        var FreshList = JSON.parse(localStorage.getItem("REefresh"));   
-         if (RowIds == FreshList.RowId) {
-          (this.mainform.actSign = FreshList.actSign),
-            (this.mainform.allowance = FreshList.allowance),
-            (this.mainform.allDate = FreshList.allDate),
-            (this.mainform.linkman = FreshList.linkman),
-            (this.mainform.linkInfomation = FreshList.linkInfomation),
-            (this.mainform.appointmentTime = FreshList.appointmentTime),
-            (this.mainform.afpRecord = FreshList.afpRecord);
-        } else {
-          return false;
+      if (RowIds && RowIds != null) {
+        if (
+          localStorage.getItem("REefresh") &&
+          localStorage.getItem("REefresh") != null
+        ) {
+          var RowIds = localStorage.getItem(this.$route.params.id);
+          var FreshList = JSON.parse(localStorage.getItem("REefresh"));
+          if (RowIds == FreshList.RowId) {
+            (this.mainform.actSign = FreshList.actSign),
+              (this.mainform.allowance = FreshList.allowance),
+              (this.mainform.allDate = FreshList.allDate),
+              (this.mainform.linkman = FreshList.linkman),
+              (this.mainform.linkInfomation = FreshList.linkInfomation),
+              (this.mainform.appointmentTime = FreshList.appointmentTime),
+              (this.mainform.afpRecord = FreshList.afpRecord);
+          } else {
+            return false;
+          }
         }
-      } 
       }
     },
     //文件上传部分
@@ -896,10 +1189,8 @@ export default {
         this.$refs.upload.submit();
       }
     },
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    },
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
     handleChange(file, fileList) {},
     beforeUpload: function(file) {
       const isLt2M = file.size / 1024 / 1024 < 100;
@@ -961,8 +1252,7 @@ export default {
       let para = {
         id: this.$route.params.id
       };
-      RecordsFind(para).then(res => {
-      });
+      RecordsFind(para).then(res => {});
       this.getvisitlist();
     },
     getvisitlist() {
@@ -1192,7 +1482,7 @@ export default {
     threadPoxi() {
       var s = {};
       //localStorage.getItem("userName")
-      s.USERNAME ="dhgl" ;
+      s.USERNAME = "dhgl";
       s.TOKEN = Cookies.get("Admin-Token");
       s.SYSTYPE = "2";
       const agentData = "CONN " + JSON.stringify(s);
@@ -1253,7 +1543,7 @@ export default {
         }
       });
     },
-      SearchPreview() {
+    SearchPreview() {
       let para = {
         appNum: this.$parent.appNum
       };
@@ -1263,63 +1553,59 @@ export default {
         if (this.backMsg.Type == "ConnOK") {
           let that = this;
           that.websocketsend(Searchdatas);
-          if(this.backMsg.Type=="SEARCH_FAIL"){
-            if(this.backMsg.Msg=="ReCheckInterval"){
+          if (this.backMsg.Type == "SEARCH_FAIL") {
+            if (this.backMsg.Msg == "ReCheckInterval") {
               this.$message({
                 type: "error",
-                  message:"该案件七天之内只能查询一次！",
-                })
-            }else{
+                message: "该案件七天之内只能查询一次！"
+              });
+            } else {
               this.$message({
-          	    type: "error",
-                message:this.backMsg.Msg,
+                type: "error",
+                message: this.backMsg.Msg
               });
             }
-          	
           }
-          that.threadPoxi()
+          that.threadPoxi();
         } else {
           this.threadPoxi();
           this.websocketsend(Searchdatas);
         }
       });
     },
-    ImgPreview(){
-      this.PreImg=true
-            let para = {
-                appNum:this.$parent.appNum
-            }
-            getACSDataMirror(para).then(res =>{ 
-              if(res.data.success){               
-                 this.images=res.data.result
-              }else{
-                this.$message({
-          	      type: "error",
-                  message:res.data.message,
-                });
-              }
-            })
-        },
+    ImgPreview() {
+      this.PreImg = true;
+      let para = {
+        appNum: this.$parent.appNum
+      };
+      getACSDataMirror(para).then(res => {
+        if (res.data.success) {
+          this.images = res.data.result;
+        } else {
+          this.$message({
+            type: "error",
+            message: res.data.message
+          });
+        }
+      });
+    }
   },
-  created() { 
+  created() {
     this.threadPoxi();
     // this.ImgPreview()
   },
   beforeMount() {},
   mounted() {
-  this.getaddress();
-  this.getaddressType();
-  this.callParent();
-  this.getlists();
-  this.initWebSocket();
-   this.PathList();
+    this.getaddress();
+    this.getaddressType();
+    this.callParent();
+    this.getlists();
+    this.initWebSocket();
+    this.PathList();
     this.restaurants = this.userList;
     this.restaurants1 = this.getname;
-    this.restaurants2 = this.getfangshi;   
+    this.restaurants2 = this.getfangshi;
     this.NoRefresh();
-    
-    
-    
   },
   watch: {
     backMsg(curval) {
@@ -1422,7 +1708,11 @@ export default {
 #selectMess .el-input__inner {
   height: 30px !important;
 }
-.el-icon-view{cursor: pointer;color: #20a0ff;margin-left: 5px;}
+.el-icon-view {
+  cursor: pointer;
+  color: #20a0ff;
+  margin-left: 5px;
+}
 @media screen and (max-width: 1250px) {
   /* #FixForm{display:flex} */
   #bzt {

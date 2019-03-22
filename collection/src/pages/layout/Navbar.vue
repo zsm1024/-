@@ -16,20 +16,62 @@
     <!-- <levelbar></levelbar> -->
     <div class="newsTip">
       <el-dropdown trigger="click">
-        <el-badge :value="2" class="item" >
-          <el-button type="primary" class="fa fa-bell el-dropdown-link" size="small" circle ></el-button>
+        <el-badge :value="countNum" class="item">
+          <el-button type="primary" class="fa fa-commenting el-dropdown-link" size="small" circle></el-button>
         </el-badge>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item style="text-align:right">
-               <el-button                      
-                      type="warning"
-                      class="fa fa-refresh"
-                      size="mini"
-                    > &nbsp;刷新</el-button>
+            <el-button type="warning" class="fa fa-refresh" size="mini" @click="NumsClicks">&nbsp;刷新</el-button>
           </el-dropdown-item>
-          <el-dropdown-item >
-              <router-link  class="a-href listDetials"
-                :to="{path:'/'}">车辆进站:<span>1</span></router-link>
+          <el-dropdown-item>
+            <p class="listDetials" @click="NumsClicks">
+              协办的案件:
+              <span>{{coNewsNum}}</span>
+            </p>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <p class="listDetials" @click="NumsClicks">
+              转队列案件:
+              <span>{{trunNewsNum}}</span>
+            </p>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <p class="listDetials" @click="NumsClicks">
+              审批通过或关闭:
+              <span>{{unReadApply}}</span>
+            </p>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown trigger="click">
+        <el-badge :value="NewsTip" class="item">
+          <el-button type="primary" class="fa fa-bell el-dropdown-link" size="small" circle></el-button>
+        </el-badge>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item style="text-align:right">
+            <el-button type="warning" class="fa fa-refresh" size="mini" @click="closed()">&nbsp;刷新</el-button>
+          </el-dropdown-item>
+          <el-dropdown-item v-if="isCarShow">
+            <router-link class="a-href listDetials" :to="{path:'/'}">
+              车辆进站:
+              <span>{{carIn}}</span>
+            </router-link>
+          </el-dropdown-item>
+          <el-dropdown-item v-if="isShow">
+            <span @click="approvalCountClick">
+              <router-link class="a-href listDetials" :to="{path:'/IcsPage/spdata/splist/103'}">
+                待审批案件:
+                <span>{{approvalCount}}</span>
+              </router-link>
+            </span>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <span @click="applySendClick" v-if="isSpShow">
+              <router-link class="a-href listDetials" :to="{path:'/IcsPage/outerdata/splist/127'}">
+                派案待审批:
+                <span>{{applySend}}</span>
+              </router-link>
+            </span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -92,6 +134,15 @@ import Screenfull from "@/components/Screenfull";
 import ErrorLog from "@/components/ErrLog";
 import errLogStore from "@/store/errLog";
 import { changeSub } from "@/api/auth";
+import {
+  ApprovalCount,
+  getUnReadApplyCount,
+  getSendCaseCount,
+  updateApplyNewsFlag,
+  updateNewsFlag,
+  getUnReadNewsCount,
+  findByType
+} from "@/api/basedata";
 export default {
   components: {
     Levelbar,
@@ -102,19 +153,133 @@ export default {
   },
   data() {
     return {
+      countNum: 0,
       log: errLogStore.state.errLog,
       cancelhost: false,
       formLabelWidth: "120px",
       messageform: {
         oldPassWord: "",
         newPassWord: ""
-      }
+      },
+      coNewsNum: 0,
+      NewsTip: 0,
+      trunNewsNum: 0,
+      approvalCount: 0,
+      applySend: 0,
+      unReadApply: 0,
+      SpList: [],
+      SdList: [],
+      carList: [],
+      isShow: false,
+      isSpShow: false,
+      isCarShow: false,
+      carIn: 1
     };
   },
   computed: {
     ...mapGetters(["sidebar", "name", "avatar"])
   },
   methods: {
+    closed() {
+      updateApplyNewsFlag().then(res => {
+        if (!res.data.success) {
+          this.$message({
+            type: "error",
+            message: res.data.message
+          });
+        }
+      });
+    },
+    Coclosed() {
+      updateNewsFlag().then(res => {
+        if (!res.data.success) {
+          this.$message({
+            type: "error",
+            message: res.data.message
+          });
+        }
+      });
+    },
+    findType() {
+      let para = {
+        type: "SpList"
+      };
+      findByType(para).then(res => {
+        let data = res.data.result;
+        data.forEach(el => {
+          this.SpList.push(el.val);
+        });
+        if (this.SpList.indexOf(localStorage.getItem("userName")) != -1) {
+          this.isShow = true;
+        }
+      });
+      let paras = {
+        type: "SendList"
+      };
+      findByType(para).then(res => {
+        let data = res.data.result;
+        data.forEach(el => {
+          this.SdList.push(el.val);
+        });
+        if (this.SdList.indexOf(localStorage.getItem("userName")) != -1) {
+          this.isSpShow = true;
+        }
+      });
+      let carParas = {
+        type: "CarMan"
+      };
+      findByType(carParas).then(res => {
+        let data = res.data.result;
+        data.forEach(el => {
+          this.carList.push(el.val);
+        });
+        console.log(this.carList);
+        if (this.carList.indexOf(localStorage.getItem("userName")) != -1) {
+          this.isCarShow = true;
+        }
+      });
+    },
+    approvalCountClick() {
+      this.approvalCount = 0;
+      this.getgetUnReadNewsCount();
+      this.closed();
+    },
+    NumsClicks() {
+      this.unReadApply = 0;
+      this.getgetUnReadNewsCount();
+      this.Coclosed();
+    },
+    applySendClick() {
+      this.applySend = 0;
+      this.getgetUnReadNewsCount();
+      this.closed();
+    },
+    getUnRead() {
+      getUnReadApplyCount().then(res => {
+        this.unReadApply = res.data.result;
+      });
+    },
+    getgetUnReadNewsCount() {
+      getUnReadNewsCount().then(res => {
+        if (res.data.success) {
+          this.coNewsNum = res.data.result.coNewsNum;
+          this.trunNewsNum = res.data.result.trunNewsNum;
+          this.countNum = this.coNewsNum + this.trunNewsNum + this.unReadApply;
+          this.NewsTip = this.approvalCount + this.applySend + this.carIn;
+        }
+      });
+    },
+    getgetSendCaseCount() {
+      getSendCaseCount().then(res => {
+        this.sendDialog = true;
+        this.applySend = res.data.result;
+      });
+    },
+    getApprovalCount() {
+      ApprovalCount().then(res => {
+        this.approvalCount = res.data.result;
+      });
+    },
     changeSub() {
       this.cancelhost = true;
     },
@@ -158,7 +323,23 @@ export default {
         localStorage.removeItem("userName");
         localStorage.removeItem("phoneNum");
       });
+    },
+    InterVels() {
+      setInterval(() => {
+        this.getApprovalCount();
+        this.getgetSendCaseCount();
+        this.getUnRead();
+        this.getgetUnReadNewsCount();
+      }, 300000);
     }
+  },
+  mounted() {
+    this.getApprovalCount();
+    this.getgetSendCaseCount();
+    this.getUnRead();
+    this.getgetUnReadNewsCount();
+    this.findType();
+    this.InterVels();
   }
 };
 </script>
@@ -211,22 +392,20 @@ export default {
   font-size: 20px;
   color: #20a0ff;
 }
-.fa-bell {
+.fa-bell,
+.fa-commenting {
   border-radius: 36px;
   height: 36px;
   width: 36px;
   position: relative;
   margin-top: 11px;
 }
-.fa-bell:before {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-.listDetials{
+.listDetials {
   font-size: 15px;
-  span{color: red}
+  span {
+    color: red;
   }
+}
 </style>
 
 

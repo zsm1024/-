@@ -58,7 +58,7 @@
               <el-select
                 v-if="cols.field=='roleName'"
                 v-model="scope.row[cols.field]"
-                @change="phoneEdit(scope.row)"
+                @change="phoneEdit(scope.row,'roleName')"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
@@ -72,7 +72,7 @@
                 v-if="cols.field=='relationship'"
                 v-model="scope.row[cols.field]"
                 placeholder
-                @change="phoneEdit(scope.row)"
+                @change="phoneEdit(scope.row,'relationship')"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option
@@ -82,14 +82,6 @@
                   :value="item.val"
                 ></el-option>
               </el-select>
-              <!-- <Input
-                v-if="scope.row.infoSource!='CMS'&&cols.field=='phone'&&cols.field!='roleName'&&cols.field!='effectiveness'"
-                size="small"
-                v-model="scope.row[cols.field]"
-                class="inputInner"
-                style="text-align:center"
-                @on-blur="phoneEdit(scope.row)" :class="{changecolor:scope.row['effectiveness']=='N'}"
-              />-->
               <span
                 v-if="scope.row.infoSource=='ICS'&&(cols.field=='infoSource'||cols.field=='phone')"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
@@ -99,14 +91,13 @@
                 class="ivu-icon ivu-icon-ios-phone-portrait"
                 @click="ring(scope.row.phone,scope.row)"
               ></i>
-              <!-- @on-click="ring(scope.row.phone,scope.row)" -->
               <Input
                 v-if="scope.row.infoSource!='CMS'&&cols.field=='name'&&cols.field!='effectiveness'&&cols.field!='phoneNum'"
                 size="small"
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)"
+                @on-blur="phoneEdit(scope.row,'name')"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <i
@@ -121,7 +112,7 @@
                 v-model="scope.row[cols.field]"
                 class="inputInner"
                 style="text-align:center"
-                @on-blur="phoneEdit(scope.row)"
+                @on-blur="phoneEdit(scope.row,'phoneType')"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               />
               <span
@@ -142,9 +133,10 @@
                 v-if="cols.field=='phoneNum'"
                 v-model="scope.row[cols.field]"
                 placeholder
-                @change="phoneEdit(scope.row)"
+                @visible-change="gososo($event,scope.row)"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
+                <!-- @change="phoneEdit(scope.row,'phoneNum')" -->
                 <el-option
                   v-for="(item,index) in PhoneCodeList"
                   :key="index"
@@ -155,7 +147,7 @@
                 v-if="cols.field=='effectiveness'"
                 v-model="scope.row[cols.field]"
                 placeholder
-                @change="phoneEdit(scope.row)"
+                @change="phoneEdit(scope.row,'effectiveness')"
                 :class="{changecolor:scope.row['effectiveness']=='N'}"
               >
                 <el-option label="Y" value="Y"></el-option>
@@ -314,9 +306,7 @@
             <td>放款行</td>
           </tr>
           <tr>
-            <td>
-              {{dealerName}}
-            </td>
+            <td>{{dealerName}}</td>
             <td>{{jxsName}}</td>
             <td v-for="phone in phoneList" :key="phone.index">
               {{phone.phone}}
@@ -557,6 +547,7 @@ import { PhoneCodeListAll, findByType } from "@/api/basedata";
 export default {
   data() {
     return {
+      otherPageStr: "", //催记中记录电话码
       addressNumList: [],
       roleTypes: [],
       relations: [],
@@ -688,6 +679,11 @@ export default {
     };
   },
   methods: {
+    gososo(status, item) {
+      if (!status) {
+        this.phoneEdit(item, "phoneNum");
+      }
+    },
     getStatus() {
       let para = {
         missionId: this.$route.params.id
@@ -728,7 +724,6 @@ export default {
       this.$refs[AdduserForm].validate(valid => {
         if (valid) {
           addInfo(para).then(res => {
-            debugger
             if (res.data.success) {
               this.$notify({
                 message: "添加成功！",
@@ -973,9 +968,9 @@ export default {
     JXSring(phoneNum, item) {
       var sing = "-";
       phoneNum = phoneNum.replace(new RegExp(sing), "");
-        document
+      document
         .getElementById("frame2")
-        .contentWindow.clickCallOut("0", "0" + phoneNum, this.appNum, item); 
+        .contentWindow.clickCallOut("0", "0" + phoneNum, this.appNum, item);
     },
     ring(phoneNum, row) {
       window.frames[""];
@@ -988,7 +983,7 @@ export default {
       localStorage.setItem("CJPhone", phoneNum);
       localStorage.setItem("CJName", row.name);
       localStorage.setItem("CJPhoneNum", row.phoneNum);
-      this.$refs.CJlist.PhoneCtr();
+      this.$refs.CJlist.PhoneCtr(row, "phone");
       // console.log(this.$refs.CJlist.mainform.afpRecord)
       var user = localStorage.getItem("userName");
       let phoneNumVal = "0" + phoneNum;
@@ -1003,17 +998,22 @@ export default {
       localStorage.removeItem("CJPhone");
       localStorage.setItem("phoneNum", phoneNum);
       localStorage.setItem("CJPhone", phoneNum);
-      this.$refs.CJlist.PhoneCtr();
+      this.$refs.CJlist.PhoneCtr(row, "phone");
       var user = localStorage.getItem("userName");
       document.getElementById("frame2").contentWindow.telNumVal(phoneNum);
       document
         .getElementById("frame2")
         .contentWindow.clickCallOut("0", phoneNum, this.appNum, row.name);
     },
-    phoneEdit(row) {
+    //获取改变行的电话码、姓名、电话为下面备注内容
+    phoneEdit(row, type) {
       let para = row;
       updatePhoneInfo(para).then(res => {
         if (res.data.success) {
+          if (type === "phoneNum") {
+            this.otherPageStr = row.phoneNum;
+          }
+          this.$refs.CJlist.PhoneCtr(row, "phoneEdit");
           // this.$message({
           //   message: "更新成功4！",
           //   type: "success",
